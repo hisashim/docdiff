@@ -4,30 +4,29 @@
 module ArrayPlus
 
   def freq(arg = nil)
-    counter = {}
+    frequency = {}
     if arg
       each{|e|
         if e == arg
-          counter[e] || counter[e] = 0
-          counter[e] += 1
+          frequency[e] || frequency[e] = 0
+          frequency[e] += 1
         end
       }
-      return counter[arg]
+      return frequency[arg]
     elsif block_given?
       each{|e|
         if yield e
-          counter[e] || counter[e] = 0
-          counter[e] += 1
+          frequency[e] || frequency[e] = 0
+          frequency[e] += 1
         end
       }
-      return counter
-    else
-      # No arg or block given.
+      return frequency
+    else  # No arg or block given.
       each{|e|
-        counter[e] || counter[e] = 0
-        counter[e] += 1
+        frequency[e] || frequency[e] = 0
+        frequency[e] += 1
       }
-      return counter
+      return frequency
     end
     raise "You are not supposed to see this.\n"
   end
@@ -43,27 +42,93 @@ module ArrayPlus
     raise "You are not supposed to see this.\n"
   end
 
-  def pick_indices(arg = nil)
+  def locate(arg = nil)
     indices = []
     if arg
-      each_with_index{|e, i|
-        indices.push i if e == arg
-      }
-      return indices
+      each_with_index{|e, i| indices.push i if e == arg }
     elsif block_given?
-      each_with_index{|e, i|
-        indices.push i if yield e
-      }
-      return indices
+      each_with_index{|e, i| indices.push i if yield e }
     else
-      each_with_index{|e, i|
-        indices.push i
-      }
-      return indices
+      each_with_index{|e, i| indices.push i }  # all indices (=[0..n-1])
     end
+    return indices
     raise "You are not supposed to see this.\n"
   end
-  alias :pick_indexes :pick_indices
+  alias :pick_indexes :locate
+  alias :pick_indices :locate
+
+  ThisModule = self  # save module name
+  # flatten given times
+  def flatten(level = nil)
+    if level == nil then next_level = nil
+    elsif level > 0 then next_level = level - 1
+    else                 return self
+    end
+    flattened = Array.new
+    self.each{|elem|
+      if elem.kind_of? Array
+        elem.extend ThisModule  # inside a method, "self" is not a module but a class
+        elem.flatten(next_level).each{|sub_elem|
+          flattened << sub_elem
+        }
+      else
+        flattened << elem
+      end
+    }
+    return flattened
+  end
+
+  def longest()  # longest as String
+    self.max{|a, b| [a.to_s.size, a.to_s] <=> [b.to_s.size, b.to_s]}
+  end
+
+  def shortest() # shortest as String
+    self.min{|a, b| [a.to_s.size, a.to_s] <=> [b.to_s.size, b.to_s]}
+  end
+
+  def largest()  # largest as value (=max)
+    self.sort{|a, b| a <=> b}.last
+  end
+
+  def smallest() # smallest as value (=min)
+    self.sort{|a, b| a <=> b}.first
+  end
+
+  # median (Size/2-th)
+  # [1,4,9,100,0].median    #=> 4
+  # [1,4,9,50,100,0].median #=> (9+50)/2 => 29.5
+  # [1,9,100,0].median      #=> (9+100)/2 => 54.5 
+  def median()
+    size = self.size
+    if size % 2 == 1
+      return self.sort[(size-1)/2]
+    else
+      result = (self[(size-2)/2] + self[size/2]) / 2.0
+      return result.to_i if result == result.to_i
+      return result
+    end
+  end
+
+  # mode (most frequent)
+  # [1,3,3,3,2,2,0].mode #=> 3
+  # [1,3,3,2,2,0].mode # 2 or 3
+  def mode()
+    freq_table = self.sort{|a, b|
+      self.count(a) <=> self.count(b)
+    }
+    if 2 <= freq_table.uniq.size
+      mode1 = freq_table.uniq[-1]
+      mode2 = freq_table.uniq[-2]
+      # I don't know the precise definition of mode.
+      #if self.count(mode1) == self.count(mode2)
+      #  return [mode1, mode2]
+      #else
+        return mode1  # return smaller for now...
+      #end
+    else
+      return freq_table.last
+    end
+  end
 
 end
 
