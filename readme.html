@@ -67,49 +67,35 @@
 </h2>
 <ul>
 <li>0.3.2 (2005-01-03)<ul>
- <li>Outputs better error messages when it failed to auto-detect the encoding
-     and/or eol, though the accuracy is the same.</li>
+ <li>Outputs better error messages when it failed to auto-detect the encoding and/or eol, though the accuracy is the same.</li>
  <li>Switched revision control system from CVS to Subversion.</li>
 </ul></li>
 <li>0.3.1 (2004-08-29)<ul>
- <li>Added -L (--label) option place holder in order to be used as
-     external diff program from Subversion.</li>
+ <li>Added -L (--label) option place holder in order to be used as external diff program from Subversion.</li>
 </ul></li>
 <li>0.3.0 (2004-05-29)<ul>
  <li>Re-designed and re-written from scratch.</li>
- <li>Supports multiple encodings (ASCII, EUC-JP, Shift_JIS, UTF-8) and multiple
-     eols (CR, LF, CRLF).</li>
- <li>Supports more output formats (tty, HTML, Manued, wdiff-like,
-     user-defined markup text).</li>
- <li>Supports configuration files (/etc/docdiff/docdiff.conf,
-     ~/etc/docdiff/docdiff.conf (or ~/.docdiff/docdiff.conf)).</li>
+ <li>Supports multiple encodings (ASCII, EUC-JP, Shift_JIS, UTF-8) and multiple eols (CR, LF, CRLF).</li>
+ <li>Supports more output formats (tty, HTML, Manued, wdiff-like, user-defined markup text).</li>
+ <li>Supports configuration files (/etc/docdiff/docdiff.conf, ~/etc/docdiff/docdiff.conf (or ~/.docdiff/docdiff.conf)).</li>
  <li>Introduced digest (summary) mode.</li>
- <li>Approximately 200% faster than older versions, thanks to akr's diff
-     library.</li>
+ <li>Approximately 200% faster than older versions, thanks to akr's diff library.</li>
  <li>Better documentation and help message.</li>
  <li>License changed from Ruby's to modified BSD style.</li>
- <li>Pure Ruby.  Does not require external diff program such as GNU diff, or
-     morphological analyzer such as ChaSen.</li>
+ <li>Pure Ruby.  Does not require external diff program such as GNU diff, or morphological analyzer such as ChaSen.</li>
  <li>Runs on both Unix and Windows (tested on Debian GNU/Linux and Cygwin)</li>
- <li>Unit tests introduced to decrease bugs and to encourage faster
-     development.</li>
+ <li>Unit tests introduced to decrease bugs and to encourage faster development.</li>
  <li>Makefile introduced.</li>
 </ul></li>
 <li>0.1.8 (2003-12-14)<ul>
- <li>Displays warning when --bymorpheme is specified but ChaSen is not available
-     (patch by Akira YAMADA: Debian bug #192258).</li>
- <li>Supports system-wide configuration file (if ~/.chasenrc.docdiff does not
-     exist, reads /etc/docdiff/chasenrc) (patch by Akira YAMADA: Debian bug
-     #192261).</li>
+ <li>Displays warning when --bymorpheme is specified but ChaSen is not available (patch by Akira YAMADA: Debian bug #192258).</li>
+ <li>Supports system-wide configuration file (if ~/.chasenrc.docdiff does not exist, reads /etc/docdiff/chasenrc) (patch by Akira YAMADA: Debian bug #192261).</li>
 </ul></li>
 <li>0.1.7 (2003-11-21)<ul>
  <li>HTML output retains spaces (&amp;nbsp; patch by Akira YAMADA). </li>
- <li>Manued output is added.  Use --manued command line option to get result in
-     Manued-like format.</li>
- <li>Fixed .chasenrc.docdiff to be compatible with the latest ChaSen, so that it
-     does not cause error.</li>
- <li>Alphabet words in the output may look ugly, since ChaSen does not keep
-     spaces between alphabetical words recently.</li>
+ <li>Manued output is added.  Use --manued command line option to get result in Manued-like format.</li>
+ <li>Fixed .chasenrc.docdiff to be compatible with the latest ChaSen, so that it does not cause error.</li>
+ <li>Alphabet words in the output may look ugly, since ChaSen does not keep spaces between alphabetical words recently.</li>
  <li>Other minor bug fixes and code cleanup.</li>
 </ul></li>
 <li>0.2.0b2 (2001-08-31)<ul>
@@ -120,8 +106,7 @@
  <li>A bit cleaner code.</li>
 </ul></li>
 <li>0.1.6 (2001-05-16)<ul>
- <li>Increased diff option number from 100000 to 1000000 in order to support
-     900KB+ text files.</li>
+ <li>Increased diff option number from 100000 to 1000000 in order to support 900KB+ text files.</li>
 </ul></li>
 <li>0.1.5 (2001-01-17)<ul>
  <li>Erased useless old code which were already commented out.</li>
@@ -129,25 +114,21 @@
  <li>First public release.  Registered to RAA.</li>
 </ul></li>
 <li>0.1.4 (2001-01-16)<ul>
- <li>Output is like &lt;tag&gt;ab&lt;/tag&gt;, instead of ugly
-     &lt;tag&gt;a&lt;/tag&gt;&lt;tag&gt;b&lt;/tag&gt; (thanks again to Masatoshi
-     Seki for suggestion).</li>
+ <li>Output is like &lt;tag&gt;ab&lt;/tag&gt;, instead of ugly &lt;tag&gt;a&lt;/tag&gt;&lt;tag&gt;b&lt;/tag&gt; (thanks again to Masatoshi Seki for suggestion).</li>
  <li>Fixed hidden bug ('puts' was used to output result).</li>
  <li>Some code clean-up, though still hairy enough.</li>
 </ul></li>
 <li>0.1.3 (2001-01-09)<ul>
  <li>Tested with Ruby 1.6.2.</li>
  <li>Fixed "meth(a,b,)" bug (thanks to Masatoshi Seki).</li>
- <li>Switched development platform from Windows to Linux, but it should work
-     fine on Windows too, except for ChaSen stuff.</li>
+ <li>Switched development platform from Windows to Linux, but it should work fine on Windows too, except for ChaSen stuff.</li>
 </ul></li>
 <li>0.1.2 (2000-12-28)<ul>
  <li>Mostly bug fix.</li>
 </ul></li>
 <li>0.1.1 (2000-12-25)<ul>
  <li>Bug fix and some cleanup.</li>
- <li>Quotes some of HTML special characters (&lt;&gt;&amp;) when output in
-     HTML.</li>
+ <li>Quotes some of HTML special characters (&lt;&gt;&amp;) when output in HTML.</li>
  <li>Added support for tty output using escape sequence.</li>
 </ul></li>
 <li>0.1.0 (2000-12-19)<ul>
@@ -155,8 +136,7 @@
  <li>GetOptLong was introduced to support command line options.</li>
 </ul></li>
 <li>0.1.0a1 (2000-12-16)<ul>
- <li>Added ChaSen support.  Japanese word by word comparison requires
-     ChaSen.</li>
+ <li>Added ChaSen support.  Japanese word by word comparison requires ChaSen.</li>
  <li>Converted scripts from Shift_JIS/CRLF to EUC-JP/LF.</li>
 </ul></li>
 <li>0.0.2 (2000-12-10)<ul>
@@ -205,23 +185,16 @@
  <span lang="ja">概要</span>
 </h2>
 <p lang="en">
- DocDiff compares two files and shows the difference.  It can compare files word
- by word, char by char, or line by line.  It has several output formats such as
- HTML, tty, Manued, or user-defined markup.
+ DocDiff compares two files and shows the difference.  It can compare files word by word, char by char, or line by line.  It has several output formats such as HTML, tty, Manued, or user-defined markup.
 </p>
 <p lang="ja">
- DocDiffは2つのファイルを比較してその違いを表示します。単語ごと、文字ごと、そして
- 行ごとにファイルを比較できます。結果を出力する形式は、HTML, tty（文字 端末向けの
- エスケープシーケンス）, Manued（真鵺道という校正用のマークアップ形式）などが用意
- されており、ユーザ定義のタグを使うこともできます。
+ DocDiffは2つのファイルを比較してその違いを表示します。単語ごと、文字ごと、そして行ごとにファイルを比較できます。結果を出力する形式は、HTML, tty（文字 端末向けのエスケープシーケンス）, Manued（真鵺道という校正用のマークアップ形式）などが用意されており、ユーザ定義のタグを使うこともできます。
 </p>
 <p lang="en">
- It supports several encodings and end-of-line characters, including ASCII,
- UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
+ It supports several encodings and end-of-line characters, including ASCII, UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
 </p>
 <p lang="ja">
- 次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています:
- ASCII, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
+ 次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
 </p>
 
 <hr />
@@ -232,13 +205,10 @@
 </h2>
 <ul>
  <li lang="en"><a href="http://www.ruby-lang.org">Ruby</a><br />
-  (Note that you may need additional ruby library such as iconv and uconv,
-   if your OS's Ruby package does not include those.)
+  (Note that you may need additional ruby library such as iconv and uconv, if your OS's Ruby package does not include those.)
  </li>
  <li lang="ja"><a href="http://www.ruby-lang.org">Ruby</a><br />
-  （注意: あなたが使っているOS向けのRubyパッケージがiconvやuconvといった
-  ライブラリを含んでいない場合は、別途それらを手に入れる必要があるかもし
-  れません。）
+  （注意: あなたが使っているOS向けのRubyパッケージがiconvやuconvといったライブラリを含んでいない場合は、別途それらを手に入れる必要があるかもしれません。）
  </li>
 </ul>
 
@@ -251,13 +221,11 @@
  have to have a root/administrator privilege).
 </p>
 <p lang="ja">
- 注意: 正しくインストールするためには適切なファイルアクセス権限が必要です
- （管理者権限が必要な場合があります）。
+ 注意: 正しくインストールするためには適切なファイルアクセス権限が必要です（管理者権限が必要な場合があります）。
 </p>
 <ol lang="en">
 <li>
- Place <samp>docdiff/</samp> directory and its contents to ruby library directory, so that
- ruby interpreter can load them.<br />
+ Place <samp>docdiff/</samp> directory and its contents to ruby library directory, so that ruby interpreter can load them.<br />
  (e.g. <blockquote><p><samp># <kbd>cp -r docdiff /usr/lib/ruby/1.8</kbd></samp></p></blockquote>)
 </li>
 <li>
@@ -271,22 +239,19 @@
  (e.g. <blockquote><p><samp># <kbd>chmod +x /usr/bin/docdiff.rb</kbd></samp></p></blockquote>)
 </li>
 <li>
- (Optional) If you want site-wide configuration file, place <samp>docdiff.conf.example</samp>
- as <samp>/etc/docdiff/docdiff.conf</samp> and edit it.<br />
+ (Optional) If you want site-wide configuration file, place <samp>docdiff.conf.example</samp> as <samp>/etc/docdiff/docdiff.conf</samp> and edit it.<br />
  (e.g. <blockquote><p><samp># <kbd>cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
  # <kbd>$EDITOR /etc/docdiff.conf</kbd></samp></p></blockquote>)
 </li>
 <li>
- (Optional) If you want per-user configuration file, place <samp>docdiff.conf.example</samp>
- as <samp>~/etc/docdiff/docdiff.conf</samp> and edit it.<br />
+ (Optional) If you want per-user configuration file, place <samp>docdiff.conf.example</samp> as <samp>~/etc/docdiff/docdiff.conf</samp> and edit it.<br />
  (e.g. <blockquote><p><samp>% <kbd>cp docdiff.conf.example ~/etc/docdiff.conf</kbd><br />
  % <kbd>$EDITOR ~/etc/docdiff.conf</kbd></samp></p></blockquote>)
 </li>
 </ol>
 <ol lang="ja">
 <li>
- <samp>docdiff/</samp>ディレクトリとその内容をrubyのライブラリを格納するディレクトリに配置して、
- Rubyインタプリタがdocdiffライブラリをロードできるようにする。<br />
+ <samp>docdiff/</samp>ディレクトリとその内容をrubyのライブラリを格納するディレクトリに配置して、Rubyインタプリタがdocdiffライブラリをロードできるようにする。<br />
  (e.g. <blockquote><p><samp># <kbd>cp -r docdiff /usr/lib/ruby/1.8</kbd></samp></p></blockquote>)
 </li>
 <li>
@@ -300,14 +265,12 @@
  (e.g. <blockquote><p><samp># <kbd>chmod +x /usr/bin/docdiff.rb</kbd></samp></p></blockquote>)
 </li>
 <li>
- (オプション) もしサイトの全ユーザに適用される設定ファイルが必要なら、<samp>docdiff.conf.example</samp>
- を<samp>/etc/docdiff/docdiff.conf</samp>として配置し、編集する。<br />
+ (オプション) もしサイトの全ユーザに適用される設定ファイルが必要なら、<samp>docdiff.conf.example</samp>を<samp>/etc/docdiff/docdiff.conf</samp>として配置し、編集する。<br />
  (e.g. <blockquote><p><samp># <kbd>cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
  # <kbd>$EDITOR /etc/docdiff.conf</kbd></samp></p></blockquote>)
 </li>
 <li>
- (オプション) もしユーザごとの設定ファイルが必要なら、<samp>docdiff.conf.example</samp>
- を<samp>~/etc/docdiff/docdiff.conf</samp>として配置し、編集する。<br />
+ (オプション) もしユーザごとの設定ファイルが必要なら、<samp>docdiff.conf.example</samp>を<samp>~/etc/docdiff/docdiff.conf</samp>として配置し、編集する。<br />
  (e.g. <blockquote><p><samp>% <kbd>cp docdiff.conf.example ~/etc/docdiff.conf</kbd><br />
  % <kbd>$EDITOR ~/etc/docdiff.conf</kbd></samp></p></blockquote>)
 </li>
@@ -449,12 +412,10 @@ key2 = value<br />
 charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
 </samp></p></blockquote>
 <p lang="en">
- In such a case, try explicitly specifying encoding and end-of-line character
- (e.g. <kbd>docdiff --utf8 --crlf</kbd>).
+ In such a case, try explicitly specifying encoding and end-of-line character (e.g. <kbd>docdiff --utf8 --crlf</kbd>).
 </p>
 <p lang="ja">
- このような場合は、エンコーディングや行末文字を明示的に指定してやってみてください
- （e.g. <kbd>docdiff --utf8 --crlf</kbd>）。
+ このような場合は、エンコーディングや行末文字を明示的に指定してやってみてください（e.g. <kbd>docdiff --utf8 --crlf</kbd>）。
 </p>
 
 <h4>
@@ -462,17 +423,10 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
 <span lang="ja">不適切な挿入と削除</span>
 </h4>
 <p lang="en">
- When comparing space-separated texts (such as English or program
- source code), the word next to the end of line is sometimes
- unnecessarily deleted and inserted.  This is due to the limitation of
- DocDiff's word splitter.  It splits strings into words like the
- following.
+ When comparing space-separated texts (such as English or program source code), the word next to the end of line is sometimes unnecessarily deleted and inserted.  This is due to the limitation of DocDiff's word splitter.  It splits strings into words like the following.
 </p>
 <p lang="ja">
- スペースで区切られたテキスト（英文やプログラムのソースコードなど）を比較している
- ときに、行末にある単語が、特に必要もないのにいったん削除されてからまた挿入される
- ことがあります。これはDocDiffの単語分割機能に制限があるせいで起きます。テキスト
- は次のように単語に分割されます。
+ スペースで区切られたテキスト（英文やプログラムのソースコードなど）を比較しているときに、行末にある単語が、特に必要もないのにいったん削除されてからまた挿入されることがあります。これはDocDiffの単語分割機能に制限があるせいで起きます。テキストは次のように単語に分割されます。
 </p>
 <p>text 1:</p>
 <blockquote><p><samp>
@@ -498,16 +452,10 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
  Fooは（必要もないのに）削除されると同時に挿入されています。
 </p>
 <p lang="en">
- I would like to fix this sometime, but it's not easy.  If you split
- single space as single element (i.e. ["foo", " ", "bar"]), the word
- order of the comparison result will be less natural.  Suggestions are
- welcome.
+ I would like to fix this sometime, but it's not easy.  If you split single space as single element (i.e. ["foo", " ", "bar"]), the word order of the comparison result will be less natural.  Suggestions are welcome.
 </p>
 <p lang="ja">
- 作者はこの問題をいつか解決したいと思っていますが、簡単ではなさそうです。
- もし空白を1つの要素として分割したなら（i.e. ["foo", " ", "bar"]）、
- 比較した結果出力される単語の並びが今よりも不自然になってしまいます。
- 良い案があったら教えてください。
+ 作者はこの問題をいつか解決したいと思っていますが、簡単ではなさそうです。もし空白を1つの要素として分割したなら（i.e. ["foo", " ", "bar"]）、比較した結果出力される単語の並びが今よりも不自然になってしまいます。良い案があったら教えてください。
 </p>
 
 <h4>
@@ -531,18 +479,10 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
  <span lang="ja">ライセンス</span>
 </h2>
 <p lang="en">
- This software is distributed under so-called modified BSD style license
- (<a href="http://www.opensource.org/licenses/bsd-license.php">
- http://www.opensource.org/licenses/bsd-license.php</a> (without advertisement
- clause)).  By contributing to this software, you agree that your contribution
- may be incorporated under the same license.
+ This software is distributed under so-called modified BSD style license (<a href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.org/licenses/bsd-license.php</a> (without advertisement clause)).  By contributing to this software, you agree that your contribution may be incorporated under the same license.
 </p>
 <p lang="ja">
-このソフトウェアはいわゆる修正BSDスタイルライセンス
- （<a href="http://www.opensource.org/licenses/bsd-license.php">
- http://www.opensource.org/licenses/bsd-license.php</a>（広告条項なし））のもと
- で配布されています。このソフトウェアに貢献すると、あなたは貢献したものが同ライ
- センスのもとに取り込まれることに同意したとみなされます。
+このソフトウェアはいわゆる修正BSDスタイルライセンス（<a href="http://www.opensource.org/licenses/bsd-license.php">http://www.opensource.org/licenses/bsd-license.php</a>（広告条項なし））のもとで配布されています。このソフトウェアに貢献すると、あなたは貢献したものが同ライセンスのもとに取り込まれることに同意したとみなされます。
 </p>
 <p lang="en">
  Copyright and condition of use of main portion of the source:
@@ -582,14 +522,10 @@ SUCH DAMAGE.
 </blockquote>
 
 <p lang="en">
- diff library (docdiff/diff.rb and docdiff/diff/*) was originally a part of
- Ruby/CVS by Akira TANAKA.  Ruby/CVS is licensed under modified BSD style
- license.  See the following for detail.
+ diff library (docdiff/diff.rb and docdiff/diff/*) was originally a part of Ruby/CVS by Akira TANAKA.  Ruby/CVS is licensed under modified BSD style license.  See the following for detail.
 </p>
 <p lang="ja">
-  diffライブラリ（docdiff/diff.rbおよびdocdiff/diff/*）は、もともと田中哲さんに
-  よるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布さ
-  れています。詳細は次を参照してください。
+ diffライブラリ（docdiff/diff.rbおよびdocdiff/diff/*）は、もともと田中哲さんによるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布されています。詳細は次を参照してください。
 </p>
 <ul>
  <li><a href="http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs">
@@ -640,12 +576,10 @@ SUCH DAMAGE.
  <span lang="ja">同様の目的を持ったソフトウェア</span>
 </h3>
 <p lang="en">
- There are several other software that can compare text word by word and/or
- character by character.
+ There are several other software that can compare text word by word and/or character by character.
 </p>
 <p lang="ja">
- テキストを単語単位や文字単位で比較することができるソフトウェアは、ほかにもあり
- ます。
+ テキストを単語単位や文字単位で比較することができるソフトウェアは、ほかにもあります。
 </p>
 <ul>
  <li>GNU wdiff (Seems to support single byte characters only.)<br />
