@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # DocDiff
-# 2002-06-27 Thu ... 2003-04-11 Sun
+# 2002-06-27 Thu ... 2003-08-29 Sun
 # Hisashi MORITA
 # requirement for runtime: Ruby (> 1.6), diff library by akr (included in Ruby/CVS),
 # requirement for testing: above plus Uconv by Yoshidam
@@ -12,7 +12,7 @@ require 'optparse'
 
 class DocDiff
 
-  AppVersion = '0.3.0'
+  AppVersion = '0.3.1'
   Author = "Copyright (C) 2002-2004 Hisashi MORITA.\n" +
            "diff library originates from Ruby/CVS by TANAKA Akira.\n"
   License = "This software is licensed under so-called modified BSD license.\n" +
