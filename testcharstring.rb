@@ -917,6 +917,13 @@ class TC_CharString < Test::Unit::TestCase
     assert_equal(expected, CharString.guess_encoding_using_iconv(str))
     assert_equal(expected, CharString.guess_encoding(str))
   end
+  def test_guess_encoding_eucjp_3()
+    str = NKF.nkf('-e', "こんばんは、私の名前はまつもとです。\nRubyを作ったのは私です。私はRuby Hackerです。\n")
+    expected = "EUC-JP"
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
+  end
   def test_guess_encoding_sjis_1()
     str = NKF.nkf("-s", "日本語とLatinの文字")
     expected = "Shift_JIS"

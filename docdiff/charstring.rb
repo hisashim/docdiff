@@ -171,13 +171,13 @@ module CharString
       nil
     when valid_as_ascii
       "ASCII"
-    when valid_as_jis  # Iconv sometimes mistakes JIS for ASCII, despite JIS escape sequence.
+    when valid_as_jis  # Iconv sometimes recognizes JIS for ASCII, ignoring JIS escape sequence.
       "JIS"
-    when valid_as_eucjp && invalid_as_utf8 && invalid_as_sjis && invalid_as_jis && invalid_as_ascii
+    when valid_as_eucjp
       "EUC-JP"
-    when valid_as_sjis && invalid_as_utf8 && invalid_as_eucjp && invalid_as_jis && invalid_as_ascii
+    when valid_as_sjis && invalid_as_utf8 && invalid_as_eucjp && invalid_as_jis
       "Shift_JIS"
-    when valid_as_utf8 && invalid_as_sjis && invalid_as_eucjp && invalid_as_jis && invalid_as_ascii
+    when valid_as_utf8 && invalid_as_sjis && invalid_as_eucjp && invalid_as_jis
       "UTF-8"
     else
       "UNKNOWN"
