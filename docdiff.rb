@@ -105,7 +105,10 @@ class DocDiff
     lines_words_and_chars
   end
 
-  def run(doc1, doc2, resolution, format, digest, option = nil)
+  def run(doc1, doc2, option)
+    raise "option is nil" if option.nil?
+    raise "option[:resolution] is nil" if option[:resolution].nil?
+    raise "option[:format] is nil" if option[:format].nil?
     case
     when doc1.class == Document && doc2.class == Document # OK
     when doc1.encoding != nil && doc2.encoding != nil     # OK
@@ -114,12 +117,12 @@ class DocDiff
       raise("Error!  Blame the author (doc1: #{doc1.encoding}, #{doc1.eol}, doc2: #{doc2.encoding}, #{doc2.eol}).")
     end
 
-    case resolution
+    case option[:resolution]
     when "line"; then difference = compare_by_line(doc1, doc2)
     when "word"; then difference = compare_by_line_word(doc1, doc2)
     when "char"; then difference = compare_by_line_word_char(doc1, doc2)
     else
-      raise "Unsupported resolution: #{resolution.inspect}"
+      raise "Unsupported resolution: #{option[:resolution].inspect}"
     end
     view = View.new(difference, doc1.encoding, doc1.eol)
     user_tags = {:start_common        => (@config[:tag_common_start] ||= ''),
@@ -132,9 +135,9 @@ class DocDiff
                  :end_before_change   => (@config[:tag_change_before_end] ||= ''),
                  :start_after_change  => (@config[:tag_change_after_start] ||= ''),
                  :end_after_change    => (@config[:tag_change_after_end] ||= '')}
-    case digest
+    case option[:digest]
     when true
-      case format
+      case option[:format]
       when "tty";      then result = view.to_tty_digest(option)
       when "html";    then result = view.to_html_digest(option)
       when "manued";   then result = view.to_manued_digest(option)
@@ -142,10 +145,10 @@ class DocDiff
       when "stat";     then result = view.to_stat(option)
       when "user";     then result = view.to_user_digest(user_tags)
       else
-        raise "Unsupported output format: #{format.inspect}."
+        raise "Unsupported output format: #{option[:format].inspect}."
       end
     when false
-      case format
+      case option[:format]
       when "tty";      then result = view.to_tty(option)
       when "html";     then result = view.to_html(option)
       when "manued";   then result = view.to_manued(option)
@@ -153,7 +156,7 @@ class DocDiff
       when "stat";     then result = view.to_stat(option)
       when "user";     then result = view.to_user(user_tags)
       else
-        raise "Unsupported output format: #{format.inspect}."
+        raise "Unsupported output format: #{option[:format].inspect}."
       end
     end
     result.to_s
@@ -335,9 +338,9 @@ if $0 == __FILE__
   doc2 = Document.new(file2_content, encoding2, eol2)
 
   output = docdiff.run(doc1, doc2,
-                       docdiff.config[:resolution],
-                       docdiff.config[:format],
-                       docdiff.config[:digest])
+                        {:resolution => docdiff.config[:resolution],
+                         :format     => docdiff.config[:format],
+                         :digest     => docdiff.config[:digest]})
   print output
 
 end # end if $0 == __FILE__

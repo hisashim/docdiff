@@ -67,7 +67,7 @@ class TC_Document < Test::Unit::TestCase
      '<span class="before-change"><del>foo bar<br />' + "\n" + '</del></span>' +
      '<span class="after-change"><ins>foo beer<br />' + "\n" + '</ins></span>' +
      '<span class="common">baz' + "</span>" + "\n</div></body></html>" + "\n"
-    assert_equal(expected, docdiff.run(doc1, doc2, "line", "html", digest = false))
+    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "html", :digest => false}))
   end
 
   def test_run_line_manued()
@@ -82,7 +82,7 @@ class TC_Document < Test::Unit::TestCase
                "deforder       newer-last\n" +
                "defversion     0.9.5\n" + 
                "[foo bar\n/foo beer\n]baz"
-    assert_equal(expected, docdiff.run(doc1, doc2, "line", "manued", digest = false))
+    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "manued", :digest => false}))
   end
   def test_run_word_manued()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
@@ -96,7 +96,7 @@ class TC_Document < Test::Unit::TestCase
                "deforder       newer-last\n" +
                "defversion     0.9.5\n" + 
                "foo [bar/beer]\nbaz"
-    assert_equal(expected, docdiff.run(doc1, doc2, "word", "manued", digest = false))
+    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "manued", :digest => false}))
   end
   def test_run_char_manued()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
@@ -110,7 +110,7 @@ class TC_Document < Test::Unit::TestCase
                "deforder       newer-last\n" +
                "defversion     0.9.5\n" + 
                "foo b[a/ee]r\nbaz"
-    assert_equal(expected, docdiff.run(doc1, doc2, "char", "manued", digest = false))
+    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "manued", :digest => false}))
   end
 
   def test_parse_config_file_content()
@@ -146,7 +146,7 @@ class TC_Document < Test::Unit::TestCase
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<!->foo bar\n</!-><!+>foo beer\n</!+><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, "line", "user", digest = false))
+    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "user", :digest => false}))
   end
   def test_run_word_user()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
@@ -164,7 +164,7 @@ class TC_Document < Test::Unit::TestCase
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<=>foo </=><!->bar</!-><!+>beer</!+><=>\n</=><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, "word", "user", digest = false))
+    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "user", :digest => false}))
   end
   def test_run_char_user()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
@@ -182,7 +182,7 @@ class TC_Document < Test::Unit::TestCase
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<=>foo </=><=>b</=><!->a</!-><!+>ee</!+><=>r</=><=>\n</=><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, "char", "user", digest = false))
+    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "user", :digest => false}))
   end
 
 
