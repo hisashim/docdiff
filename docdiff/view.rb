@@ -245,7 +245,7 @@ class View
     ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
      '"http://www.w3.org/TR/html4/loose.dtd">' + (@eol_char||""),
      '<html><head>',
-     '<meta http-equiv="Content-Type" content="text/html; charset=' + (@codeset||"") + '">' + (@eol_char||""),
+     '<meta http-equiv="Content-Type" content="text/html; charset=' + (@encoding||"") + '">' + (@eol_char||""),
      '<title>' + (@source||"") + ', ' + (@target||"") + '</title>' + (@eol_char||""),
      '<style type="text/css">' + (@eol_char||"") +
      'span.del {background: pink;}' + (@eol_char||"") +
@@ -303,11 +303,11 @@ class View
 
   # XHTML
   def xhtml_header()
-    ['<?xml version="1.0" encoding="' + (@codeset||"").downcase+ '"?>' + (@eol_char||""),
+    ['<?xml version="1.0" encoding="' + (@encoding||"")+ '"?>' + (@eol_char||""),
      '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + (@eol_char||""),
      '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + (@eol_char||""),
      '<html><head>' + (@eol_char||""),
-     '<meta http-equiv="Content-Type" content="text/html; charset=' + (@codeset||"").downcase + '" />',
+     '<meta http-equiv="Content-Type" content="text/html; charset=' + (@encoding||"") + '" />' + (@eol_char||""),
       '<title>' + (@source||"") + ', ' + (@target||"") + '</title>' + (@eol_char||""),
      '<style type="text/css">' + (@eol_char||"") +
      'span.del {background: pink;}' + (@eol_char||"") +

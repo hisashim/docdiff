@@ -43,27 +43,28 @@ class TC_Document < Test::Unit::TestCase
                  docdiff.compare_by_line_word_char(doc1, doc2))
   end
 
-#   def test_run_line_xhtml()
-#     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-#     doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
-#     docdiff = DocDiff.new
-#     expected = '<?xml version="1.0" encoding="ASCII"?>' + "\n" +
-#      '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + "\n" +
-#      '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + "\n" +
-#      '<html><head>' + "\n" +
-#      '<meta http-equiv="Content-Type" content="text/html; charset=ASCII" />' + "\n" +
-#      '<title>, </title>' + "\n" +
-#      '<style type="text/css">' + "\n" +
-#      'span.del {background: pink;}' + "\n" +
-#      'span.add {background: lightgreen; font-size: larger; font-weight: bolder;}' + "\n" +
-#      'span.before_change {background: pink;}' + "\n" +
-#      'span.after_change {background: lightgreen; font-size: larger; font-weight: bolder;}' + "\n" +
-#      '</style>' + "\n" +
-#      '</head><body>' + "\n" +
-#      '<span class="before_change"><del>foo&nbsp;bar<br />' + "\n" + '</del></span><span class="after_change"><ins>foo&nbsp;beer' + "\n" + '</ins></span>baz' +
-#      "<br />\n" + '</body></html>' + "\n"
-#     assert_equal(expected, docdiff.run(doc1, doc2, "line", "xhtml", digest = false))
-#   end
+  def test_run_line_xhtml()
+    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    docdiff = DocDiff.new
+    expected = '<?xml version="1.0" encoding="ASCII"?>' + "\n" +
+     '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + "\n" +
+     '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + "\n" +
+     '<html><head>' + "\n" +
+     '<meta http-equiv="Content-Type" content="text/html; charset=ASCII" />' + "\n" +
+     '<title>, </title>' + "\n" +
+     '<style type="text/css">' + "\n" +
+     'span.del {background: pink;}' + "\n" +
+     'span.add {background: lightgreen; font-size: larger; font-weight: bolder;}' + "\n" +
+     'span.before_change {background: pink;}' + "\n" +
+     'span.after_change {background: lightgreen; font-size: larger; font-weight: bolder;}' + "\n" +
+     '</style>' + "\n" +
+     '</head><body>' + "\n" +
+     '<span class="before_change"><del>foo&nbsp;bar<br />' + "\n" + '</del></span>' +
+     '<span class="after_change"><ins>foo&nbsp;beer<br />' + "\n" + '</ins></span>' +
+     '<span class="common">baz' + "</span>" + "\n</body></html>" + "\n"
+    assert_equal(expected, docdiff.run(doc1, doc2, "line", "xhtml", digest = false))
+  end
 
   def test_run_line_manued()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')

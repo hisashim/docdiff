@@ -106,6 +106,7 @@ class DocDiff
 
   def run(doc1, doc2, resolution, format, digest, option = nil)
     raise unless (doc1.class == Document && doc2.class == Document)
+    raise unless (doc1.encoding != nil && doc2.encoding != nil) # unnecessary?
     raise unless (doc1.encoding == doc2.encoding && doc1.eol == doc2.eol)
     case resolution
     when "line"; then difference = compare_by_line(doc1, doc2)
