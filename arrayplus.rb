@@ -34,36 +34,36 @@ module ArrayPlus
 
   def count(arg = nil)
     if arg
-      return freq(arg)
+      return self.freq(arg)
     elsif block_given?
-      return freq{|a| yield a}.size
+      return self.freq{|a| yield a}.size
     else
-      return size  # raise "Gimme arg or block.\n"
+      return self.size
     end
     raise "You are not supposed to see this.\n"
   end
 
-  def pick_indice(arg = nil)
-    indice = []
+  def pick_indices(arg = nil)
+    indices = []
     if arg
       each_with_index{|e, i|
-        indice.push i if e == arg
+        indices.push i if e == arg
       }
-      return indice
+      return indices
     elsif block_given?
       each_with_index{|e, i|
-        indice.push i if yield e
+        indices.push i if yield e
       }
-      return indice
+      return indices
     else
       each_with_index{|e, i|
-        indice.push i
+        indices.push i
       }
-      return indice
+      return indices
     end
     raise "You are not supposed to see this.\n"
   end
-  alias :pick_indexes :pick_indice
+  alias :pick_indexes :pick_indices
 
 end
 
@@ -89,13 +89,13 @@ if $0 == __FILE__
     (n * (rand - 0.5)).to_i
   }
 
-  puts "a:                   \t#{a.inspect}"
-  puts "a.freq:              \t#{a.freq.inspect}"
-  puts "a.freq(3):           \t#{a.freq(3).inspect}"
-  puts "a.freq{|e|e<3}:      \t#{a.freq{|e| e < 3}.inspect}"
-  puts "a.count(3)           \t#{a.count(3).inspect}"
-  puts "a.count{|e|e<3}      \t#{a.count{|e| e < 3}.inspect}"
-  puts "a.pick_indice(3)     \t#{a.pick_indice(3).inspect}"
-  puts "a.pick_indice{|e|e<3}\t#{a.pick_indice{|e| e < 3}.inspect}"
+  puts "a:                    \t#{a.inspect}"
+  puts "a.freq:               \t#{a.freq.inspect}"
+  puts "a.freq(3):            \t#{a.freq(3).inspect}"
+  puts "a.freq{|e|e<3}:       \t#{a.freq{|e| e < 3}.inspect}"
+  puts "a.count(3)            \t#{a.count(3).inspect}"
+  puts "a.count{|e|e<3}       \t#{a.count{|e| e < 3}.inspect}"
+  puts "a.pick_indices(3)     \t#{a.pick_indices(3).inspect}"
+  puts "a.pick_indices{|e|e<3}\t#{a.pick_indices{|e| e < 3}.inspect}"
 
 end
