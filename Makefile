@@ -1,5 +1,5 @@
 PACKAGE = docdiff
-VERSION = 0.3.1
+VERSION = 0.3.2
 # DATE = `date +%Y%m%d`
 DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
        readme.html sample \
@@ -14,19 +14,15 @@ test:
 	ruby testview.rb && \
 	ruby testdocdiff.rb
 
-dist: $(DIST)
+ChangeLog:
 	rm -f ChangeLog
-	cvs2cl
+	svn log -v > ChangeLog
+	# For real ChangeLog style, try svn2cl.xsl at http://tiefighter.et.tudelft.nl/~arthur/svn2cl/
+
+dist: $(DIST)
 	rm -fr $(PACKAGE)-$(VERSION)
 	mkdir $(PACKAGE)-$(VERSION)
 	cp -rp $(DIST) $(PACKAGE)-$(VERSION)
-	tar -z -v -c --exclude CVS -f $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
+	tar -z -v -c --exclude "*/.svn" -f $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
 	rm -fr $(PACKAGE)-$(VERSION)
 
-# tar:
-# 	(cd ..; \
-# 	tar --create --verbose --gzip \
-# 	--exclude CVS --exclude junk --exclude tmp --exclude old --exclude "#*#" --exclude "~*"\
-# 	-f $(PACKAGE)-snapshot$(DATE).tar.gz $(PWDBASE))
-# pwdbase:
-# 	echo $(PWDBASE)
