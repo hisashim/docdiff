@@ -198,9 +198,10 @@ class TC_View < Test::Unit::TestCase
   def test_to_tty_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
-    expected =   ["1-2,(1) \033[#{4}m\033[#{41}ma\nb\033[0mcd\n",
-                  "(2),1-2 cd\033[#{1}m\033[#{44}mX\nY\033[0me\n\n",
-                  "3,3 e\n\033[#{4}m\033[#{43}mf\033[0m\033[#{1}m\033[#{42}mF\033[0m\n\n"]
+    expected =   ["----\n",
+                  "1-2,(1)\n\033[#{4}m\033[#{41}ma\nb\033[0mcd\n----\n",
+                  "(2),1-2\ncd\033[#{1}m\033[#{44}mX\nY\033[0me\n\n----\n",
+                  "3,3\ne\n\033[#{4}m\033[#{43}mf\033[0m\033[#{1}m\033[#{42}mF\033[0m\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_tty_digest(nil, false))
   end
 
