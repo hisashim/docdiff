@@ -1,0 +1,2 @@
+Hello, my name is Watanabe.
+I am just another Ruby porter.
