@@ -29,7 +29,7 @@
 <body>
 <h1>DocDiff Readme</h1>
 <p>
- 2000-12-09..2004-05-29, Hisashi MORITA
+ 2000-12-09..2004-08-29, Hisashi MORITA
 </p>
 
 <hr />
@@ -195,27 +195,35 @@
 </ul>
 
 <h2 id="installation">Installation</h2>
+<p>
+ Note that you need appropriate permission for proper installation (you
+ have to have a root/administrator privilege).
+</p>
 <ol>
 <li>
- Place docdiff/ directory and its contents to ruby library directory, so that
+ Place <samp>docdiff/</samp> directory and its contents to ruby library directory, so that
  ruby interpreter can load them.<br />
- (e.g. <blockquote><p><samp>% <kbd>cp -r docdiff /usr/lib/ruby/1.8</kbd></samp></p></blockquote>)
+ (e.g. <blockquote><p><samp># <kbd>cp -r docdiff /usr/lib/ruby/1.8</kbd></samp></p></blockquote>)
 </li>
 <li>
- Place docdiff.rb in command binary directory.<br />
- (e.g. <blockquote><p><samp>% <kbd>cp docdiff.rb /usr/bin/</kbd></samp></p></blockquote>)<br />
- Optionally you may want to rename it to docdiff.<br />
- (e.g. <blockquote><p><samp>% <kbd>mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd></samp></p></blockquote>)
+ Place <samp>docdiff.rb</samp> in command binary directory.<br />
+ (e.g. <blockquote><p><samp># <kbd>cp docdiff.rb /usr/bin/</kbd></samp></p></blockquote>)<br />
+ Optionally you may want to rename it to <samp>docdiff</samp>.<br />
+ (e.g. <blockquote><p><samp># <kbd>mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd></samp></p></blockquote>)
 </li>
 <li>
- (Optional) If you want site-wide configuration file, place docdiff.conf.example
- as /etc/docdiff/docdiff.conf and edit it.<br />
- (e.g. <blockquote><p><samp>% <kbd>cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
- % <kbd>$EDITOR /etc/docdiff.conf</kbd></samp></p></blockquote>)
+ Set appropriate permission.<br />
+ (e.g. <blockquote><p><samp># <kbd>chmod +x /usr/bin/docdiff.rb</kbd></samp></p></blockquote>)
 </li>
 <li>
- (Optional) If you want per-user configuration file, place docdiff.conf.example
- as ~/etc/docdiff/docdiff.conf and edit it.<br />
+ (Optional) If you want site-wide configuration file, place <samp>docdiff.conf.example</samp>
+ as <samp>/etc/docdiff/docdiff.conf</samp> and edit it.<br />
+ (e.g. <blockquote><p><samp># <kbd>cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
+ # <kbd>$EDITOR /etc/docdiff.conf</kbd></samp></p></blockquote>)
+</li>
+<li>
+ (Optional) If you want per-user configuration file, place <samp>docdiff.conf.example</samp>
+ as <samp>~/etc/docdiff/docdiff.conf</samp> and edit it.<br />
  (e.g. <blockquote><p><samp>% <kbd>cp docdiff.conf.example ~/etc/docdiff.conf</kbd><br />
  % <kbd>$EDITOR ~/etc/docdiff.conf</kbd></samp></p></blockquote>)
 </li>
@@ -231,7 +239,7 @@
 e.g. <samp>% <kbd>docdiff old.txt new.txt > diff.html</kbd></samp>
 </p>
 <p>
- See the help message for detail (docdiff --help).
+ See the help message for detail (<kbd>docdiff --help</kbd>).
 </p>
 
 <h3>Example</h3>
