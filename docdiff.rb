@@ -1,15 +1,15 @@
 #!/usr/bin/ruby
 # DocDiff 0.3
-# 2002-06-27 Thu  .. 2002-08-15 Thu
+# 2002-06-27 Thu  .. 2002-08-15 Thu .. 2002-09-09 Mon
 # Hisashi MORITA
 
 class DocDiff
 
   class App
 
-    @version
-    @copyright
-    @usage
+    # @version
+    # @copyright
+    # @usage
 
   end
 
@@ -21,52 +21,64 @@ class DocDiff
 
   class Document
 
-    @type     # MIME type.  default is "text/plain".
-    @language # "English", "Japanese", etc.
-    @encoding # "ASCII", "EUC-JP", etc.
-    @eol      # "\r", "\n", or "\r\n".
-    # @header  # Manued document has tag definition in header.
-    @body
-    # @footer
+    def initialize(text_body)
+      @type       = "text/plain"  # MIME type.  default is "text/plain".
+      @header     = nil           # for Manued tag definition in header.
+      @body       = text_body
+      @footer     = nil
+      attr_accessor :type, :header, :body, :footer
+      @language   = nil           # "English", "Japanese", etc.
+      @encoding   = nil           # "ASCII", "EUC-JP", etc.
+      @end_of_ine = nil           # "\r", "\n", or "\r\n".
+    end
+
+    def language()
+      @body.lang
+    end
+
+    def language=(l)
+      @body.lang = l
+    end
+
+    def encoding()
+      @body.enc
+    end
+
+    def encoding=(e)
+      @body.enc = e
+    end
+
+    def end_of_line()
+      @body.eol
+    end
+
+    def end_of_line=(nl)
+      @body.eol = nl
+    end
 
     def compare_by_char_with(other_doc)
-      #
     end
 
     def compare_by_word_with(other_doc)
-      #
     end
 
-    # def compare_by_sentence_with()
-    # end
+    def compare_by_line_with(other_doc)
+    end
 
-    # def compare_by_line_with()
-    # end
+    def compare_by_sentence_with(other_doc)
+    end
+
+    def compare_by_paragraph_with(other_doc)
+    end
 
   end  # class Document
 
-  module SplittableString
+  module StringPlus
 
     Encoding  = Hash.new
     EndOfLine = Hash.new
 
-    def valid_enc_supplied
-      if Encoding[@lang] && Encoding[@lang][@enc] && Encoding[@lang][@enc].type == Module
-        true
-      else
-        false
-      end
-    end
-
-    def valid_eol_supplied
-      if @eol && EndOfLine[@eol] && EndOfLine[@eol].type == Module
-        true
-      else
-        false
-      end
-    end
-
-    def lang
+    def lang()
       @lang
     end
 
@@ -75,7 +87,7 @@ class DocDiff
       extend Encoding[@lang][@enc] if valid_enc_supplied
     end
 
-    def enc
+    def enc()
       @enc
     end
 
@@ -84,7 +96,7 @@ class DocDiff
       extend Encoding[@lang][@enc] if valid_enc_supplied
     end
 
-    def eol
+    def eol()
       @eol
     end
 
@@ -93,26 +105,74 @@ class DocDiff
       extend EndOfLine[@eol] if valid_eol_supplied
     end
 
-    def debug
+    def valid_enc_supplied()
+      return false if Encoding[@lang].nil?
+      return false if Encoding[@lang][@enc].nil?
+      return false if Encoding[@lang][@enc].type != Module
+      return true
+    end
+
+    def valid_eol_supplied()
+      return false if @eol.nil?
+      return false if EndOfLine[@eol].nil?
+      return false if EndOfLine[@eol].type != Module
+      return true
+    end
+
+    def debug()
       case
-      when @lang == nil then                         raise "@lang is nil."
-      when @enc  == nil then                         raise "@enc is nil."
-      when Encoding[@lang]       == nil then         raise "Encoding[@lang(=#{@lang})] is nil."
-      when Encoding[@lang][@enc] == nil then         raise "Encoding[@lang(=#{@lang})][@enc(=#{@enc})] is nil."
-      when Encoding[@lang][@enc].type != Module then raise "Encoding[@lang][@enc].type(=#{Encoding[@lang][@enc].type}) is not Module."
-      when @eol == nil then raise "@eol is nil."
-      when EndOfLine[@eol] == nil then raise "EndOfLine[@eol(=#{@eol})] is nil."
+      when @lang == nil
+        raise "@lang is nil."
+      when @enc  == nil
+        raise "@enc is nil."
+      when Encoding[@lang] == nil
+        raise "Encoding[@lang(=#{@lang})] is nil."
+      when Encoding[@lang][@enc] == nil
+        raise "Encoding[@lang(=#{@lang})][@enc(=#{@enc})] is nil."
+      when Encoding[@lang][@enc].type != Module
+        raise "Encoding[@lang][@enc].type(=#{Encoding[@lang][@enc].type}) is not Module."
+      when @eol == nil
+        raise "@eol is nil."
+      when EndOfLine[@eol] == nil
+        raise "EndOfLine[@eol(=#{@eol})] is nil."
       end
-      ["id: #{self.id}, type: #{self.type}, self: #{self}, module: #{Encoding[@lang][@enc]}, #{EndOfLine[@eol]}"]
+      ["id: #{self.id}" + ", type: #{self.type}" + ", self: #{self}" + 
+       ", module: #{Encoding[@lang][@enc]}" + ", #{EndOfLine[@eol]}"]
     end
 
-    def SplittableString.register_encoding(encoding_module)
-      Encoding[encoding_module::LANG] || Encoding[encoding_module::LANG] = Hash.new
-      Encoding[encoding_module::LANG][encoding_module::ENC] = encoding_module
+    def StringPlus.register_encoding(enc_mod)
+      Encoding[enc_mod::LANG] || Encoding[enc_mod::LANG] = Hash.new
+      Encoding[enc_mod::LANG][enc_mod::ENC] = enc_mod
     end
 
-    def SplittableString.register_eol(eol_module)
-      EndOfLine[eol_module::EOL] = eol_module
+    def StringPlus.register_eol(eol_mod)
+      EndOfLine[eol_mod::EOL] = eol_mod
+    end
+
+    # Virtual methods, which must be implemented in each submodules.
+    def to_char()
+    end
+    def to_word()
+    end
+    def to_line()
+    end
+    def to_sentence()
+    end
+    def to_paragraph()
+    end
+    def count_char() # human-readable char only. (no space and eol)
+    end
+    def count_word() # not meant to be accurate.
+    end
+
+    def count_sentence()
+    end
+    def count_paragraph()
+    end
+
+    # common methods.
+    def count_line()
+      to_line.size
     end
 
     module ASCIIEn
@@ -120,7 +180,8 @@ class DocDiff
       LANG = "English"
       ENC  = "ASCII"
 
-      # ASCII alphabet, number, and hyphen (good-bye is one word)
+      # ASCII alphanumeric characters and hyphen 
+      # (so that "good-bye" becomes one word)
       UB_ALNUM = '(?:[0-9A-Za-z_\-])'
       # ASCII printable symbols, excluding hyphen ('-', 0x2d)
       UB_SYM1 = '(?:[\x20-\x2c])|(?:[\x2e-\x2f])' # 0x20-0x2f ( !"#$%&'()*+,-./)
@@ -134,18 +195,29 @@ class DocDiff
       # RE_UB_ALNUM    = Regexp.new("^#{UB_ALNUM}+")
       # RE_UB_SYMBOL   = Regexp.new("^#{UB_SYMBOL}")
       # RE_UB_CONTROL  = Regexp.new("^#{UB_CONTROL}")
-      word_pattern = " ?#{UB_ALNUM}+|.+?"
+      EXCEPTIONS=["Mr. ?","Mrs. ?","Ms. ?","Dr. ?","etc. ?",
+                  "#{UB_ALNUM}*\'#{UB_ALNUM}* ?"].join('|')
+      word_pattern = "#{EXCEPTIONS}|#{UB_SYMBOL} ?|#{UB_ALNUM}+ ?|.+?"
       WordPattern = Regexp.compile(word_pattern, Regexp::MULTILINE, "n")
 
-      def to_char
+      def to_char()
         split(//n)
       end
 
-      def to_word
+      def to_word()
         scan(WordPattern)
       end
 
-      SplittableString.register_encoding(self)
+      def to_line()
+      end
+
+      def to_sentense()
+      end
+
+      def to_paragraph()
+      end
+
+      StringPlus.register_encoding(self)
 
     end
 
@@ -154,15 +226,24 @@ class DocDiff
       LANG = "English"
       ENC  = "UTF-8"
 
-      def to_char
+      def to_char()
         split(//u)
       end
 
-      def to_word
+      def to_word()
         raise "not implemented yet."
       end
 
-      SplittableString.register_encoding(self)
+      def to_line()
+      end
+
+      def to_sentense()
+      end
+
+      def to_paragraph()
+      end
+
+      StringPlus.register_encoding(self)
 
     end
 
@@ -172,40 +253,53 @@ class DocDiff
       ENC  = "EUC-JP"
 
       # UB_*: unibyte, MB_*: multibyte
-      # ASCII alphabet, number, and hyphen (good-bye is one word).
-      UB_ALNUM = '(?:[0-9A-Za-z_\-])'
       # ASCII printable symbols (excluding hyphen ('-', 0x2d)):
-      UB_SYM1 = '(?:[\x20-\x2c])|(?:[\x2e-\x2f])' # 0x20-0x2f
-                                                  #  !"#$%&'()*+,-./
+      UB_SYM1 = '(?:[\x20-\x2c])|(?:[\x2e-\x2f])' # 0x20-0x2f ( !"#$%&'()*+,-./)
       UB_SYM2 = '(?:[\x3a-\x40])'                 # :;<=>?@
       UB_SYM3 = '(?:[\x5b-\x5e])'                 # [\]^
       UB_SYM4 = '(?:\x60)'                        # `)
       UB_SYM5 = '(?:[\x7b-\x7e])'                 # {|}~
       UB_SYMBOL = "(?:#{UB_SYM1}|#{UB_SYM2}|#{UB_SYM3}|#{UB_SYM4}|#{UB_SYM5})"
       UB_CONTROL = '(?:[\x00-\x1f])'   # ASCII control characters
-      UB_KATA = '(?:\x8e[\x21-\x5f])'  # EUC-JP unicolumn katakana (0x8e21-0x8e5f)
+      # ASCII alphabet, number, and hyphen (good-bye is one word).
+      UB_ALNUM = '(?:[0-9A-Za-z_\-])'
+      UB_ALNUM_EXTENDED = "(?:Mr.|Mrs.|Ms.|Dr.|etc." + 
+                          "|I\'m|I\'ve|I\'ll|I\'d" + 
+                          "|[Ww]e\'re|[Ww]e\'ve|[Ww]e\'ll|[Ww]e\'d" + 
+                          "|[Yy]ou\'re|[Yy]ou\'ve|[Yy]ou\'ll|[Yy]ou\'d" +
+                          "|[Hh]e\'s|[Hh]e\'ll|[Hh]e\'d" + 
+                          "|[Ss]he\'s|[Ss]he\'ll|[Ss]he\'d" + 
+                          "|[Ii]t\'s|[Ii]t\'ll|[Ii]t\'d" + 
+                          "|[Tt]hey\'re|[Tt]hey\'ve|[Tt]hey\'ll|[Tt]hey\'d" + 
+                          "|(?:#{UB_ALNUM}+\'#{UB_ALNUM}+)" + 
+	                  "|#{UB_ALNUM})"
+      UB_KATA = '(?:\x8e[\x21-\x5f])'  # unicolumn katakana (0x8e21-0x8e5f)
       # multibyte symbol (excluding macron("onbiki") and repeat("noma")):
       # 0xa1a1-0xa1b8, 0xa1ba-0xa1bb, 0xa1bd-0xa1fe, 0xa2a1-0xa2fe
-      # macron is included in katakana, Noma in kanji.
+      # macron is included in katakana (and hiragana when not bothering match), 
+      # Noma in kanji.
       # exception: ¥Î¥Þ(¡¹)       # repeat previous kanji
-      #            ²¾Ì¾ÊÖ¤·: ¡³¡´   # repeat previous hiragana
+      #            ²¾Ì¾ÊÖ¤·: ¡³¡´ # repeat previous hiragana
       #                      ¡µ¡¶ # repeat previous katakana
       #                      ¡·   # repeat previous element in chart/table
       # !! these exceptions above are not yet implemented !!!
       MB_SYMBOL = '(?:(?:\xa1[\xa1-\xb8\xba-\xbb\xbd-\xfe])|(?:\xa2[\xa1-\xfe]))'
-      MB_ALNUM = '(?:\xa3[\xb0-\xff])'  # mb alphabet and number: 0xa3b0-0xa3ff
-      MB_HIRA  = '(?:\xa4[\xa1-\xfe])'  # mb hiragana: 0xa4a1-0xa4fe
-      # mb katakana: 0xa5a1-0xa5fe, including 0xa1bc(=macron, onbiki)
-      MB_KATA = '(?:(?:\xa5[\xa1-\xfe])|(?:\xa1\xbc))'
+      MB_ALNUM  = '(?:\xa3[\xb0-\xff])'  # mb alphanumeric: 0xa3b0-0xa3ff
+      # mb hiragana: 0xa4a1-0xa4fe (+ 0xa1bc(=macron))
+      MB_HIRA         = '(?:\xa4[\xa1-\xfe])'
+      MB_HIRA_MACRON  = '(?:(?:\xa4[\xa1-\xfe])|(?:\xa1\xbc))'
+      # mb katakana: 0xa5a1-0xa5fe + 0xa1bc(=macron)
+      MB_KATA     = '(?:(?:\xa5[\xa1-\xfe])|(?:\xa1\xbc))'
       MB_GREEK    = '(?:\xa6[\xa1-\xfe])'  # mb Greek: 0xa6a1-0xa6fe
       MB_CYRILLIC = '(?:\xa7[\xa1-\xfe])'  # mb Cyrillic: 0xa7a1-0xa7fe
       # mb box drawing symbol (=keisen): 0xa8a1-0xa8fe
       MB_BOXDRAW  = '(?:\xa8[\xa1-\xfe])'
       # mb undefined area (vendor dependent): 0xa9a1-0xacfe, 0xaea1-0xaffe
-      MB_UNDEFINED = '(?:(?:[\xa9-\xac][\xa1-\xfe])|(?:[\xae-\xaf][\xa1-\xfe]))'
+      MB_UNDEFINED  = '(?:(?:[\xa9-\xac][\xa1-\xfe])|(?:[\xae-\xaf][\xa1-\xfe]))'
       # mb NEC-only symbol: 0xada1-0xadfe
       MB_SYMBOL_NEC = '(?:\xad[\xa1-\xfe])'
-      # mb kanji: 0xb0a1-0xfefe, 0xa1b9(="Kuma", kanji repetition symbol)
+      # mb kanji: 0xb0a1-0xfefe, 0xa1b9 
+      #           (= kanji repetition symbol, so called "Kuma" or "Noma")
       # (actually this area includes undefined/NEC-kanji area)
       MB_KANJI = '(?:(?:[\xb0-\xfe][\xa1-\xfe])|(?:\xa1\xb9))'
       # RE_MB_KANHIRA  = Regexp.new("^#{MB_KANJI}+#{MB_HIRA}+") #experimental
@@ -221,18 +315,34 @@ class DocDiff
       # RE_MB_HIRA     = Regexp.new("^#{MB_HIRA}+")
       # RE_MB_KATA     = Regexp.new("^#{MB_KATA}+")
       # RE_MB_KANJI    = Regexp.new("^#{MB_KANJI}+")
-      word_pattern = " ?#{UB_ALNUM}+|#{MB_HIRA}+|#{MB_KATA}+|#{MB_KANJI}+|.+?"
+      #word_pattern = "#{UB_ALNUM}+ ?|#{MB_HIRA}+|#{MB_KATA}+|#{MB_KANJI}+|.+?"
+      word_pattern = "#{UB_ALNUM_EXTENDED}+ ?" + 
+                     "|#{MB_KANJI}+#{MB_HIRA}+" + 
+                     "|#{MB_KATA}+#{MB_HIRA}+" + 
+                     "|#{MB_KANJI}+" + 
+	             "|#{MB_KATA}+" + 
+                     "|#{MB_HIRA_MACRON}+" + 
+                     "|.+?"
       WordPattern = Regexp.compile(word_pattern, Regexp::MULTILINE, "e")
 
-      def to_char
+      def to_char()
         split(//e)
       end
 
-      def to_word
+      def to_word()
         scan(WordPattern)
       end
 
-      SplittableString.register_encoding(self)
+      def to_line()
+      end
+
+      def to_sentense()
+      end
+
+      def to_paragraph()
+      end
+
+      StringPlus.register_encoding(self)
 
     end
 
@@ -241,8 +351,6 @@ class DocDiff
       LANG = "Japanese"
       ENC  = "Shift_JIS"
 
-      # ASCII alphabet, number, and hyphen (so that good-bye is treated as 1 word).
-      UB_ALNUM = '(?:[0-9A-Za-z_\-])'
       # ASCII printable symbols (excluding hyphen ('-', 0x2d)):
       UB_SYM1 = '(?:[\x20-\x2c])|(?:[\x2e-\x2f])' # 0x20-0x2f ( !"#$%&'()*+,-./)
       UB_SYM2 = '(?:[\x3a-\x40])'                 # 0x3a-0x40 (:;<=>?@)
@@ -251,10 +359,23 @@ class DocDiff
       UB_SYM5 = '(?:[\x7b-\x7e])'                 # 0x7b-0x7e ({|}~)
       UB_SYMBOL = "(?:#{UB_SYM1}|#{UB_SYM2}|#{UB_SYM3}|#{UB_SYM4}|#{UB_SYM5})"
       UB_CONTROL = '(?:[\x00-\x1f])' # ASCII control characters
+      # ASCII alphabet, number, and hyphen (so that good-bye becomes 1 word).
+      UB_ALNUM = '(?:[0-9A-Za-z_\-])'
+      UB_ALNUM_EXTENDED = "(?:Mr.|Mrs.|Ms.|Dr.|etc." + 
+                          "|I\'m|I\'ve|I\'ll|I\'d" + 
+                          "|[Ww]e\'re|[Ww]e\'ve|[Ww]e\'ll|[Ww]e\'d" + 
+                          "|[Yy]ou\'re|[Yy]ou\'ve|[Yy]ou\'ll|[Yy]ou\'d" +
+                          "|[Hh]e\'s|[Hh]e\'ll|[Hh]e\'d" + 
+                          "|[Ss]he\'s|[Ss]he\'ll|[Ss]he\'d" + 
+                          "|[Ii]t\'s|[Ii]t\'ll|[Ii]t\'d" + 
+                          "|[Tt]hey\'re|[Tt]hey\'ve|[Tt]hey\'ll|[Tt]hey\'d" + 
+                          "|(?:#{UB_ALNUM}+\'#{UB_ALNUM}+)" + 
+	                  "|#{UB_ALNUM})"
       UB_KATA = '(?:[\xa1-\xdf])'    # SJIS unibyte katakana (0xa1-0xdf)
       # multibyte symbol (excluding macron("onbiki") and repeat("noma")):
       # 0x8141-0x8157, 0x8159-0x815a, 0x815c-0x819e, 0x819f-0x81fc
-      # macron is included in katakana, Noma in kanji.
+      # macron is included in katakana (and hiragana when not bothering match), 
+      # Noma in kanji.
       # exception: ¥Î¥Þ(¡¹)       # repeat previous kanji
       #            ²¾Ì¾ÊÖ¤·: ¡³¡´ # repeat previous hiragana
       #                      ¡µ¡¶ # repeat previous katakana
@@ -262,7 +383,9 @@ class DocDiff
       # !! these exceptions above are not yet implemented !!!
       MB_SYMBOL = '(?:\x81[\x41-\x57\x59-\x5a\x5c-\x9e\x9f-\xfc])'
       MB_ALNUM = '(?:\x82[\x4f-\x9e])'  # mb alphabet and number: 0x824f-0x829e
-      MB_HIRA  = '(?:\x82[\x9f-\xff])'  # mb hiragana: 0x829f-0x82ff
+      # mb hiragana: 0x829f-0x82ff (+ 0x815b(=macron))
+      MB_HIRA  = '(?:\x82[\x9f-\xff])'
+      MB_HIRA_MACRON = '(?:(?:\x82[\x9f-\xff])|(?:\x81\x5b))'
       # mb katakana: 0x8340-0x839e, including 0x815b(=macron, onbiki)
       MB_KATA = '(?:(?:\x83[\x40-\x9e])|(?:\x81\x5b))'
       MB_GREEK    = '(?:\x83[\x9f-\xd6])'  # mb Greek: 0x839f-0x83d6
@@ -290,18 +413,34 @@ class DocDiff
       # RE_MB_HIRA     = Regexp.new("^#{MB_HIRA}+")
       # RE_MB_KATA     = Regexp.new("^#{MB_KATA}+")
       # RE_MB_KANJI    = Regexp.new("^#{MB_KANJI}+")
-      word_pattern = " ?#{UB_ALNUM}+|#{MB_HIRA}+|#{MB_KATA}+|#{MB_KANJI}+|.+?"
+      # word_pattern = " ?#{UB_ALNUM}+|#{MB_HIRA}+|#{MB_KATA}+|#{MB_KANJI}+|.+?"
+      word_pattern = "#{UB_ALNUM_EXTENDED}+ ?" + 
+                     "|#{MB_KANJI}+#{MB_HIRA}+" + 
+                     "|#{MB_KATA}+#{MB_HIRA}+" + 
+                     "|#{MB_KANJI}+" + 
+	             "|#{MB_KATA}+" + 
+                     "|#{MB_HIRA_MACRON}+" + 
+                     "|.+?"
       WordPattern = Regexp.compile(word_pattern, Regexp::MULTILINE, "s")
 
-      def to_char
+      def to_char()
         split(//s)
       end
 
-      def to_word
+      def to_word()
         scan(WordPattern)
       end
 
-      SplittableString.register_encoding(self)
+      def to_line()
+      end
+
+      def to_sentense()
+      end
+
+      def to_paragraph()
+      end
+
+      StringPlus.register_encoding(self)
 
     end
 
@@ -310,77 +449,76 @@ class DocDiff
       LANG = "Japanese"
       ENC  = "UTF-8"
 
-      def to_char
+      def to_char()
         split(//u)
       end
 
-      def to_word
+      def to_word()
         raise "not implemented yet."
       end
 
-      SplittableString.register_encoding(self)
+      def to_line()
+      end
+
+      def to_sentense()
+      end
+
+      def to_paragraph()
+      end
+
+      StringPlus.register_encoding(self)
 
     end
 
     module CR
-
       EOL = "\r"
-
-      def to_line
+      def to_line()
         scan(/.*?\r|.+/m)
       end
-
-      SplittableString.register_eol(self)
-
+      StringPlus.register_eol(self)
     end
 
     module LF
-
       EOL = "\n"
-
-      def to_line
+      def to_line()
         scan(/.*?\n|.+/m)
       end
-
-      SplittableString.register_eol(self)
-
+      StringPlus.register_eol(self)
     end
 
     module CRLF
-
       EOL = "\r\n"
-
-      def to_line
+      def to_line()
         scan(/.*?\r\n|.+/m)
       end
-
-      SplittableString.register_eol(self)
-
+      StringPlus.register_eol(self)
     end
 
-  end  # module SplittableString
+  end  # module StringPlus
 
   class Difference
 
-    @resolution  # char, word, ...
-    @body
+    @resolution = nil # char, word, line, sentence, paragraph
+    # @body = nil     # format undecided...
 
     module Formatter
 
+      def to_escape_sequence()
+      end
+
       def to_html()
-        #
       end
 
       def to_xhtml()
-        #
       end
 
       def to_manued()
-        #
       end
 
       def to_docdiff()
-        #
+      end
+
+      def to_rtf()
       end
 
     end  # module Formatter
