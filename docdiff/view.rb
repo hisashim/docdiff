@@ -248,10 +248,11 @@ class View
      '<meta http-equiv="Content-Type" content="text/html; charset=' + (@encoding||"") + '">' + (@eol_char||""),
      '<title>' + (@source||"") + ', ' + (@target||"") + '</title>' + (@eol_char||""),
      '<style type="text/css">' + (@eol_char||"") +
+ #    'body {font-family: monospace;}' + (@eol_char||"") +
      'span.del {background: pink;}' + (@eol_char||"") +
-     'span.add {background: lightgreen; font-size: larger; font-weight: bolder;}' + (@eol_char||"") +
+     'span.add {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
      'span.before_change {background: pink;}' + (@eol_char||"") +
-     'span.after_change {background: lightgreen; font-size: larger; font-weight: bolder;}' + (@eol_char||"") +
+     'span.after_change {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
      '</style>' + (@eol_char||""),
      '</head><body>' + (@eol_char||"")]
   end
@@ -308,12 +309,13 @@ class View
      '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + (@eol_char||""),
      '<html><head>' + (@eol_char||""),
      '<meta http-equiv="Content-Type" content="text/html; charset=' + (@encoding||"") + '" />' + (@eol_char||""),
-      '<title>' + (@source||"") + ', ' + (@target||"") + '</title>' + (@eol_char||""),
+     '<title>' + (@source||"") + ', ' + (@target||"") + '</title>' + (@eol_char||""),
      '<style type="text/css">' + (@eol_char||"") +
+     'body {font-family: monospace;}' + (@eol_char||"") +
      'span.del {background: pink;}' + (@eol_char||"") +
-     'span.add {background: lightgreen; font-size: larger; font-weight: bolder;}' + (@eol_char||"") +
+     'span.add {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
      'span.before_change {background: pink;}' + (@eol_char||"") +
-     'span.after_change {background: lightgreen; font-size: larger; font-weight: bolder;}' + (@eol_char||"") +
+     'span.after_change {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
      '</style>' + (@eol_char||""),
      '</head><body>' + (@eol_char||"")]
   end

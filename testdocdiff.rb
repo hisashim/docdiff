@@ -54,10 +54,11 @@ class TC_Document < Test::Unit::TestCase
      '<meta http-equiv="Content-Type" content="text/html; charset=ASCII" />' + "\n" +
      '<title>, </title>' + "\n" +
      '<style type="text/css">' + "\n" +
+     'body {font-family: monospace;}' + "\n" +
      'span.del {background: pink;}' + "\n" +
-     'span.add {background: lightgreen; font-size: larger; font-weight: bolder;}' + "\n" +
+     'span.add {background: lightgreen; font-weight: bolder;}' + "\n" +
      'span.before_change {background: pink;}' + "\n" +
-     'span.after_change {background: lightgreen; font-size: larger; font-weight: bolder;}' + "\n" +
+     'span.after_change {background: lightgreen; font-weight: bolder;}' + "\n" +
      '</style>' + "\n" +
      '</head><body>' + "\n" +
      '<span class="before_change"><del>foo&nbsp;bar<br />' + "\n" + '</del></span>' +
