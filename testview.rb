@@ -227,10 +227,10 @@ class TC_View < Test::Unit::TestCase
     assert_equal(expected, View.new(difference, "ASCII", "CRLF").to_html(nil, false))
   end
   def test_to_html_escaping_ascii()
-    array1 = ['<>& ']
-    array2 = ['<>& ']
+    array1 = ['<>&   ']
+    array2 = ['<>&   ']
     difference = Difference.new(array1, array2)
-    expected =   ["<span class=\"common\">&lt;&gt;&amp;&nbsp;</span>"]
+    expected =   ["<span class=\"common\">&lt;&gt;&amp;&nbsp;&nbsp; </span>"]
     assert_equal(expected, View.new(difference, "ASCII", nil).to_html(nil, false))
   end
   def test_to_html_digest()
