@@ -20,9 +20,9 @@ ChangeLog:
 
 readme.en.html: readme.html
 	rm -f readme.en.html
-	ruby -e 'print ARGF.read.gsub(/<([a-z]+) lang="ja".*?>.*?<\/\1>[\r\n]?/m, "")' readme.html > readme.en.html
+	ruby -e 'print ARGF.read.gsub(/<([a-z]+) +(?:lang="ja"|title="ja").*?>.*?<\/\1>[\r\n]?/m, "")' readme.html > readme.en.html
 readme.ja.html: readme.html
-	ruby -e 'print ARGF.read.gsub(/<([a-z]+) lang="en".*?>.*?<\/\1>[\r\n]?/m, "")' readme.html > readme.ja.html
+	ruby -e 'print ARGF.read.gsub(/<([a-z]+) +(?:lang="en"|title="en").*?>.*?<\/\1>[\r\n]?/m, "")' readme.html > readme.ja.html
 
 document: ChangeLog readme.en.html readme.ja.html
 
