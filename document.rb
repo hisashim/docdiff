@@ -39,4 +39,8 @@ class Document
     @body.split_to_char
   end
 
+#  def eol_char()
+#    @body.eol_char
+#  end
+
 end  # class Document

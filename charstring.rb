@@ -266,6 +266,17 @@ module CharString
                     Regexp::MULTILINE, 
                     codeset.sub(/ASCII/i, 'none'))
     )
+#    if defined? eol_char
+#      scan(Regexp.new(".*?#{eol_char}|.+", 
+#                      Regexp::MULTILINE, 
+#                      codeset.sub(/ASCII/i, 'none'))
+#      )
+#    else
+#      scan(Regexp.new(".+", 
+#                      Regexp::MULTILINE, 
+#                      codeset.sub(/ASCII/i, 'none'))
+#      )
+#    end
   end
 
   def count_line()  # this is common to all encodings.

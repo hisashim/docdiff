@@ -116,7 +116,11 @@ class DocDiff
 end  # class DocDiff
 
 if $0 == __FILE__
-  configuration = DocDiff::Configuration.new
-  docdiff = DocDiff.new(configuration)
-  docdiff.run
+#  configuration = DocDiff::Configuration.new
+#  docdiff = DocDiff.new(configuration)
+  docdiff = DocDiff.new()
+  doc1 = doc2 = nil
+  File.open(ARGV[0], "r"){|f| doc1 = Document.new(f.read)}
+  File.open(ARGV[0], "r"){|f| doc2 = Document.new(f.read)}
+  p docdiff.compare_by_word(doc1, doc2)
 end
