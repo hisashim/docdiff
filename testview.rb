@@ -83,6 +83,62 @@ class TC_View < Test::Unit::TestCase
                   '<span class="common">c</span>']
     assert_equal(expected, View.new(difference, "ASCII", nil).to_html)
   end
+  def test_to_html_cr_ascii()
+    array1 = ['a', "\r"]
+    array2 = ['a', "\r"]
+    difference = Difference.new(array1, array2)
+    expected =   ["<span class=\"common\">a<br>\r</span>"]
+    assert_equal(expected, View.new(difference, "ASCII", "CR").to_html)
+  end
+  def test_to_html_lf_ascii()
+    array1 = ['a', "\n"]
+    array2 = ['a', "\n"]
+    difference = Difference.new(array1, array2)
+    expected =   ["<span class=\"common\">a<br>\n</span>"]
+    assert_equal(expected, View.new(difference, "ASCII", "LF").to_html)
+  end
+  def test_to_html_crlf_ascii()
+    array1 = ['a', "\r\n"]
+    array2 = ['a', "\r\n"]
+    difference = Difference.new(array1, array2)
+    expected =   ["<span class=\"common\">a<br>\r\n</span>"]
+    assert_equal(expected, View.new(difference, "ASCII", "CRLF").to_html)
+  end
+  def test_to_html_escaping_ascii()
+    array1 = ['<>& ']
+    array2 = ['<>& ']
+    difference = Difference.new(array1, array2)
+    expected =   ["<span class=\"common\">&lt;&gt;&amp;&nbsp;</span>"]
+    assert_equal(expected, View.new(difference, "ASCII", nil).to_html)
+  end
+  def test_to_xhtml_cr_ascii()
+    array1 = ['a', "\r"]
+    array2 = ['a', "\r"]
+    difference = Difference.new(array1, array2)
+    expected =   ["<span class=\"common\">a<br />\r</span>"]
+    assert_equal(expected, View.new(difference, "ASCII", "CR").to_xhtml)
+  end
+  def test_to_xhtml_lf_ascii()
+    array1 = ['a', "\n"]
+    array2 = ['a', "\n"]
+    difference = Difference.new(array1, array2)
+    expected =   ["<span class=\"common\">a<br />\n</span>"]
+    assert_equal(expected, View.new(difference, "ASCII", "LF").to_xhtml)
+  end
+  def test_to_xhtml_crlf_ascii()
+    array1 = ['a', "\r\n"]
+    array2 = ['a', "\r\n"]
+    difference = Difference.new(array1, array2)
+    expected =   ["<span class=\"common\">a<br />\r\n</span>"]
+    assert_equal(expected, View.new(difference, "ASCII", "CRLF").to_xhtml)
+  end
+  def test_to_xhtml_escaping_ascii()
+    array1 = ['<>& ']
+    array2 = ['<>& ']
+    difference = Difference.new(array1, array2)
+    expected =   ["<span class=\"common\">&lt;&gt;&amp;&nbsp;</span>"]
+    assert_equal(expected, View.new(difference, "ASCII", nil).to_xhtml)
+  end
   def test_to_html_del_add_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['い', 'う', 'う']
@@ -222,6 +278,15 @@ class TC_View < Test::Unit::TestCase
                                          array2.collect{|i|Uconv.euctou8(i)}),
                           "UTF-8", nil).to_manued)
   end
+  def test_to_manued_escaping_ascii()
+    array1 = ['a', '[/;]~', 'b', '[/;]~']
+    array2 = ['a', '[/;]~', 'b']
+    difference = Difference.new(array1, array2)
+    expected =   ["a~[/;]~~b", "[~[~/~;~]~~/]"]
+    assert_equal(expected, View.new(difference, "ASCII", nil).to_manued)
+  end
+
+
 
   def test_to_wdiff_del_add_ascii()
     array1 = ['a', 'b', 'c']

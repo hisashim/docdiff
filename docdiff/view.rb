@@ -17,8 +17,13 @@ class View
     result = []
     @difference.each{|block|
       operation = block.first
-      source = block[1].to_s
-      target = block[2].to_s
+      if block_given?
+        source = yield block[1].to_s
+        target = yield block[2].to_s
+      else
+        source = block[1].to_s
+        target = block[2].to_s
+      end
       case operation
       when :common_elt_elt
         result << (tags[:start_common] + source + tags[:end_common])
@@ -57,6 +62,9 @@ class View
     apply_style(tags)
   end
 
+  HTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', ' '=>'&nbsp;',
+                   "\r\n" => "<br>\r\n", "\r" => "<br>\r", "\n" => "<br>\n"}
+  HTMLEscapePat = /(\r\n|#{HTMLEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def to_html(overriding_tags = nil, headfoot = false)
     tags = {:start_common        => '<span class="common">',
             :end_common          => '</span>',
@@ -81,10 +89,15 @@ class View
       apply_style(tags) +
       [@eol_char + '</body></html>' + @eol_char]
     else
-      apply_style(tags)
+      apply_style(tags){|str_to_escape|
+        str_to_escape.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]}
+      }
     end
   end
 
+  XHTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', ' '=>'&nbsp;',
+                   "\r\n" => "<br />\r\n", "\r" => "<br />\r", "\n" => "<br />\n"}
+  XHTMLEscapePat = /(\r\n|#{XHTMLEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def to_xhtml(overriding_tags = nil, headfoot = false)
     tags = {:start_common        => '<span class="common">',
             :end_common          => '</span>',
@@ -112,10 +125,16 @@ class View
       apply_style(tags) +
       [@eol_char + '</body></html>' + @eol_char]
     else
-      apply_style(tags)
+      apply_style(tags){|str_to_escape|
+        str_to_escape.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]}
+      }
     end
   end
 
+  ManuedInsideEscapeDic = {'~'=>'~~', '/'=>'~/', '['=>'~[', ']'=>'~]', ';'=>'~;'}
+  ManuedInsideEscapePat = /(#{ManuedInsideEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+  ManuedOutsideEscapeDic = {'~'=>'~~', '['=>'~['}
+  ManuedOutsideEscapePat = /(#{ManuedOutsideEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def to_manued(overriding_tags = nil, headfoot = false)  # [ / ; ]
     tags = {:start_common        => '',
             :end_common          => '',
@@ -128,18 +147,40 @@ class View
             :start_after_change  => '',
             :end_after_change    => ']'}
     tags.update(overriding_tags) if overriding_tags
+    result = []
     if headfoot == true
+      result =
       ["defparentheses [ ]\n",
-       "defdelete      /\n", 
+       "defdelete      /\n",
        "defswap        |\n",
        "defcomment     ;\n",
        "defescape      ~\n",
        "deforder       newer-last\n",
-       "defversion     0.9.5\n"] +
-      apply_style(tags)
-    else
-      apply_style(tags)
+       "defversion     0.9.5\n"] + result
     end
+    @difference.each{|block|
+      operation = block.first
+      source = block[1].to_s
+      target = block[2].to_s
+      case operation
+      when :common_elt_elt
+        result << (tags[:start_common] + source.gsub(ManuedOutsideEscapePat){|matched| ManuedOutsideEscapeDic[matched]} + tags[:end_common])
+      when :change_elt
+        result << (tags[:start_before_change] + 
+                   source.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + 
+                   tags[:end_before_change] + 
+                   tags[:start_after_change] + 
+                   target.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + 
+                   tags[:end_after_change])
+      when :del_elt
+        result << (tags[:start_del] + source.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + tags[:end_del])
+      when :add_elt
+        result << (tags[:start_add] + target.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + tags[:end_add])
+      else
+        raise "invalid attribute: #{block.first}\n"
+      end
+    }
+    result
   end
 
   def to_wdiff(overriding_tags = nil, headfoot = false)
