@@ -73,11 +73,7 @@ class DocDiff
     lines.each{|line|
       if line.first == :change_elt
         before_change = Document.new(line[1].to_s, doc1.encoding, doc1.eol)
-#         before_change.encoding = doc1.encoding
-#         before_change.eol = doc1.eol
         after_change  = Document.new(line[2].to_s, doc2.encoding, doc2.eol)
-#         after_change.encoding = doc2.encoding
-#         after_change.eol = doc2.eol
         Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
           words << word
         }
@@ -94,12 +90,8 @@ class DocDiff
     lines_and_words = Difference.new
     lines.each{|line|
       if line.first == :change_elt
-        before_change = Document.new(line[1].to_s)
-        before_change.encoding = doc1.encoding
-        before_change.eol = doc1.eol
-        after_change  = Document.new(line[2].to_s)
-        after_change.encoding = doc2.encoding
-        after_change.eol = doc2.eol
+        before_change = Document.new(line[1].to_s, doc1.encoding, doc1.eol)
+        after_change  = Document.new(line[2].to_s, doc2.encoding, doc2.eol)
         Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
           lines_and_words << word
         }
@@ -110,12 +102,8 @@ class DocDiff
     lines_words_and_chars = Difference.new
     lines_and_words.each{|line_or_word|
       if line_or_word.first == :change_elt
-        before_change = Document.new(line_or_word[1].to_s)
-        before_change.encoding = doc1.encoding
-        before_change.eol = doc1.eol
-        after_change  = Document.new(line_or_word[2].to_s)
-        after_change.encoding = doc2.encoding
-        after_change.eol = doc2.eol
+        before_change = Document.new(line_or_word[1].to_s, doc1.encoding, doc1.eol)
+        after_change  = Document.new(line_or_word[2].to_s, doc2.encoding, doc2.eol)
         Difference.new(before_change.split_to_char, after_change.split_to_char).each{|char|
           lines_words_and_chars << char
         }
@@ -132,15 +120,19 @@ if $0 == __FILE__
 #  configuration = DocDiff::Configuration.new
 #  docdiff = DocDiff.new(configuration)
   docdiff = DocDiff.new()
-  doc1 = doc2 = nil
-  File.open(ARGV[0], "r"){|f| doc1 = Document.new(f.read)}
-  File.open(ARGV[0], "r"){|f| doc2 = Document.new(f.read)}
-  p doc1.split_to_line
-  p doc1.split_to_line
-  p doc1.split_to_word
-  p doc1.split_to_word
-  p doc1.split_to_char
-  p doc1.split_to_char
+  doc1 = nil
+  doc2 = nil
+  File.open(ARGV[0], "r"){|f| doc1 = Document.new(f.read, "EUC-JP")}
+  File.open(ARGV[1], "r"){|f| doc2 = Document.new(f.read, "EUC-JP")}
+#   p doc1.split_to_line
+#   p doc1.split_to_line
+#   p doc1.split_to_word
+#   p doc1.split_to_word
+#   p doc1.split_to_char
+#   p doc1.split_to_char
 
-  p docdiff.compare_by_word(doc1, doc2)
+require 'pp'
+#   pp docdiff.compare_by_line(doc1, doc2)
+  print View.new(docdiff.compare_by_word(doc1, doc2), "EUC-JP" , nil).to_manued
+#  pp docdiff.compare_by_char(doc1, doc2)
 end
