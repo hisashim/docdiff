@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # DocDiff
-# 2002-06-27 Thu ... 2004-12-25 Sat 
+# 2002-06-27 Thu ... 2005-01-03 Mon
 # Hisashi MORITA
 # requirement for runtime: Ruby (> 1.6), diff library by akr (included in Ruby/CVS),
 # requirement for testing: above plus Uconv by Yoshidam
@@ -13,7 +13,7 @@ require 'optparse'
 class DocDiff
 
   AppVersion = '0.3.2'
-  Author = "Copyright (C) 2002-2004 Hisashi MORITA.\n" +
+  Author = "Copyright (C) 2002-2005 Hisashi MORITA.\n" +
            "diff library originates from Ruby/CVS by TANAKA Akira.\n"
   License = "This software is licensed under so-called modified BSD license.\n" +
             "See the document for detail.\n"
@@ -106,9 +106,14 @@ class DocDiff
   end
 
   def run(doc1, doc2, resolution, format, digest, option = nil)
-    raise unless (doc1.class == Document && doc2.class == Document)
-    raise unless (doc1.encoding != nil && doc2.encoding != nil) # unnecessary?
-    raise unless (doc1.encoding == doc2.encoding && doc1.eol == doc2.eol)
+    case
+    when doc1.class == Document && doc2.class == Document # OK
+    when doc1.encoding != nil && doc2.encoding != nil     # OK
+    when doc1.encoding == doc2.encoding && doc1.eol == doc2.eol # OK
+    else
+      raise("Error!  Blame the author (doc1: #{doc1.encoding}, #{doc1.eol}, doc2: #{doc2.encoding}, #{doc2.eol}).")
+    end
+
     case resolution
     when "line"; then difference = compare_by_line(doc1, doc2)
     when "word"; then difference = compare_by_line_word(doc1, doc2)
@@ -295,31 +300,38 @@ if $0 == __FILE__
 
   doc1 = nil
   doc2 = nil
+
+  encoding1 = docdiff.config[:encoding]
+  encoding2 = docdiff.config[:encoding]
+  eol1 = docdiff.config[:eol]
+  eol2 = docdiff.config[:eol]
+
   if docdiff.config[:encoding] == "auto"
     encoding1 = CharString.guess_encoding(file1_content)
     encoding2 = CharString.guess_encoding(file2_content)
     case
     when (encoding1 == "UNKNOWN" or encoding2 == "UNKNOWN")
-      raise "Document encoding unknown."
+      raise "Document encoding unknown (#{encoding1}, #{encoding2})."
     when encoding1 != encoding2
       raise "Document encoding mismatch (#{encoding1}, #{encoding2})."
     end
+  end
 
+  if docdiff.config[:eol] == "auto"
     eol1 = CharString.guess_eol(file1_content)
     eol2 = CharString.guess_eol(file2_content)
-    if eol1 != nil && (eol1 != eol2)
+    case
+    when (eol1.nil? or eol2.nil?)
+      raise "Document eol is nil (#{eol1.inspect}, #{eol2.inspect}).  The document might be empty."
+    when (eol1 == 'UNKNOWN' or eol2 == 'UNKNOWN')
+      raise "Document eol unknown (#{eol1.inspect}, #{eol2.inspect})."
+    when (eol1 != eol2)
       raise "Document eol mismatch (#{eol1}, #{eol2})."
     end
-    doc1 = Document.new(file1_content, encoding1, eol1)
-    doc2 = Document.new(file2_content, encoding2, eol2)
-  else
-    doc1 = Document.new(file1_content,
-                        docdiff.config[:encoding],
-                        docdiff.config[:eol])
-    doc2 = Document.new(file2_content,
-                        docdiff.config[:encoding],
-                        docdiff.config[:eol])
   end
+
+  doc1 = Document.new(file1_content, encoding1, eol1)
+  doc2 = Document.new(file2_content, encoding2, eol2)
 
   output = docdiff.run(doc1, doc2,
                        docdiff.config[:resolution],
