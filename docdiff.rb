@@ -256,13 +256,7 @@ module DocDiff
 
       # EOL.system
 
-#       def word_pattern(encoding)
-#         "#{encoding::EXCEPTIONS}" + 
-#         "|#{encoding::UB_SYMBOL} ?" + 
-#         "|#{encoding::UB_ALNUM}+ ?|.+?"
-#       end
       def word_pattern(encoding)
-#        "[^\s]+ ?|.+?"
         "#{encoding::UB_NON_SPC}+ ?|.+?"
       end
       module_function :word_pattern
@@ -279,12 +273,12 @@ module DocDiff
       UB_ALNUM = '(?:[0-9A-Za-z_\-])'
       UB_ALNUM_WORD = '(?:[0-9A-Za-z_\-\'\.])'  #
       # ASCII printable symbols, excluding hyphen ('-', 0x2d)
-      UB_SYMBOL = "(?:(?:[\x20-\x2c])" + # !"#$%&'()*+,
-                  "|(?:[\x2e-\x2f])" +   # ./
-                  "|(?:[\x3a-\x40])" +   # :;<=>?@)
-                  "|(?:[\x5b-\x5e])" +   # [\]^
-                  "|(?:\x60)" +          # `
-                  "|(?:[\x7b-\x7e]))"    # {|}~
+      UB_SYMBOL = "(?:(?:[\x20-\x2c])" + # ( !"#$%&'()*+,)
+                  "|(?:[\x2e-\x2f])" +   # (./)
+                  "|(?:[\x3a-\x40])" +   # (:;<=>?@))
+                  "|(?:[\x5b-\x5e])" +   # ([\]^)
+                  "|(?:\x60)" +          # (`)
+                  "|(?:[\x7b-\x7e]))"    # ({|}~)
       # ASCII control chars
       UB_CONTROL = '(?:[\x00-\x1f])'
       EXCEPTIONS=["Mr. ?","Mrs. ?","Ms. ?","Dr. ?","etc. ?",
@@ -292,12 +286,20 @@ module DocDiff
 
       UB_NON_SPC = 
         '(?:[-0-9A-Za-z_\x21-\x2c\x2e\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7e])'
+        # (!"#$%&'()*+,./:;<=>?@[\]^`{|}~)
 
       WordPattern = Regexp.new(English::word_pattern(self), 
                                Regexp::MULTILINE, "n")
 
       def to_char()
-        split(//n)
+        split(//nm)  # kanji=none, multiline
+      end
+
+      def count_char()  # count visible characters.  no eols, no spaces.
+        s = self.gsub(self::eol(), '')  # remove eols.
+        s.gsub!(/\s/n, '')              # remove space characters.
+        chars = s.split(//n)
+        chars.size
       end
 
       def to_word()
@@ -343,14 +345,6 @@ module DocDiff
 
     module Japanese
       def word_pattern(encoding)
-#         "#{encoding::UB_ALNUM_ABB}+ ?" + 
-#         "|#{encoding::MB_KANJI}+#{encoding::MB_HIRA}+" + 
-#         "|#{encoding::MB_KATA}+#{encoding::MB_HIRA}+" + 
-#         "|#{encoding::MB_KANJI}+" + 
-#         "|#{encoding::MB_KATA}+" + 
-#         "|#{encoding::MB_HIRA_MACRON}+" + 
-#         "|.+?"
-
         "#{encoding::UB_NON_SPC}+ ?" + 
         "|#{encoding::MB_KANJI}+#{encoding::MB_HIRA}+" + 
         "|#{encoding::MB_KATA}+#{encoding::MB_HIRA}+" + 

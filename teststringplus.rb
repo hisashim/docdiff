@@ -40,12 +40,34 @@ class TestStringPlus < RUNIT::TestCase
     assert_equal(expected, s.to_char)
   end
 
-#   def test_count_char_en_ascii_cr()
-#   end
-#   def test_count_char_en_ascii_lf()
-#   end
-#   def test_count_char_en_ascii_crlf()
-#   end
+  def test_count_char_en_ascii_cr()
+    s      = "foo bar\r"
+    s.extend DocDiff::StringPlus
+    s.lang = "English"
+    s.enc  = "ASCII"
+    s.eol  = "\r"
+    expected = 6
+    assert_equal(expected, s.count_char)
+  end
+  def test_count_char_en_ascii_lf()
+    s      = "foo bar\n"
+    s.extend DocDiff::StringPlus
+    s.lang = "English"
+    s.enc  = "ASCII"
+    s.eol  = "\n"
+    expected = 6
+    assert_equal(expected, s.count_char)
+  end
+  def test_count_char_en_ascii_crlf()
+    s      = "foo bar\r\n"
+    s.extend DocDiff::StringPlus
+    s.lang = "English"
+    s.enc  = "ASCII"
+    s.eol  = "\r\n"
+    expected = 6
+    assert_equal(expected, s.count_char)
+  end
+
 ##   def test_count_char_ja_eucjp_cr()
 ##   end
 #   def test_count_char_ja_eucjp_lf()
