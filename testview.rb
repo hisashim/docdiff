@@ -201,7 +201,7 @@ class TC_View < Test::Unit::TestCase
     expected =   ["1-2,(1) \033[#{4}m\033[#{41}ma\nb\033[0mcd\n",
                   "(2),1-2 cd\033[#{1}m\033[#{44}mX\nY\033[0me\n",
                   "3,3 e\033[#{4}m\033[#{43}mf\033[0m\033[#{1}m\033[#{42}mF\033[0m\n"]
-    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_terminal_digest)
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_terminal_digest(nil, false))
   end
 
   def test_to_html_del_add_ascii()
