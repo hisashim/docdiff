@@ -53,6 +53,10 @@
 <h2 id="news">News</h2>
 
 <ul>
+<li>0.3.1 (2004-08-29)<ul>
+ <li>Added -L (--label) option place holder in order to be used as
+     external diff program from Subversion.</li>
+</ul></li>
 <li>0.3.0 (2004-05-29)<ul>
  <li>Re-designed and re-written from scratch.</li>
  <li>Supports multiple encodings (ASCII, EUC-JP, Shift_JIS, UTF-8) and multiple
@@ -111,7 +115,7 @@
      &lt;tag&gt;a&lt;/tag&gt;&lt;tag&gt;b&lt;/tag&gt; (thanks again to Masatoshi
      Seki for suggestion).</li>
  <li>Fixed hidden bug ('puts' was used to output result).</li>
- <li>Some code clean-up, though still hairly enough.</li>
+ <li>Some code clean-up, though still hairy enough.</li>
 </ul></li>
 <li>0.1.3 (2001-01-09)<ul>
  <li>Tested with Ruby 1.6.2.</li>
@@ -155,7 +159,7 @@
  <li>Fixing bugs.</li>
  <li>Incorporate user feedback.</li>
  <li>Better auto-recognition of encodings and eols.</li>
- <li>Make CSS and tty escape sequense customizable in config files.</li>
+ <li>Make CSS and tty escape sequence customizable in config files.</li>
  <li>Adding a file upload CGI script, so that DocDiff can be used as a web application.</li>
  <li>Make stand-alone Windows application using Exerb, hopefully with fancy GUI.</li>
  <li>Multilingualization (M17N), when Ruby is multilingualized.</li>
@@ -278,19 +282,62 @@ key2 = value<br />
  Every value is treated as string, unless it seems like a number.  In such case, value is treated as a number (usually an integer).
 </p>
 
-<h3>Troubleshooting</h3>
+<h3>Troubleshooting and Tips</h3>
 <ul>
 <li>
-<p>
- Sometimes DocDiff fails to auto-recognizing encoding and/or end-of-line
- character.  You may get an error like this.
-</p>
-<blockquote><p><samp>
-charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
-</samp></p></blockquote>
-<p>
- In such a case, try explicitly specifying encoding and end-of-line character.
-</p>
+ <p>
+  Sometimes DocDiff fails to auto-recognize encoding and/or end-of-line
+  character.  You may get an error like this.
+ </p>
+ <blockquote><p><samp>
+ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
+ </samp></p></blockquote>
+ <p>
+  In such a case, try explicitly specifying encoding and end-of-line character.
+ </p>
+</li>
+<li>
+ <p>
+  When comparing space-separated texts (such as English or program
+  source code), the word next to the end of line is sometimes
+  unnecessarily deleted and inserted.  This is due to the limitation of
+  DocDiff's word splitter.  It splits strings into words like the
+  following.
+ </p>
+ <p>text 1:</p>
+ <blockquote><p><samp>
+  foo bar<br />
+  ("foo bar"  =&gt; ["foo ", "bar"])
+ </samp></p></blockquote>
+ <p>text 2:</p>
+ <blockquote><p><samp>
+  foo<br />
+  bar<br />
+  ("foo\nbar" =&gt; ["foo", "\n", "bar"])
+ </samp></p></blockquote>
+ <p>comparison result:</p>
+ <blockquote><p><samp>
+  <del>foo </del><ins>foo</ins><ins><br />
+  </ins>bar<br />
+  ("&lt;del&gt;foo &lt;/del&gt;&lt;ins&gt;foo&lt;/ins&gt;&lt;ins&gt;\n&lt;/ins&gt;bar")
+ </samp></p></blockquote>
+ <p>
+  Foo is (unnecessarily) deleted and inserted at the same time.
+ </p>
+ <p>
+  I would like to fix this sometime, but it's not easy.  If you split
+  single space as single element (i.e. ["foo", " ", "bar"]), the word
+  order of the comparison result will be less natural.  Suggestions are
+  welcome.
+ </p>
+</li>
+<li>
+ <p>
+  If you want to use DocDiff as an external diff program from Subversion, the following may work.
+ </p>
+ <blockquote><p><kbd>
+ svn diff --diff-cmd=docdiff.rb --extensions "--ascii --lf --tty --digest"
+ </kbd></p></blockquote>
 </li>
 </ul>
 
