@@ -66,7 +66,7 @@ class TestStringPlus < RUNIT::TestCase
     s.lang = "English"
     s.enc = "ASCII"
     s.eol = "\n"
-    expected = ['foo ','bar ','baz ','quux','.']
+    expected = ['foo ','bar ','baz ','quux.']
     assert_equal(expected, s.to_word)
   end
   def test_to_word_en_ascii_lf_hyphen()
@@ -75,7 +75,7 @@ class TestStringPlus < RUNIT::TestCase
     s.lang = "English"
     s.enc = "ASCII"
     s.eol = "\n"
-    expected = ["Mr. ","Black",", ","he\'s ","a ","high-school ","student","."]
+    expected = ["Mr. ","Black, ","he\'s ","a ","high-school ","student."]
     assert_equal(expected, s.to_word)
   end
   # EUC-JP encoding.  EoL is LF.
@@ -140,7 +140,7 @@ class TestStringPlus < RUNIT::TestCase
     s.lang = "Japanese"
     s.enc  = "EUC-JP"
     s.eol  = "\n"
-    expected = ['漢字以外に','"','I\'m ','a ','high-school ','student','.','"',
+    expected = ['漢字以外に','"I\'m ','a ','high-school ','student."',
                 'のような','欧文も','含む','文','。'].collect{|st|
       NKF.nkf('-e', st)
     }
@@ -208,7 +208,7 @@ class TestStringPlus < RUNIT::TestCase
     s.lang = "Japanese"
     s.enc = "Shift_JIS"
     s.eol = "\r\n"
-    expected = ['漢字以外に','"','I\'m ','a ','high-school ','student','.','"',
+    expected = ['漢字以外に','"I\'m ','a ','high-school ','student."',
                 'のような','欧文も','含む','文','。'].collect{|st|
       NKF.nkf('-s', st)
     }

@@ -256,10 +256,14 @@ module DocDiff
 
       # EOL.system
 
+#       def word_pattern(encoding)
+#         "#{encoding::EXCEPTIONS}" + 
+#         "|#{encoding::UB_SYMBOL} ?" + 
+#         "|#{encoding::UB_ALNUM}+ ?|.+?"
+#       end
       def word_pattern(encoding)
-        "#{encoding::EXCEPTIONS}" + 
-        "|#{encoding::UB_SYMBOL} ?" + 
-        "|#{encoding::UB_ALNUM}+ ?|.+?"
+#        "[^\s]+ ?|.+?"
+        "#{encoding::UB_NON_SPC}+ ?|.+?"
       end
       module_function :word_pattern
 
@@ -285,20 +289,30 @@ module DocDiff
       UB_CONTROL = '(?:[\x00-\x1f])'
       EXCEPTIONS=["Mr. ?","Mrs. ?","Ms. ?","Dr. ?","etc. ?",
                   "#{UB_ALNUM}*\'#{UB_ALNUM}* ?"].join('|')
+
+      UB_NON_SPC = 
+        '(?:[-0-9A-Za-z_\x21-\x2c\x2e\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7e])'
+
       WordPattern = Regexp.new(English::word_pattern(self), 
                                Regexp::MULTILINE, "n")
+
       def to_char()
         split(//n)
       end
+
       def to_word()
         scan(WordPattern)
       end
+
       def to_line()
       end
+
       def to_sentense()
       end
+
       def to_paragraph()
       end
+
       StringPlus.register_encoding(self)
     end
 
@@ -329,7 +343,15 @@ module DocDiff
 
     module Japanese
       def word_pattern(encoding)
-        "#{encoding::UB_ALNUM_ABB}+ ?" + 
+#         "#{encoding::UB_ALNUM_ABB}+ ?" + 
+#         "|#{encoding::MB_KANJI}+#{encoding::MB_HIRA}+" + 
+#         "|#{encoding::MB_KATA}+#{encoding::MB_HIRA}+" + 
+#         "|#{encoding::MB_KANJI}+" + 
+#         "|#{encoding::MB_KATA}+" + 
+#         "|#{encoding::MB_HIRA_MACRON}+" + 
+#         "|.+?"
+
+        "#{encoding::UB_NON_SPC}+ ?" + 
         "|#{encoding::MB_KANJI}+#{encoding::MB_HIRA}+" + 
         "|#{encoding::MB_KATA}+#{encoding::MB_HIRA}+" + 
         "|#{encoding::MB_KANJI}+" + 
@@ -372,6 +394,10 @@ module DocDiff
         "|[Tt]hey\'re|[Tt]hey\'ve|[Tt]hey\'ll|[Tt]hey\'d" + 
         "|(?:#{UB_ALNUM}+\'#{UB_ALNUM}+)" + 
         "|#{UB_ALNUM})"
+
+      # 
+      UB_NON_SPC = 
+        '(?:[-0-9A-Za-z_\x21-\x2c\x2e\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7e])'
 
       # unicolumn katakana (0x8e21-0x8e5f)
       UB_KATA = '(?:\x8e[\x21-\x5f])'
@@ -488,6 +514,10 @@ module DocDiff
         "|(?:#{UB_ALNUM}+\'#{UB_ALNUM}+)" + 
         "|#{UB_ALNUM})"
 
+      # 
+      UB_NON_SPC = 
+        '(?:[-0-9A-Za-z_\x21-\x2c\x2e\x2f\x3a-\x40\x5b-\x5e\x60\x7b-\x7e])'
+
       # SJIS unibyte katakana (0xa1-0xdf)
       UB_KATA = '(?:[\xa1-\xdf])'
 
@@ -544,14 +574,7 @@ module DocDiff
                  '|(?:[\x89-\xef][\x00-\xff])' + 
                  '|(?:\x81\x58))'
 
-      word_pattern = "#{UB_ALNUM_ABB}+ ?" + 
-                     "|#{MB_KANJI}+#{MB_HIRA}+" + 
-                     "|#{MB_KATA}+#{MB_HIRA}+" + 
-                     "|#{MB_KANJI}+" + 
-                     "|#{MB_KATA}+" + 
-                     "|#{MB_HIRA_MACRON}+" + 
-                     "|.+?"
-      WordPattern = Regexp.new(word_pattern, 
+      WordPattern = Regexp.new(Japanese::word_pattern(self), 
                                Regexp::MULTILINE, "s")
 
       def to_char()
