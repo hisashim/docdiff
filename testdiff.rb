@@ -1,4 +1,4 @@
-require "diff"
+require "docdiff/diff"
 require "pp"
 
 #a = "Hi, I am matz.  I am Ruby's father.".split

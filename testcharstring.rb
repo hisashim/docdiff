@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'test/unit'
-require 'charstring'
+require 'docdiff/charstring'
 require 'nkf'
 require 'uconv'
 

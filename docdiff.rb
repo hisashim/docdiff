@@ -6,9 +6,9 @@
 # requirement: Ruby (> 1.6), diff library by akr (included in Ruby/CVS),
 #              Uconv by Yoshidam, NKF
 
-require 'difference'
-require 'document'
-require 'view'
+require 'docdiff/difference'
+require 'docdiff/document'
+require 'docdiff/view'
 require 'optparse'
 
 class DocDiff
@@ -19,70 +19,12 @@ class DocDiff
   License = "This software is licensed under the same license as Ruby's."
   SystemConfigFileName = File.join(File::Separator, "etc", "docdiff", "docdiff.conf")
   UserConfigFileName = File.join(ENV['HOME'], "etc", "docdiff", "docdiff.conf")
-  # USAGE
-
-  # configuration
-  # priority: default < ~/.docdiff < command line option
-  #
-  # command line options (draft)
-  #
-  # --version
-  # --license
-  # --help  -h
-  # --debug
-  ## --verbose
-  #
-  # --resolution=<unit>  --granularity
-  #   <unit>: char | word | line
-  #
-  ## --cache= auto | on | off
-  ## --cachedir= auto | <path>
-  ## --conffile= auto | <path>
-  #
-  ### --input-type= text | html | xml
-  ## --input-language= English | Japanese
-  ## --input-encoding= auto | ASCII | EUC-JP | Shift_JIS | UTF-8
-  ## --input-eol= auto | LF | CR | CRLF
-  #
-  ### --analysis= none | simple | complex
-  #
-  ## --detail= all | summary | digest
-  ## --show-stat=off|on
-  ## --show-document=on|off
-  #
-  ## --context=<integer><unit>,<integer><unit>
-  ##   <unit>: char | word | line
-  #
-  ### --show-unified
-  ### --show-source-only
-  ### --show-target-only
-  ### --show-common=on|off
-  ### --show-removed=on|off
-  ### --show-added=on|off
-  #
-  # --output-type= docdiff | tty | html | xhtml | manued
-  ## --output-encoding= auto | ASCII | EUC-JP | Shift_JIS | UTF-8
-  ## --output-eol= auto | original | system | LF | CR | CRLF
-  #
-  ## --tag-common="<>,</>"
-  ## --tag-removed="<->,</->"  --tag-deleted
-  ## --tag-added="<+>,</+>"    --tag-inserted
 
   def initialize()
     @config = {}
   end
   attr_accessor :config
 
-#   def DocDiff.get_system_config_from_file()
-#     filename = File.join(File::Separator,"etc","docdiff","docdiff.conf")
-#     raise "File #{filename.inspect} does not exist." unless File.exist? filename
-#     parse_conffile_content(File.read(filename, "r"))
-#   end
-#   def DocDiff.get_user_config_from_file()
-#     filename = File.join(ENV['HOME'],"etc","docdiff","docdiff.conf")
-#     raise "File #{filename.inspect} does not exist." unless File.exist? filename
-#     parse_conffile_content(File.read(filename, "r"))
-#   end
   def DocDiff.parse_config_file_content(content)
     raise "config file content is empty" if content.size <= 0
     lines = content.dup.split(/\r\n|\r|\n/).compact
@@ -92,8 +34,15 @@ class DocDiff
     result = {}
     lines.each{|line|
       raise 'line does not include " = ".' unless /[\s]+=[\s]+/.match line
-      pair = line.split(/[\s]+=[\s]+/)
-      result[pair[0]] = pair[1]
+      name_src, value_src = line.split(/[\s]+=[\s]+/)
+      raise "Invalid name: #{name_src.inspect}" if (/\s/.match name_src)
+      raise "Invalid value: #{value_src.inspect}" unless value_src.kind_of?(String)
+      name  = name_src.intern
+      value = value_src
+      value = true if ['on','yes','true'].include? value_src.downcase
+      value = false if ['off','no','false'].include? value_src.downcase
+      value = value_src.to_i if /^[0-9]+$/.match value_src
+      result[name] = value
     }
     result
   end
@@ -102,14 +51,17 @@ class DocDiff
     Difference.new(doc1.split_to_line, doc2.split_to_line)
   end
 
-  def compare_by_word(doc1, doc2)
+  def compare_by_line_word(doc1, doc2)
     lines = compare_by_line(doc1, doc2)
     words = Difference.new
     lines.each{|line|
       if line.first == :change_elt
-        before_change = Document.new(line[1].to_s, doc1.encoding, doc1.eol)
-        after_change  = Document.new(line[2].to_s, doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
+        before_change = Document.new(line[1].to_s,
+                                     doc1.encoding, doc1.eol)
+        after_change  = Document.new(line[2].to_s,
+                                     doc2.encoding, doc2.eol)
+        Difference.new(before_change.split_to_word,
+                       after_change.split_to_word).each{|word|
           words << word
         }
       else  # :common_elt_elt, :del_elt, or :add_elt
@@ -120,14 +72,17 @@ class DocDiff
   end
 
   # i know this implementation of recursion is so lame...
-  def compare_by_char(doc1, doc2)
+  def compare_by_line_word_char(doc1, doc2)
     lines = compare_by_line(doc1, doc2)
     lines_and_words = Difference.new
     lines.each{|line|
       if line.first == :change_elt
-        before_change = Document.new(line[1].to_s, doc1.encoding, doc1.eol)
-        after_change  = Document.new(line[2].to_s, doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
+        before_change = Document.new(line[1].to_s,
+                                     doc1.encoding, doc1.eol)
+        after_change  = Document.new(line[2].to_s,
+                                     doc2.encoding, doc2.eol)
+        Difference.new(before_change.split_to_word,
+                       after_change.split_to_word).each{|word|
           lines_and_words << word
         }
       else  # :common_elt_elt, :del_elt, or :add_elt
@@ -149,24 +104,37 @@ class DocDiff
     lines_words_and_chars
   end
 
-  def run(doc1, doc2, resolution, viewtype, option = nil)
+  def run(doc1, doc2, resolution, format, option = nil)
     raise unless (doc1.class == Document && doc2.class == Document)
     raise unless (doc1.encoding == doc2.encoding && doc1.eol == doc2.eol)
     case resolution
     when :line; then difference = compare_by_line(doc1, doc2)
-    when :word; then difference = compare_by_word(doc1, doc2)
-    when :char; then difference = compare_by_char(doc1, doc2)
-    else raise "#{resolution.inspect} is not supported as resolution."
+    when :word; then difference = compare_by_line_word(doc1, doc2)
+    when :char; then difference = compare_by_line_word_char(doc1, doc2)
+    else
+      raise "Unsupported resolution: #{resolution.inspect}"
     end
     view = View.new(difference, doc1.encoding, doc1.eol)
-    case viewtype
+    user_tags = {:start_common        => (@config[:tag_common_start] ||= ''),
+                 :end_common          => (@config[:tag_common_end] ||= ''),
+                 :start_del           => (@config[:tag_del_start] ||= ''),
+                 :end_del             => (@config[:tag_del_end] ||= ''),
+                 :start_add           => (@config[:tag_add_start] ||= ''),
+                 :end_add             => (@config[:tag_add_end] ||= ''),
+                 :start_before_change => (@config[:tag_change_before_start] ||= ''),
+                 :end_before_change   => (@config[:tag_change_before_end] ||= ''),
+                 :start_after_change  => (@config[:tag_change_after_start] ||= ''),
+                 :end_after_change    => (@config[:tag_change_after_end] ||= '')}
+    case format
     when :terminal; then result = view.to_terminal(option)
     when :html;     then result = view.to_html(option)
     when :xhtml;    then result = view.to_xhtml(option)
     when :manued;   then result = view.to_manued(option)
     when :wdiff;    then result = view.to_wdiff(option)
-    when :user_defined_markup; then result = view.user_defined_markup(option)
-    else raise "#{view.inspect} is not supported as view."
+    when :stat;     then result = view.to_stat(option)
+    when :user;     then result = view.to_user(user_tags)
+    else
+      raise "Unsupported output format: #{format.inspect}."
     end
     result.to_s
   end
@@ -196,20 +164,20 @@ if $0 == __FILE__
     :eol           => "auto",
     :format        => "manued",
     :cache         => true,
-    :stat          => true,
     :digest        => false,
     :verbose       => false
   }
 
   clo = command_line_options = {}
 
+  # if invoked as "worddiff" or "chardiff",
+  # appropriate resolution is set respectively.
   case File.basename($0, ".*")
   when "worddiff" then; clo[:resolution] = "word"
   when "chardiff" then; clo[:resolution] = "char"
   end
 
   ARGV.options {|o|
-
     o.def_option('--resolution=RESOLUTION',
                  possible_resolutions = ['line', 'word', 'char'],
                  'specify resolution (granularity)',
@@ -239,17 +207,19 @@ if $0 == __FILE__
     o.def_option('--crlf', 'same as --eol=CRLF'){clo[:eol] = "CRLF"}
 
     o.def_option('--format=FORMAT',
-                 possible_formats = ['terminal','manued','html','xhtml','wdiff'],
+                 possible_formats = ['terminal','manued','html','xhtml','wdiff','stat','user'],
                  'specify output format',
-                 possible_formats.join('|'), '(default is manued)'
+                 possible_formats.join('|'),
+                 "(default is manued)",
+                 '(user tags have to be described in config file)'
                 ){|clo[:format]| clo[:format] ||= "manued"}
     o.def_option('--terminal', 'same as --format=terminal'){clo[:format] = "terminal"}
     o.def_option('--manued', 'same as --format=manued'){clo[:format] = "manued"}
     o.def_option('--html', 'same as --format=html'){clo[:format] = "html"}
     o.def_option('--xhtml', 'same as --format=xhtml'){clo[:format] = "html"}
     o.def_option('--wdiff', 'same as --format=wdiff'){clo[:format] = "wdiff"}
+    o.def_option('--stat', 'same as --format=stat'){clo[:format] = "stat"}
 
-    o.def_option('--stat', 'show statistics'){clo[:stat] = true}
     o.def_option('--digest', 'digest output, do not show all'){clo[:digest] = true}
     o.def_option('--cache', 'use file cache'){clo[:cache] = true}
     o.def_option('--no-config-file',
@@ -260,6 +230,10 @@ if $0 == __FILE__
     o.def_option('--version', 'show version'){puts DocDiff::AppVersion; exit(0)}
     o.def_option('--license', 'show license'){puts DocDiff::License; exit(0)}
     o.def_option('--author', 'show author(s)'){puts DocDiff::Author; exit(0)}
+
+    o.on_tail("If invoked as worddiff or chardiff, resolution is set accordingly.",
+              "Config files: /etc/docdiff/docdiff.conf, ~/etc/docdiff/docdiff.conf")
+
     o.parse!
   } or exit(1)
 
@@ -293,15 +267,15 @@ if $0 == __FILE__
     encoding2 = CharString.guess_encoding(file2_content)
     case
     when (encoding1 == "UNKNOWN" or encoding2 == "UNKNOWN")
-      raise "document encoding unknown."
+      raise "Document encoding unknown."
     when encoding1 != encoding2
-      raise "document encoding mismatch (#{encoding1}, #{encoding2})."
+      raise "Document encoding mismatch (#{encoding1}, #{encoding2})."
     end
 
     eol1 = CharString.guess_eol(file1_content)
     eol2 = CharString.guess_eol(file2_content)
     if eol1 != nil && (eol1 != eol2)
-      raise "document eol mismatch (#{eol1}, #{eol2})."
+      raise "Document eol mismatch (#{eol1}, #{eol2})."
     end
     doc1 = Document.new(file1_content, encoding1, eol1)
     doc2 = Document.new(file2_content, encoding2, eol2)
@@ -314,33 +288,9 @@ if $0 == __FILE__
                         docdiff.config[:eol])
   end
 
-  case docdiff.config[:resolution]
-  when "line"
-    difference = docdiff.compare_by_line(doc1, doc2)
-  when "word"
-    difference = docdiff.compare_by_word(doc1, doc2)
-  when "char"
-    difference = docdiff.compare_by_char(doc1, doc2)
-  else
-    raise "no such resolution: #{docdiff.config[:resolution]}"
-  end
-
-  case docdiff.config[:format]
-  when "terminal"
-    view = View.new(difference, doc1.encoding, doc1.eol).to_terminal
-  when "manued"
-    view = View.new(difference, doc1.encoding, doc1.eol).to_manued
-  when "html"
-    view = View.new(difference, doc1.encoding, doc1.eol).to_html
-  when "xhtml"
-    view = View.new(difference, doc1.encoding, doc1.eol).to_xhtml
-  when "wdiff"
-    view = View.new(difference, doc1.encoding, doc1.eol).to_wdiff
-  else
-    raise "no such format: #{docdiff.config[:format]}"
-  end
-
-# require 'pp'
-  print view
+  output = docdiff.run(doc1, doc2,
+                       docdiff.config[:resolution],
+                       docdiff.config[:format])
+  print output
 
 end # end if $0 == __FILE__

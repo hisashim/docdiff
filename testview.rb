@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'test/unit'
-require 'view'
+require 'docdiff/view'
 require 'nkf'
 require 'uconv'
 
@@ -273,6 +273,46 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
                                          array2.collect{|i|Uconv.euctou8(i)}),
                           "UTF-8", nil).to_wdiff)
+  end
+
+  def test_to_user_del_add_en()
+    array1 = ['a', 'b', 'c']
+    array2 = ['b', 'c', 'c']
+    difference = Difference.new(array1, array2)
+    user_tags = {:start_common        => '<=>',
+                 :end_common          => '</=>',
+                 :start_del           => '<->',
+                 :end_del             => '</->',
+                 :start_add           => '<+>',
+                 :end_add             => '</+>',
+                 :start_before_change => '<!->',
+                 :end_before_change   => '</!->',
+                 :start_after_change  => '<!+>',
+                 :end_after_change    => '</!+>'}
+    expected =   ['<->a</->',
+                  '<=>b</=>',
+                  '<+>c</+>',
+                  '<=>c</=>']
+    assert_equal(expected, View.new(difference, "ASCII", nil).to_user(user_tags))
+  end
+  def test_to_user_change_en()
+    array1 = ['a', 'b', 'c']
+    array2 = ['a', 'x', 'c']
+    difference = Difference.new(array1, array2)
+    user_tags = {:start_common        => '<=>',
+                 :end_common          => '</=>',
+                 :start_del           => '<->',
+                 :end_del             => '</->',
+                 :start_add           => '<+>',
+                 :end_add             => '</+>',
+                 :start_before_change => '<!->',
+                 :end_before_change   => '</!->',
+                 :start_after_change  => '<!+>',
+                 :end_after_change    => '</!+>'}
+    expected =   ['<=>a</=>',
+                  '<!->b</!-><!+>x</!+>',
+                  '<=>c</=>']
+    assert_equal(expected, View.new(difference, "ASCII", nil).to_user(user_tags))
   end
 
   def teardown()

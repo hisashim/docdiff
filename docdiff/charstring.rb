@@ -388,10 +388,10 @@ module CharString
   end
 
   # load encoding modules
-  require 'encoding/en_ascii'
-  require 'encoding/ja_eucjp'
-  require 'encoding/ja_sjis'
-  require 'encoding/ja_utf8'
+  require 'docdiff/encoding/en_ascii'
+  require 'docdiff/encoding/ja_eucjp'
+  require 'docdiff/encoding/ja_sjis'
+  require 'docdiff/encoding/ja_utf8'
 
   module CR
     EOL = 'CR'

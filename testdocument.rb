@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'test/unit'
-require 'document'
+require 'docdiff/document'
 require 'nkf'
 require 'uconv'
 

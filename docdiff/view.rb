@@ -55,9 +55,7 @@ class View
       :start_after_change  => "\033[#{1}m\033[#{42}m",  # bold + bg_green
       :end_after_change    => "\033[0m"
     }
-    if overriding_tags
-      tags = tags.merge(overriding_tags)
-    end
+    tags.update(overriding_tags) if overriding_tags
     apply_style(tags)
   end
 
@@ -72,9 +70,7 @@ class View
             :end_before_change   => '</del></span>',
             :start_after_change  => '<span class="after_change"><ins>',
             :end_after_change    => '</ins></span>'}
-    if overriding_tags
-      tags = tags.merge(overriding_tags)
-    end
+    tags.update(overriding_tags) if overriding_tags
     if headfoot == true
       ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
        '"http://www.w3.org/TR/html4/loose.dtd">' + @eol_char,
@@ -102,9 +98,7 @@ class View
             :end_before_change   => '</del></span>',
             :start_after_change  => '<span class="after_change"><ins>',
             :end_after_change    => '</ins></span>'}
-    if overriding_tags
-      tags = tags.merge(overriding_tags)
-    end
+    tags.update(overriding_tags) if overriding_tags
     if headfoot == true
       ['<?xml version="1.0" encoding="' + @codeset.downcase+ '"?>' + @eol_char,
        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + @eol_char,
@@ -135,9 +129,7 @@ class View
             :end_before_change   => '/',
             :start_after_change  => '',
             :end_after_change    => ']'}
-    if overriding_tags
-      tags = tags.merge(overriding_tags)
-    end
+    tags.update(overriding_tags) if overriding_tags
     if headfoot == true
       ["defparentheses [ ]\n",
        "defdelete      /\n", 
@@ -152,23 +144,6 @@ class View
     end
   end
 
-#   def to_docdiff(overriding_tags = nil, headfoot = false)
-#     tags = {:start_common        => '',
-#             :end_common          => '',
-#             :start_del           => '',
-#             :end_del             => '',
-#             :start_add           => '',
-#             :end_add             => '',
-#             :start_before_change => '',
-#             :end_before_change   => '',
-#             :start_after_change  => '',
-#             :end_after_change    => ''}
-#     if overriding_tags
-#       tags = tags.merge(overriding_tags)
-#     end
-#     apply_style(tags)
-#   end
-
   def to_wdiff(overriding_tags = nil, headfoot = false)
     tags = {:start_common        => '',
             :end_common          => '',
@@ -180,13 +155,23 @@ class View
             :end_before_change   => '-]',
             :start_after_change  => '{+',
             :end_after_change    => '+}'}
-    if overriding_tags
-      tags = tags.merge(overriding_tags)
-    end
+    tags.update(overriding_tags) if overriding_tags
     apply_style(tags)
   end
 
-  def to_free_markup()
+  def to_user(overriding_tags = nil, headfoot = false)
+    tags = {:start_common        => '',
+            :end_common          => '',
+            :start_del           => '',
+            :end_del             => '',
+            :start_add           => '',
+            :end_add             => '',
+            :start_before_change => '',
+            :end_before_change   => '',
+            :start_after_change  => '',
+            :end_after_change    => ''}
+    tags.update(overriding_tags) if overriding_tags
+    apply_style(tags)
   end
 
   def to_debug()

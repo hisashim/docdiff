@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 require 'test/unit'
-require 'difference'
+require 'docdiff/difference'
 require 'nkf'
 require 'uconv'
 
