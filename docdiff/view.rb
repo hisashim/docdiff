@@ -254,6 +254,8 @@ class View
      " span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}#{@eol_char||''}" +
      " span.before_change {background: yellow; border: thin inset;}#{@eol_char||''}" +
      " span.after_change {background: lime; font-weight: bolder; border: thin outset;}#{@eol_char||''}" +
+     " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}#{@eol_char||''}" +
+     " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}#{@eol_char||''}" +
      "</style>#{@eol_char||''}",
      "</head><body>#{@eol_char||''}"]
   end
@@ -268,12 +270,12 @@ class View
      :outside_escape_pat  => HTMLEscapePat,
      :inside_escape_dic   => HTMLEscapeDic,
      :inside_escape_pat   => HTMLEscapePat,
-     :start_digest_body   => '<ul>',
+     :start_digest_body   => '<ul><hr />',
      :end_digest_body     => '</ul>',
-     :start_entry         => '<li>',
-     :end_entry           => '</li>',
-     :start_position      => '',
-     :end_position        => '<br />',
+     :start_entry         => '<li class="entry">',
+     :end_entry           => '</p></blockquote></li><hr />',
+     :start_position      => '<p class="position">',
+     :end_position        => '</p><blockquote class="body"><p class="body">',
      :start_prefix        => '',
      :end_prefix          => '',
      :start_postfix       => '',

@@ -236,10 +236,10 @@ class TC_View < Test::Unit::TestCase
   def test_to_html_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
-    expected =   ["<ul>",
-                  "<li>1-2,(1)<br /><span class=\"del\"><del>a<br />\nb</del></span>cd</li>\n",
-                  "<li>(2),1-2<br />cd<span class=\"add\"><ins>X<br />\nY</ins></span>e</li>\n",
-                  "<li>3,3<br />e<span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span></li>\n",
+    expected =   ["<ul><hr />",
+                  "<li class=\"entry\"><p class=\"position\">1-2,(1)</p><blockquote class=\"body\"><p class=\"body\"><span class=\"del\"><del>a<br />\nb</del></span>cd</p></blockquote></li><hr />\n",
+                  "<li class=\"entry\"><p class=\"position\">(2),1-2</p><blockquote class=\"body\"><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e</p></blockquote></li><hr />\n",
+                  "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span></p></blockquote></li><hr />\n",
                   "</ul>"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html_digest(nil,false))
   end
