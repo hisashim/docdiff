@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -25,6 +25,14 @@
   li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
   li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
  </style>
+ <style title="en" type="text/css">
+  * [lang="ja"] {display: none}
+  * [lang="en"] {display: inherit}
+ </style>
+ <style title="ja" type="text/css">
+  * [lang="en"] {display: none}
+  * [lang="ja"] {display: inherit}
+ </style>
 </head>
 <body>
 <h1>DocDiff Readme</h1>
@@ -34,7 +42,10 @@
 
 <hr />
 
-<h2>Table of Contents</h2>
+<h2>
+ <span lang="en">Table of Contents</span>
+ <span lang="ja">目次</span>
+</h2>
 <ul>
  <li><a href="#news">News</a></li>
  <li><a href="#todo">Todo</a></li>
@@ -50,8 +61,10 @@
 
 <hr />
 
-<h2 id="news">News</h2>
-
+<h2 id="news">
+ <span lang="en">News</span>
+ <span lang="ja">ニュース</span>
+</h2>
 <ul>
 <li>0.3.2 (2005-01-03)<ul>
  <li>Outputs better error messages when it failed to auto-detect the encoding
@@ -159,7 +172,10 @@
 </ul>
 <p>See the ChangeLog for detail.</p>
 
-<h2 id="todo">Todo</h2>
+<h2 id="todo">
+ <span lang="en">Todo</span>
+ <span lang="ja">予定</span>
+</h2>
 <ul>
  <li>Fixing bugs.</li>
  <li>Incorporate user feedback.</li>
@@ -173,38 +189,72 @@
 
 <hr />
 
-<h2 id="description">Description</h2>
-<p>
+<h2 id="description">
+ <span lang="en">Description</span>
+ <span lang="ja">簡単な説明</span>
+</h2>
+<p lang="en">
  Compares two files word by word / char by char
 </p>
+<p lang="ja">
+ 2つのファイルを単語ごとあるいは文字ごとに比較する
+</p>
 
-<h2 id="summary">Summary</h2>
-<p>
+<h2 id="summary">
+ <span lang="en">Summary</span>
+ <span lang="ja">概要</span>
+</h2>
+<p lang="en">
  DocDiff compares two files and shows the difference.  It can compare files word
  by word, char by char, or line by line.  It has several output formats such as
  HTML, tty, Manued, or user-defined markup.
 </p>
-<p>
+<p lang="ja">
+ DocDiffは2つのファイルを比較してその違いを表示します。単語ごと、文字ごと、そして
+ 行ごとにファイルを比較できます。結果を出力する形式は、HTML, tty（文字 端末向けの
+ エスケープシーケンス）, Manued（真鵺道という校正用のマークアップ形式）などが用意
+ されており、ユーザ定義のタグを使うこともできます。
+</p>
+<p lang="en">
  It supports several encodings and end-of-line characters, including ASCII,
  UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
+</p>
+<p lang="ja">
+ 次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています:
+ ASCII, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
 </p>
 
 <hr />
 
-<h2 id="requirement">Requirement</h2>
+<h2 id="requirement">
+ <span lang="en">Requirement</span>
+ <span lang="ja">必要なもの</span>
+</h2>
 <ul>
- <li><a href="http://www.ruby-lang.org">Ruby</a><br />
+ <li lang="en"><a href="http://www.ruby-lang.org">Ruby</a><br />
   (Note that you may need additional ruby library such as iconv and uconv,
    if your OS's Ruby package does not include those.)
  </li>
+ <li lang="ja"><a href="http://www.ruby-lang.org">Ruby</a><br />
+  （注意: あなたが使っているOS向けのRubyパッケージがiconvやuconvといった
+  ライブラリを含んでいない場合は、別途それらを手に入れる必要があるかもし
+  れません。）
+ </li>
 </ul>
 
-<h2 id="installation">Installation</h2>
-<p>
+<h2 id="installation">
+ <span lang="en">Installation</span>
+ <span lang="ja">インストール方法</span>
+</h2>
+<p lang="en">
  Note that you need appropriate permission for proper installation (you
  have to have a root/administrator privilege).
 </p>
-<ol>
+<p lang="ja">
+ 注意: 正しくインストールするためには適切なファイルアクセス権限が必要です
+ （管理者権限が必要な場合があります）。
+</p>
+<ol lang="en">
 <li>
  Place <samp>docdiff/</samp> directory and its contents to ruby library directory, so that
  ruby interpreter can load them.<br />
@@ -233,22 +283,64 @@
  % <kbd>$EDITOR ~/etc/docdiff.conf</kbd></samp></p></blockquote>)
 </li>
 </ol>
+<ol lang="ja">
+<li>
+ <samp>docdiff/</samp>ディレクトリとその内容をrubyのライブラリを格納するディレクトリに配置して、
+ Rubyインタプリタがdocdiffライブラリをロードできるようにする。<br />
+ (e.g. <blockquote><p><samp># <kbd>cp -r docdiff /usr/lib/ruby/1.8</kbd></samp></p></blockquote>)
+</li>
+<li>
+ <samp>docdiff.rb</samp>をコマンドを格納するディレクトリに配置する。<br />
+ (e.g. <blockquote><p><samp># <kbd>cp docdiff.rb /usr/bin/</kbd></samp></p></blockquote>)<br />
+ ここで必要に応じてファイル名を<samp>docdiff</samp>のように変更してもよい。<br />
+ (e.g. <blockquote><p><samp># <kbd>mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd></samp></p></blockquote>)
+</li>
+<li>
+ 適切なパーミッションを設定する。<br />
+ (e.g. <blockquote><p><samp># <kbd>chmod +x /usr/bin/docdiff.rb</kbd></samp></p></blockquote>)
+</li>
+<li>
+ (オプション) もしサイトの全ユーザに適用される設定ファイルが必要なら、<samp>docdiff.conf.example</samp>
+ を<samp>/etc/docdiff/docdiff.conf</samp>として配置し、編集する。<br />
+ (e.g. <blockquote><p><samp># <kbd>cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
+ # <kbd>$EDITOR /etc/docdiff.conf</kbd></samp></p></blockquote>)
+</li>
+<li>
+ (オプション) もしユーザごとの設定ファイルが必要なら、<samp>docdiff.conf.example</samp>
+ を<samp>~/etc/docdiff/docdiff.conf</samp>として配置し、編集する。<br />
+ (e.g. <blockquote><p><samp>% <kbd>cp docdiff.conf.example ~/etc/docdiff.conf</kbd><br />
+ % <kbd>$EDITOR ~/etc/docdiff.conf</kbd></samp></p></blockquote>)
+</li>
+</ol>
 
 <hr />
 
-<h2 id="usage">Usage</h2>
+<h2 id="usage">
+ <span lang="en">Usage</span>
+ <span lang="ja">使い方</span>
+</h2>
 
-<h3>Synopsis</h3>
-<p>
+<h3>
+ <span lang="en">Synopsis</span>
+ <span lang="ja">概要</span>
+</h3>
+<blockquote><p>
 <kbd>docdiff [options] <var>oldfile</var> <var>newfile</var></kbd><br />
 e.g. <samp>% <kbd>docdiff old.txt new.txt > diff.html</kbd></samp>
-</p>
-<p>
+</p></blockquote>
+<p lang="en">
  See the help message for detail (<kbd>docdiff --help</kbd>).
 </p>
+<p lang="ja">
+ 詳しくはヘルプメッセージを参照してください (<kbd>docdiff --help</kbd>)。
+</p>
 
-<h3>Example</h3>
-<p><samp>
+<h3>
+ <span lang="en">Example</span>
+ <span lang="ja">例</span>
+</h3>
+<blockquote>
+<p lang="en"><samp>
 % <kbd>cat sample/01.en.ascii.lf</kbd><br />
 Hello, my name is Watanabe.<br />
 I am just another Ruby porter.<br />
@@ -270,18 +362,57 @@ It's me who has created Ruby.  I am a Ruby hacker.<br />
 <span class="common"><br /></span>
 %<br />
 </samp></p>
+<p lang="ja"><samp>
+% <kbd>cat sample/01.ja.eucjp.lf</kbd><br />
+こんにちは、私の名前はわたなべです。<br />
+私はJust Another Ruby Porterです。<br />
+% <kbd>cat sample/02.ja.eucjp.lf</kbd><br />
+こんばんは、私の名前はまつもとです。<br />
+Rubyを作ったのは私です。私はRuby Hackerです。<br />
+% <kbd>docdiff sample/01.ja.eucjp.lf sample/02.ja.eucjp.lf</kbd><br />
+<span class="before_change"><del>こんにちは</del></span>
+<span class="after_change"><ins>こんばんは</ins></span>
+<span class="common">、私の</span>
+<span class="before_change"><del>名前はわたなべです</del></span>
+<span class="after_change"><ins>名前はまつもとです</ins></span>
+<span class="common">。<br /></span>
+<span class="add"><ins>Rubyを作ったのは私です。</ins></span>
+<span class="common">私は</span>
+<span class="del"><del>Just Another </del></span>
+<span class="common">Ruby </span>
+<span class="before_change"><del>Porter</del></span>
+<span class="after_change"><ins>Hacker</ins></span>
+<span class="common">です。<br /></span>
+%<br />
+</samp></p>
+</blockquote>
 
-<h3>Configuration</h3>
-<p>
+<h3>
+ <span lang="en">Configuration</span>
+ <span lang="ja">設定</span>
+</h3>
+<p lang="en">
  You can place configuration files at:
 </p>
-<ul>
+<p lang="ja">
+ 設定ファイルは次の場所に配置すると有効になります:
+</p>
+<ul lang="en">
 <li>/etc/docdiff/docdiff.conf (site-wide configuration)</li>
 <li>~/etc/docdiff/docdiff.conf (user configuration)<br />
  (~/etc/docdiff/docdiff.conf is used by default in order to keep home directory clean, preventing dotfiles and dotdirs from scattering around. Alternatively, you can use ~/.docdiff/docdiff.conf as user configuration file name, following the traditional Unix convention.)</li>
 </ul>
-<p>
+<ul lang="ja">
+<li>/etc/docdiff/docdiff.conf（サイト全体の設定）</li>
+<li>~/etc/docdiff/docdiff.conf（ユーザごとの設定）<br />
+ （標準の設定では、ホームディレクトリにドットファイルをまき散らかさないために、~/etc/docdiff/docdiff.confが使われます。または、昔ながらのUnixの慣習に従って~/.docdiff/docdiff.confを使ってももちろん構いません。ただし両方同時には使えません）</li>
+</ul>
+
+<p lang="en">
  Notation is as follows (also refer to the file docdiff.conf.example included in the distribution archive):
+</p>
+<p lang="ja">
+ 設定ファイルの記法は次のとおりです（docdiff.conf.exampleファイルも参照してください。配布アーカイブに含まれているはずです）:
 </p>
 <blockquote>
 <p><code>
@@ -291,82 +422,133 @@ key2 = value<br />
 ...
 </code></p>
 </blockquote>
-<p>
+<p lang="en">
  Every value is treated as string, unless it seems like a number.  In such case, value is treated as a number (usually an integer).
 </p>
+<p lang="ja">
+ 値（value）は、数字として解釈できるもの以外は、すべて文字列として扱われます。数字は数値（たいていは整数）として扱われます。
+</p>
 
-<h3>Troubleshooting and Tips</h3>
-<ul>
-<li>
- <p>
-  Sometimes DocDiff fails to auto-recognize encoding and/or end-of-line
-  character.  You may get an error like this.
- </p>
- <blockquote><p><samp>
- charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
- </samp></p></blockquote>
- <p>
-  In such a case, try explicitly specifying encoding and end-of-line character.
- </p>
-</li>
-<li>
- <p>
-  When comparing space-separated texts (such as English or program
-  source code), the word next to the end of line is sometimes
-  unnecessarily deleted and inserted.  This is due to the limitation of
-  DocDiff's word splitter.  It splits strings into words like the
-  following.
- </p>
- <p>text 1:</p>
- <blockquote><p><samp>
-  foo bar<br />
-  ("foo bar"  =&gt; ["foo ", "bar"])
- </samp></p></blockquote>
- <p>text 2:</p>
- <blockquote><p><samp>
-  foo<br />
-  bar<br />
-  ("foo\nbar" =&gt; ["foo", "\n", "bar"])
- </samp></p></blockquote>
- <p>comparison result:</p>
- <blockquote><p><samp>
-  <del>foo </del><ins>foo</ins><ins><br />
-  </ins>bar<br />
-  ("&lt;del&gt;foo &lt;/del&gt;&lt;ins&gt;foo&lt;/ins&gt;&lt;ins&gt;\n&lt;/ins&gt;bar")
- </samp></p></blockquote>
- <p>
-  Foo is (unnecessarily) deleted and inserted at the same time.
- </p>
- <p>
-  I would like to fix this sometime, but it's not easy.  If you split
-  single space as single element (i.e. ["foo", " ", "bar"]), the word
-  order of the comparison result will be less natural.  Suggestions are
-  welcome.
- </p>
-</li>
-<li>
- <p>
-  If you want to use DocDiff as an external diff program from Subversion, the following may work.
- </p>
- <blockquote><p><kbd>
- svn diff --diff-cmd=docdiff.rb --extensions "--ascii --lf --tty --digest"
- </kbd></p></blockquote>
-</li>
-</ul>
+<h3>
+ <span lang="en">Troubleshooting and Tips</span>
+ <span lang="ja">問題解決とヒント</span>
+</h3>
+
+<h4>
+ <span lang="en">wrong argument type nil (expected Module) (TypeError)</span>
+ <span lang="ja">wrong argument type nil (expected Module) (TypeError)</span>
+</h4>
+<p lang="en">
+ Sometimes DocDiff fails to auto-recognize encoding and/or end-of-line
+ character.  You may get an error like this.
+</p>
+<p lang="ja">
+ DocDiffがたまにエンコーディングや行末文字の自動判定に失敗して、次のようなエラーを表示することがあります。
+</p>
+<blockquote><p><samp>
+charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
+</samp></p></blockquote>
+<p lang="en">
+ In such a case, try explicitly specifying encoding and end-of-line character
+ (e.g. <kbd>docdiff --utf8 --crlf</kbd>).
+</p>
+<p lang="ja">
+ このような場合は、エンコーディングや行末文字を明示的に指定してやってみてください
+ （e.g. <kbd>docdiff --utf8 --crlf</kbd>）。
+</p>
+
+<h4>
+<span lang="en">Inappropriate Insertion / Deletion</span>
+<span lang="ja">不適切な挿入と削除</span>
+</h4>
+<p lang="en">
+ When comparing space-separated texts (such as English or program
+ source code), the word next to the end of line is sometimes
+ unnecessarily deleted and inserted.  This is due to the limitation of
+ DocDiff's word splitter.  It splits strings into words like the
+ following.
+</p>
+<p lang="ja">
+ スペースで区切られたテキスト（英文やプログラムのソースコードなど）を比較している
+ ときに、行末にある単語が、特に必要もないのにいったん削除されてからまた挿入される
+ ことがあります。これはDocDiffの単語分割機能に制限があるせいで起きます。テキスト
+ は次のように単語に分割されます。
+</p>
+<p>text 1:</p>
+<blockquote><p><samp>
+ foo bar<br />
+ ("foo bar"  =&gt; ["foo ", "bar"])
+</samp></p></blockquote>
+<p>text 2:</p>
+<blockquote><p><samp>
+ foo<br />
+ bar<br />
+ ("foo\nbar" =&gt; ["foo", "\n", "bar"])
+</samp></p></blockquote>
+<p>comparison result:</p>
+<blockquote><p><samp>
+ <del>foo </del><ins>foo</ins><ins><br />
+ </ins>bar<br />
+ ("&lt;del&gt;foo &lt;/del&gt;&lt;ins&gt;foo&lt;/ins&gt;&lt;ins&gt;\n&lt;/ins&gt;bar")
+</samp></p></blockquote>
+<p lang="en">
+ Foo is (unnecessarily) deleted and inserted at the same time.
+</p>
+<p lang="ja">
+ Fooは（必要もないのに）削除されると同時に挿入されています。
+</p>
+<p lang="en">
+ I would like to fix this sometime, but it's not easy.  If you split
+ single space as single element (i.e. ["foo", " ", "bar"]), the word
+ order of the comparison result will be less natural.  Suggestions are
+ welcome.
+</p>
+<p lang="ja">
+ 作者はこの問題をいつか解決したいと思っていますが、簡単ではなさそうです。
+ もし空白を1つの要素として分割したなら（i.e. ["foo", " ", "bar"]）、
+ 比較した結果出力される単語の並びが今よりも不自然になってしまいます。
+ 良い案があったら教えてください。
+</p>
+
+<h4>
+ <span lang="en">Using DocDiff as Subversion's external diff</span>
+ <span lang="ja">DocDiffをSubversionの外部diffとして利用する</span>
+</h4>
+<p lang="en">
+ If you want to use DocDiff as an external diff program from Subversion, the following may work.
+</p>
+<p lang="ja">
+ DocDiffをSubversionなどの外部diffプログラムとして使いたければ、次のようにするとよいでしょう。
+</p>
+<blockquote><p>
+ <samp>% <kbd>svn diff --diff-cmd=docdiff.rb --extensions "--ascii --lf --tty --digest"</kbd></samp>
+</p></blockquote>
 
 <hr />
 
-<h2 id="license">License</h2>
-<p>
+<h2 id="license">
+ <span lang="en">License</span>
+ <span lang="ja">ライセンス</span>
+</h2>
+<p lang="en">
  This software is distributed under so-called modified BSD style license
  (<a href="http://www.opensource.org/licenses/bsd-license.php">
  http://www.opensource.org/licenses/bsd-license.php</a> (without advertisement
  clause)).  By contributing to this software, you agree that your contribution
  may be incorporated under the same license.
 </p>
-
-<p>
+<p lang="ja">
+このソフトウェアはいわゆる修正BSDスタイルライセンス
+ （<a href="http://www.opensource.org/licenses/bsd-license.php">
+ http://www.opensource.org/licenses/bsd-license.php</a>（広告条項なし））のもと
+ で配布されています。このソフトウェアに貢献すると、あなたは貢献したものが同ライ
+ センスのもとに取り込まれることに同意したとみなされます。
+</p>
+<p lang="en">
  Copyright and condition of use of main portion of the source:
+</p>
+<p lang="ja">
+ ソースコードの主となる部分の著作権と使用条件は次のとおりです:
 </p>
 
 <blockquote>
@@ -399,10 +581,15 @@ SUCH DAMAGE.
 </pre>
 </blockquote>
 
-<p>
+<p lang="en">
  diff library (docdiff/diff.rb and docdiff/diff/*) was originally a part of
  Ruby/CVS by Akira TANAKA.  Ruby/CVS is licensed under modified BSD style
  license.  See the following for detail.
+</p>
+<p lang="ja">
+  diffライブラリ（docdiff/diff.rbおよびdocdiff/diff/*）は、もともと田中哲さんに
+  よるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布さ
+  れています。詳細は次を参照してください。
 </p>
 <ul>
  <li><a href="http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs">
@@ -411,7 +598,10 @@ SUCH DAMAGE.
      http://cvs.m17n.org/~akr/ruby-cvs/</a></li>
 </ul>
 
-<h2 id="credits">Credits</h2>
+<h2 id="credits">
+ <span lang="en">Credits</span>
+ <span lang="ja">クレジット</span>
+</h2>
 <ul>
  <li>Hisashi MORITA (primary author)</li>
  <li>Shin'ichiro HARA (initial idea and algorithm suggestion)</li>
@@ -423,9 +613,15 @@ SUCH DAMAGE.
 
 <hr />
 
-<h2 id="resources">Resources</h2>
+<h2 id="resources">
+ <span lang="en">Resources</span>
+ <span lang="ja">情報源</span>
+</h2>
 
-<h3>Format</h3>
+<h3>
+ <span lang="en">Format</span>
+ <span lang="ja">フォーマット</span>
+</h3>
 <ul>
  <li>HTML/XHTML<br />
      <a href="http://www.w3.org">http://www.w3.org</a></li>
@@ -439,10 +635,17 @@ SUCH DAMAGE.
      http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/</a></li>
 </ul>
 
-<h3>Similar Software</h3>
-<p>
+<h3>
+ <span lang="en">Similar Software</span>
+ <span lang="ja">同様の目的を持ったソフトウェア</span>
+</h3>
+<p lang="en">
  There are several other software that can compare text word by word and/or
  character by character.
+</p>
+<p lang="ja">
+ テキストを単語単位や文字単位で比較することができるソフトウェアは、ほかにもあり
+ ます。
 </p>
 <ul>
  <li>GNU wdiff (Seems to support single byte characters only.)<br />
