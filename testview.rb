@@ -63,6 +63,14 @@ class TC_View < Test::Unit::TestCase
                                          array2.collect{|i|Uconv.euctou8(i)}),
                           "UTF-8", nil).to_terminal)
   end
+  def test_to_terminal_digest()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
+    expected =   ["1-2,(1) \033[#{4}m\033[#{41}ma\nb\033[0m\n",
+                  "(2),1-2 \033[#{1}m\033[#{44}mX\nY\033[0m\n",
+                  "3,3 \033[#{4}m\033[#{43}mf\033[0m\033[#{1}m\033[#{42}mF\033[0m\n"]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_terminal_digest)
+  end
 
   def test_to_html_del_add_ascii()
     array1 = ['a', 'b', 'c']
@@ -111,6 +119,14 @@ class TC_View < Test::Unit::TestCase
     expected =   ["<span class=\"common\">&lt;&gt;&amp;&nbsp;</span>"]
     assert_equal(expected, View.new(difference, "ASCII", nil).to_html)
   end
+  def test_to_html_digest()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
+    expected =   ["1-2,(1) <span class=\"del\"><del>a<br>\nb</del></span>\n",
+                  "(2),1-2 <span class=\"add\"><ins>X<br>\nY</ins></span>\n",
+                  "3,3 <span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span>\n"]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html_digest)
+  end
   def test_to_xhtml_cr_ascii()
     array1 = ['a', "\r"]
     array2 = ['a', "\r"]
@@ -138,6 +154,14 @@ class TC_View < Test::Unit::TestCase
     difference = Difference.new(array1, array2)
     expected =   ["<span class=\"common\">&lt;&gt;&amp;&nbsp;</span>"]
     assert_equal(expected, View.new(difference, "ASCII", nil).to_xhtml)
+  end
+  def test_to_xhtml_digest()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
+    expected =   ["1-2,(1) <span class=\"del\"><del>a<br />\nb</del></span>\n",
+                  "(2),1-2 <span class=\"add\"><ins>X<br />\nY</ins></span>\n",
+                  "3,3 <span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span>\n"]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_xhtml_digest)
   end
   def test_to_html_del_add_ja()
     array1 = ['¤¢', '¤¤', '¤¦']
