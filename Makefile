@@ -15,6 +15,8 @@ test:
 	ruby testdocdiff.rb
 
 dist: $(DIST)
+	rm ChangeLog
+	cvs2cl
 	rm -fr $(PACKAGE)-$(VERSION)
 	mkdir $(PACKAGE)-$(VERSION)
 	cp -rp $(DIST) $(PACKAGE)-$(VERSION)
