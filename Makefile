@@ -1,7 +1,7 @@
 PACKAGE = docdiff
 VERSION = 0.3.0
 # DATE = `date +%Y%m%d`
-DIST = Makefile devutil docdiff docdiff.conf.example docdiff.rb \
+DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
        encoding readme.html sample \
        testcharstring.rb testdiff.rb testdifference.rb testdocdiff.rb testdocument.rb testview.rb
 # PWDBASE = `pwd | sed "s|^.*[/\\]||"`
