@@ -139,20 +139,22 @@ class DocDiff
     result.to_s
   end
 
+  def process_config_file(filename)
+    file_content = nil
+    begin
+      File.open(filename, "r"){|f| file_content = f.read}
+    rescue Errno::ENOENT
+      message = "config file not found so not read."
+    ensure
+      if file_content != nil
+        self.config.update(DocDiff.parse_config_file_content(file_content))
+      end
+    end
+    message
+  end
+
 end  # class DocDiff
 
-def process_config_file(filename)
-  begin
-    file_content = File.read(filename, "r")
-  rescue Errno::ENOENT
-    message = "config file not found so not read."
-  ensure
-    if file_content != nil
-      docdiff.config.update(DocDiff.parse_config_file_content(file_content))
-    end
-  end
-  message
-end
 
 if $0 == __FILE__
 
@@ -240,11 +242,11 @@ if $0 == __FILE__
   docdiff = DocDiff.new()
   docdiff.config.update(default_config)
   unless clo[:no_config_file] == true # process_commandline_option
-    message = process_config_file(DocDiff::SystemConfigFileName)
+    message = docdiff.process_config_file(DocDiff::SystemConfigFileName)
     if clo[:verbose] == true || docdiff.config[:verbose] == true
       STDERR.print message
     end
-    message = process_config_file(DocDiff::UserConfigFileName)
+    message = docdiff.process_config_file(DocDiff::UserConfigFileName)
     if clo[:verbose] == true || docdiff.config[:verbose] == true
       STDERR.print message
     end
