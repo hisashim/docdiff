@@ -164,7 +164,7 @@ if $0 == __FILE__
     :resolution    => "word",
     :encoding      => "auto",
     :eol           => "auto",
-    :format        => "manued",
+    :format        => "html",
     :cache         => true,
     :digest        => false,
     :verbose       => false

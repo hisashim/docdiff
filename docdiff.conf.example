@@ -1,0 +1,9 @@
+# Comment out and modify the following lines as you like.
+#
+# resolution = word
+# encoding = UTF-8
+# eol = LF
+# format = xhtml
+# digest = off  # not implemented yet
+# cache = off   # not implemented yet
+# verbose = no  # not implemented
