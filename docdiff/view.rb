@@ -50,23 +50,36 @@ class View
       end
       case operation
       when :common_elt_elt
-        result << (tags[:start_common] + source + tags[:end_common])
+        result << (
+          tags[:start_common] +
+          source.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} +
+          tags[:end_common]
+        )
       when :change_elt
         result << (tags[:start_before_change] + 
-                   source + 
+          source.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
                    tags[:end_before_change] + 
                    tags[:start_after_change] + 
-                   target + 
+          target.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
                    tags[:end_after_change])
       when :del_elt
-        result << (tags[:start_del] + source + tags[:end_del])
+        result << (tags[:start_del] +
+          source.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
+          tags[:end_del]
+        )
       when :add_elt
-        result << (tags[:start_add] + target + tags[:end_add])
+        result << (tags[:start_add] +
+          target.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
+          tags[:end_add]
+        )
       else
         raise "invalid attribute: #{block.first}\n"
       end
     }
-    result
+    if headfoot == true
+      result = tags[:header] + result + tags[:footer]
+    end
+    result.delete_if{|elem|elem==''}
   end
   def apply_style_digest(tags, headfoot = true)
     result = []
@@ -171,12 +184,15 @@ class View
   PREFIX_LENGTH = 16
   POSTFIX_LENGTH = 16
   def prefix_pat()
-    Regexp.new('[^\r\n]{0,'+"#{PREFIX_LENGTH}"+'}\Z', @encoding.sub(/ASCII/i, 'none'))
+    Regexp.new('[^\r\n]{0,'+"#{PREFIX_LENGTH}"+'}\Z',
+               @encoding.sub(/ASCII/i, 'none'))
   end
   def postfix_pat()
-    Regexp.new('\A[^\r\n]{0,'+"#{POSTFIX_LENGTH}"+'}', @encoding.sub(/ASCII/i, 'none'))
+    Regexp.new('\A[^\r\n]{0,'+"#{POSTFIX_LENGTH}"+'}',
+               @encoding.sub(/ASCII/i, 'none'))
   end
 
+  # Terminal
   def terminal_header()
     []
   end
@@ -222,90 +238,9 @@ class View
     tags = terminal_tags
     tags.update(overriding_tags) if overriding_tags
     apply_style_digest(tags, headfoot)
-=begin
-    result = []
-    doc1_lnum = 1
-    doc2_lnum = 1
-    @difference.each_with_index{|block, i|
-      operation = block.first
-      if block_given?
-        source = yield block[1].to_s
-        target = yield block[2].to_s
-      else
-        source = block[1].to_s
-        target = block[2].to_s
-      end
-      span1 = source_lines_involved = source.scan_lines(@eol).size
-      span2 = target_lines_involved = target.scan_lines(@eol).size
-      pos = ""
-
-      case
-      when i == 0 then prefix = ""
-      else prefix = @difference[i-1][1].to_s.scan(prefix_pat).to_s
-      end
-      case
-      when (i + 1) == @difference.size then postfix = ""
-      else postfix = @difference[i+1][1].to_s.scan(postfix_pat).to_s
-      end
-
-      case operation
-      when :common_elt_elt
-      when :change_elt
-        pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
-        pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
-        pos += " "
-#### tried to display bol and eol, but does not work well
-#         if i == 0
-#           prefix = ""
-#         else
-#           bolsample = source_lines[doc1_lnum-1].scan(/\A[^#{@eol_char}]+?/m).to_s.split(//)[0..3].to_s
-#           if bolsample.size < 2
-#             bolsample = ""
-#           else
-#             bolsample = bolsample + ".."
-#           end
-#           prefix =  bolsample + @difference[i-1][1].to_s.scan(/[^\r\n]*\Z/).to_s
-#         end
-#         if (i + 1) == @difference.size
-#           postfix = ""
-#         else
-#           eolsample = source_lines[doc1_lnum-1 + span1-1].scan(/[^#{@eol_char}]+\Z/m).to_s.split(//)[-3..-1].to_s
-#           if eolsample.size < 2
-#             eolsample = ""
-#           else
-#             eolsample = ".." + eolsample
-#           end
-#           postfix = @difference[i+1][1].to_s.scan(/\A[^\r\n]+/).to_s + eolsample
-#         end
-####
-        result << (pos + prefix +
-                   tags[:start_before_change] + source + tags[:end_before_change] + 
-                   tags[:start_after_change] + target + tags[:end_after_change] +
-                   postfix + (@eol_char))
-      when :del_elt
-        pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
-        pos += ",(#{doc2_lnum})"
-        pos += " "
-        result << (pos + prefix + tags[:start_del] + source + tags[:end_del] + postfix + (@eol_char))
-      when :add_elt
-        pos += "(#{doc1_lnum})"
-        pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
-        pos += " "
-        result << (pos + prefix + tags[:start_add] + target + tags[:end_add] + postfix + (@eol_char))
-      else
-        raise "invalid attribute: #{block.first}\n"
-      end
-      doc1_lnum += source.scan_eols(@eol).size
-      doc2_lnum += target.scan_eols(@eol).size
-    }
-    result
-=end
   end
 
+  # HTML
   def html_header()
     ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
      '"http://www.w3.org/TR/html4/loose.dtd">' + (@eol_char||""),
@@ -358,13 +293,7 @@ class View
   def to_html(overriding_tags = nil, headfoot = true)
     tags = html_tags()
     tags.update(overriding_tags) if overriding_tags
-    result = apply_style(tags, headfoot){|str_to_escape|
-        str_to_escape.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]}
-    }
-    if headfoot == true
-      result = html_header + result + html_footer
-    end
-    result
+    apply_style(tags, headfoot)
   end
   def to_html_digest(overriding_tags = nil, headfoot = true)
     tags = html_tags()
@@ -372,6 +301,7 @@ class View
     apply_style_digest(tags, headfoot)
   end
 
+  # XHTML
   def xhtml_header()
     ['<?xml version="1.0" encoding="' + (@codeset||"").downcase+ '"?>' + (@eol_char||""),
      '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + (@eol_char||""),
@@ -393,7 +323,6 @@ class View
   XHTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', ' '=>'&nbsp;',
                    "\r\n" => "<br />\r\n", "\r" => "<br />\r", "\n" => "<br />\n"}
   XHTMLEscapePat = /(\r\n|#{XHTMLEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
-
   def xhtml_tags()
     {:outside_escape_dic  => XHTMLEscapeDic,
      :outside_escape_pat  => XHTMLEscapePat,
@@ -425,13 +354,7 @@ class View
   def to_xhtml(overriding_tags = nil, headfoot = true)
     tags = xhtml_tags()
     tags.update(overriding_tags) if overriding_tags
-    result = apply_style(tags){|str_to_escape|
-      str_to_escape.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]}
-    }
-    if headfoot == true
-      result = xhtml_header + result + xhtml_footer
-    end
-    result
+    apply_style(tags, headfoot)
   end
   def to_xhtml_digest(overriding_tags = nil, headfoot = true)
     tags = xhtml_tags()
@@ -439,6 +362,7 @@ class View
     apply_style_digest(tags, headfoot)
   end
 
+  # Manued
   def manued_header()
     ["defparentheses [ ]"        + (@eol_char||"\n"),
      "defdelete      /"          + (@eol_char||"\n"),
@@ -484,49 +408,10 @@ class View
      :end_after_change    => ']'
     }
   end
-  def to_manued(overriding_tags = nil, headfoot = false)  # [ / ; ]
+  def to_manued(overriding_tags = nil, headfoot = true)  # [ / ; ]
     tags = manued_tags()
     tags.update(overriding_tags) if overriding_tags
-    result = []
-    @difference.each{|block|
-      operation = block.first
-      source = block[1].to_s
-      target = block[2].to_s
-      case operation
-      when :common_elt_elt
-        result << (tags[:start_common] +
-                   source.gsub(ManuedOutsideEscapePat){|matched| ManuedOutsideEscapeDic[matched]} +
-                   tags[:end_common])
-      when :change_elt
-        result << (tags[:start_before_change] + 
-                   source.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + 
-                   tags[:end_before_change] + 
-                   tags[:start_after_change] + 
-                   target.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + 
-                   tags[:end_after_change])
-      when :del_elt
-        result << (tags[:start_del] +
-                   source.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} +
-                   tags[:end_del])
-      when :add_elt
-        result << (tags[:start_add] +
-                   target.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} +
-                   tags[:end_add])
-      else
-        raise "invalid attribute: #{block.first}\n"
-      end
-    }
-    if headfoot == true
-      result =
-        ["defparentheses [ ]#{@eol_char}",
-        "defdelete      /#{@eol_char}",
-        "defswap        |#{@eol_char}",
-        "defcomment     ;#{@eol_char}",
-        "defescape      ~#{@eol_char}",
-        "deforder       newer-last#{@eol_char}",
-        "defversion     0.9.5#{@eol_char}"] + result
-    end
-    result
+    apply_style(tags, headfoot)
   end
   def to_manued_digest(overriding_tags = nil, headfoot = true)  # [ / ; ]
     tags = manued_tags()
@@ -534,13 +419,14 @@ class View
     apply_style_digest(tags, headfoot)
   end
 
+  # wdiff-like
   def wdiff_header()
     []
   end
   def wdiff_footer()
     []
   end
-  WDIFFEscapeDic = {'ThisRandomString'=>'ThisRandomString'}
+  WDIFFEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
   WDIFFEscapePat = /(\r\n|#{WDIFFEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def wdiff_tags()
     {:outside_escape_dic  => WDIFFEscapeDic,
@@ -570,31 +456,59 @@ class View
      :start_after_change  => '{+',
      :end_after_change    => '+}'}
   end
-  def to_wdiff(overriding_tags = nil, headfoot = false)
+  def to_wdiff(overriding_tags = nil, headfoot = true)
     tags = wdiff_tags()
     tags.update(overriding_tags) if overriding_tags
     apply_style(tags)
   end
-  def to_wdiff_digest(overriding_tags = nil, headfoot = false)
+  def to_wdiff_digest(overriding_tags = nil, headfoot = true)
     tags = wdiff_tags()
     tags.update(overriding_tags) if overriding_tags
-
     apply_style_digest(tags, headfoot)
   end
 
-  def to_user(overriding_tags = nil, headfoot = false)
-    tags = {:start_common        => '',
-            :end_common          => '',
-            :start_del           => '',
-            :end_del             => '',
-            :start_add           => '',
-            :end_add             => '',
-            :start_before_change => '',
-            :end_before_change   => '',
-            :start_after_change  => '',
-            :end_after_change    => ''}
+  # user defined markup
+  def user_header(); []; end
+  def user_footer(); []; end
+  UserEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
+  UserEscapePat = /(\r\n|#{UserEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+  def user_tags()
+    {:outside_escape_dic  => UserEscapeDic,
+     :outside_escape_pat  => UserEscapePat,
+     :inside_escape_dic   => UserEscapeDic,
+     :inside_escape_pat   => UserEscapePat,
+     :start_digest_body   => '',
+     :end_digest_body     => '',
+     :start_entry         => '',
+     :end_entry           => '',
+     :start_position      => '',
+     :end_position        => ' ',
+     :start_prefix        => '',
+     :end_prefix          => '',
+     :start_postfix       => '',
+     :end_postfix         => '',
+     :header              => user_header(),
+     :footer              => user_footer(),
+     :start_common        => '',
+     :end_common          => '',
+     :start_del           => '',
+     :end_del             => '',
+     :start_add           => '',
+     :end_add             => '',
+     :start_before_change => '',
+     :end_before_change   => '',
+     :start_after_change  => '',
+     :end_after_change    => ''}
+  end
+  def to_user(overriding_tags = nil, headfoot = true)
+    tags = user_tags()
     tags.update(overriding_tags) if overriding_tags
-    apply_style(tags)
+    apply_style(tags, headfoot)
+  end
+  def to_user_digest(overriding_tags = nil, headfoot = true)
+    tags = user_tags()
+    tags.update(overriding_tags) if overriding_tags
+    apply_style_digest(tags, headfoot)
   end
 
   def to_debug()
