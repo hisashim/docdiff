@@ -15,11 +15,11 @@ test:
 	ruby testdocdiff.rb
 
 dist: $(DIST)
-	rm -ir $(PACKAGE)-$(VERSION)
+	rm -fr $(PACKAGE)-$(VERSION)
 	mkdir $(PACKAGE)-$(VERSION)
 	cp -rp $(DIST) $(PACKAGE)-$(VERSION)
 	tar zvcf $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
-	rm -ir $(PACKAGE)-$(VERSION)
+	rm -fr $(PACKAGE)-$(VERSION)
 
 # tar:
 # 	(cd ..; \
