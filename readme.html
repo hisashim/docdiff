@@ -84,7 +84,7 @@
 </h2>
 <ul>
 <li>0.3.2 (2005-01-03)<ul>
- <li>Added Japanese documentation.  Try switching CSS between en and ja (IE6 does not support CSS switching yet, but Mozilla does).</li>
+ <li>Readme is multilingualized (added partial Japanese translation).  Try switching CSS between en and ja.  Monolingual files are also available (readme.en.html, readme.ja.html).</li>
  <li>Outputs better error messages when it failed to auto-detect the encoding and/or eol, though the accuracy is the same.</li>
  <li>Switched revision control system from CVS to Subversion.</li>
 </ul></li>
@@ -465,7 +465,7 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
  DocDiffをSubversionなどの外部diffプログラムとして使いたければ、次のようにするとよいでしょう。
 </p>
 <blockquote><p>
- <samp>% <kbd>svn diff --diff-cmd=docdiff.rb --extensions "--ascii --lf --tty --digest"</kbd></samp>
+ <samp>% <kbd>svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"</kbd></samp>
 </p></blockquote>
 
 <hr />
