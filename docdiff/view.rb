@@ -240,67 +240,67 @@ class View
     apply_style_digest(tags, headfoot)
   end
 
-  # HTML4
-  def html4_header()
-    ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
-     '"http://www.w3.org/TR/html4/loose.dtd">' + (@eol_char||""),
-     '<html><head>',
-     '<meta http-equiv="Content-Type" content="text/html; charset=' + (@encoding||"") + '">' + (@eol_char||""),
-     '<title>' + (@source||"") + ', ' + (@target||"") + '</title>' + (@eol_char||""),
-     '<style type="text/css">' + (@eol_char||"") +
- #    'body {font-family: monospace;}' + (@eol_char||"") +
-     'span.del {background: pink;}' + (@eol_char||"") +
-     'span.add {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
-     'span.before_change {background: pink;}' + (@eol_char||"") +
-     'span.after_change {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
-     '</style>' + (@eol_char||""),
-     '</head><body>' + (@eol_char||"")]
-  end
-  def html4_footer()
-    [(@eol_char||"") + '</body></html>' + (@eol_char||"")]
-  end
-  HTML4EscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', ' '=>'&nbsp;',
-                   "\r\n" => "<br>\r\n", "\r" => "<br>\r", "\n" => "<br>\n"}
-  HTML4EscapePat = /(\r\n|#{HTML4EscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
-  def html4_tags()
-    {:outside_escape_dic  => HTML4EscapeDic,
-     :outside_escape_pat  => HTML4EscapePat,
-     :inside_escape_dic   => HTML4EscapeDic,
-     :inside_escape_pat   => HTML4EscapePat,
-     :start_digest_body   => '<ul>',
-     :end_digest_body     => '</ul>',
-     :start_entry         => '<li>',
-     :end_entry           => '</li>',
-     :start_position      => '',
-     :end_position        => '<br>',
-     :start_prefix        => '',
-     :end_prefix          => '',
-     :start_postfix       => '',
-     :end_postfix         => '',
-     :header              => html4_header(),
-     :footer              => html4_footer(),
-     :start_common        => '<span class="common">',
-     :end_common          => '</span>',
-     :start_del           => '<span class="del"><del>',
-     :end_del             => '</del></span>',
-     :start_add           => '<span class="add"><ins>',
-     :end_add             => '</ins></span>',
-     :start_before_change => '<span class="before_change"><del>',
-     :end_before_change   => '</del></span>',
-     :start_after_change  => '<span class="after_change"><ins>',
-     :end_after_change    => '</ins></span>'}
-  end
+#   # HTML4
+#   def html4_header()
+#     ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
+#      '"http://www.w3.org/TR/html4/loose.dtd">' + (@eol_char||""),
+#      '<html><head>',
+#      '<meta http-equiv="Content-Type" content="text/html; charset=' + (@encoding||"") + '">' + (@eol_char||""),
+#      '<title>' + (@source||"") + ', ' + (@target||"") + '</title>' + (@eol_char||""),
+#      '<style type="text/css">' + (@eol_char||"") +
+#  #    'body {font-family: monospace;}' + (@eol_char||"") +
+#      'span.del {background: pink;}' + (@eol_char||"") +
+#      'span.add {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
+#      'span.before_change {background: pink;}' + (@eol_char||"") +
+#      'span.after_change {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
+#      '</style>' + (@eol_char||""),
+#      '</head><body>' + (@eol_char||"")]
+#   end
+#   def html4_footer()
+#     [(@eol_char||"") + '</body></html>' + (@eol_char||"")]
+#   end
+#   HTML4EscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', ' '=>'&nbsp;',
+#                    "\r\n" => "<br>\r\n", "\r" => "<br>\r", "\n" => "<br>\n"}
+#   HTML4EscapePat = /(\r\n|#{HTML4EscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+#   def html4_tags()
+#     {:outside_escape_dic  => HTML4EscapeDic,
+#      :outside_escape_pat  => HTML4EscapePat,
+#      :inside_escape_dic   => HTML4EscapeDic,
+#      :inside_escape_pat   => HTML4EscapePat,
+#      :start_digest_body   => '<ul>',
+#      :end_digest_body     => '</ul>',
+#      :start_entry         => '<li>',
+#      :end_entry           => '</li>',
+#      :start_position      => '',
+#      :end_position        => '<br>',
+#      :start_prefix        => '',
+#      :end_prefix          => '',
+#      :start_postfix       => '',
+#      :end_postfix         => '',
+#      :header              => html4_header(),
+#      :footer              => html4_footer(),
+#      :start_common        => '<span class="common">',
+#      :end_common          => '</span>',
+#      :start_del           => '<span class="del"><del>',
+#      :end_del             => '</del></span>',
+#      :start_add           => '<span class="add"><ins>',
+#      :end_add             => '</ins></span>',
+#      :start_before_change => '<span class="before_change"><del>',
+#      :end_before_change   => '</del></span>',
+#      :start_after_change  => '<span class="after_change"><ins>',
+#      :end_after_change    => '</ins></span>'}
+#   end
 
-  def to_html4(overriding_tags = nil, headfoot = true)
-    tags = html4_tags()
-    tags.update(overriding_tags) if overriding_tags
-    apply_style(tags, headfoot)
-  end
-  def to_html4_digest(overriding_tags = nil, headfoot = true)
-    tags = html4_tags()
-    tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot)
-  end
+#   def to_html4(overriding_tags = nil, headfoot = true)
+#     tags = html4_tags()
+#     tags.update(overriding_tags) if overriding_tags
+#     apply_style(tags, headfoot)
+#   end
+#   def to_html4_digest(overriding_tags = nil, headfoot = true)
+#     tags = html4_tags()
+#     tags.update(overriding_tags) if overriding_tags
+#     apply_style_digest(tags, headfoot)
+#   end
 
   # HTML (XHTML)
   def html_header()
