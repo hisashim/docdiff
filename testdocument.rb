@@ -1,0 +1,71 @@
+#!/usr/bin/ruby
+require 'test/unit'
+require 'document'
+require 'nkf'
+require 'uconv'
+
+class TC_Document < Test::Unit::TestCase
+
+  def setup()
+    #
+  end
+
+  def test_codeset()
+    doc = Document.new("Foo bar.\nBaz quux.")
+    doc.codeset = 'ASCII'
+    doc.eol = 'LF'
+    expected = 'ASCII'
+    assert_equal(expected, doc.codeset)
+  end
+  def test_eol()
+    doc = Document.new("Foo bar.\nBaz quux.")
+    doc.codeset = 'ASCII'
+    doc.eol = 'LF'
+    expected = 'LF'
+    assert_equal(expected, doc.eol)
+  end
+  def test_compare_by_line_with()
+    doc1 = Document.new("Foo bar.\nBaz quux.")
+    doc1.codeset = 'ASCII'
+    doc1.eol = 'LF'
+    doc2 = Document.new("Foo.\nBaz quux.")
+    doc2.codeset = 'ASCII'
+    doc2.eol = 'LF'
+    expected = [[:change_elt,     ["Foo bar.\n"], ["Foo.\n"]],
+                [:common_elt_elt, ['Baz quux.'], ['Baz quux.']]]
+    assert_equal(expected, doc1.compare_by_line_with(doc2))
+  end
+  def test_compare_by_word_with()
+    doc1 = Document.new("a b c d\ne f")
+    doc1.codeset = 'ASCII'
+    doc1.eol = 'LF'
+    doc2 = Document.new("a x c d\ne f")
+    doc2.codeset = 'ASCII'
+    doc2.eol = 'LF'
+    expected = [[:common_elt_elt, ["a "], ["a "]],
+                [:change_elt,     ["b "], ["x "]],
+                [:common_elt_elt, ["c ", "d", "\n"], ["c ", "d", "\n"]],
+                [:common_elt_elt, ["e f"], ["e f"]]]
+    assert_equal(expected, doc1.compare_by_word_with(doc2))
+  end
+  def test_compare_by_char_with()
+    doc1 = Document.new("foo bar\nbaz")
+    doc1.codeset = 'ASCII'
+    doc1.eol = 'LF'
+    doc2 = Document.new("foo beer\nbaz")
+    doc2.codeset = 'ASCII'
+    doc2.eol = 'LF'
+    expected = [[:common_elt_elt, ['foo '], ['foo ']],
+                [:common_elt_elt, ['b'], ['b']],
+                [:change_elt,     ['a'], ['e', 'e']],
+                [:common_elt_elt, ['r'], ['r']],
+                [:common_elt_elt, ["\n"], ["\n"]],
+                [:common_elt_elt, ['baz'], ['baz']]]
+    assert_equal(expected, doc1.compare_by_char_with(doc2))
+  end
+
+  def teardown()
+    #
+  end
+
+end
