@@ -14,6 +14,11 @@
    border-left: thick solid;
    padding-left: 0.3em;
   }
+  /* these styles are not supported or do not fit to today's browsers.
+  h4 {display: run-in;}
+  h4:after {content: ": ";}
+  kbd {font-family: "Courier New", "Courier", monospace; font-weight: bolder;}
+  */
  </style>
  <style type="text/css">
   li blockquote {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
@@ -46,7 +51,7 @@
  <span lang="en">Table of Contents</span>
  <span lang="ja">目次</span>
 </h2>
-<ul>
+<ul lang="en">
  <li><a href="#news">News</a></li>
  <li><a href="#todo">Todo</a></li>
  <li><a href="#description">Description</a></li>
@@ -58,6 +63,18 @@
  <li><a href="#credits">Credits</a></li>
  <li><a href="#resources">Resources</a></li>
 </ul>
+<ul lang="ja">
+ <li><a href="#news">ニュース</a></li>
+ <li><a href="#todo">予定</a></li>
+ <li><a href="#description">簡単な説明</a></li>
+ <li><a href="#summary">概要</a></li>
+ <li><a href="#requirement">必要なもの</a></li>
+ <li><a href="#installation">インストール方法</a></li>
+ <li><a href="#usage">使い方</a></li>
+ <li><a href="#license">ライセンス</a></li>
+ <li><a href="#credits">クレジット</a></li>
+ <li><a href="#resources">情報源</a></li>
+</ul>
 
 <hr />
 
@@ -67,6 +84,7 @@
 </h2>
 <ul>
 <li>0.3.2 (2005-01-03)<ul>
+ <li>Added Japanese documentation.  Try switching CSS between en and ja (IE6 does not support CSS switching yet, but Mozilla does).</li>
  <li>Outputs better error messages when it failed to auto-detect the encoding and/or eol, though the accuracy is the same.</li>
  <li>Switched revision control system from CVS to Subversion.</li>
 </ul></li>
@@ -217,8 +235,7 @@
  <span lang="ja">インストール方法</span>
 </h2>
 <p lang="en">
- Note that you need appropriate permission for proper installation (you
- have to have a root/administrator privilege).
+ Note that you need appropriate permission for proper installation (you may have to have a root/administrator privilege).
 </p>
 <p lang="ja">
  注意: 正しくインストールするためには適切なファイルアクセス権限が必要です（管理者権限が必要な場合があります）。
@@ -295,7 +312,7 @@ e.g. <samp>% <kbd>docdiff old.txt new.txt > diff.html</kbd></samp>
  See the help message for detail (<kbd>docdiff --help</kbd>).
 </p>
 <p lang="ja">
- 詳しくはヘルプメッセージを参照してください (<kbd>docdiff --help</kbd>)。
+ 詳しくはヘルプメッセージを参照してください（<kbd>docdiff --help</kbd>）。
 </p>
 
 <h3>
@@ -311,18 +328,8 @@ I am just another Ruby porter.<br />
 Hello, my name is matz.<br />
 It's me who has created Ruby.  I am a Ruby hacker.<br />
 % <kbd>docdiff sample/01.en.ascii.lf sample/02.en.ascii.lf</kbd><br />
-<span class="common">Hello, my name is </span>
-<span class="before_change"><del>Watanabe.</del></span>
-<span class="after_change"><ins>matz.</ins></span>
-<span class="common"><br /></span>
-<span class="add"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span>
-<span class="common">I am </span>
-<span class="before_change"><del>just another </del></span>
-<span class="after_change"><ins>a </ins></span>
-<span class="common">Ruby </span>
-<span class="before_change"><del>porter.</del></span>
-<span class="after_change"><ins>hacker.</ins></span>
-<span class="common"><br /></span>
+<span class="common">Hello, my name is </span><span class="before_change"><del>Watanabe.</del></span><span class="after_change"><ins>matz.</ins></span><span class="common"><br /></span>
+<span class="add"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span><span class="common">I am </span><span class="before_change"><del>just another </del></span><span class="after_change"><ins>a </ins></span><span class="common">Ruby </span><span class="before_change"><del>porter.</del></span><span class="after_change"><ins>hacker.</ins></span><span class="common"><br /></span>
 %<br />
 </samp></p>
 <p lang="ja"><samp>
@@ -333,19 +340,8 @@ It's me who has created Ruby.  I am a Ruby hacker.<br />
 こんばんは、私の名前はまつもとです。<br />
 Rubyを作ったのは私です。私はRuby Hackerです。<br />
 % <kbd>docdiff sample/01.ja.eucjp.lf sample/02.ja.eucjp.lf</kbd><br />
-<span class="before_change"><del>こんにちは</del></span>
-<span class="after_change"><ins>こんばんは</ins></span>
-<span class="common">、私の</span>
-<span class="before_change"><del>名前はわたなべです</del></span>
-<span class="after_change"><ins>名前はまつもとです</ins></span>
-<span class="common">。<br /></span>
-<span class="add"><ins>Rubyを作ったのは私です。</ins></span>
-<span class="common">私は</span>
-<span class="del"><del>Just Another </del></span>
-<span class="common">Ruby </span>
-<span class="before_change"><del>Porter</del></span>
-<span class="after_change"><ins>Hacker</ins></span>
-<span class="common">です。<br /></span>
+<span class="before_change"><del>こんにちは</del></span><span class="after_change"><ins>こんばんは</ins></span><span class="common">、私の</span><span class="before_change"><del>名前はわたなべです</del></span><span class="after_change"><ins>名前はまつもとです</ins></span><span class="common">。<br /></span>
+<span class="add"><ins>Rubyを作ったのは私です。</ins></span><span class="common">私は</span><span class="del"><del>Just Another </del></span><span class="common">Ruby </span><span class="before_change"><del>Porter</del></span><span class="after_change"><ins>Hacker</ins></span><span class="common">です。<br /></span>
 %<br />
 </samp></p>
 </blockquote>
@@ -361,21 +357,21 @@ Rubyを作ったのは私です。私はRuby Hackerです。<br />
  設定ファイルは次の場所に配置すると有効になります:
 </p>
 <ul lang="en">
-<li>/etc/docdiff/docdiff.conf (site-wide configuration)</li>
-<li>~/etc/docdiff/docdiff.conf (user configuration)<br />
- (~/etc/docdiff/docdiff.conf is used by default in order to keep home directory clean, preventing dotfiles and dotdirs from scattering around. Alternatively, you can use ~/.docdiff/docdiff.conf as user configuration file name, following the traditional Unix convention.)</li>
+<li><samp>/etc/docdiff/docdiff.conf</samp> (site-wide configuration)</li>
+<li><samp>~/etc/docdiff/docdiff.conf</samp> (user configuration)<br />
+ (<samp>~/etc/docdiff/docdiff.conf</samp> is used by default in order to keep home directory clean, preventing dotfiles and dotdirs from scattering around. Alternatively, you can use <samp>~/.docdiff/docdiff.conf</samp> as user configuration file name, following the traditional Unix convention.)</li>
 </ul>
 <ul lang="ja">
-<li>/etc/docdiff/docdiff.conf（サイト全体の設定）</li>
-<li>~/etc/docdiff/docdiff.conf（ユーザごとの設定）<br />
- （標準の設定では、ホームディレクトリにドットファイルをまき散らかさないために、~/etc/docdiff/docdiff.confが使われます。または、昔ながらのUnixの慣習に従って~/.docdiff/docdiff.confを使ってももちろん構いません。ただし両方同時には使えません）</li>
+<li><samp>/etc/docdiff/docdiff.conf</samp>（サイト全体の設定）</li>
+<li><samp>~/etc/docdiff/docdiff.conf</samp>（ユーザごとの設定）<br />
+ （標準の設定では、ホームディレクトリにドットファイルをまき散らかさないために、<samp>~/etc/docdiff/docdiff.conf</samp>が使われます。または、昔ながらのUnixの慣習に従って<samp>~/.docdiff/docdiff.conf</samp>を使ってももちろん構いません。ただし両方同時には使えません）</li>
 </ul>
 
 <p lang="en">
- Notation is as follows (also refer to the file docdiff.conf.example included in the distribution archive):
+ Notation is as follows (also refer to the file <samp>docdiff.conf.example</samp> included in the distribution archive):
 </p>
 <p lang="ja">
- 設定ファイルの記法は次のとおりです（docdiff.conf.exampleファイルも参照してください。配布アーカイブに含まれているはずです）:
+ 設定ファイルの記法は次のとおりです（<samp>docdiff.conf.example</samp>ファイルも参照してください。配布アーカイブに含まれているはずです）:
 </p>
 <blockquote>
 <p><code>
@@ -452,10 +448,10 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
  Fooは（必要もないのに）削除されると同時に挿入されています。
 </p>
 <p lang="en">
- I would like to fix this sometime, but it's not easy.  If you split single space as single element (i.e. ["foo", " ", "bar"]), the word order of the comparison result will be less natural.  Suggestions are welcome.
+ I would like to fix this sometime, but it's not easy.  If you split single space as single element (i.e. <samp>["foo", " ", "bar"]</samp>), the word order of the comparison result will be less natural.  Suggestions are welcome.
 </p>
 <p lang="ja">
- 作者はこの問題をいつか解決したいと思っていますが、簡単ではなさそうです。もし空白を1つの要素として分割したなら（i.e. ["foo", " ", "bar"]）、比較した結果出力される単語の並びが今よりも不自然になってしまいます。良い案があったら教えてください。
+ 作者はこの問題をいつか解決したいと思っていますが、簡単ではなさそうです。もし空白を1つの要素として分割したなら（i.e. <samp>["foo", " ", "bar"]</samp>）、比較した結果出力される単語の並びが今よりも不自然になってしまいます。良い案があったら教えてください。
 </p>
 
 <h4>
@@ -522,10 +518,10 @@ SUCH DAMAGE.
 </blockquote>
 
 <p lang="en">
- diff library (docdiff/diff.rb and docdiff/diff/*) was originally a part of Ruby/CVS by Akira TANAKA.  Ruby/CVS is licensed under modified BSD style license.  See the following for detail.
+ diff library (<samp>docdiff/diff.rb</samp> and <samp>docdiff/diff/*</samp>) was originally a part of Ruby/CVS by Akira TANAKA.  Ruby/CVS is licensed under modified BSD style license.  See the following for detail.
 </p>
 <p lang="ja">
- diffライブラリ（docdiff/diff.rbおよびdocdiff/diff/*）は、もともと田中哲さんによるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布されています。詳細は次を参照してください。
+ diffライブラリ（<samp>docdiff/diff.rb</samp>および<samp>docdiff/diff/*</samp>）は、もともと田中哲さんによるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布されています。詳細は次を参照してください。
 </p>
 <ul>
  <li><a href="http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs">
