@@ -69,35 +69,6 @@ module CharString
     EOLChars[mod::EOL] = mod
   end
 
-  # # this method is obsolete
-#   def CharString.guess_codeset_using_nkf(string, sample_length = 65536)
-#     return nil if string == nil
-#     sample = string[0 .. (sample_length - 1)]
-#     codesets = {NKF::JIS     => "JIS", 
-#                 NKF::EUC     => "EUC-JP", 
-#                 NKF::SJIS    => "Shift_JIS", 
-#                 NKF::BINARY  => "BINARY", 
-#                 NKF::UNKNOWN => "UNKNOWN"}
-#     guessed_codeset = codesets[NKF::guess(sample)]
-#     ascii_pat = '[\x00-\x7f]'
-#     utf8_pat = ['(?:', 
-#                 '(?:[\x00-\x7f])', 
-#                 '|(?:[\xc0-\xdf][\x80-\xbf])', 
-#                 '|(?:[\xe0-\xef][\x80-\xbf][\x80-\xbf])', 
-#                 '|(?:[\xf0-\xf7][\x80-\xbf][\x80-\xbf][\x80-\xbf])', 
-#                 ')+'].join
-#     ascii_char_count = sample.scan(/#{ascii_pat}/on).join.length
-#     utf8_char_count  = sample.scan(/#{utf8_pat}/on).join.length
-#     if guessed_codeset != 'JIS'
-#       if ascii_char_count == sample.length   # every character is ASCII
-#         guessed_codeset = 'ASCII'
-#       elsif utf8_char_count == sample.length # every character is UTF-8
-#         guessed_codeset = 'UTF-8'
-#       end
-#     end
-#     return guessed_codeset
-#   end
-
   # returns 'JIS', 'EUC-JP', 'Shift_JIS', 'UTF-8', or 'UNKNOWN'
   def CharString.guess_codeset(string, sample_length = 65536)
     return nil if string == nil
@@ -181,15 +152,15 @@ module CharString
   # Note that some languages (like Japanese) do not have 'word' or 'phrase', 
   # thus some of the following methods are not 'linguistically correct'.
 
-  def to_byte()
+  def split_to_byte()
     scan(/./nm)
   end
 
   def count_byte()
-    to_byte().size
+    split_to_byte().size
   end
 
-  def to_char()
+  def split_to_char()
     if defined? eol_char  # sometimes string has no end-of-line char
       scan(Regexp.new("(?:#{eol_char})|(?:.)", 
                       Regexp::MULTILINE, 
@@ -204,7 +175,7 @@ module CharString
   end
 
   def count_char()  # eol = 1 char
-    to_char().size
+    split_to_char().size
   end
 
   def count_latin_graph_char()
@@ -243,7 +214,7 @@ module CharString
     count_latin_blank_char() + count_ja_blank_char()
   end
 
-  def to_word()
+  def split_to_word()
     scan(Regexp.new(CodeSets[codeset]::WORD_REGEXP_SRC, 
                     Regexp::MULTILINE, 
                     codeset.sub(/ASCII/i, 'none'))
@@ -251,11 +222,11 @@ module CharString
   end
 
   def count_word()
-    to_word().size
+    split_to_word().size
   end
 
   def count_latin_word()
-    to_word.collect{|word|
+    split_to_word.collect{|word|
       word if Regexp.new("[#{CodeSets[codeset]::PRINT}]", 
                          Regexp::MULTILINE, 
                          codeset.sub(/ASCII/i, 'none')).match word
@@ -263,7 +234,7 @@ module CharString
   end
 
   def count_ja_word()
-    to_word.collect{|word|
+    split_to_word.collect{|word|
       word if Regexp.new("[#{CodeSets[codeset]::JA_PRINT}]", 
                          Regexp::MULTILINE, 
                          codeset.sub(/ASCII/i, 'none')).match word
@@ -271,7 +242,7 @@ module CharString
   end
 
   def count_latin_valid_word()
-    to_word.collect{|word|
+    split_to_word.collect{|word|
       word if Regexp.new("[#{CodeSets[codeset]::ALNUM}]", 
                          Regexp::MULTILINE, 
                          codeset.sub(/ASCII/i, 'none')).match word
@@ -279,7 +250,7 @@ module CharString
   end
 
   def count_ja_valid_word()
-    to_word.collect{|word|
+    split_to_word.collect{|word|
       word if Regexp.new("[#{CodeSets[codeset]::JA_GRAPH}]", 
                          Regexp::MULTILINE, 
                          codeset.sub(/ASCII/i, 'none')).match word
@@ -290,7 +261,7 @@ module CharString
     count_latin_valid_word() + count_ja_valid_word()
   end
 
-  def to_line()
+  def split_to_line()
     scan(Regexp.new(".*?#{eol_char}|.+", 
                     Regexp::MULTILINE, 
                     codeset.sub(/ASCII/i, 'none'))
@@ -298,33 +269,34 @@ module CharString
   end
 
   def count_line()  # this is common to all encodings.
-    to_line.size
+    split_to_line.size
   end
 
-   def count_graph_line()
-     to_line.collect{|line|
-       line if Regexp.new("[#{CodeSets[codeset]::GRAPH}" + 
-                          "#{CodeSets[codeset]::JA_GRAPH}]", 
-                          Regexp::MULTILINE, 
-                          codeset.sub(/ASCII/, 'none')).match line
-     }.compact.size
-   end
+  def count_graph_line()
+    split_to_line.collect{|line|
+      line if Regexp.new("[#{CodeSets[codeset]::GRAPH}" + 
+                         "#{CodeSets[codeset]::JA_GRAPH}]", 
+                         Regexp::MULTILINE, 
+                         codeset.sub(/ASCII/, 'none')).match line
+    }.compact.size
+  end
 
-   def count_empty_line()
-     to_line.collect{|line|
-       line if /^(?:#{eol_char})|^$/em.match line
-     }.compact.size
-   end
+  def count_empty_line()
+    split_to_line.collect{|line|
+      line if /^(?:#{eol_char})|^$/em.match line
+    }.compact.size
+  end
 
-   def count_blank_line()
-     to_line.collect{|line|
-       line if Regexp.new("^[#{CodeSets[codeset]::BLANK}" + 
-                          "#{CodeSets[codeset]::JA_BLANK}]+(?:#{eol_char})?", 
-                          Regexp::MULTILINE, 
-                          codeset.sub(/ASCII/, 'none')).match line
-     }.compact.size
-   end
+  def count_blank_line()
+    split_to_line.collect{|line|
+      line if Regexp.new("^[#{CodeSets[codeset]::BLANK}" + 
+                         "#{CodeSets[codeset]::JA_BLANK}]+(?:#{eol_char})?", 
+                         Regexp::MULTILINE, 
+                         codeset.sub(/ASCII/, 'none')).match line
+    }.compact.size
+  end
 
+  # load encoding modules
   require 'encoding/en_ascii'
   require 'encoding/ja_eucjp'
   require 'encoding/ja_sjis'
