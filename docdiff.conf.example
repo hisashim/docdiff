@@ -3,7 +3,7 @@
 # resolution = word
 # encoding = UTF-8
 # eol = LF
-# format = xhtml
-# digest = off  # not implemented yet
+# format = html
+# digest = off
 # cache = off   # not implemented yet
 # verbose = no  # not implemented

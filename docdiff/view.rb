@@ -242,20 +242,20 @@ class View
 
   # HTML (XHTML)
   def html_header()
-    ['<?xml version="1.0" encoding="' + (@encoding||"")+ '"?>' + (@eol_char||""),
-     '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + (@eol_char||""),
-     '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + (@eol_char||""),
-     '<html><head>' + (@eol_char||""),
-     '<meta http-equiv="Content-Type" content="text/html; charset=' + (@encoding||"") + '" />' + (@eol_char||""),
-     '<title>' + (@source||"") + ', ' + (@target||"") + '</title>' + (@eol_char||""),
-     '<style type="text/css">' + (@eol_char||"") +
-     'body {font-family: monospace;}' + (@eol_char||"") +
-     'span.del {background: pink;}' + (@eol_char||"") +
-     'span.add {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
-     'span.before_change {background: pink;}' + (@eol_char||"") +
-     'span.after_change {background: lightgreen; font-weight: bolder;}' + (@eol_char||"") +
-     '</style>' + (@eol_char||""),
-     '</head><body>' + (@eol_char||"")]
+    ["<?xml version=\"1.0\" encoding=\"#{@encoding||''}\"?>#{@eol_char||''}",
+     "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"#{@eol_char||''}",
+     "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">#{@eol_char||''}",
+     "<html><head>#{@eol_char||''}",
+     "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=#{@encoding||''}\" />#{@eol_char||''}",
+     "<title>Difference</title>#{@eol_char||''}",
+     "<style type=\"text/css\">#{@eol_char||''}" +
+     " body {font-family: monospace;}#{@eol_char||''}" +
+     " span.del {background: hotpink; border: thin inset;}#{@eol_char||''}" +
+     " span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}#{@eol_char||''}" +
+     " span.before_change {background: yellow; border: thin inset;}#{@eol_char||''}" +
+     " span.after_change {background: lime; font-weight: bolder; border: thin outset;}#{@eol_char||''}" +
+     "</style>#{@eol_char||''}",
+     "</head><body>#{@eol_char||''}"]
   end
   def html_footer()
     [(@eol_char||"") + '</body></html>' + (@eol_char||"")]

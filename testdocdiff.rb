@@ -52,17 +52,17 @@ class TC_Document < Test::Unit::TestCase
      '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + "\n" +
      '<html><head>' + "\n" +
      '<meta http-equiv="Content-Type" content="text/html; charset=ASCII" />' + "\n" +
-     '<title>, </title>' + "\n" +
+     '<title>Difference</title>' + "\n" +
      '<style type="text/css">' + "\n" +
-     'body {font-family: monospace;}' + "\n" +
-     'span.del {background: pink;}' + "\n" +
-     'span.add {background: lightgreen; font-weight: bolder;}' + "\n" +
-     'span.before_change {background: pink;}' + "\n" +
-     'span.after_change {background: lightgreen; font-weight: bolder;}' + "\n" +
+     ' body {font-family: monospace;}' + "\n" +
+     ' span.del {background: hotpink; border: thin inset;}' + "\n" +
+     ' span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}' + "\n" +
+     ' span.before_change {background: yellow; border: thin inset;}' + "\n" +
+     ' span.after_change {background: lime; font-weight: bolder; border: thin outset;}' + "\n" +
      '</style>' + "\n" +
      '</head><body>' + "\n" +
-     '<span class="before_change"><del>foo&nbsp;bar<br />' + "\n" + '</del></span>' +
-     '<span class="after_change"><ins>foo&nbsp;beer<br />' + "\n" + '</ins></span>' +
+     '<span class="before_change"><del>foo bar<br />' + "\n" + '</del></span>' +
+     '<span class="after_change"><ins>foo beer<br />' + "\n" + '</ins></span>' +
      '<span class="common">baz' + "</span>" + "\n</body></html>" + "\n"
     assert_equal(expected, docdiff.run(doc1, doc2, "line", "html", digest = false))
   end
