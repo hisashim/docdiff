@@ -1,5 +1,5 @@
 PACKAGE = docdiff
-VERSION = 0.3.0
+VERSION = 0.3.1
 # DATE = `date +%Y%m%d`
 DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
        readme.html sample \
@@ -20,7 +20,7 @@ dist: $(DIST)
 	rm -fr $(PACKAGE)-$(VERSION)
 	mkdir $(PACKAGE)-$(VERSION)
 	cp -rp $(DIST) $(PACKAGE)-$(VERSION)
-	tar zvcf $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
+	tar -z -v -c --exclude CVS -f $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
 	rm -fr $(PACKAGE)-$(VERSION)
 
 # tar:
