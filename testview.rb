@@ -122,9 +122,11 @@ class TC_View < Test::Unit::TestCase
   def test_to_html_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
-    expected =   ["1-2,(1) <span class=\"del\"><del>a<br>\nb</del></span>\n",
-                  "(2),1-2 <span class=\"add\"><ins>X<br>\nY</ins></span>\n",
-                  "3,3 <span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span>\n"]
+    expected =   ["<ul>",
+                  "<li>1-2,(1)<br><span class=\"del\"><del>a<br>\nb</del></span></li>\n",
+                  "<li>(2),1-2<br><span class=\"add\"><ins>X<br>\nY</ins></span></li>\n",
+                  "<li>3,3<br><span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span></li>\n",
+                  "</ul>"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html_digest)
   end
   def test_to_xhtml_cr_ascii()
@@ -158,9 +160,11 @@ class TC_View < Test::Unit::TestCase
   def test_to_xhtml_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
-    expected =   ["1-2,(1) <span class=\"del\"><del>a<br />\nb</del></span>\n",
-                  "(2),1-2 <span class=\"add\"><ins>X<br />\nY</ins></span>\n",
-                  "3,3 <span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span>\n"]
+    expected =   ["<ul>",
+                  "<li>1-2,(1)<br /><span class=\"del\"><del>a<br />\nb</del></span></li>\n",
+                  "<li>(2),1-2<br /><span class=\"add\"><ins>X<br />\nY</ins></span></li>\n",
+                  "<li>3,3<br /><span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span></li>\n",
+                  "</ul>"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_xhtml_digest)
   end
   def test_to_html_del_add_ja()

@@ -2,6 +2,9 @@
 
 class View
 
+  EOL_CHARS_PAT = Regexp.new(/\r\n|\r(?!\n)|(?:\A|[^\r])\n/m)
+  EOL_CHARS_EXCEPT_EOS_PAT = Regexp.new(/\r\n(?!\Z)|\r(?![\n\Z])|(?:\A|[^\r])\n(?!\Z)/m)
+
   def initialize(difference, encoding, eol)
     @difference = difference
     @encoding = encoding
@@ -78,40 +81,38 @@ class View
         source = block[1].to_s
         target = block[2].to_s
       end
-      eol_chars = /\r\n|\r(?!\n)|(?:\A|[^\r])\n/m
-      eol_chars_except_eos = /\r\n(?!\Z)|\r(?![\n\Z])|(?:\A|[^\r])\n(?!\Z)/m
-      num_of_source_lines = 1 + source.scan(eol_chars_except_eos).size
-      num_of_target_lines = 1 + target.scan(eol_chars_except_eos).size
+      span1 = source_lines_involved = 1 + source.scan(EOL_CHARS_EXCEPT_EOS_PAT).size
+      span2 = target_lines_involved = 1 + target.scan(EOL_CHARS_EXCEPT_EOS_PAT).size
       pos = ""
       case operation
       when :common_elt_elt
       when :change_elt
         pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + num_of_source_lines - 1}" if num_of_source_lines > 1
+        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
         pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + num_of_target_lines - 1}" if num_of_target_lines > 1
+        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
         pos += " "
         result << (pos +
                    tags[:start_before_change] + source + tags[:end_before_change] + 
                    tags[:start_after_change] + target + tags[:end_after_change] +
-                   (@eol_char||"\n"))
+                   (@eol_char))
       when :del_elt
         pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + num_of_source_lines - 1}" if num_of_source_lines > 1
+        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
         pos += ",(#{doc2_lnum})"
         pos += " "
-        result << (pos + tags[:start_del] + source + tags[:end_del] + (@eol_char||"\n"))
+        result << (pos + tags[:start_del] + source + tags[:end_del] + (@eol_char))
       when :add_elt
         pos += "(#{doc1_lnum})"
         pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + num_of_target_lines - 1}" if num_of_target_lines > 1
+        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
         pos += " "
-        result << (pos + tags[:start_add] + target + tags[:end_add] + (@eol_char||"\n"))
+        result << (pos + tags[:start_add] + target + tags[:end_add] + (@eol_char))
       else
         raise "invalid attribute: #{block.first}\n"
       end
-      doc1_lnum += source.scan(eol_chars).size
-      doc2_lnum += target.scan(eol_chars).size
+      doc1_lnum += source.scan(EOL_CHARS_PAT).size
+      doc2_lnum += target.scan(EOL_CHARS_PAT).size
     }
     result
   end
@@ -129,6 +130,18 @@ class View
                :end_before_change   => '</del></span>',
                :start_after_change  => '<span class="after_change"><ins>',
                :end_after_change    => '</ins></span>'}
+  def html_header()
+    ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
+     '"http://www.w3.org/TR/html4/loose.dtd">' + @eol_char,
+     '<html><head>',
+     '<meta http-equiv="Content-Type" content="text/html; charset=' + @codeset + '">' + @eol_char,
+     '<title>' + @source + ', ' + @target + '</title>' + @eol_char,
+     '<style type="text/css"></style>' + @eol_char,
+     '</head><body>' + @eol_char]
+  end
+  def html_footer()
+    [@eol_char + '</body></html>' + @eol_char]
+  end
   def to_html(overriding_tags = nil, headfoot = false)
     tags = HTML_TAGS
     tags.update(overriding_tags) if overriding_tags
@@ -136,17 +149,7 @@ class View
         str_to_escape.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]}
     }
     if headfoot == true
-      result =
-      ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
-       '"http://www.w3.org/TR/html4/loose.dtd">' + @eol_char,
-       '<html><head>',
-       '<meta http-equiv="Content-Type" content="text/html; charset=' +
-        @codeset + '">' + @eol_char,
-       '<title>' + @source + ', ' + @target + '</title>' + @eol_char,
-       '<style type="text/css"></style>' + @eol_char,
-       '</head><body>' + @eol_char] +
-      result +
-      [@eol_char + '</body></html>' + @eol_char]
+      result = html_header + result + html_footer
     end
     result
   end
@@ -165,53 +168,48 @@ class View
         source = block[1].to_s
         target = block[2].to_s
       end
-      eol_chars = /\r\n|\r(?!\n)|(?:\A|[^\r])\n/m
-      eol_chars_except_eos = /\r\n(?!\Z)|\r(?![\n\Z])|(?:\A|[^\r])\n(?!\Z)/m
-      num_of_source_lines = 1 + source.scan(eol_chars_except_eos).size
-      num_of_target_lines = 1 + target.scan(eol_chars_except_eos).size
+      span1 = source_lines_involved = 1 + source.scan(EOL_CHARS_EXCEPT_EOS_PAT).size
+      span2 = target_lines_involved = 1 + target.scan(EOL_CHARS_EXCEPT_EOS_PAT).size
       pos = ""
       case operation
       when :common_elt_elt
       when :change_elt
         pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + num_of_source_lines - 1}" if num_of_source_lines > 1
+        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
         pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + num_of_target_lines - 1}" if num_of_target_lines > 1
-        pos += " "
-        result << (pos +
-                   tags[:start_before_change] + source.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]} + tags[:end_before_change] + 
-                   tags[:start_after_change] + target.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]} + tags[:end_after_change] +
-                   (@eol_char||"\n"))
+        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
+        result << ("<li>" + pos + "<br>" +
+                   tags[:start_before_change] +
+                   source.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]} +
+                   tags[:end_before_change] + 
+                   tags[:start_after_change] +
+                   target.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]} +
+                   tags[:end_after_change] +
+                   "</li>" + (@eol_char))
       when :del_elt
         pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + num_of_source_lines - 1}" if num_of_source_lines > 1
+        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
         pos += ",(#{doc2_lnum})"
-        pos += " "
-        result << (pos + tags[:start_del] + source.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]} + tags[:end_del] + (@eol_char||"\n"))
+        result << ("<li>" + pos + "<br>" + tags[:start_del] +
+                   source.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]} +
+                   tags[:end_del] + "</li>" + (@eol_char))
       when :add_elt
         pos += "(#{doc1_lnum})"
         pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + num_of_target_lines - 1}" if num_of_target_lines > 1
-        pos += " "
-        result << (pos + tags[:start_add] + target.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]} + tags[:end_add] + (@eol_char||"\n"))
+        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
+        result << ("<li>" + pos + "<br>" + tags[:start_add] +
+                   target.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]} +
+                   tags[:end_add] + "</li>" + (@eol_char))
       else
         raise "invalid attribute: #{block.first}\n"
       end
-      doc1_lnum += source.scan(eol_chars).size
-      doc2_lnum += target.scan(eol_chars).size
+      doc1_lnum += source.scan(EOL_CHARS_PAT).size
+      doc2_lnum += target.scan(EOL_CHARS_PAT).size
     }
+    result.unshift("<ul>")
+    result.push("</ul>")
     if headfoot == true
-      result =
-      ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
-       '"http://www.w3.org/TR/html4/loose.dtd">' + @eol_char,
-       '<html><head>',
-       '<meta http-equiv="Content-Type" content="text/html; charset=' +
-        @codeset + '">' + @eol_char,
-       '<title>' + @source + ', ' + @target + '</title>' + @eol_char,
-       '<style type="text/css"></style>' + @eol_char,
-       '</head><body>' + @eol_char] +
-      result +
-      [@eol_char + '</body></html>' + @eol_char]
+      result = html_header + result + html_footer
     end
     result
   end
@@ -229,6 +227,21 @@ class View
             :end_before_change   => '</del></span>',
             :start_after_change  => '<span class="after_change"><ins>',
             :end_after_change    => '</ins></span>'}
+  def xhtml_header()
+    ['<?xml version="1.0" encoding="' + @codeset.downcase+ '"?>' + @eol_char,
+     '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + @eol_char,
+     '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + @eol_char,
+     '<html><head>' + @eol_char,
+     '<meta http-equiv="Content-Type" content="text/html; charset=' + @codeset.downcase + '" />',
+     '<title>' + @source + ', ' + @target + '</title>' + @eol_char,
+     '<style type="text/css">',
+     '<!-- -->' + @eol_char,
+     '</style>' + @eol_char,
+     '</head><body>' + @eol_char]
+  end
+  def xhtml_footer()
+    [@eol_char + '</body></html>' + @eol_char]
+  end
   def to_xhtml(overriding_tags = nil, headfoot = false)
     tags = XHTML_TAGS
     tags.update(overriding_tags) if overriding_tags
@@ -236,20 +249,7 @@ class View
       str_to_escape.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]}
     }
     if headfoot == true
-      result =
-      ['<?xml version="1.0" encoding="' + @codeset.downcase+ '"?>' + @eol_char,
-       '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + @eol_char,
-       '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + @eol_char,
-       '<html><head>' + @eol_char,
-       '<meta http-equiv="Content-Type" content="text/html; charset=' +
-        @codeset.downcase + '" />',
-       '<title>' + @source + ', ' + @target + '</title>' + @eol_char,
-       '<style type="text/css">',
-       '<!-- -->' + @eol_char,
-       '</style>' + @eol_char,
-       '</head><body>' + @eol_char] +
-      result +
-      [@eol_char + '</body></html>' + @eol_char]
+      result = xhtml_header + result + xhtml_footer
     end
     result
   end
@@ -268,56 +268,48 @@ class View
         source = block[1].to_s
         target = block[2].to_s
       end
-      eol_chars = /\r\n|\r(?!\n)|(?:\A|[^\r])\n/m
-      eol_chars_except_eos = /\r\n(?!\Z)|\r(?![\n\Z])|(?:\A|[^\r])\n(?!\Z)/m
-      num_of_source_lines = 1 + source.scan(eol_chars_except_eos).size
-      num_of_target_lines = 1 + target.scan(eol_chars_except_eos).size
+      span1 = source_lines_involved = 1 + source.scan(EOL_CHARS_EXCEPT_EOS_PAT).size
+      span2 = target_lines_involved = 1 + target.scan(EOL_CHARS_EXCEPT_EOS_PAT).size
       pos = ""
       case operation
       when :common_elt_elt
       when :change_elt
         pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + num_of_source_lines - 1}" if num_of_source_lines > 1
+        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
         pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + num_of_target_lines - 1}" if num_of_target_lines > 1
-        pos += " "
-        result << (pos +
-                   tags[:start_before_change] + source.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]} + tags[:end_before_change] + 
-                   tags[:start_after_change] + target.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]} + tags[:end_after_change] +
-                   (@eol_char||"\n"))
+        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
+        result << ("<li>" + pos + "<br />" +
+                   tags[:start_before_change] +
+                   source.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]} +
+                   tags[:end_before_change] + 
+                   tags[:start_after_change] +
+                   target.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]} +
+                   tags[:end_after_change] +
+                   "</li>" + (@eol_char))
       when :del_elt
         pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + num_of_source_lines - 1}" if num_of_source_lines > 1
+        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
         pos += ",(#{doc2_lnum})"
-        pos += " "
-        result << (pos + tags[:start_del] + source.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]} + tags[:end_del] + (@eol_char||"\n"))
+        result << ("<li>" + pos + "<br />" + tags[:start_del] +
+                   source.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]} +
+                   tags[:end_del] + "</li>" + (@eol_char))
       when :add_elt
         pos += "(#{doc1_lnum})"
         pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + num_of_target_lines - 1}" if num_of_target_lines > 1
-        pos += " "
-        result << (pos + tags[:start_add] + target.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]} + tags[:end_add] + (@eol_char||"\n"))
+        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
+        result << ("<li>" + pos + "<br />" + tags[:start_add] +
+                   target.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]} +
+                   tags[:end_add] + "</li>" + (@eol_char))
       else
         raise "invalid attribute: #{block.first}\n"
       end
-      doc1_lnum += source.scan(eol_chars).size
-      doc2_lnum += target.scan(eol_chars).size
+      doc1_lnum += source.scan(EOL_CHARS_PAT).size
+      doc2_lnum += target.scan(EOL_CHARS_PAT).size
     }
+    result.unshift("<ul>")
+    result.push("</ul>")
     if headfoot == true
-      result =
-      ['<?xml version="1.0" encoding="' + @codeset.downcase+ '"?>' + @eol_char,
-       '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + @eol_char,
-       '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + @eol_char,
-       '<html><head>' + @eol_char,
-       '<meta http-equiv="Content-Type" content="text/html; charset=' +
-        @codeset.downcase + '" />',
-       '<title>' + @source + ', ' + @target + '</title>' + @eol_char,
-       '<style type="text/css">',
-       '<!-- -->' + @eol_char,
-       '</style>' + @eol_char,
-       '</head><body>' + @eol_char] +
-      result +
-      [@eol_char + '</body></html>' + @eol_char]
+      result = xhtml_header + result + xhtml_footer
     end
     result
   end
@@ -355,7 +347,9 @@ class View
       target = block[2].to_s
       case operation
       when :common_elt_elt
-        result << (tags[:start_common] + source.gsub(ManuedOutsideEscapePat){|matched| ManuedOutsideEscapeDic[matched]} + tags[:end_common])
+        result << (tags[:start_common] +
+                   source.gsub(ManuedOutsideEscapePat){|matched| ManuedOutsideEscapeDic[matched]} +
+                   tags[:end_common])
       when :change_elt
         result << (tags[:start_before_change] + 
                    source.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + 
@@ -364,9 +358,13 @@ class View
                    target.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + 
                    tags[:end_after_change])
       when :del_elt
-        result << (tags[:start_del] + source.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + tags[:end_del])
+        result << (tags[:start_del] +
+                   source.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} +
+                   tags[:end_del])
       when :add_elt
-        result << (tags[:start_add] + target.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} + tags[:end_add])
+        result << (tags[:start_add] +
+                   target.gsub(ManuedInsideEscapePat){|matched| ManuedInsideEscapeDic[matched]} +
+                   tags[:end_add])
       else
         raise "invalid attribute: #{block.first}\n"
       end
