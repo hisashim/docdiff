@@ -220,13 +220,13 @@ class View
      :footer              => tty_footer(),
      :start_common        => '',
      :end_common          => '',
-     :start_del           => "\033[#{4}m\033[#{41}m",  # underscore + bg_red
+     :start_del           => "\033[7;4;31m",  # Inverted, Underlined, Red
      :end_del             => "\033[0m",
-     :start_add           => "\033[#{1}m\033[#{44}m",  # bold + bg_blue
+     :start_add           => "\033[7;1;34m",  # Inverted, Bold, Blue
      :end_add             => "\033[0m",
-     :start_before_change => "\033[#{4}m\033[#{43}m",  # underscore + bg_yellow
+     :start_before_change => "\033[7;4;33m",  # Inverted, Underlined, Yellow
      :end_before_change   => "\033[0m",
-     :start_after_change  => "\033[#{1}m\033[#{42}m",  # bold + bg_green
+     :start_after_change  => "\033[7;1;32m",  # Inverted, Bold, Green
      :end_after_change    => "\033[0m"}
   end
   def to_tty(overriding_tags = nil, headfoot = true)  # color escape sequence

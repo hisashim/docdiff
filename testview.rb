@@ -147,9 +147,9 @@ class TC_View < Test::Unit::TestCase
     array1 = ['a', 'b', 'c']
     array2 = ['b', 'c', 'c']
     difference = Difference.new(array1, array2)
-    expected =   ["\033[#{4}m\033[#{41}ma\033[0m",
+    expected =   ["\033[7;4;31ma\033[0m",
                   "b",
-                  "\033[#{1}m\033[#{44}mc\033[0m",
+                  "\033[7;1;34mc\033[0m",
                   "c"]
     assert_equal(expected, View.new(difference, "ASCII", nil).to_tty(nil, false))
   end
@@ -158,16 +158,16 @@ class TC_View < Test::Unit::TestCase
     array2 = ['a', 'x', 'c']
     difference = Difference.new(array1, array2)
     expected =   ["a",
-                  "\033[#{4}m\033[#{43}mb\033[0m\033[#{1}m\033[#{42}mx\033[0m",
+                  "\033[7;4;33mb\033[0m\033[7;1;32mx\033[0m",
                   "c"]
     assert_equal(expected, View.new(difference, "ASCII", nil).to_tty(nil, false))
   end
   def test_to_tty_del_add_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['い', 'う', 'う']
-    expected =   ["\033[#{4}m\033[#{41}mあ\033[0m",
+    expected =   ["\033[7;4;31mあ\033[0m",
                   "い",
-                  "\033[#{1}m\033[#{44}mう\033[0m",
+                  "\033[7;1;34mう\033[0m",
                   "う"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_tty(nil, false))
     assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
@@ -183,7 +183,7 @@ class TC_View < Test::Unit::TestCase
     array1 = ['あ', 'い', 'う']
     array2 = ['あ', '漢', 'う']
     expected =   ["あ",
-                  "\033[#{4}m\033[#{43}mい\033[0m\033[#{1}m\033[#{42}m漢\033[0m",
+                  "\033[7;4;33mい\033[0m\033[7;1;32m漢\033[0m",
                   "う"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_tty(nil, false))
     assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
@@ -199,9 +199,9 @@ class TC_View < Test::Unit::TestCase
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected =   ["----\n",
-                  "1-2,(1)\n\033[#{4}m\033[#{41}ma\nb\033[0mcd\n----\n",
-                  "(2),1-2\ncd\033[#{1}m\033[#{44}mX\nY\033[0me\n\n----\n",
-                  "3,3\ne\n\033[#{4}m\033[#{43}mf\033[0m\033[#{1}m\033[#{42}mF\033[0m\n\n----\n"]
+                  "1-2,(1)\n\033[7;4;31ma\nb\033[0mcd\n----\n",
+                  "(2),1-2\ncd\033[7;1;34mX\nY\033[0me\n\n----\n",
+                  "3,3\ne\n\033[7;4;33mf\033[0m\033[7;1;32mF\033[0m\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_tty_digest(nil, false))
   end
 
