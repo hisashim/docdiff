@@ -129,7 +129,7 @@ class DocDiff
     case digest
     when true
       case format
-      when "terminal"; then result = view.to_terminal_digest(option)
+      when "tty";      then result = view.to_tty_digest(option)
       when "html";     then result = view.to_html_digest(option)
       when "xhtml";    then result = view.to_xhtml_digest(option)
       when "manued";   then result = view.to_manued_digest(option)
@@ -141,7 +141,7 @@ class DocDiff
       end
     when false
       case format
-      when "terminal"; then result = view.to_terminal(option)
+      when "tty";      then result = view.to_tty(option)
       when "html";     then result = view.to_html(option)
       when "xhtml";    then result = view.to_xhtml(option)
       when "manued";   then result = view.to_manued(option)
@@ -225,13 +225,13 @@ if $0 == __FILE__
     o.def_option('--crlf', 'same as --eol=CRLF'){clo[:eol] = "CRLF"}
 
     o.def_option('--format=FORMAT',
-                 possible_formats = ['terminal','manued','html','xhtml','wdiff','stat','user'],
+                 possible_formats = ['tty','manued','html','xhtml','wdiff','stat','user'],
                  'specify output format',
                  possible_formats.join('|'),
                  "(default is html)",
                  '(user tags have to be described in config file)'
                 ){|clo[:format]| clo[:format] ||= "manued"}
-    o.def_option('--terminal', 'same as --format=terminal'){clo[:format] = "terminal"}
+    o.def_option('--tty', 'same as --format=tty'){clo[:format] = "tty"}
     o.def_option('--manued', 'same as --format=manued'){clo[:format] = "manued"}
     o.def_option('--html', 'same as --format=html'){clo[:format] = "html"}
     o.def_option('--xhtml', 'same as --format=xhtml'){clo[:format] = "xhtml"}

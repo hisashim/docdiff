@@ -192,20 +192,20 @@ class View
                @encoding.sub(/ASCII/i, 'none'))
   end
 
-  # Terminal
-  def terminal_header()
+  # tty (terminal)
+  def tty_header()
     []
   end
-  def terminal_footer()
+  def tty_footer()
     []
   end
-  TerminalEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
-  TerminalEscapePat = /(\r\n|#{TerminalEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
-  def terminal_tags()
-    {:outside_escape_dic  => TerminalEscapeDic,
-     :outside_escape_pat  => TerminalEscapePat,
-     :inside_escape_dic   => TerminalEscapeDic,
-     :inside_escape_pat   => TerminalEscapePat,
+  TTYEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
+  TTYEscapePat = /(\r\n|#{TTYEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+  def tty_tags()
+    {:outside_escape_dic  => TTYEscapeDic,
+     :outside_escape_pat  => TTYEscapePat,
+     :inside_escape_dic   => TTYEscapeDic,
+     :inside_escape_pat   => TTYEscapePat,
      :start_digest_body   => '',
      :end_digest_body     => '',
      :start_entry         => '',
@@ -216,8 +216,8 @@ class View
      :end_prefix          => '',
      :start_postfix       => '',
      :end_postfix         => '',
-     :header              => terminal_header(),
-     :footer              => terminal_footer(),
+     :header              => tty_header(),
+     :footer              => tty_footer(),
      :start_common        => '',
      :end_common          => '',
      :start_del           => "\033[#{4}m\033[#{41}m",  # underscore + bg_red
@@ -229,13 +229,13 @@ class View
      :start_after_change  => "\033[#{1}m\033[#{42}m",  # bold + bg_green
      :end_after_change    => "\033[0m"}
   end
-  def to_terminal(overriding_tags = nil, headfoot = true)  # color escape sequence
-    tags = terminal_tags()
+  def to_tty(overriding_tags = nil, headfoot = true)  # color escape sequence
+    tags = tty_tags()
     tags.update(overriding_tags) if overriding_tags
     apply_style(tags, headfoot)
   end
-  def to_terminal_digest(overriding_tags = nil, headfoot = true)
-    tags = terminal_tags
+  def to_tty_digest(overriding_tags = nil, headfoot = true)
+    tags = tty_tags
     tags.update(overriding_tags) if overriding_tags
     apply_style_digest(tags, headfoot)
   end
