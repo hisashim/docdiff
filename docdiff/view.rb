@@ -1,7 +1,5 @@
 #!/usr/bin/ruby
 
-require 'difference'
-require 'charstring'
 class View
 
   def initialize(difference, encoding, eol)

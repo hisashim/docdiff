@@ -1,5 +1,5 @@
-require 'diff/shortestpath'
-require 'diff/contours'
+require 'docdiff/diff/shortestpath'
+require 'docdiff/diff/contours'
 require 'thread'
 
 class Diff

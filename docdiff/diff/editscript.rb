@@ -1,5 +1,5 @@
-require 'diff/rcsdiff'
-require 'diff/unidiff'
+require 'docdiff/diff/rcsdiff'
+require 'docdiff/diff/unidiff'
 
 class Diff
   class EditScript
