@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # ArrayPlus
+# 2002-9-x..  Hisashi MORITA
 
 module ArrayPlus
 
@@ -52,7 +53,6 @@ module ArrayPlus
       each_with_index{|e, i| indices.push i }  # all indices (=[0..n-1])
     end
     return indices
-    raise "You are not supposed to see this.\n"
   end
   alias :pick_indexes :locate
   alias :pick_indices :locate
@@ -76,6 +76,18 @@ module ArrayPlus
       end
     }
     return flattened
+  end
+
+  # [3,3,2,1,3].subtract([2,3]) #=> [3,1,3]
+  def subtract(array_to_remove)
+    rest = self.dup
+    array_to_remove.each_with_index{|v, i|
+      index_to_remove = rest.index(v)
+      if index_to_remove
+        rest.delete_at(index_to_remove)
+      end
+    }
+    return rest
   end
 
   def longest()  # longest as String

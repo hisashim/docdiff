@@ -61,6 +61,12 @@ class TestArrayPlus < RUNIT::TestCase
     assert_equal(expected, a.flatten(6))
   end
 
+  def test_subtract()
+    expected = [3,1,3]
+    a = [3,3,2,1,3].extend ArrayPlus
+    assert_equal(expected, a.subtract([2,3]))
+  end
+
   def test_longest()
     expected = "quux"
     a = ["foo","bar","quux"].extend ArrayPlus
