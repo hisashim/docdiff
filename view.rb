@@ -8,11 +8,11 @@ class View
     @difference = difference
     @encoding = encoding
     @eol = eol
-    if CharString::EOLChars[@eol]
-      @eol_char = CharString::EOLChars[@eol].eol_char
-    else
-      @eol_char = nil
-    end
+#     if CharString::EOLChars[@eol]
+#       @eol_char = CharString::EOLChars[@eol].eol_char
+#     else
+#       @eol_char = nil
+#     end
   end
 
   def apply_style(tags)
@@ -152,22 +152,22 @@ class View
     end
   end
 
-  def to_docdiff(overriding_tags = nil, headfoot = false)
-    tags = {:start_common        => '',
-            :end_common          => '',
-            :start_del           => '',
-            :end_del             => '',
-            :start_add           => '',
-            :end_add             => '',
-            :start_before_change => '',
-            :end_before_change   => '',
-            :start_after_change  => '',
-            :end_after_change    => ''}
-    if overriding_tags
-      tags = tags.merge(overriding_tags)
-    end
-    apply_style(tags)
-  end
+#   def to_docdiff(overriding_tags = nil, headfoot = false)
+#     tags = {:start_common        => '',
+#             :end_common          => '',
+#             :start_del           => '',
+#             :end_del             => '',
+#             :start_add           => '',
+#             :end_add             => '',
+#             :start_before_change => '',
+#             :end_before_change   => '',
+#             :start_after_change  => '',
+#             :end_after_change    => ''}
+#     if overriding_tags
+#       tags = tags.merge(overriding_tags)
+#     end
+#     apply_style(tags)
+#   end
 
   def to_wdiff(overriding_tags = nil, headfoot = false)
     tags = {:start_common        => '',

@@ -434,6 +434,6 @@ module CharString
 
 end  # module CharString
 
-class String
-  include CharString
-end
+# class String
+#   include CharString
+# end

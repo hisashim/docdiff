@@ -41,6 +41,43 @@ class TC_Document < Test::Unit::TestCase
     assert_equal(expected, docdiff.compare_by_char(doc1, doc2))
   end
 
+  def test_run_line_manued()
+    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    docdiff = DocDiff.new
+    expected = "[foo bar\n/foo beer\n]baz"
+    assert_equal(expected, docdiff.run(doc1, doc2, :line, :manued))
+  end
+  def test_run_word_manued()
+    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    docdiff = DocDiff.new
+    expected = "foo [bar/beer]\nbaz"
+    assert_equal(expected, docdiff.run(doc1, doc2, :word, :manued))
+  end
+  def test_run_char_manued()
+    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    docdiff = DocDiff.new
+    expected = "foo b[a/ee]r\nbaz"
+    assert_equal(expected, docdiff.run(doc1, doc2, :char, :manued))
+  end
+
+  def test_parse_config_file_content()
+    content = ["# comment line\n",
+               " # comment line\n",
+               "foo1 = bar\n",
+               "foo2 = bar baz \n",
+               " f o o 3  =  bar # comment\n",
+               "foo1 = quux\n",
+               "\n",
+               "",
+               nil].to_s
+    expected = {"foo1"=>"quux", "foo2"=>"bar baz", "f o o 3"=>"bar"}
+    docdiff = DocDiff.new
+    assert_equal(expected, DocDiff.parse_config_file_content(content))
+  end
+
   def teardown()
     #
   end
