@@ -212,7 +212,7 @@ if $0 == __FILE__
                  possible_formats = ['terminal','manued','html','xhtml','wdiff','stat','user'],
                  'specify output format',
                  possible_formats.join('|'),
-                 "(default is manued)",
+                 "(default is html)",
                  '(user tags have to be described in config file)'
                 ){|clo[:format]| clo[:format] ||= "manued"}
     o.def_option('--terminal', 'same as --format=terminal'){clo[:format] = "terminal"}
