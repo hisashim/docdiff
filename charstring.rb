@@ -9,8 +9,10 @@ module CharString
   EOLChars = Hash.new  # End-of-line characters, such as CR, LF, CRLF.
 
   def initialize(string)
-    @codeset = CharString.guess_codeset(string)
-    @eol     = CharString.guess_eol(string)
+=begin unnecessary
+#    @codeset = CharString.guess_codeset(string)
+#    @eol     = CharString.guess_eol(string)
+=end unnecessary
     super
   end
 
@@ -25,7 +27,7 @@ module CharString
 
   def codeset=(cs)
     @codeset = cs
-    extend CodeSets[@codeset]
+    extend CodeSets[@codeset]  # ; p "Hey, I extended #{CodeSets[@codeset]}!"
   end
 
   def eol()
@@ -40,6 +42,15 @@ module CharString
   def eol=(e)
     @eol = e
     extend EOLChars[@eol]
+  end
+
+  def eol_char()
+    if @eol_char
+      @eol_char
+    else
+      extend EOLChars[eol]
+      eol_char
+    end
   end
 
   def debug()
@@ -161,6 +172,8 @@ module CharString
   end
 
   def split_to_char()
+    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
+    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
     if defined? eol_char  # sometimes string has no end-of-line char
       scan(Regexp.new("(?:#{eol_char})|(?:.)", 
                       Regexp::MULTILINE, 
@@ -179,6 +192,8 @@ module CharString
   end
 
   def count_latin_graph_char()
+    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
+    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
     scan(Regexp.new("[#{CodeSets[codeset]::GRAPH}]", 
                     Regexp::MULTILINE, 
                     codeset.sub(/ASCII/i, 'none'))
@@ -186,6 +201,8 @@ module CharString
   end
 
   def count_ja_graph_char()
+    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
+    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
     scan(Regexp.new("[#{CodeSets[codeset]::JA_GRAPH}]", 
                     Regexp::MULTILINE, 
                     codeset.sub(/ASCII/i, 'none'))
@@ -215,6 +232,8 @@ module CharString
   end
 
   def split_to_word()
+    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
+    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
     scan(Regexp.new(CodeSets[codeset]::WORD_REGEXP_SRC, 
                     Regexp::MULTILINE, 
                     codeset.sub(/ASCII/i, 'none'))
@@ -262,21 +281,23 @@ module CharString
   end
 
   def split_to_line()
-    scan(Regexp.new(".*?#{eol_char}|.+", 
-                    Regexp::MULTILINE, 
-                    codeset.sub(/ASCII/i, 'none'))
-    )
-#    if defined? eol_char
-#      scan(Regexp.new(".*?#{eol_char}|.+", 
-#                      Regexp::MULTILINE, 
-#                      codeset.sub(/ASCII/i, 'none'))
-#      )
-#    else
-#      scan(Regexp.new(".+", 
-#                      Regexp::MULTILINE, 
-#                      codeset.sub(/ASCII/i, 'none'))
-#      )
-#    end
+#     scan(Regexp.new(".*?#{eol_char}|.+", 
+#                     Regexp::MULTILINE, 
+#                     codeset.sub(/ASCII/i, 'none'))
+#     )
+    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
+    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
+    if defined? eol_char
+      scan(Regexp.new(".*?#{eol_char}|.+", 
+                      Regexp::MULTILINE, 
+                      codeset.sub(/ASCII/i, 'none'))
+      )
+    else
+      scan(Regexp.new(".+", 
+                      Regexp::MULTILINE, 
+                      codeset.sub(/ASCII/i, 'none'))
+      )
+    end
   end
 
   def count_line()  # this is common to all encodings.
@@ -314,7 +335,6 @@ module CharString
   require 'encoding/ja_utf8'
 
   module CR
-
     EOL = 'CR'
 
     def eol_char()
@@ -322,11 +342,9 @@ module CharString
     end
 
     CharString.register_eol(self)
-
   end
 
   module LF
-
     EOL = 'LF'
 
     def eol_char()
@@ -334,11 +352,9 @@ module CharString
     end
 
     CharString.register_eol(self)
-
   end
 
   module CRLF
-
     EOL = 'CRLF'
 
     def eol_char()
@@ -346,7 +362,15 @@ module CharString
     end
 
     CharString.register_eol(self)
+  end
 
+  module NoEOL
+    EOL = 'NONE'
+    def eol_char()
+      nil
+    end
+
+    CharString.register_eol(self)
   end
 
 end  # module CharString

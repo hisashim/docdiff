@@ -122,5 +122,7 @@ if $0 == __FILE__
   doc1 = doc2 = nil
   File.open(ARGV[0], "r"){|f| doc1 = Document.new(f.read)}
   File.open(ARGV[0], "r"){|f| doc2 = Document.new(f.read)}
-  p docdiff.compare_by_word(doc1, doc2)
+  p doc1.split_to_line
+  p doc1.split_to_line
+#  p docdiff.compare_by_word(doc1, doc2)
 end
