@@ -239,7 +239,7 @@ class TC_View < Test::Unit::TestCase
     expected =   ["<ul><hr />",
                   "<li class=\"entry\"><p class=\"position\">1-2,(1)</p><blockquote class=\"body\"><p class=\"body\"><span class=\"del\"><del>a<br />\nb</del></span>cd</p></blockquote></li><hr />\n",
                   "<li class=\"entry\"><p class=\"position\">(2),1-2</p><blockquote class=\"body\"><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e<br />\n</p></blockquote></li><hr />\n",
-                  "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span><br />\n</p></blockquote></li><hr />\n",
+                  "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before-change\"><del>f</del></span><span class=\"after-change\"><ins>F</ins></span><br />\n</p></blockquote></li><hr />\n",
                   "</ul>"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html_digest(nil,false))
   end
@@ -259,7 +259,7 @@ class TC_View < Test::Unit::TestCase
     array2 = ['a', 'x', 'c']
     difference = Difference.new(array1, array2)
     expected =   ['<span class="common">a</span>',
-                  '<span class="before_change"><del>b</del></span><span class="after_change"><ins>x</ins></span>',
+                  '<span class="before-change"><del>b</del></span><span class="after-change"><ins>x</ins></span>',
                   '<span class="common">c</span>']
     assert_equal(expected, View.new(difference, "ASCII", nil).to_html(nil, false))
   end
@@ -284,7 +284,7 @@ class TC_View < Test::Unit::TestCase
     array1 = ['あ', 'い', 'う']
     array2 = ['あ', '漢', 'う']
     expected =   ['<span class="common">あ</span>',
-                  '<span class="before_change"><del>い</del></span><span class="after_change"><ins>漢</ins></span>',
+                  '<span class="before-change"><del>い</del></span><span class="after-change"><ins>漢</ins></span>',
                   '<span class="common">う</span>']
     assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_html(nil, false))
     assert_equal(expected.collect{|i|NKF.nkf("-s",i)},

@@ -252,8 +252,8 @@ class View
      " body {font-family: monospace;}#{@eol_char||''}" +
      " span.del {background: hotpink; border: thin inset;}#{@eol_char||''}" +
      " span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}#{@eol_char||''}" +
-     " span.before_change {background: yellow; border: thin inset;}#{@eol_char||''}" +
-     " span.after_change {background: lime; font-weight: bolder; border: thin outset;}#{@eol_char||''}" +
+     " span.before-change {background: yellow; border: thin inset;}#{@eol_char||''}" +
+     " span.after-change {background: lime; font-weight: bolder; border: thin outset;}#{@eol_char||''}" +
      " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}#{@eol_char||''}" +
      " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}#{@eol_char||''}" +
      "</style>#{@eol_char||''}",
@@ -288,9 +288,9 @@ class View
      :end_del             => '</del></span>',
      :start_add           => '<span class="add"><ins>',
      :end_add             => '</ins></span>',
-     :start_before_change => '<span class="before_change"><del>',
+     :start_before_change => '<span class="before-change"><del>',
      :end_before_change   => '</del></span>',
-     :start_after_change  => '<span class="after_change"><ins>',
+     :start_after_change  => '<span class="after-change"><ins>',
      :end_after_change    => '</ins></span>'}
   end
   def to_html(overriding_tags = nil, headfoot = true)

@@ -25,8 +25,8 @@
   li blockquote p {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
   span.del {background: hotpink; border: thin inset;}
   span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}
-  span.before_change {background: yellow; border: thin inset;}
-  span.after_change {background: lime; font-weight: bolder; border: thin outset;}
+  span.before-change {background: yellow; border: thin inset;}
+  span.after-change {background: lime; font-weight: bolder; border: thin outset;}
   li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
   li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
  </style>
@@ -85,6 +85,7 @@
 <ul>
 <li>0.3.3 (200x-xx-xx)<ul>
  <li></li>
+ <li>Replaced underscores(_) in CSS class names to hyphens(-) so that older UAs can understand them (thanks to Kazuhiro NISHIYAMA).</li>
 </ul></li>
 <li>0.3.2 (2005-01-03)<ul>
  <li>Readme is multilingualized (added partial Japanese translation).  Try switching CSS between en and ja.  Monolingual files are also available (readme.en.html, readme.ja.html).</li>
@@ -331,8 +332,8 @@ I am just another Ruby porter.<br />
 Hello, my name is matz.<br />
 It's me who has created Ruby.  I am a Ruby hacker.<br />
 % <kbd>docdiff sample/01.en.ascii.lf sample/02.en.ascii.lf</kbd><br />
-<span class="common">Hello, my name is </span><span class="before_change"><del>Watanabe.</del></span><span class="after_change"><ins>matz.</ins></span><span class="common"><br /></span>
-<span class="add"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span><span class="common">I am </span><span class="before_change"><del>just another </del></span><span class="after_change"><ins>a </ins></span><span class="common">Ruby </span><span class="before_change"><del>porter.</del></span><span class="after_change"><ins>hacker.</ins></span><span class="common"><br /></span>
+<span class="common">Hello, my name is </span><span class="before-change"><del>Watanabe.</del></span><span class="after-change"><ins>matz.</ins></span><span class="common"><br /></span>
+<span class="add"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span><span class="common">I am </span><span class="before-change"><del>just another </del></span><span class="after-change"><ins>a </ins></span><span class="common">Ruby </span><span class="before-change"><del>porter.</del></span><span class="after-change"><ins>hacker.</ins></span><span class="common"><br /></span>
 %<br />
 </samp></p>
 <p lang="ja"><samp>
@@ -343,8 +344,8 @@ It's me who has created Ruby.  I am a Ruby hacker.<br />
 こんばんは、私の名前はまつもとです。<br />
 Rubyを作ったのは私です。私はRuby Hackerです。<br />
 % <kbd>docdiff sample/01.ja.eucjp.lf sample/02.ja.eucjp.lf</kbd><br />
-<span class="before_change"><del>こんにちは</del></span><span class="after_change"><ins>こんばんは</ins></span><span class="common">、私の</span><span class="before_change"><del>名前はわたなべです</del></span><span class="after_change"><ins>名前はまつもとです</ins></span><span class="common">。<br /></span>
-<span class="add"><ins>Rubyを作ったのは私です。</ins></span><span class="common">私は</span><span class="del"><del>Just Another </del></span><span class="common">Ruby </span><span class="before_change"><del>Porter</del></span><span class="after_change"><ins>Hacker</ins></span><span class="common">です。<br /></span>
+<span class="before-change"><del>こんにちは</del></span><span class="after-change"><ins>こんばんは</ins></span><span class="common">、私の</span><span class="before-change"><del>名前はわたなべです</del></span><span class="after-change"><ins>名前はまつもとです</ins></span><span class="common">。<br /></span>
+<span class="add"><ins>Rubyを作ったのは私です。</ins></span><span class="common">私は</span><span class="del"><del>Just Another </del></span><span class="common">Ruby </span><span class="before-change"><del>Porter</del></span><span class="after-change"><ins>Hacker</ins></span><span class="common">です。<br /></span>
 %<br />
 </samp></p>
 </blockquote>
