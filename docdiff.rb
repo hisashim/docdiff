@@ -108,9 +108,9 @@ class DocDiff
     raise unless (doc1.class == Document && doc2.class == Document)
     raise unless (doc1.encoding == doc2.encoding && doc1.eol == doc2.eol)
     case resolution
-    when :line; then difference = compare_by_line(doc1, doc2)
-    when :word; then difference = compare_by_line_word(doc1, doc2)
-    when :char; then difference = compare_by_line_word_char(doc1, doc2)
+    when "line"; then difference = compare_by_line(doc1, doc2)
+    when "word"; then difference = compare_by_line_word(doc1, doc2)
+    when "char"; then difference = compare_by_line_word_char(doc1, doc2)
     else
       raise "Unsupported resolution: #{resolution.inspect}"
     end
@@ -126,13 +126,13 @@ class DocDiff
                  :start_after_change  => (@config[:tag_change_after_start] ||= ''),
                  :end_after_change    => (@config[:tag_change_after_end] ||= '')}
     case format
-    when :terminal; then result = view.to_terminal(option)
-    when :html;     then result = view.to_html(option)
-    when :xhtml;    then result = view.to_xhtml(option)
-    when :manued;   then result = view.to_manued(option)
-    when :wdiff;    then result = view.to_wdiff(option)
-    when :stat;     then result = view.to_stat(option)
-    when :user;     then result = view.to_user(user_tags)
+    when "terminal"; then result = view.to_terminal(option)
+    when "html";     then result = view.to_html(option)
+    when "xhtml";    then result = view.to_xhtml(option)
+    when "manued";   then result = view.to_manued(option)
+    when "wdiff";    then result = view.to_wdiff(option)
+    when "stat";     then result = view.to_stat(option)
+    when "user";     then result = view.to_user(user_tags)
     else
       raise "Unsupported output format: #{format.inspect}."
     end
@@ -257,6 +257,11 @@ if $0 == __FILE__
 
   file1_content = nil
   file2_content = nil
+  raise "Specify at least 2 target files." unless ARGV[0] && ARGV[1]
+  raise "No such file: #{ARGV[0]}." unless FileTest.exist?(ARGV[0])
+  raise "No such file: #{ARGV[1]}." unless FileTest.exist?(ARGV[1])
+  raise "#{ARGV[0]} is not a file." unless FileTest.file?(ARGV[0])
+  raise "#{ARGV[1]} is not a file." unless FileTest.file?(ARGV[1])
   File.open(ARGV[0], "r"){|f| file1_content = f.read}
   File.open(ARGV[1], "r"){|f| file2_content = f.read}
 
