@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
-# DocDiff
+# DocDiff: word/char-oriented text comparison utility
 # 2002-06-27 Thu ... 2005-xx-xx xxx
 # Hisashi MORITA
-# requirement for runtime: Ruby (> 1.6), diff library by akr (included in Ruby/CVS),
+# requirement for runtime: Ruby (> 1.6)
 # requirement for testing: above plus Uconv by Yoshidam
 
 require 'docdiff/difference'
