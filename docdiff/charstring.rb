@@ -156,12 +156,12 @@ module CharString
   end
 
   def CharString.guess_encoding_using_iconv(string)
-    valid_as_utf8   = CharString.valid_as("utf8", string)
+    valid_as_utf8   = CharString.valid_as("utf-8", string)
     valid_as_sjis   = CharString.valid_as("cp932", string) # not sjis, but cp932
     valid_as_jis    = CharString.valid_as("iso-2022-jp", string)
     valid_as_eucjp  = CharString.valid_as("eucjp", string)
     valid_as_ascii  = CharString.valid_as("ascii", string)
-    invalid_as_utf8   = CharString.invalid_as("utf8", string)
+    invalid_as_utf8   = CharString.invalid_as("utf-8", string)
     invalid_as_sjis   = CharString.invalid_as("cp932", string) # not sjis, but cp932
     invalid_as_jis    = CharString.invalid_as("iso-2022-jp", string)
     invalid_as_eucjp  = CharString.invalid_as("eucjp", string)
