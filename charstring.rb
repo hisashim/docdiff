@@ -222,6 +222,25 @@ module CharString
   # Note that some languages (like Japanese) do not have 'word' or 'phrase', 
   # thus some of the following methods are not 'linguistically correct'.
 
+  # overriding String::scan and String::split, so that
+  # substrings also extend CharString and have the same @encoding and @eol.
+  def scan(*args, &block)
+    super(*args, &block).collect{|substring|
+      substring.extend CharString
+       substring.encoding = self.encoding if self.encoding
+       substring.eol = self.eol if self.eol
+      substring
+    }
+  end
+  def split(*args, &block)
+    super(*args, &block).collect{|substring|
+      substring.extend CharString
+      substring.encoding = self.encoding if self.encoding
+      substring.eol = self.eol if self.eol
+      substring
+    }
+  end
+
   def split_to_byte()
     scan(/./nm)
   end
