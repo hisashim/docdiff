@@ -11,11 +11,11 @@ end
 
 class Document
 
-  def initialize(str, cs = nil, e = nil)
+  def initialize(str, enc = nil, e = nil)
     @body = str
     @body.extend CharString
-    if cs
-      @body.encoding = cs
+    if enc
+      @body.encoding = enc
     else
       guessed_encoding = CharString.guess_encoding(str)
       if guessed_encoding == "UNKNOWN"

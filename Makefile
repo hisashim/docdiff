@@ -1,6 +1,7 @@
 test:
-	ruby -W0 testdocdiff.rb && \
-	ruby -W0 testdifference.rb && \
-	ruby -W0 testdiff.rb && \
-	ruby -W0 testdocument.rb && \
-	ruby -W0 testcharstring.rb
+	ruby testcharstring.rb && \
+	ruby testdocument.rb && \
+	ruby testdiff.rb && \
+	ruby testdifference.rb && \
+	ruby testview.rb && \
+	ruby testdocdiff.rb

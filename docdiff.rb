@@ -8,6 +8,7 @@
 
 require 'difference'
 require 'document'
+require 'view'
 
 class DocDiff
 
@@ -71,12 +72,12 @@ class DocDiff
     words = Difference.new
     lines.each{|line|
       if line.first == :change_elt
-        before_change = Document.new(line[1].to_s)
-        before_change.encoding = doc1.encoding
-        before_change.eol = doc1.eol
-        after_change  = Document.new(line[2].to_s)
-        after_change.encoding = doc2.encoding
-        after_change.eol = doc2.eol
+        before_change = Document.new(line[1].to_s, doc1.encoding, doc1.eol)
+#         before_change.encoding = doc1.encoding
+#         before_change.eol = doc1.eol
+        after_change  = Document.new(line[2].to_s, doc2.encoding, doc2.eol)
+#         after_change.encoding = doc2.encoding
+#         after_change.eol = doc2.eol
         Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
           words << word
         }
@@ -136,5 +137,10 @@ if $0 == __FILE__
   File.open(ARGV[0], "r"){|f| doc2 = Document.new(f.read)}
   p doc1.split_to_line
   p doc1.split_to_line
-#  p docdiff.compare_by_word(doc1, doc2)
+  p doc1.split_to_word
+  p doc1.split_to_word
+  p doc1.split_to_char
+  p doc1.split_to_char
+
+  p docdiff.compare_by_word(doc1, doc2)
 end

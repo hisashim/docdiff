@@ -63,6 +63,10 @@ module CharString
     JA_BLANK =  "" # kludge...
     JA_GRAPH =  "" # kludge...
 
+    PUNCT.replace(Regexp.quote(PUNCT)) # kludge to avoid warning "character class has `[' without escape"
+    PRINT.replace(Regexp.quote(PRINT)) # kludge to avoid warning "character class has `[' without escape"
+    GRAPH.replace(Regexp.quote(GRAPH)) # kludge to avoid warning "character class has `[' without escape"
+
     WORD_REGEXP_SRC = ["(?:[#{GRAPH}]+[#{BLANK}]?)", 
                        "|(?:[#{SPACE}]+)", 
                        "|(?:.+?)"].join

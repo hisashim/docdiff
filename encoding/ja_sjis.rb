@@ -241,6 +241,10 @@ module CharString
     JA_GRAPH =  JA_ALNUM + JA_PUNCT + HIRA + KATA + KANJI
     JA_PRINT =  JA_GRAPH + JA_BLANK
 
+    PUNCT.replace(Regexp.quote(PUNCT)) # kludge to avoid warning "character class has `[' without escape"
+    PRINT.replace(Regexp.quote(PRINT)) # kludge to avoid warning "character class has `[' without escape"
+    GRAPH.replace(Regexp.quote(GRAPH)) # kludge to avoid warning "character class has `[' without escape"
+
     WORD_REGEXP_SRC = ["(?:[#{GRAPH}]+[#{BLANK}]?)", 
                        "|(?:[#{SPACE}]+)", 
                        "|(?:[#{KANJI_EX}]+[#{HIRA}]+)",  
