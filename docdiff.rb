@@ -7,8 +7,7 @@
 #              Uconv by Yoshidam, NKF (for unit-testing)
 
 require 'difference'
-require 'charstring'
-require 'diff'
+require 'document'
 
 class DocDiff
 
@@ -63,8 +62,61 @@ class DocDiff
   ## --tag-removed="<->,</->"  --tag-deleted
   ## --tag-added="<+>,</+>"    --tag-inserted
 
+  def compare_by_line(doc1, doc2)
+    Difference.new(doc1.split_to_line, doc2.split_to_line)
+  end
+
+  def compare_by_word(doc1, doc2)
+    lines = Difference.new(doc1.split_to_line, doc2.split_to_line)
+    words = Difference.new
+    lines.each{|line|
+      if line.first == :change_elt
+        before_change = Document.new(line[1].to_s)
+        after_change  = Document.new(line[2].to_s)
+        Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
+          words << word
+        }
+      else  # :common_elt_elt, :del_elt, or :add_elt
+        words << line
+      end
+    }
+    words
+  end
+
+  # i know this implementation of recursion is so lame...
+  def compare_by_char(doc1, doc2)
+    lines = Difference.new(doc1.split_to_line, doc2.split_to_line)
+    lines_and_words = Difference.new
+    lines.each{|line|
+      if line.first == :change_elt
+        before_change = Document.new(line[1].to_s)
+        after_change  = Document.new(line[2].to_s)
+        Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
+          lines_and_words << word
+        }
+      else  # :common_elt_elt, :del_elt, or :add_elt
+        lines_and_words << line
+      end
+    }
+    lines_words_and_chars = Difference.new
+    lines_and_words.each{|line_or_word|
+      if line_or_word.first == :change_elt
+        before_change = Document.new(line_or_word[1].to_s)
+        after_change  = Document.new(line_or_word[2].to_s)
+        Difference.new(before_change.split_to_char, after_change.split_to_char).each{|char|
+          lines_words_and_chars << char
+        }
+      else  # :common_elt_elt, :del_elt, or :add_elt
+        lines_words_and_chars << line_or_word
+      end
+    }
+    lines_words_and_chars
+  end
+
 end  # class DocDiff
 
 if $0 == __FILE__
-  docdif = DocDiff.new
+  configuration = DocDiff::Configuration.new
+  docdiff = DocDiff.new(configuration)
+  docdiff.run
 end
