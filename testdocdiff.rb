@@ -59,13 +59,14 @@ class TC_Document < Test::Unit::TestCase
      ' span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}' + "\n" +
      ' span.before-change {background: yellow; border: thin inset;}' + "\n" +
      ' span.after-change {background: lime; font-weight: bolder; border: thin outset;}' + "\n" +
-     " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}\n" +
-     " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}\n" +
+     " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0.5em; padding-bottom: 0em;}\n" +
+     " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0.5em;}\n" +
+     " li.entry {border-top: thin solid gray;}\n" +
      '</style>' + "\n" +
-     '</head><body>' + "\n" +
+     '</head><body><div>' + "\n" +
      '<span class="before-change"><del>foo bar<br />' + "\n" + '</del></span>' +
      '<span class="after-change"><ins>foo beer<br />' + "\n" + '</ins></span>' +
-     '<span class="common">baz' + "</span>" + "\n</body></html>" + "\n"
+     '<span class="common">baz' + "</span>" + "\n</div></body></html>" + "\n"
     assert_equal(expected, docdiff.run(doc1, doc2, "line", "html", digest = false))
   end
 
