@@ -2,9 +2,8 @@
 # DocDiff 0.3
 # 2002-06-27 Thu ... 2003-03-25 Mon ...
 # Hisashi MORITA
-# These scripts are distributed under the same license as Ruby's.
-# requirement: Ruby (> 1.6), diff library by akr (included in Ruby/CVS),
-#              Uconv by Yoshidam, NKF
+# requirement for runtime: Ruby (> 1.6), diff library by akr (included in Ruby/CVS),
+# requirement for testing: above plus Uconv by Yoshidam
 
 require 'docdiff/difference'
 require 'docdiff/document'
@@ -16,7 +15,8 @@ class DocDiff
   AppVersion = '0.3.0'
   Author = "Copyright (C) 2002-2004 Hisashi MORITA.\n" +
            "diff library originates from Ruby/CVS by TANAKA Akira.\n"
-  License = "This software is licensed under the same license as Ruby's."
+  License = "This software is licensed under so-called modified BSD license.\n" +
+            "See the document for detail.\n"
   SystemConfigFileName = File.join(File::Separator, "etc", "docdiff", "docdiff.conf")
   UserConfigFileName = File.join(ENV['HOME'], "etc", "docdiff", "docdiff.conf")
 
