@@ -216,7 +216,7 @@ if $0 == __FILE__
     o.def_option('--terminal', 'same as --format=terminal'){clo[:format] = "terminal"}
     o.def_option('--manued', 'same as --format=manued'){clo[:format] = "manued"}
     o.def_option('--html', 'same as --format=html'){clo[:format] = "html"}
-    o.def_option('--xhtml', 'same as --format=xhtml'){clo[:format] = "html"}
+    o.def_option('--xhtml', 'same as --format=xhtml'){clo[:format] = "xhtml"}
     o.def_option('--wdiff', 'same as --format=wdiff'){clo[:format] = "wdiff"}
     o.def_option('--stat', 'same as --format=stat'){clo[:format] = "stat"}
 

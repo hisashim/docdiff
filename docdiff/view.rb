@@ -77,7 +77,11 @@ class View
             :start_after_change  => '<span class="after_change"><ins>',
             :end_after_change    => '</ins></span>'}
     tags.update(overriding_tags) if overriding_tags
+    result = apply_style(tags){|str_to_escape|
+        str_to_escape.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]}
+    }
     if headfoot == true
+      result =
       ['<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"',
        '"http://www.w3.org/TR/html4/loose.dtd">' + @eol_char,
        '<html><head>',
@@ -86,13 +90,10 @@ class View
        '<title>' + @source + ', ' + @target + '</title>' + @eol_char,
        '<style type="text/css"></style>' + @eol_char,
        '</head><body>' + @eol_char] +
-      apply_style(tags) +
+      result +
       [@eol_char + '</body></html>' + @eol_char]
-    else
-      apply_style(tags){|str_to_escape|
-        str_to_escape.gsub(HTMLEscapePat){|matched| HTMLEscapeDic[matched]}
-      }
     end
+    result
   end
 
   XHTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', ' '=>'&nbsp;',
@@ -110,7 +111,11 @@ class View
             :start_after_change  => '<span class="after_change"><ins>',
             :end_after_change    => '</ins></span>'}
     tags.update(overriding_tags) if overriding_tags
+    result = apply_style(tags){|str_to_escape|
+      str_to_escape.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]}
+    }
     if headfoot == true
+      result =
       ['<?xml version="1.0" encoding="' + @codeset.downcase+ '"?>' + @eol_char,
        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + @eol_char,
        '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + @eol_char,
@@ -122,13 +127,10 @@ class View
        '<!-- -->' + @eol_char,
        '</style>' + @eol_char,
        '</head><body>' + @eol_char] +
-      apply_style(tags) +
+      result +
       [@eol_char + '</body></html>' + @eol_char]
-    else
-      apply_style(tags){|str_to_escape|
-        str_to_escape.gsub(XHTMLEscapePat){|matched| XHTMLEscapeDic[matched]}
-      }
     end
+    result
   end
 
   ManuedInsideEscapeDic = {'~'=>'~~', '/'=>'~/', '['=>'~[', ']'=>'~]', ';'=>'~;'}
@@ -150,13 +152,13 @@ class View
     result = []
     if headfoot == true
       result =
-      ["defparentheses [ ]\n",
-       "defdelete      /\n",
-       "defswap        |\n",
-       "defcomment     ;\n",
-       "defescape      ~\n",
-       "deforder       newer-last\n",
-       "defversion     0.9.5\n"] + result
+	["defparentheses [ ]#{@eol_char}",
+	"defdelete      /#{@eol_char}",
+	"defswap        |#{@eol_char}",
+	"defcomment     ;#{@eol_char}",
+	"defescape      ~#{@eol_char}",
+	"deforder       newer-last#{@eol_char}",
+	"defversion     0.9.5#{@eol_char}"] + result
     end
     @difference.each{|block|
       operation = block.first
