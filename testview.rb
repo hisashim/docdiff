@@ -360,9 +360,10 @@ class TC_View < Test::Unit::TestCase
   def test_to_manued_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
-    expected =   ["1-2,(1) [a\nb/]cd\n",
-                  "(2),1-2 cd[/X\nY]e\n\n",
-                  "3,3 e\n[f/F]\n\n"]
+    expected =   ["----\n",
+                  "1-2,(1)\n[a\nb/]cd\n----\n",
+                  "(2),1-2\ncd[/X\nY]e\n\n----\n",
+                  "3,3\ne\n[f/F]\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_manued_digest(nil,false))
   end
 
@@ -421,9 +422,10 @@ class TC_View < Test::Unit::TestCase
   def test_to_wdiff_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
-    expected = ["1-2,(1) [-a\nb-]cd\n",
-                "(2),1-2 cd{+X\nY+}e\n\n",
-                "3,3 e\n[-f-]{+F+}\n\n"]
+    expected = ["----\n",
+                "1-2,(1)\n[-a\nb-]cd\n----\n",
+                "(2),1-2\ncd{+X\nY+}e\n\n----\n",
+                "3,3\ne\n[-f-]{+F+}\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_wdiff_digest(nil,false))
   end
 
