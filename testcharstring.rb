@@ -103,8 +103,6 @@ class TC_CharString < Test::Unit::TestCase
     str.encoding, str.eol = encoding, eol
     expected = ["foo\r", "bar\r"]
     assert_equal(expected, str.split_to_line)
-    assert_equal(encoding, str.split_to_line.collect{|i|i.encoding}.uniq.to_s)
-    assert_equal(eol, str.split_to_line.collect{|i|i.eol}.uniq.to_s)
   end
   def test_cr_split_to_line_chomped_lastline()
     str = "foo\rbar".extend CharString

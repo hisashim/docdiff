@@ -222,25 +222,8 @@ module CharString
   # Note that some languages (like Japanese) do not have 'word' or 'phrase', 
   # thus some of the following methods are not 'linguistically correct'.
 
-  # overriding String::scan and String::split, so that
-  # substrings also have the same @encoding and @eol.
-  def scan_charstring(*args, &block)
-    scan(*args, &block).collect{|substring|
-      substring.encoding = self.encoding if self.encoding
-      substring.eol = self.eol if self.eol
-      substring
-    }
-  end
-  def split_charstring(*args, &block)
-    super(*args, &block).collect{|substring|
-      substring.encoding = self.encoding if self.encoding
-      substring.eol = self.eol if self.eol
-      substring
-    }
-  end
-
   def split_to_byte()
-    scan_charstring(/./nm)
+    scan(/./nm)
   end
 
   def count_byte()
@@ -251,12 +234,12 @@ module CharString
     raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
     # raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
     if eol_char  # sometimes string has no end-of-line char
-      scan_charstring(Regexp.new("(?:#{eol_char})|(?:.)", 
+      scan(Regexp.new("(?:#{eol_char})|(?:.)", 
                       Regexp::MULTILINE, 
                       encoding.sub(/ASCII/i, 'none'))
       )
     else                  # it seems that no EOL module was extended...
-      scan_charstring(Regexp.new("(?:.)", 
+      scan(Regexp.new("(?:.)", 
                       Regexp::MULTILINE, 
                       encoding.sub(/ASCII/i, 'none'))
       )
@@ -270,7 +253,7 @@ module CharString
   def count_latin_graph_char()
     raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
     # raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
-    scan_charstring(Regexp.new("[#{Encodings[encoding]::GRAPH}]", 
+    scan(Regexp.new("[#{Encodings[encoding]::GRAPH}]", 
                     Regexp::MULTILINE, 
                     encoding.sub(/ASCII/i, 'none'))
     ).size
@@ -279,7 +262,7 @@ module CharString
   def count_ja_graph_char()
     raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
     # raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
-    scan_charstring(Regexp.new("[#{Encodings[encoding]::JA_GRAPH}]", 
+    scan(Regexp.new("[#{Encodings[encoding]::JA_GRAPH}]", 
                     Regexp::MULTILINE, 
                     encoding.sub(/ASCII/i, 'none'))
     ).size
@@ -290,14 +273,14 @@ module CharString
   end
 
   def count_latin_blank_char()
-    scan_charstring(Regexp.new("[#{Encodings[encoding]::BLANK}]", 
+    scan(Regexp.new("[#{Encodings[encoding]::BLANK}]", 
                     Regexp::MULTILINE, 
                     encoding.sub(/ASCII/i, 'none'))
     ).size
   end
 
   def count_ja_blank_char()
-    scan_charstring(Regexp.new("[#{Encodings[encoding]::JA_BLANK}]", 
+    scan(Regexp.new("[#{Encodings[encoding]::JA_BLANK}]", 
                     Regexp::MULTILINE, 
                     encoding.sub(/ASCII/i, 'none'))
     ).size
@@ -310,7 +293,7 @@ module CharString
   def split_to_word()
     raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
     # raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
-    scan_charstring(Regexp.new(Encodings[encoding]::WORD_REGEXP_SRC, 
+    scan(Regexp.new(Encodings[encoding]::WORD_REGEXP_SRC, 
                     Regexp::MULTILINE, 
                     encoding.sub(/ASCII/i, 'none'))
     )
@@ -357,19 +340,19 @@ module CharString
   end
 
   def split_to_line()
-#     scan_charstring(Regexp.new(".*?#{eol_char}|.+", 
+#     scan(Regexp.new(".*?#{eol_char}|.+", 
 #                     Regexp::MULTILINE, 
 #                     encoding.sub(/ASCII/i, 'none'))
 #     )
     raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
     raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
     if defined? eol_char
-      scan_charstring(Regexp.new(".*?#{eol_char}|.+", 
+      scan(Regexp.new(".*?#{eol_char}|.+", 
                       Regexp::MULTILINE, 
                       encoding.sub(/ASCII/i, 'none'))
       )
     else
-      scan_charstring(Regexp.new(".+", 
+      scan(Regexp.new(".+", 
                       Regexp::MULTILINE, 
                       encoding.sub(/ASCII/i, 'none'))
       )
