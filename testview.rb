@@ -199,8 +199,8 @@ class TC_View < Test::Unit::TestCase
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected =   ["1-2,(1) \033[#{4}m\033[#{41}ma\nb\033[0mcd\n",
-                  "(2),1-2 cd\033[#{1}m\033[#{44}mX\nY\033[0me\n",
-                  "3,3 e\033[#{4}m\033[#{43}mf\033[0m\033[#{1}m\033[#{42}mF\033[0m\n"]
+                  "(2),1-2 cd\033[#{1}m\033[#{44}mX\nY\033[0me\n\n",
+                  "3,3 e\n\033[#{4}m\033[#{43}mf\033[0m\033[#{1}m\033[#{42}mF\033[0m\n\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_tty_digest(nil, false))
   end
 
@@ -238,8 +238,8 @@ class TC_View < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected =   ["<ul><hr />",
                   "<li class=\"entry\"><p class=\"position\">1-2,(1)</p><blockquote class=\"body\"><p class=\"body\"><span class=\"del\"><del>a<br />\nb</del></span>cd</p></blockquote></li><hr />\n",
-                  "<li class=\"entry\"><p class=\"position\">(2),1-2</p><blockquote class=\"body\"><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e</p></blockquote></li><hr />\n",
-                  "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span></p></blockquote></li><hr />\n",
+                  "<li class=\"entry\"><p class=\"position\">(2),1-2</p><blockquote class=\"body\"><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e<br />\n</p></blockquote></li><hr />\n",
+                  "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span><br />\n</p></blockquote></li><hr />\n",
                   "</ul>"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html_digest(nil,false))
   end
@@ -360,8 +360,8 @@ class TC_View < Test::Unit::TestCase
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected =   ["1-2,(1) [a\nb/]cd\n",
-                  "(2),1-2 cd[/X\nY]e\n",
-                  "3,3 e[f/F]\n"]
+                  "(2),1-2 cd[/X\nY]e\n\n",
+                  "3,3 e\n[f/F]\n\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_manued_digest(nil,false))
   end
 
@@ -421,8 +421,8 @@ class TC_View < Test::Unit::TestCase
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = ["1-2,(1) [-a\nb-]cd\n",
-                "(2),1-2 cd{+X\nY+}e\n",
-                "3,3 e[-f-]{+F+}\n"]
+                "(2),1-2 cd{+X\nY+}e\n\n",
+                "3,3 e\n[-f-]{+F+}\n\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_wdiff_digest(nil,false))
   end
 
@@ -479,8 +479,8 @@ class TC_View < Test::Unit::TestCase
                  :start_after_change  => '<!+>',
                  :end_after_change    => '</!+>'}
     expected = ["1-2,(1) <->a\nb</->cd\n",
-                "(2),1-2 cd<+>X\nY</+>e\n",
-                "3,3 e<!->f</!-><!+>F</!+>\n"]
+                "(2),1-2 cd<+>X\nY</+>e\n\n",
+                "3,3 e\n<!->f</!-><!+>F</!+>\n\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_user_digest(user_tags, false))
   end
 

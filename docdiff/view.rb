@@ -117,14 +117,14 @@ class View
         result << (
           tags[:start_entry] + 
           tags[:start_position] + pos + tags[:end_position] + 
-          tags[:start_prefix] + prefix + tags[:end_prefix] +
+          tags[:start_prefix] + prefix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_prefix] +
           tags[:start_before_change] +
           source.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
           tags[:end_before_change] + 
           tags[:start_after_change] +
           target.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
           tags[:end_after_change] +
-          tags[:start_postfix] + postfix + tags[:end_postfix] +
+          tags[:start_postfix] + postfix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_postfix] +
           tags[:end_entry] + (@eol_char||"")
         )
       when :del_elt
@@ -134,11 +134,11 @@ class View
         result << (
           tags[:start_entry] +
           tags[:start_position] + pos + tags[:end_position] +
-          tags[:start_prefix] + prefix + tags[:end_prefix] +
+          tags[:start_prefix] + prefix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_prefix] +
           tags[:start_del] +
           source.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
           tags[:end_del] + 
-          tags[:start_postfix] + postfix + tags[:end_postfix] +
+          tags[:start_postfix] + postfix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_postfix] +
           tags[:end_entry] + (@eol_char||"")
         )
       when :add_elt
@@ -148,11 +148,11 @@ class View
         result << (
           tags[:start_entry] +
           tags[:start_position] + pos + tags[:end_position] +
-          tags[:start_prefix] + prefix + tags[:end_prefix] +
+          tags[:start_prefix] + prefix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_prefix] +
           tags[:start_add] +
           target.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
           tags[:end_add] +
-          tags[:start_postfix] + postfix + tags[:end_postfix] +
+          tags[:start_postfix] + postfix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_postfix] +
           tags[:end_entry] + (@eol_char||"")
         )
       else
@@ -184,11 +184,11 @@ class View
   PREFIX_LENGTH = 16
   POSTFIX_LENGTH = 16
   def prefix_pat()
-    Regexp.new('.{0,'+"#{PREFIX_LENGTH}"+'}\Z', nil,
+    Regexp.new('.{0,'+"#{PREFIX_LENGTH}"+'}\Z', Regexp::MULTILINE,
                @encoding.sub(/ASCII/i, 'none'))
   end
   def postfix_pat()
-    Regexp.new('\A.{0,'+"#{POSTFIX_LENGTH}"+'}', nil,
+    Regexp.new('\A.{0,'+"#{POSTFIX_LENGTH}"+'}', Regexp::MULTILINE,
                @encoding.sub(/ASCII/i, 'none'))
   end
 
