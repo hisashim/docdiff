@@ -130,7 +130,6 @@ class DocDiff
     when true
       case format
       when "tty";      then result = view.to_tty_digest(option)
-      when "html4";     then result = view.to_html4_digest(option)
       when "html";    then result = view.to_html_digest(option)
       when "manued";   then result = view.to_manued_digest(option)
       when "wdiff";    then result = view.to_wdiff_digest(option)
@@ -142,8 +141,7 @@ class DocDiff
     when false
       case format
       when "tty";      then result = view.to_tty(option)
-      when "html4";     then result = view.to_html4(option)
-      when "html";    then result = view.to_html(option)
+      when "html";     then result = view.to_html(option)
       when "manued";   then result = view.to_manued(option)
       when "wdiff";    then result = view.to_wdiff(option)
       when "stat";     then result = view.to_stat(option)
@@ -225,7 +223,7 @@ if $0 == __FILE__
     o.def_option('--crlf', 'same as --eol=CRLF'){clo[:eol] = "CRLF"}
 
     o.def_option('--format=FORMAT',
-                 possible_formats = ['tty','manued','html4','html','wdiff','stat','user'],
+                 possible_formats = ['tty','manued','html','wdiff','stat','user'],
                  'specify output format',
                  possible_formats.join('|'),
                  "(default is html)",
@@ -233,7 +231,6 @@ if $0 == __FILE__
                 ){|clo[:format]| clo[:format] ||= "manued"}
     o.def_option('--tty', 'same as --format=tty'){clo[:format] = "tty"}
     o.def_option('--manued', 'same as --format=manued'){clo[:format] = "manued"}
-    o.def_option('--html4', 'same as --format=html4'){clo[:format] = "html4"}
     o.def_option('--html', 'same as --format=html'){clo[:format] = "html"}
     o.def_option('--wdiff', 'same as --format=wdiff'){clo[:format] = "wdiff"}
     o.def_option('--stat', 'same as --format=stat'){clo[:format] = "stat"}

@@ -204,63 +204,6 @@ class TC_View < Test::Unit::TestCase
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_tty_digest(nil, false))
   end
 
-#   def test_to_html4_del_add_ascii()
-#     array1 = ['a', 'b', 'c']
-#     array2 = ['b', 'c', 'c']
-#     difference = Difference.new(array1, array2)
-#     expected =   ['<span class="del"><del>a</del></span>',
-#                   '<span class="common">b</span>',
-#                   '<span class="add"><ins>c</ins></span>',
-#                   '<span class="common">c</span>']
-#     assert_equal(expected, View.new(difference, "ASCII", nil).to_html4(nil, false))
-#   end
-#   def test_to_html4_change_ascii()
-#     array1 = ['a', 'b', 'c']
-#     array2 = ['a', 'x', 'c']
-#     difference = Difference.new(array1, array2)
-#     expected =   ['<span class="common">a</span>',
-#                   '<span class="before_change"><del>b</del></span><span class="after_change"><ins>x</ins></span>',
-#                   '<span class="common">c</span>']
-#     assert_equal(expected, View.new(difference, "ASCII", nil).to_html4(nil, false))
-#   end
-#   def test_to_html4_cr_ascii()
-#     array1 = ['a', "\r"]
-#     array2 = ['a', "\r"]
-#     difference = Difference.new(array1, array2)
-#     expected =   ["<span class=\"common\">a<br>\r</span>"]
-#     assert_equal(expected, View.new(difference, "ASCII", "CR").to_html4(nil, false))
-#   end
-#   def test_to_html4_lf_ascii()
-#     array1 = ['a', "\n"]
-#     array2 = ['a', "\n"]
-#     difference = Difference.new(array1, array2)
-#     expected =   ["<span class=\"common\">a<br>\n</span>"]
-#     assert_equal(expected, View.new(difference, "ASCII", "LF").to_html4(nil, false))
-#   end
-#   def test_to_html4_crlf_ascii()
-#     array1 = ['a', "\r\n"]
-#     array2 = ['a', "\r\n"]
-#     difference = Difference.new(array1, array2)
-#     expected =   ["<span class=\"common\">a<br>\r\n</span>"]
-#     assert_equal(expected, View.new(difference, "ASCII", "CRLF").to_html4(nil, false))
-#   end
-#   def test_to_html4_escaping_ascii()
-#     array1 = ['<>& ']
-#     array2 = ['<>& ']
-#     difference = Difference.new(array1, array2)
-#     expected =   ["<span class=\"common\">&lt;&gt;&amp;&nbsp;</span>"]
-#     assert_equal(expected, View.new(difference, "ASCII", nil).to_html4(nil, false))
-#   end
-#   def test_to_html4_digest()
-#     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
-#     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
-#     expected =   ["<ul>",
-#                   "<li>1-2,(1)<br><span class=\"del\"><del>a<br>\nb</del></span>cd</li>\n",
-#                   "<li>(2),1-2<br>cd<span class=\"add\"><ins>X<br>\nY</ins></span>e</li>\n",
-#                   "<li>3,3<br>e<span class=\"before_change\"><del>f</del></span><span class=\"after_change\"><ins>F</ins></span></li>\n",
-#                   "</ul>"]
-#     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html4_digest(nil, false))
-#   end
 
   def test_to_html_cr_ascii()
     array1 = ['a', "\r"]
@@ -300,39 +243,6 @@ class TC_View < Test::Unit::TestCase
                   "</ul>"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html_digest(nil,false))
   end
-#   def test_to_html4_del_add_ja()
-#     array1 = ['あ', 'い', 'う']
-#     array2 = ['い', 'う', 'う']
-#     expected =   ['<span class="del"><del>あ</del></span>',
-#                   '<span class="common">い</span>',
-#                   '<span class="add"><ins>う</ins></span>',
-#                   '<span class="common">う</span>']
-#     assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_html4(nil, false))
-#     assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-#                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-#                                          array2.collect{|i|NKF.nkf("-s",i)}),
-#                           "Shift_JIS", nil).to_html4(nil, false))
-#     assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-#                  View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-#                                          array2.collect{|i|Uconv.euctou8(i)}),
-#                           "UTF-8", nil).to_html4(nil, false))
-#   end
-#   def test_to_html4_change_ja()
-#     array1 = ['あ', 'い', 'う']
-#     array2 = ['あ', '漢', 'う']
-#     expected =   ['<span class="common">あ</span>',
-#                   '<span class="before_change"><del>い</del></span><span class="after_change"><ins>漢</ins></span>',
-#                   '<span class="common">う</span>']
-#     assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_html4(nil, false))
-#     assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-#                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-#                                          array2.collect{|i|NKF.nkf("-s",i)}),
-#                           "Shift_JIS", nil).to_html4(nil, false))
-#     assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-#                  View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-#                                          array2.collect{|i|Uconv.euctou8(i)}),
-#                           "UTF-8", nil).to_html4(nil, false))
-#   end
 
   def test_to_html_del_add_ascii()
     array1 = ['a', 'b', 'c']
