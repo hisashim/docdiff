@@ -184,11 +184,11 @@ class View
   PREFIX_LENGTH = 16
   POSTFIX_LENGTH = 16
   def prefix_pat()
-    Regexp.new('[^\r\n]{0,'+"#{PREFIX_LENGTH}"+'}\Z',
+    Regexp.new('.{0,'+"#{PREFIX_LENGTH}"+'}\Z', nil,
                @encoding.sub(/ASCII/i, 'none'))
   end
   def postfix_pat()
-    Regexp.new('\A[^\r\n]{0,'+"#{POSTFIX_LENGTH}"+'}',
+    Regexp.new('\A.{0,'+"#{POSTFIX_LENGTH}"+'}', nil,
                @encoding.sub(/ASCII/i, 'none'))
   end
 
