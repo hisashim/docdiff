@@ -260,7 +260,7 @@ class View
   def html_footer()
     [(@eol_char||"") + '</body></html>' + (@eol_char||"")]
   end
-  HTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', ' '=>'&nbsp;',
+  HTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', '  '=>'&nbsp;&nbsp;',
                    "\r\n" => "<br />\r\n", "\r" => "<br />\r", "\n" => "<br />\n"}
   HTMLEscapePat = /(\r\n|#{HTMLEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def html_tags()
