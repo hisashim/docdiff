@@ -11,31 +11,33 @@ class TestStringPlus < RUNIT::TestCase
 
   # to_char tests.
   def test_to_char_en_ascii()
-    string   = "foo bar"
-    string.extend DocDiff::StringPlus
-    string.lang = "English"
-    string.enc = "ASCII"
-    string.eol = "\n"
+    s      = "foo bar"
+    s.extend DocDiff::StringPlus
+    s.lang = "English"
+    s.enc  = "ASCII"
+    s.eol  = "\n"
     expected = ['f','o','o',' ','b','a','r']
-    assert_equal(expected, string.to_char)
+    assert_equal(expected, s.to_char)
   end
   def test_to_char_ja_eucjp()
-    string   = "漢字かなカタカナ"
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "EUC-JP"
-    string.eol = "\n"
+    s      = "漢字かなカタカナ"
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc  = "EUC-JP"
+    s.eol  = "\n"
     expected = ['漢','字','か','な','カ','タ','カ','ナ']
-    assert_equal(expected, string.to_char)
+    assert_equal(expected, s.to_char)
   end
   def test_to_char_ja_sjis()
-    string = NKF.nkf('-s', "漢字かなカタカナ")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "Shift_JIS"
-    string.eol = "\n"
-    expected = ['漢','字','か','な','カ','タ','カ','ナ'].collect{|s|NKF.nkf('-s', s)}
-    assert_equal(expected, string.to_char)
+    s = NKF.nkf('-s', "漢字かなカタカナ")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc  = "Shift_JIS"
+    s.eol  = "\n"
+    expected = ['漢','字','か','な','カ','タ','カ','ナ'].collect{|st|
+      NKF.nkf('-s', st)
+    }
+    assert_equal(expected, s.to_char)
   end
 
 #   def test_count_char_en_ascii_cr()
@@ -59,132 +61,158 @@ class TestStringPlus < RUNIT::TestCase
 
   # to_word tests.
   def test_to_word_en_ascii_lf()
-    string   = "foo bar baz quux."
-    string.extend DocDiff::StringPlus
-    string.lang = "English"
-    string.enc = "ASCII"
-    string.eol = "\n"
+    s   = "foo bar baz quux."
+    s.extend DocDiff::StringPlus
+    s.lang = "English"
+    s.enc = "ASCII"
+    s.eol = "\n"
     expected = ['foo ','bar ','baz ','quux','.']
-    assert_equal(expected, string.to_word)
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_en_ascii_lf_hyphen()
-    string   = "Mr. Black, he\'s a high-school student."
-    string.extend DocDiff::StringPlus
-    string.lang = "English"
-    string.enc = "ASCII"
-    string.eol = "\n"
+    s   = "Mr. Black, he\'s a high-school student."
+    s.extend DocDiff::StringPlus
+    s.lang = "English"
+    s.enc = "ASCII"
+    s.eol = "\n"
     expected = ["Mr. ","Black",", ","he\'s ","a ","high-school ","student","."]
-    assert_equal(expected, string.to_word)
+    assert_equal(expected, s.to_word)
   end
   # EUC-JP encoding.  EoL is LF.
   def test_to_word_ja_eucjp_kanhira()
-    string   = NKF.nkf('-e',"食べたり飲んだりした。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "EUC-JP"
-    string.eol = "\n"
-    expected = ['食べたり','飲んだりした','。'].collect{|s|NKF.nkf('-e', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-e',"食べたり飲んだりした。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "EUC-JP"
+    s.eol = "\n"
+    expected = ['食べたり','飲んだりした','。'].collect{|st|
+      NKF.nkf('-e', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_eucjp_macronhira()
-    string   = NKF.nkf('-e',"るーるるる。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "EUC-JP"
-    string.eol = "\n"
-    expected = ['るーるるる','。'].collect{|s|NKF.nkf('-e', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-e',"るーるるる。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "EUC-JP"
+    s.eol = "\n"
+    expected = ['るーるるる','。'].collect{|st|
+      NKF.nkf('-e', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_eucjp_macronkata_trail()
-    string   = NKF.nkf('-e',"フーコーのギター。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "EUC-JP"
-    string.eol = "\n"
-    expected = ['フーコーの','ギター','。'].collect{|s|NKF.nkf('-e', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-e',"フーコーのギター。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "EUC-JP"
+    s.eol = "\n"
+    expected = ['フーコーの','ギター','。'].collect{|st|
+      NKF.nkf('-e', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_eucjp_macronkata_between()
-    string   = NKF.nkf('-e',"データをソート。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "EUC-JP"
-    string.eol = "\n"
-    expected = ['データを','ソート','。'].collect{|s|NKF.nkf('-e', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-e',"データをソート。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "EUC-JP"
+    s.eol = "\n"
+    expected = ['データを','ソート','。'].collect{|st|
+      NKF.nkf('-e', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_eucjp_repeatkan()
-    string   = NKF.nkf('-e',"人々、我々、其々")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "EUC-JP"
-    string.eol = "\n"
-    expected = ['人々','、','我々','、','其々'].collect{|s|NKF.nkf('-e', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-e',"人々、我々、其々")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "EUC-JP"
+    s.eol = "\n"
+    expected = ['人々','、','我々','、','其々'].collect{|st|
+      NKF.nkf('-e', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_eucjp_withlatin()
-    string   = NKF.nkf('-e',"漢字以外に\"I\'m a high-school student.\"のような欧文も含む文。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "EUC-JP"
-    string.eol = "\n"
-    expected = ['漢字以外に','"','I\'m ','a ','high-school ','student','.','"','のような','欧文も','含む','文','。'].collect{|s|NKF.nkf('-e', s)}
-    assert_equal(expected, string.to_word)
+    s = NKF.nkf('-e',"漢字以外に\"I\'m a high-school student.\"のような欧文も含む文。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc  = "EUC-JP"
+    s.eol  = "\n"
+    expected = ['漢字以外に','"','I\'m ','a ','high-school ','student','.','"',
+                'のような','欧文も','含む','文','。'].collect{|st|
+      NKF.nkf('-e', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   # Shift_JIS tests.  EoL is CRLF.
   def test_to_word_ja_sjis_kanhira()
-    string   = NKF.nkf('-s',"食べたり飲んだりした。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "Shift_JIS"
-    string.eol = "\r\n"
-    expected = ['食べたり','飲んだりした','。'].collect{|s|NKF.nkf('-s', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-s',"食べたり飲んだりした。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "Shift_JIS"
+    s.eol = "\r\n"
+    expected = ['食べたり','飲んだりした','。'].collect{|st|
+      NKF.nkf('-s', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_sjis_macronhira()
-    string   = NKF.nkf('-s',"るーるるる。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "Shift_JIS"
-    string.eol = "\r\n"
-    expected = ['るーるるる','。'].collect{|s|NKF.nkf('-s', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-s',"るーるるる。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "Shift_JIS"
+    s.eol = "\r\n"
+    expected = ['るーるるる','。'].collect{|st|
+      NKF.nkf('-s', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_sjis_macronkata_trail()
-    string   = NKF.nkf('-s',"フーコーのギター。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "Shift_JIS"
-    string.eol = "\r\n"
-    expected = ['フーコーの','ギター','。'].collect{|s|NKF.nkf('-s', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-s',"フーコーのギター。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "Shift_JIS"
+    s.eol = "\r\n"
+    expected = ['フーコーの','ギター','。'].collect{|st|
+      NKF.nkf('-s', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_sjis_macronkata_between()
-    string   = NKF.nkf('-s',"データをソート。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "Shift_JIS"
-    string.eol = "\r\n"
-    expected = ['データを','ソート','。'].collect{|s|NKF.nkf('-s', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-s',"データをソート。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "Shift_JIS"
+    s.eol = "\r\n"
+    expected = ['データを','ソート','。'].collect{|st|
+      NKF.nkf('-s', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_sjis_repeatkan()
-    string   = NKF.nkf('-s',"人々、我々、其々")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "Shift_JIS"
-    string.eol = "\r\n"
-    expected = ['人々','、','我々','、','其々'].collect{|s|NKF.nkf('-s', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-s',"人々、我々、其々")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "Shift_JIS"
+    s.eol = "\r\n"
+    expected = ['人々','、','我々','、','其々'].collect{|st|
+      NKF.nkf('-s', st)
+    }
+    assert_equal(expected, s.to_word)
   end
   def test_to_word_ja_sjis_withlatin()
-    string   = NKF.nkf('-s',"漢字以外に\"I\'m a high-school student.\"のような欧文も含む文。")
-    string.extend DocDiff::StringPlus
-    string.lang = "Japanese"
-    string.enc = "Shift_JIS"
-    string.eol = "\r\n"
-    expected = ['漢字以外に','"','I\'m ','a ','high-school ','student','.','"','のような','欧文も','含む','文','。'].collect{|s|NKF.nkf('-s', s)}
-    assert_equal(expected, string.to_word)
+    s   = NKF.nkf('-s',"漢字以外に\"I\'m a high-school student.\"のような欧文も含む文。")
+    s.extend DocDiff::StringPlus
+    s.lang = "Japanese"
+    s.enc = "Shift_JIS"
+    s.eol = "\r\n"
+    expected = ['漢字以外に','"','I\'m ','a ','high-school ','student','.','"',
+                'のような','欧文も','含む','文','。'].collect{|st|
+      NKF.nkf('-s', st)
+    }
+    assert_equal(expected, s.to_word)
   end
 
 #   def test_count_word_en_ascii_cr()
@@ -208,13 +236,13 @@ class TestStringPlus < RUNIT::TestCase
 
   # to_line tests.
   def test_to_line_en_ascii_cr()
-    string = "Foo bar.  \r\rBaz quux.\r"
-    string.extend DocDiff::StringPlus
-    string.lang = "English"
-    string.enc = "ASCII"
-    string.eol = "\r"
+    s = "Foo bar.  \r\rBaz quux.\r"
+    s.extend DocDiff::StringPlus
+    s.lang = "English"
+    s.enc = "ASCII"
+    s.eol = "\r"
     expected = ["Foo bar.  \r","\r","Baz quux.\r"]
-    assert_equal(expected, string.to_line)
+    assert_equal(expected, s.to_line)
   end
   def test_to_line_en_ascii_lf()
     string = "Foo bar.  \n\nBaz quux.\n"

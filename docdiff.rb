@@ -22,14 +22,14 @@ class DocDiff
   class Document
 
     def initialize(text_body)
-      @type       = "text/plain" # MIME type.
-      @header     = nil          # Manued has header.
+      @type       = "text/plain"  # MIME type.
+      @header     = nil    # Manued has header.
       @body       = text_body
       @footer     = nil
       attr_accessor :type, :header, :body, :footer
-      @language   = nil          # "English", "Japanese", etc.
-      @encoding   = nil          # "ASCII", "EUC-JP", etc.
-      @end_of_ine = nil          # "\r", "\n", or "\r\n".
+      @language   = nil    # "English", "Japanese", etc.
+      @encoding   = nil    # "ASCII", "EUC-JP", etc.
+      @end_of_ine = nil    # "\r", "\n", or "\r\n".
     end
 
     def language()
@@ -193,6 +193,15 @@ class DocDiff
 
     module English
 
+      # strings to be defined in encoding modules:
+      # 
+      # WORD_DELIMITER
+      # WORD_PREFIX
+      # WORD_BODY
+      # WORD_SUFFIX
+      # self.EOL.system
+      # 
+
       def word_pattern(encoding)
         "#{encoding::EXCEPTIONS}" + 
         "|#{encoding::UB_SYMBOL} ?" + 
@@ -208,6 +217,7 @@ class DocDiff
         # ASCII alphanumeric characters and hyphen 
         # (so that "good-bye" be one word)
         UB_ALNUM = '(?:[0-9A-Za-z_\-])'
+        UB_ALNUM_WORD = '(?:[0-9A-Za-z_\-\'\.])'  # ★★★リファクタリング中と言えば聞こえはいいが、実際には単なるデバグ中★★★
         # ASCII printable symbols, excluding hyphen ('-', 0x2d)
         UB_SYMBOL = "(?:(?:[\x20-\x2c])" + # !"#$%&'()*+,
                     "|(?:[\x2e-\x2f])" +   # ./
