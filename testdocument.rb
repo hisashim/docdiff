@@ -10,21 +10,21 @@ class TC_Document < Test::Unit::TestCase
     #
   end
 
-  def test_codeset()
+  def test_encoding()
     doc = Document.new("Foo bar.\nBaz quux.")
-    doc.codeset = 'ASCII'
+    doc.encoding = 'ASCII'
     doc.eol = 'LF'
     expected = 'ASCII'
-    assert_equal(expected, doc.codeset)
+    assert_equal(expected, doc.encoding)
   end
-  def test_codeset_auto()
+  def test_encoding_auto()
     doc = Document.new("Foo bar.\nBaz quux.")
     expected = 'ASCII'
-    assert_equal(expected, doc.codeset)
+    assert_equal(expected, doc.encoding)
   end
   def test_eol()
     doc = Document.new("Foo bar.\nBaz quux.")
-    doc.codeset = 'ASCII'
+    doc.encoding = 'ASCII'
     doc.eol = 'LF'
     expected = 'LF'
     assert_equal(expected, doc.eol)
@@ -41,6 +41,8 @@ class TC_Document < Test::Unit::TestCase
   end
   def test_eol_char_lf()
     doc = Document.new("Foo bar.\nBaz quux.")
+#    doc.encoding = "ASCII"
+#    doc.eol = "LF"
     expected = "\n"
     assert_equal(expected, doc.eol_char)
   end
@@ -49,11 +51,6 @@ class TC_Document < Test::Unit::TestCase
     expected = ["Hello, my name is Watanabe.\n", "I am just another Ruby porter.\n"]
     assert_equal(expected, doc.split_to_line)
   end
-
-
-
-
-
 
   # test eol split_to_line() method
   def test_cr_split_to_line()
@@ -236,13 +233,13 @@ class TC_Document < Test::Unit::TestCase
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_word_kataonbiki()
-    doc = Document.new(NKF.nkf("-e", "ルビー色の石"))
+    doc = Document.new(NKF.nkf("-e", "ルビー色の石"), "EUC-JP")
     expected = ["ルビー", "色の", "石"].collect{|c| NKF.nkf("-e", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_word_hiraonbiki()
-    doc = Document.new(NKF.nkf("-e", "わールビーだ"))
-    expected = ["わー", "ルビーだ"].collect{|c| NKF.nkf("-e", c)}
+    doc = Document.new(NKF.nkf("-e", "わールビーだ"), "EUC-JP")
+    expected = (["わー", "ルビーだ"]).collect{|c| NKF.nkf("-e", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_word_latinmix()
@@ -515,42 +512,42 @@ class TC_Document < Test::Unit::TestCase
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_char()
-    doc = Document.new(Uconv.euctou8("日本語a b"))
+    doc = Document.new(Uconv.euctou8("日本語a b"), "UTF-8")
     expected = ["日", "本", "語", "a", " ", "b"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_cr()
-    doc = Document.new(Uconv.euctou8("日本語a b\r"))
+    doc = Document.new(Uconv.euctou8("日本語a b\r"), "UTF-8")
     expected = ["日","本","語","a"," ","b","\r"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_lf()
-    doc = Document.new(Uconv.euctou8("日本語a b\n"))
+    doc = Document.new(Uconv.euctou8("日本語a b\n"), "UTF-8")
     expected = ["日","本","語","a"," ","b","\n"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_crlf()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"))
+    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
     expected = ["日","本","語","a"," ","b","\r\n"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_count_char()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"))
+    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
     expected = 7
     assert_equal(expected, doc.count_char)
   end
   def test_utf8_count_latin_graph_char()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"))
+    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
     expected = 2
     assert_equal(expected, doc.count_latin_graph_char)
   end
   def test_utf8_count_ja_graph_char()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"))
+    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
     expected = 3
     assert_equal(expected, doc.count_ja_graph_char)
   end
   def test_utf8_count_graph_char()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"))
+    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
     expected = 5
     assert_equal(expected, doc.count_graph_char)
   end

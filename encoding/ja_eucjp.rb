@@ -4,7 +4,7 @@
 module CharString
   module EUC_JP
 
-    CodeSet = "EUC-JP"
+    Encoding = "EUC-JP"
 
     # character table based on: 
     # ftp://ftp.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT
@@ -259,7 +259,7 @@ module CharString
                        "|(?:[#{HIRA_EX}]+)", 
                        "|(?:.+?)"].join
 
-    CharString.register_codeset(self)
+    CharString.register_encoding(self)
 
   end  # module EUCJP
 end

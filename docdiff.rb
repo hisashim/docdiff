@@ -72,7 +72,11 @@ class DocDiff
     lines.each{|line|
       if line.first == :change_elt
         before_change = Document.new(line[1].to_s)
+        before_change.encoding = doc1.encoding
+        before_change.eol = doc1.eol
         after_change  = Document.new(line[2].to_s)
+        after_change.encoding = doc2.encoding
+        after_change.eol = doc2.eol
         Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
           words << word
         }
@@ -90,7 +94,11 @@ class DocDiff
     lines.each{|line|
       if line.first == :change_elt
         before_change = Document.new(line[1].to_s)
+        before_change.encoding = doc1.encoding
+        before_change.eol = doc1.eol
         after_change  = Document.new(line[2].to_s)
+        after_change.encoding = doc2.encoding
+        after_change.eol = doc2.eol
         Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
           lines_and_words << word
         }
@@ -102,7 +110,11 @@ class DocDiff
     lines_and_words.each{|line_or_word|
       if line_or_word.first == :change_elt
         before_change = Document.new(line_or_word[1].to_s)
+        before_change.encoding = doc1.encoding
+        before_change.eol = doc1.eol
         after_change  = Document.new(line_or_word[2].to_s)
+        after_change.encoding = doc2.encoding
+        after_change.eol = doc2.eol
         Difference.new(before_change.split_to_char, after_change.split_to_char).each{|char|
           lines_words_and_chars << char
         }

@@ -3,40 +3,43 @@
 # To use, include to String, or extend String.
 # 2003- Hisashi MORITA
 
+require 'iconv'
 module CharString
 
-  CodeSets = Hash.new
+  Encodings = Hash.new
   EOLChars = Hash.new  # End-of-line characters, such as CR, LF, CRLF.
 
   def initialize(string)
 =begin unnecessary
-#    @codeset = CharString.guess_codeset(string)
+#    @encoding = CharString.guess_encoding(string)
 #    @eol     = CharString.guess_eol(string)
 =end unnecessary
     super
   end
 
-  def codeset()
-    if @codeset
-      @codeset
-    else
-      @codeset = CharString.guess_codeset(self)
-      # raise "codeset is not set.\n"
-    end
+  def encoding()
+    @encoding
+#     if @encoding
+#       @encoding
+#     else
+#       @encoding = CharString.guess_encoding(self)
+#       # raise "encoding is not set.\n"
+#     end
   end
 
-  def codeset=(cs)
-    @codeset = cs
-    extend CodeSets[@codeset]  # ; p "Hey, I extended #{CodeSets[@codeset]}!"
+  def encoding=(cs)
+    @encoding = cs
+    extend Encodings[@encoding]  # ; p "Hey, I extended #{Encodings[@encoding]}!"
   end
 
   def eol()
-    if @eol
-      @eol
-    else
-      @eol = CharString.guess_eol(self)
-      # raise "eol is not set.\n"
-    end
+    @eol
+#     if @eol
+#       @eol
+#     else
+#       @eol = CharString.guess_eol(self)
+#       # raise "eol is not set.\n"
+#     end
   end
 
   def eol=(e)
@@ -48,19 +51,20 @@ module CharString
     if @eol_char
       @eol_char
     else
-      extend EOLChars[eol]
-      eol_char
+      nil
+#       extend EOLChars[eol]
+#       eol_char
     end
   end
 
   def debug()
     case
-    when @codeset  == nil
-      raise "@codeset is nil."
-    when CodeSets[@codeset] == nil
-      raise "CodeSets[@codeset(=#{@codeset})] is nil."
-    when CodeSets[@codeset].class != Module
-      raise "CodeSets[@codeset].class(=#{CodeSets[@codeset].class}) is not a module."
+    when @encoding  == nil
+      raise "@encoding is nil."
+    when Encodings[@encoding] == nil
+      raise "Encodings[@encoding(=#{@encoding})] is nil."
+    when Encodings[@encoding].class != Module
+      raise "Encodings[@encoding].class(=#{Encodings[@encoding].class}) is not a module."
     when @eol == nil
       raise "@eol is nil."
     when EOLChars[@eol] == nil
@@ -69,21 +73,32 @@ module CharString
       # should I do some alert?
     end
     ["id: #{self.id}, class: #{self.class}, self: #{self}, ", 
-     "module: #{CodeSets[@codeset]}, #{EOLChars[@eol]}"].join
+     "module: #{Encodings[@encoding]}, #{EOLChars[@eol]}"].join
   end
 
-  def CharString.register_codeset(mod)
-    CodeSets[mod::CodeSet] = mod
+  def CharString.register_encoding(mod)
+    Encodings[mod::Encoding] = mod
   end
 
   def CharString.register_eol(mod)
     EOLChars[mod::EOL] = mod
   end
 
-  # returns 'JIS', 'EUC-JP', 'Shift_JIS', 'UTF-8', or 'UNKNOWN'
-  def CharString.guess_codeset(string, sample_length = 65536)
+  # returns nil, 'ASCII', 'JIS', 'EUC-JP', 'Shift_JIS', 'UTF-8', or 'UNKNOWN'
+  def CharString.guess_encoding(string)
     return nil if string == nil
-    sample = string[0 .. (sample_length - 1)]
+    result_using_pureruby = CharString.guess_encoding_using_pureruby(string)
+    result_using_iconv    = CharString.guess_encoding_using_iconv(string)
+    if result_using_pureruby == result_using_iconv
+      result_using_pureruby
+    else
+      "UNKNOWN"
+    end
+  end
+
+  # returns nil, 'ASCII', 'JIS', 'EUC-JP', 'Shift_JIS', 'UTF-8', or 'UNKNOWN'
+  def CharString.guess_encoding_using_pureruby(string)
+    return nil if string == nil
 
     ascii_pat = '[\x00-\x7f]'
     jis_pat   = ['(?:(?:\x1b\x28\x42)', 
@@ -107,47 +122,91 @@ module CharString
                  '|(?:[\xe0-\xef][\x80-\xbf][\x80-\xbf])', 
                  '|(?:[\xf0-\xf7][\x80-\xbf][\x80-\xbf][\x80-\xbf]))'].join
 
-    ascii_match_length = sample.scan(/#{ascii_pat}/on).join.length
-    jis_escseq_count   = sample.scan(/#{jis_pat}/on).size
-    eucjp_match_length = sample.scan(/#{eucjp_pat}/no).join.length
-    sjis_match_length  = sample.scan(/#{sjis_pat}/no).join.length
-    utf8_match_length  = sample.scan(/#{utf8_pat}/no).join.length
+    ascii_match_length = string.scan(/#{ascii_pat}/on).join.length
+    jis_escseq_count   = string.scan(/#{jis_pat}/on).size
+    eucjp_match_length = string.scan(/#{eucjp_pat}/no).join.length
+    sjis_match_length  = string.scan(/#{sjis_pat}/no).join.length
+    utf8_match_length  = string.scan(/#{utf8_pat}/no).join.length
 
     case
     when 0 < jis_escseq_count                 # JIS escape sequense found
-      guessed_codeset = 'JIS'
-    when ascii_match_length == sample.length  # every char is ASCII (but not JIS)
-      guessed_codeset = 'ASCII'
+      guessed_encoding = 'JIS'
+    when ascii_match_length == string.length  # every char is ASCII (but not JIS)
+      guessed_encoding = 'ASCII'
     else
       case
-      when eucjp_match_length < (sample.length / 2) && 
-           sjis_match_length  < (sample.length / 2) && 
-           utf8_match_length  < (sample.length / 2)
-        guessed_codeset = 'UNKNOWN'  # either codeset did not match long enough
+      when eucjp_match_length < (string.length / 2) && 
+           sjis_match_length  < (string.length / 2) && 
+           utf8_match_length  < (string.length / 2)
+        guessed_encoding = 'UNKNOWN'  # either encoding did not match long enough
       when (eucjp_match_length < utf8_match_length) && 
            (sjis_match_length < utf8_match_length)
-        guessed_codeset = 'UTF-8'
+        guessed_encoding = 'UTF-8'
       when (eucjp_match_length < sjis_match_length) && 
            (utf8_match_length < sjis_match_length)
-        guessed_codeset = 'Shift_JIS'
+        guessed_encoding = 'Shift_JIS'
       when (sjis_match_length < eucjp_match_length) && 
            (utf8_match_length < eucjp_match_length)
-        guessed_codeset = 'EUC-JP'
+        guessed_encoding = 'EUC-JP'
       else
-        guessed_codeset = 'UNKNOWN'  # cannot guess at all
+        guessed_encoding = 'UNKNOWN'  # cannot guess at all
       end
     end
-    return guessed_codeset
+    return guessed_encoding
   end
 
-  def CharString.guess_eol(string, sample_length = 65536)
+  def CharString.guess_encoding_using_iconv(string)
+    valid_as_utf8   = CharString.valid_as("utf8", string)
+    valid_as_sjis   = CharString.valid_as("cp932", string) # not sjis, but cp932
+    valid_as_jis    = CharString.valid_as("iso-2022-jp", string)
+    valid_as_eucjp  = CharString.valid_as("eucjp", string)
+    valid_as_ascii  = CharString.valid_as("ascii", string)
+    invalid_as_utf8   = CharString.invalid_as("utf8", string)
+    invalid_as_sjis   = CharString.invalid_as("cp932", string) # not sjis, but cp932
+    invalid_as_jis    = CharString.invalid_as("iso-2022-jp", string)
+    invalid_as_eucjp  = CharString.invalid_as("eucjp", string)
+    invalid_as_ascii  = CharString.invalid_as("ascii", string)
+    case
+    when string == nil
+      nil
+    when valid_as_ascii
+      "ASCII"
+    when valid_as_jis  # Iconv sometimes mistakes JIS for ASCII, despite JIS escape sequence.
+      "JIS"
+    when valid_as_eucjp && invalid_as_utf8 && invalid_as_sjis && invalid_as_jis && invalid_as_ascii
+      "EUC-JP"
+    when valid_as_sjis && invalid_as_utf8 && invalid_as_eucjp && invalid_as_jis && invalid_as_ascii
+      "Shift_JIS"
+    when valid_as_utf8 && invalid_as_sjis && invalid_as_eucjp && invalid_as_jis && invalid_as_ascii
+      "UTF-8"
+    else
+      "UNKNOWN"
+    end
+  end
+  def CharString.valid_as(encoding_name, string)
+    begin
+      Iconv.iconv(encoding_name, encoding_name, string)
+    rescue Iconv::IllegalSequence, Iconv::InvalidCharacter, Iconv::OutOfRange
+      return false
+    else
+      return true
+    end
+  end
+  def CharString.invalid_as(encoding_name, string)
+    if CharString.valid_as(encoding_name, string)
+      false
+    else
+      true
+    end
+  end
+
+  def CharString.guess_eol(string)
     # returns 'CR', 'LF', 'CRLF', 'UNKNOWN'(binary), 
     # 'NONE'(1-line), or nil
     return nil if string == nil  #=> nil (argument missing)
-    sample = string[0 .. (sample_length - 1)]
-    eol_counts = {'CR'   => sample.scan(/(\r)(?!\n)/no).size,
-                  'LF'   => sample.scan(/(?:\A|[^\r])(\n)/no).size,
-                  'CRLF' => sample.scan(/(\r\n)/no).size}
+    eol_counts = {'CR'   => string.scan(/(\r)(?!\n)/no).size,
+                  'LF'   => string.scan(/(?:\A|[^\r])(\n)/no).size,
+                  'CRLF' => string.scan(/(\r\n)/no).size}
     eol_counts.delete_if{|eol, count| count == 0}  # Remove missing EOL
     eols = eol_counts.keys
     eol_variety = eols.size  # numbers of flavors found
@@ -172,17 +231,17 @@ module CharString
   end
 
   def split_to_char()
-    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
-    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
-    if defined? eol_char  # sometimes string has no end-of-line char
+    raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
+    # raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
+    if eol_char  # sometimes string has no end-of-line char
       scan(Regexp.new("(?:#{eol_char})|(?:.)", 
                       Regexp::MULTILINE, 
-                      codeset.sub(/ASCII/i, 'none'))
+                      encoding.sub(/ASCII/i, 'none'))
       )
     else                  # it seems that no EOL module was extended...
       scan(Regexp.new("(?:.)", 
                       Regexp::MULTILINE, 
-                      codeset.sub(/ASCII/i, 'none'))
+                      encoding.sub(/ASCII/i, 'none'))
       )
     end
   end
@@ -192,20 +251,20 @@ module CharString
   end
 
   def count_latin_graph_char()
-    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
-    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
-    scan(Regexp.new("[#{CodeSets[codeset]::GRAPH}]", 
+    raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
+    # raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
+    scan(Regexp.new("[#{Encodings[encoding]::GRAPH}]", 
                     Regexp::MULTILINE, 
-                    codeset.sub(/ASCII/i, 'none'))
+                    encoding.sub(/ASCII/i, 'none'))
     ).size
   end
 
   def count_ja_graph_char()
-    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
-    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
-    scan(Regexp.new("[#{CodeSets[codeset]::JA_GRAPH}]", 
+    raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
+    # raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
+    scan(Regexp.new("[#{Encodings[encoding]::JA_GRAPH}]", 
                     Regexp::MULTILINE, 
-                    codeset.sub(/ASCII/i, 'none'))
+                    encoding.sub(/ASCII/i, 'none'))
     ).size
   end
 
@@ -214,16 +273,16 @@ module CharString
   end
 
   def count_latin_blank_char()
-    scan(Regexp.new("[#{CodeSets[codeset]::BLANK}]", 
+    scan(Regexp.new("[#{Encodings[encoding]::BLANK}]", 
                     Regexp::MULTILINE, 
-                    codeset.sub(/ASCII/i, 'none'))
+                    encoding.sub(/ASCII/i, 'none'))
     ).size
   end
 
   def count_ja_blank_char()
-    scan(Regexp.new("[#{CodeSets[codeset]::JA_BLANK}]", 
+    scan(Regexp.new("[#{Encodings[encoding]::JA_BLANK}]", 
                     Regexp::MULTILINE, 
-                    codeset.sub(/ASCII/i, 'none'))
+                    encoding.sub(/ASCII/i, 'none'))
     ).size
   end
 
@@ -232,11 +291,11 @@ module CharString
   end
 
   def split_to_word()
-    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
-    raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
-    scan(Regexp.new(CodeSets[codeset]::WORD_REGEXP_SRC, 
+    raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
+    # raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
+    scan(Regexp.new(Encodings[encoding]::WORD_REGEXP_SRC, 
                     Regexp::MULTILINE, 
-                    codeset.sub(/ASCII/i, 'none'))
+                    encoding.sub(/ASCII/i, 'none'))
     )
   end
 
@@ -246,33 +305,33 @@ module CharString
 
   def count_latin_word()
     split_to_word.collect{|word|
-      word if Regexp.new("[#{CodeSets[codeset]::PRINT}]", 
+      word if Regexp.new("[#{Encodings[encoding]::PRINT}]", 
                          Regexp::MULTILINE, 
-                         codeset.sub(/ASCII/i, 'none')).match word
+                         encoding.sub(/ASCII/i, 'none')).match word
     }.compact.size
   end
 
   def count_ja_word()
     split_to_word.collect{|word|
-      word if Regexp.new("[#{CodeSets[codeset]::JA_PRINT}]", 
+      word if Regexp.new("[#{Encodings[encoding]::JA_PRINT}]", 
                          Regexp::MULTILINE, 
-                         codeset.sub(/ASCII/i, 'none')).match word
+                         encoding.sub(/ASCII/i, 'none')).match word
     }.compact.size
   end
 
   def count_latin_valid_word()
     split_to_word.collect{|word|
-      word if Regexp.new("[#{CodeSets[codeset]::ALNUM}]", 
+      word if Regexp.new("[#{Encodings[encoding]::ALNUM}]", 
                          Regexp::MULTILINE, 
-                         codeset.sub(/ASCII/i, 'none')).match word
+                         encoding.sub(/ASCII/i, 'none')).match word
     }.compact.size
   end
 
   def count_ja_valid_word()
     split_to_word.collect{|word|
-      word if Regexp.new("[#{CodeSets[codeset]::JA_GRAPH}]", 
+      word if Regexp.new("[#{Encodings[encoding]::JA_GRAPH}]", 
                          Regexp::MULTILINE, 
-                         codeset.sub(/ASCII/i, 'none')).match word
+                         encoding.sub(/ASCII/i, 'none')).match word
     }.compact.size
   end
 
@@ -283,19 +342,19 @@ module CharString
   def split_to_line()
 #     scan(Regexp.new(".*?#{eol_char}|.+", 
 #                     Regexp::MULTILINE, 
-#                     codeset.sub(/ASCII/i, 'none'))
+#                     encoding.sub(/ASCII/i, 'none'))
 #     )
-    raise "CodeSets[codeset] is #{CodeSets[codeset].inspect}: codeset not specified or auto-detection failed." unless CodeSets[codeset]
+    raise "Encodings[encoding] is #{Encodings[encoding].inspect}: encoding not specified or auto-detection failed." unless Encodings[encoding]
     raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
     if defined? eol_char
       scan(Regexp.new(".*?#{eol_char}|.+", 
                       Regexp::MULTILINE, 
-                      codeset.sub(/ASCII/i, 'none'))
+                      encoding.sub(/ASCII/i, 'none'))
       )
     else
       scan(Regexp.new(".+", 
                       Regexp::MULTILINE, 
-                      codeset.sub(/ASCII/i, 'none'))
+                      encoding.sub(/ASCII/i, 'none'))
       )
     end
   end
@@ -306,10 +365,10 @@ module CharString
 
   def count_graph_line()
     split_to_line.collect{|line|
-      line if Regexp.new("[#{CodeSets[codeset]::GRAPH}" + 
-                         "#{CodeSets[codeset]::JA_GRAPH}]", 
+      line if Regexp.new("[#{Encodings[encoding]::GRAPH}" + 
+                         "#{Encodings[encoding]::JA_GRAPH}]", 
                          Regexp::MULTILINE, 
-                         codeset.sub(/ASCII/, 'none')).match line
+                         encoding.sub(/ASCII/, 'none')).match line
     }.compact.size
   end
 
@@ -321,10 +380,10 @@ module CharString
 
   def count_blank_line()
     split_to_line.collect{|line|
-      line if Regexp.new("^[#{CodeSets[codeset]::BLANK}" + 
-                         "#{CodeSets[codeset]::JA_BLANK}]+(?:#{eol_char})?", 
+      line if Regexp.new("^[#{Encodings[encoding]::BLANK}" + 
+                         "#{Encodings[encoding]::JA_BLANK}]+(?:#{eol_char})?", 
                          Regexp::MULTILINE, 
-                         codeset.sub(/ASCII/, 'none')).match line
+                         encoding.sub(/ASCII/, 'none')).match line
     }.compact.size
   end
 

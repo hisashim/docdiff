@@ -10,30 +10,30 @@ class TC_CharString < Test::Unit::TestCase
     #
   end
 
-  # test codeset module registration
-  def test_codeset_ascii()
+  # test encoding module registration
+  def test_encoding_ascii()
     str = "foo".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     expected = CharString::ASCII
-    assert_equal(expected, CharString::CodeSets[str.codeset])
+    assert_equal(expected, CharString::Encodings[str.encoding])
   end
-  def test_codeset_eucjp()
+  def test_encoding_eucjp()
     str = "foo".extend CharString
-    str.codeset = "EUC-JP"
+    str.encoding = "EUC-JP"
     expected = CharString::EUC_JP
-    assert_equal(expected, CharString::CodeSets[str.codeset])
+    assert_equal(expected, CharString::Encodings[str.encoding])
   end
-  def test_codeset_sjis()
+  def test_encoding_sjis()
     str = "foo".extend CharString
-    str.codeset = "Shift_JIS"
+    str.encoding = "Shift_JIS"
     expected = CharString::Shift_JIS
-    assert_equal(expected, CharString::CodeSets[str.codeset])
+    assert_equal(expected, CharString::Encodings[str.encoding])
   end
-  def test_codeset_utf8()
+  def test_encoding_utf8()
     str = "foo".extend CharString
-    str.codeset = "UTF-8"
+    str.encoding = "UTF-8"
     expected = CharString::UTF8
-    assert_equal(expected, CharString::CodeSets[str.codeset])
+    assert_equal(expected, CharString::Encodings[str.encoding])
   end
 
   # test eol module registration
@@ -59,16 +59,19 @@ class TC_CharString < Test::Unit::TestCase
   # test eol eol_char method
   def test_eol_char_cr()
     str = "foo\rbar\r".extend CharString
+    str.eol = "CR"
     expected = "\r"
     assert_equal(expected, str.eol_char)
   end
   def test_eol_char_lf()
     str = "foo\nbar\n".extend CharString
+    str.eol = "LF"
     expected = "\n"
     assert_equal(expected, str.eol_char)
   end
   def test_eol_char_crlf()
     str = "foo\r\nbar\r\n".extend CharString
+    str.eol = "CRLF"
     expected = "\r\n"
     assert_equal(expected, str.eol_char)
   end
@@ -83,14 +86,12 @@ class TC_CharString < Test::Unit::TestCase
     assert_equal(expected, str.eol_char)
   end
   def test_eol_char_none_eucjp()
-    str = NKF.nkf("-e", "日本語a b")
-    str.extend CharString
+    str = NKF.nkf("-e", "日本語a b").extend CharString
     expected = nil
     assert_equal(expected, str.eol_char)
   end
   def test_eol_char_none_sjis()
-    str = NKF.nkf("-s", "日本語a b")
-    str.extend CharString
+    str = NKF.nkf("-s", "日本語a b").extend CharString
     expected = nil
     assert_equal(expected, str.eol_char)
   end
@@ -98,63 +99,63 @@ class TC_CharString < Test::Unit::TestCase
   # test eol split_to_line() method
   def test_cr_split_to_line()
     str = "foo\rbar\r".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CR"
     expected = ["foo\r", "bar\r"]
     assert_equal(expected, str.split_to_line)
   end
   def test_cr_split_to_line_chomped_lastline()
     str = "foo\rbar".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CR"
     expected = ["foo\r", "bar"]
     assert_equal(expected, str.split_to_line)
   end
   def test_cr_split_to_line_empty_line()
     str = "foo\r\rbar\r".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CR"
     expected = ["foo\r", "\r", "bar\r"]
     assert_equal(expected, str.split_to_line)
   end
   def test_lf_split_to_line()
     str = "foo\nbar\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "LF"
     expected = ["foo\n", "bar\n"]
     assert_equal(expected, str.split_to_line)
   end
   def test_lf_split_to_line_chomped_lastline()
     str = "foo\nbar".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "LF"
     expected = ["foo\n", "bar"]
     assert_equal(expected, str.split_to_line)
   end
   def test_lf_split_to_line_empty_line()
     str = "foo\n\nbar\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "LF"
     expected = ["foo\n", "\n", "bar\n"]
     assert_equal(expected, str.split_to_line)
   end
   def test_crlf_split_to_line()
     str = "foo\r\nbar\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "bar\r\n"]
     assert_equal(expected, str.split_to_line)
   end
   def test_crlf_split_to_line_chomped_lastline()
     str = "foo\r\nbar".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "bar"]
     assert_equal(expected, str.split_to_line)
   end
   def test_crlf_split_to_line_empty_line()
     str = "foo\r\n\r\nbar\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "\r\n", "bar\r\n"]
     assert_equal(expected, str.split_to_line)
@@ -163,156 +164,156 @@ class TC_CharString < Test::Unit::TestCase
   # test ASCII module
   def test_ascii_split_to_word()
     str = "foo bar".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     expected = ["foo ", "bar"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_word_withsymbol()
     str = "foo (bar) baz-baz".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     expected = ["foo ", "(bar) ", "baz-baz"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_word_withquote()
     str = "foo's 'foo' \"bar\" 'baz.'".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     expected = ["foo's ", "'foo' ", "\"bar\" ", "'baz.'"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_word_withlongspace()
     str = " foo  bar".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     expected = [" ", "foo ", " ", "bar"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_word_withdash()
     str = "foo -- bar, baz - quux".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     expected = ["foo ", "-- ", "bar, ", "baz ", "- ", "quux"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_char()
     str = "foo bar".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "LF"
     expected = ["f","o","o"," ","b","a","r"]
     assert_equal(expected, str.split_to_char)
   end
   def test_ascii_split_to_char_with_eol_cr()
     str = "foo bar\r".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CR"
     expected = ["f","o","o"," ","b","a","r","\r"]
     assert_equal(expected, str.split_to_char)
   end
   def test_ascii_split_to_char_with_eol_lf()
     str = "foo bar\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "LF"
     expected = ["f","o","o"," ","b","a","r","\n"]
     assert_equal(expected, str.split_to_char)
   end
   def test_ascii_split_to_char_with_eol_crlf()
     str = "foo bar\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = ["f","o","o"," ","b","a","r","\r\n"]
     assert_equal(expected, str.split_to_char)
   end
   def test_ascii_split_to_byte()
     str = "foo bar\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = ["f","o","o"," ","b","a","r","\r","\n"]
     assert_equal(expected, str.split_to_byte)
   end
   def test_ascii_count_byte()
     str = "foo bar\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 9
     assert_equal(expected, str.count_byte)
   end
   def test_ascii_count_char()
     str = "foo bar\r\nbaz quux\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 17
     assert_equal(expected, str.count_char)
   end
   def test_ascii_count_latin_graph_char()
     str = "foo bar\r\nbaz quux\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 13
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_ascii_count_graph_char()
     str = "foo bar\r\nbaz quux\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 13
     assert_equal(expected, str.count_graph_char)
   end
   def test_ascii_count_latin_blank_char()
     str = "foo bar\r\nbaz\tquux\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_ascii_count_blank_char()
     str = "foo bar\r\nbaz\tquux\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_blank_char)
   end
   def test_ascii_count_word()
     str = "foo bar   \r\nbaz quux\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_word)
   end
   def test_ascii_count_latin_word()
     str = "foo bar   \r\nbaz quux\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 5  # "  " is also counted as a word
     assert_equal(expected, str.count_latin_word)
   end
   def test_ascii_count_latin_valid_word()
     str = "1 foo   \r\n%%% ()\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_ascii_count_line()
     str = "foo\r\nbar".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_line)
   end
   def test_ascii_count_graph_line()
     str = "foo\r\n ".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_graph_line)
   end
   def test_ascii_count_empty_line()
     str = "foo\r\n \r\n\t\r\n\r\n".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_ascii_count_blank_line()
     str = "\r\n \r\n\t\r\n ".extend CharString
-    str.codeset = "ASCII"
+    str.encoding = "ASCII"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_line)
@@ -320,680 +321,630 @@ class TC_CharString < Test::Unit::TestCase
 
   # test EUCJP module
   def test_eucjp_split_to_word()
-    str = NKF.nkf("-e", "日本語の文字foo bar")
-    str.extend CharString
-#    str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語の文字foo bar").extend CharString
+    str.encoding = "EUC-JP"
     expected = ["日本語の","文字","foo ","bar"].collect{|c| NKF.nkf("-e", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_kanhira()
-    str = NKF.nkf("-e", "日本語の文字")
-    str.extend CharString
-#    str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語の文字").extend CharString
+    str.encoding = "EUC-JP"
     expected = ["日本語の", "文字"].collect{|c| NKF.nkf("-e", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_katahira()
-    str = NKF.nkf("-e", "カタカナの文字")
-    str.extend CharString
-#    str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "カタカナの文字").extend CharString
+    str.encoding = "EUC-JP"
     expected = ["カタカナの", "文字"].collect{|c| NKF.nkf("-e", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_kataonbiki()
-    str = NKF.nkf("-e", "ルビー色の石")
-    str.extend CharString
-    str.codeset = "EUC-JP" #<= needed to pass the test
+    str = NKF.nkf("-e", "ルビー色の石").extend CharString
+    str.encoding = "EUC-JP" #<= needed to pass the test
     expected = ["ルビー", "色の", "石"].collect{|c| NKF.nkf("-e", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_hiraonbiki()
-    str = NKF.nkf("-e", "わールビーだ")
-    str.extend CharString
-    str.codeset = "EUC-JP" #<= needed to pass the test
+    str = NKF.nkf("-e", "わールビーだ").extend CharString
+    str.encoding = "EUC-JP" #<= needed to pass the test
     expected = ["わー", "ルビーだ"].collect{|c| NKF.nkf("-e", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_latinmix()
-    str = NKF.nkf("-e", "日本語とLatinの文字")
-    str.extend CharString
-#    str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語とLatinの文字").extend CharString
+    str.encoding = "EUC-JP"
     expected = ["日本語と", "Latin", "の", "文字"].collect{|c| NKF.nkf("-e", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_char()
-    str = NKF.nkf("-e", "日本語a b")
-    str.extend CharString
+    str = NKF.nkf("-e", "日本語a b").extend CharString
+    str.encoding = "EUC-JP"
     str.eol = "LF" #<= needed to pass the test
-#    str.codeset = "EUC-JP"
     expected = ["日","本","語","a"," ","b"].collect{|c|NKF.nkf("-e",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_eucjp_split_to_char_with_cr()
-    str = NKF.nkf("-e", "日本語a b\r")
-    str.extend CharString
-#    str.eol = "CR"
-#    str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語a b\r").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CR"
     expected = ["日","本","語","a"," ","b","\r"].collect{|c|NKF.nkf("-e",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_eucjp_split_to_char_with_lf()
-    str = NKF.nkf("-e", "日本語a b\n")
-    str.extend CharString
-#     str.eol = "LF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語a b\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "LF"
     expected = ["日","本","語","a"," ","b","\n"].collect{|c|NKF.nkf("-e",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_eucjp_split_to_char_with_crlf()
-    str = NKF.nkf("-e", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語a b\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = ["日","本","語","a"," ","b","\r\n"].collect{|c|NKF.nkf("-e",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_eucjp_count_char()
-    str = NKF.nkf("-e", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語a b\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 7
     assert_equal(expected, str.count_char)
   end
   def test_eucjp_count_latin_graph_char()
-    str = NKF.nkf("-e", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語a b\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_eucjp_count_ja_graph_char()
-    str = NKF.nkf("-e", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語a b\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_graph_char)
   end
   def test_eucjp_count_graph_char()
-    str = NKF.nkf("-e", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語a b\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 5
     assert_equal(expected, str.count_graph_char)
   end
   def test_eucjp_count_latin_blank_char()
-    str = NKF.nkf("-e", "日本語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本語\ta b\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_eucjp_count_ja_blank_char()
-    str = NKF.nkf("-e", "日本　語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本　語\ta b\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_ja_blank_char)
   end
   def test_eucjp_count_blank_char()
-    str = NKF.nkf("-e", "日本　語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本　語\ta b\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_char)
   end
   def test_eucjp_count_word()
-    str = NKF.nkf("-e", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本　語a b --\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, str.count_word)
   end
   def test_eucjp_count_ja_word()
-    str = NKF.nkf("-e", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本　語a b --\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_word)
   end
   def test_eucjp_count_latin_valid_word()
-    str = NKF.nkf("-e", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本　語a b --\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_eucjp_count_ja_valid_word()
-    str = NKF.nkf("-e", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本　語a b --\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_ja_valid_word)
   end
   def test_eucjp_count_valid_word()
-    str = NKF.nkf("-e", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "EUC-JP"
+    str = NKF.nkf("-e", "日本　語a b --\r\n").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 4
     assert_equal(expected, str.count_valid_word)
   end
   def test_eucjp_count_line()
-    str = NKF.nkf("-e", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "EUC-JP"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-e", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_line)
   end
   def test_eucjp_count_graph_line()
-    str = NKF.nkf("-e", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "EUC-JP"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-e", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_graph_line)
   end
   def test_eucjp_count_empty_line()
-    str = NKF.nkf("-e", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "EUC-JP"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-e", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_eucjp_count_blank_line()
-    str = NKF.nkf("-e", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "EUC-JP"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-e", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "EUC-JP"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_blank_line)
   end
 
   # test SJIS module
   def test_sjis_split_to_word()
-    str = NKF.nkf("-s", "日本語の文字foo bar")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本語の文字foo bar").extend CharString
+    str.encoding = "Shift_JIS"
     expected = ["日本語の", "文字", "foo ", "bar"].collect{|c|NKF.nkf("-s",c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjisplit_s_to_word_kanhira()
-    str = NKF.nkf("-s", "日本語の文字")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本語の文字").extend CharString
+    str.encoding = "Shift_JIS"
     expected = ["日本語の", "文字"].collect{|c| NKF.nkf("-s", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_word_katahira()
-    str = NKF.nkf("-s", "カタカナの文字")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "カタカナの文字").extend CharString
+    str.encoding = "Shift_JIS"
     expected = ["カタカナの", "文字"].collect{|c| NKF.nkf("-s", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_word_kataonbiki()
-    str = NKF.nkf("-s", "ルビーの指輪")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "ルビーの指輪").extend CharString
+    str.encoding = "Shift_JIS"
     expected = ["ルビーの", "指輪"].collect{|c| NKF.nkf("-s", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_word_hiraonbiki()
-    str = NKF.nkf("-s", "わールビーだ")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "わールビーだ").extend CharString
+    str.encoding = "Shift_JIS"
     expected = ["わー", "ルビーだ"].collect{|c| NKF.nkf("-s", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_word_latinmix()
-    str = NKF.nkf("-s", "日本語とLatinの文字")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本語とLatinの文字").extend CharString
+    str.encoding = "Shift_JIS"
     expected = ["日本語と","Latin","の","文字"].collect{|c| NKF.nkf("-s", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_char()
-    str = NKF.nkf("-s", "表計算a b")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "表計算a b").extend CharString
+    str.encoding = "Shift_JIS"
     str.eol = "LF" #<= needed to pass the test
     expected = ["表","計","算","a"," ","b"].collect{|c|NKF.nkf("-s",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_sjis_split_to_char_with_cr()
-    str = NKF.nkf("-s", "表計算a b\r")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
-#     str.eol = "CR"
+    str = NKF.nkf("-s", "表計算a b\r").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CR"
     expected = ["表","計","算","a"," ","b","\r"].collect{|c|NKF.nkf("-s",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_sjis_split_to_char_with_lf()
-    str = NKF.nkf("-s", "表計算a b\n")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
-#     str.eol = "LF"
+    str = NKF.nkf("-s", "表計算a b\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "LF"
     expected = ["表","計","算","a"," ","b","\n"].collect{|c|NKF.nkf("-s",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_sjis_split_to_char_with_crlf()
-    str = NKF.nkf("-s", "表計算a b\r\n")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-s", "表計算a b\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = ["表","計","算","a"," ","b","\r\n"].collect{|c|NKF.nkf("-s",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_sjis_count_char()
-    str = NKF.nkf("-s", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本語a b\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 7
     assert_equal(expected, str.count_char)
   end
   def test_sjis_count_latin_graph_char()
-    str = NKF.nkf("-s", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本語a b\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_sjis_count_ja_graph_char()
-    str = NKF.nkf("-s", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本語a b\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_graph_char)
   end
   def test_sjis_count_graph_char()
-    str = NKF.nkf("-s", "日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本語a b\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 5
     assert_equal(expected, str.count_graph_char)
   end
   def test_sjis_count_latin_blank_char()
-    str = NKF.nkf("-s", "日本語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本語\ta b\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_sjis_count_ja_blank_char()
-    str = NKF.nkf("-s", "日本　語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本　語\ta b\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_ja_blank_char)
   end
   def test_sjis_count_blank_char()
-    str = NKF.nkf("-s", "日本　語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本　語\ta b\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_char)
   end
   def test_sjis_count_word()
-    str = NKF.nkf("-s", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本　語a b --\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, str.count_word)
   end
   def test_sjis_count_ja_word()
-    str = NKF.nkf("-s", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本　語a b --\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_word)
   end
   def test_sjis_count_latin_valid_word()
-    str = NKF.nkf("-s", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本　語a b --\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_sjis_count_ja_valid_word()
-    str = NKF.nkf("-s", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本　語a b --\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_ja_valid_word)
   end
   def test_sjis_count_valid_word()
-    str = NKF.nkf("-s", "日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "Shift_JIS"
+    str = NKF.nkf("-s", "日本　語a b --\r\n").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 4
     assert_equal(expected, str.count_valid_word)
   end
   def test_sjis_count_line()
-    str = NKF.nkf("-s", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-s", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_line)
   end
   def test_sjis_count_graph_line()
-    str = NKF.nkf("-s", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-s", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_graph_line)
   end
   def test_sjis_count_empty_line()
-    str = NKF.nkf("-s", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-s", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_sjis_count_blank_line()
-    str = NKF.nkf("-s", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "Shift_JIS"
-#     str.eol = "CRLF"
+    str = NKF.nkf("-s", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "Shift_JIS"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_blank_line)
   end
 
   # test UTF8 module
   def test_utf8_split_to_word()
-    str = Uconv.euctou8("日本語の文字foo bar")
-    str.extend CharString
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本語の文字foo bar").extend CharString
+    str.encoding = "UTF-8"
     expected = ["日本語の", "文字", "foo ", "bar"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_kanhira()
-    str = Uconv.euctou8("日本語の文字")
-    str.extend CharString
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本語の文字").extend CharString
+    str.encoding = "UTF-8"
     expected = ["日本語の", "文字"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_katahira()
-    str = Uconv.euctou8("カタカナの文字")
-    str.extend CharString
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("カタカナの文字").extend CharString
+    str.encoding = "UTF-8"
     expected = ["カタカナの", "文字"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_kataonbiki()
-    str = Uconv.euctou8("ルビーの指輪")
-    str.extend CharString
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("ルビーの指輪").extend CharString
+    str.encoding = "UTF-8"
     expected = ["ルビーの", "指輪"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_hiraonbiki()
-    str = Uconv.euctou8("わールビーだ")
-    str.extend CharString
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("わールビーだ").extend CharString
+    str.encoding = "UTF-8"
     expected = ["わー", "ルビーだ"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_latinmix()
-    str = Uconv.euctou8("日本語とLatinの文字")
-    str.extend CharString
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本語とLatinの文字").extend CharString
+    str.encoding = "UTF-8"
     expected = ["日本語と", "Latin", "の", "文字"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_char()
-    str = Uconv.euctou8("日本語a b")
-    str.extend CharString
-    str.codeset = "UTF-8" #<= needed to pass the test
+    str = Uconv.euctou8("日本語a b").extend CharString
+    str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"        #<= needed to pass the test
     expected = ["日", "本", "語", "a", " ", "b"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_cr()
-    str = Uconv.euctou8("日本語a b\r")
-    str.extend CharString
-    str.codeset = "UTF-8" #<= needed to pass the test
-#     str.eol = "CR"
+    str = Uconv.euctou8("日本語a b\r").extend CharString
+    str.encoding = "UTF-8" #<= needed to pass the test
+    str.eol = "CR"
     expected = ["日","本","語","a"," ","b","\r"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_lf()
-    str = Uconv.euctou8("日本語a b\n")
-    str.extend CharString
-    str.codeset = "UTF-8" #<= needed to pass the test
-#     str.eol = "LF"
+    str = Uconv.euctou8("日本語a b\n").extend CharString
+    str.encoding = "UTF-8" #<= needed to pass the test
+    str.eol = "LF"
     expected = ["日","本","語","a"," ","b","\n"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_crlf()
-    str = Uconv.euctou8("日本語a b\r\n")
-    str.extend CharString
-    str.codeset = "UTF-8"#<= needed to pass the test
-#     str.eol = "CRLF"
+    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str.encoding = "UTF-8"#<= needed to pass the test
+    str.eol = "CRLF"
     expected = ["日","本","語","a"," ","b","\r\n"].collect{|c| Uconv.euctou8(c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_count_char()
-    str = Uconv.euctou8("日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-    str.codeset = "UTF-8" #<= needed to pass the test
+    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str.encoding = "UTF-8" #<= needed to pass the test
+    str.eol = "CRLF"
     expected = 7
     assert_equal(expected, str.count_char)
   end
   def test_utf8_count_latin_graph_char()
-    str = Uconv.euctou8("日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-    str.codeset = "UTF-8" #<= needed to pass the test
+    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str.encoding = "UTF-8" #<= needed to pass the test
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_utf8_count_ja_graph_char()
-    str = Uconv.euctou8("日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-    str.codeset = "UTF-8" #<= needed to pass the test
+    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str.encoding = "UTF-8" #<= needed to pass the test
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_graph_char)
   end
   def test_utf8_count_graph_char()
-    str = Uconv.euctou8("日本語a b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-    str.codeset = "UTF-8" #<= needed to passs the test
+    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str.encoding = "UTF-8" #<= needed to passs the test
+    str.eol = "CRLF"
     expected = 5
     assert_equal(expected, str.count_graph_char)
   end
   def test_utf8_count_latin_blank_char()
-    str = Uconv.euctou8("日本語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本語\ta b\r\n").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_utf8_count_ja_blank_char()
-    str = Uconv.euctou8("日本　語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本　語\ta b\r\n").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_ja_blank_char)
   end
   def test_utf8_count_blank_char()
-    str = Uconv.euctou8("日本　語\ta b\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本　語\ta b\r\n").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_char)
   end
   def test_utf8_count_word()
-    str = Uconv.euctou8("日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, str.count_word)
   end
   def test_utf8_count_ja_word()
-    str = Uconv.euctou8("日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_word)
   end
   def test_utf8_count_latin_valid_word()
-    str = Uconv.euctou8("日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_utf8_count_ja_valid_word()
-    str = Uconv.euctou8("日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_ja_valid_word)
   end
   def test_utf8_count_valid_word()
-    str = Uconv.euctou8("日本　語a b --\r\n")
-    str.extend CharString
-#     str.eol = "CRLF"
-#     str.codeset = "UTF-8"
+    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 4
     assert_equal(expected, str.count_valid_word)
   end
   def test_utf8_count_line()
-    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "UTF-8"
-#     str.eol = "CRLF"
+    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_line)
   end
   def test_utf8_count_graph_line()
-    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "UTF-8"
-#     str.eol = "CRLF"
+    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_graph_line)
   end
   def test_utf8_count_empty_line()
-    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "UTF-8"
-#     str.eol = "CRLF"
+    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_utf8_count_blank_line()
-    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar")
-    str.extend CharString
-#     str.codeset = "UTF-8"
-#     str.eol = "CRLF"
+    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str.encoding = "UTF-8"
+    str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_blank_line)
   end
 
   # test module functions
-  def test_guess_codeset_ascii()
-    str = "ASCII string"
-    expected = "ASCII"
-    assert_equal(expected, CharString.guess_codeset(str))
-  end
-  def test_guess_codeset_eucjp()
-    str = NKF.nkf("-e", "日本語とLatinの文字")
-    expected = "EUC-JP"
-    assert_equal(expected, CharString.guess_codeset(str))
-  end
-  def test_guess_codeset_jis()
-    str = NKF.nkf("-j", "日本語とLatinの文字")
-    expected = "JIS"
-    assert_equal(expected, CharString.guess_codeset(str))
-  end
-  def test_guess_codeset_sjis()
-    str = NKF.nkf("-s", "日本語とLatinの文字")
-    expected = "Shift_JIS"
-    assert_equal(expected, CharString.guess_codeset(str))
-  end
-  def test_guess_codeset_utf8()
-    str = Uconv.euctou8("日本語とLatinの文字")
-    expected = "UTF-8"
-    assert_equal(expected, CharString.guess_codeset(str))
-  end
-  def test_guess_codeset_nil()
+
+  def test_guess_encoding_nil()
     str = nil
     expected = nil
-    assert_equal(expected, CharString.guess_codeset(str))
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
   end
-#   def test_guess_codeset_binary()
+#   def test_guess_encoding_binary()
 #     str = "\xFF\xFF"
 #     expected = "BINARY"
-#     assert_equal(expected, CharString.guess_codeset(str))
+#     assert_equal(expected, CharString.guess_encoding(str))
 #   end
-  def test_guess_codeset_unknown()
+  def test_guess_encoding_unknown()
     str = "\xff\xff\xff\xff"  # "\xDE\xAD\xBE\xEF"
     expected = "UNKNOWN"
-    assert_equal(expected, CharString.guess_codeset(str))
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
   end
-  def test_guess_codeset_auto_ascii()
-    str = "abc\ndef\n".extend CharString
+  def test_guess_encoding_ascii_1()
+    str = "ASCII string"
     expected = "ASCII"
-    assert_equal(expected, str.codeset)
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
   end
-  def test_guess_codeset_auto_eucjp()
-    str = NKF.nkf('-e', "漢字とカタカナとひらがな\n")
-    str.extend CharString
+  def test_guess_encoding_ascii_2()
+    str = "abc\ndef\n"
+    expected = "ASCII"
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
+  end
+  def test_guess_encoding_jis_1()
+    str = NKF.nkf("-j", "漢字とカタカナとひらがな\n")
+    expected = "JIS"
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
+  end
+  def test_guess_encoding_jis_2()
+    str = NKF.nkf("-j", "漢字とカタカナとひらがなとLatinの文字と空白( )と記号@\n" * 100)
+    expected = "JIS"
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
+  end
+  def test_guess_encoding_eucjp_1()
+    str = NKF.nkf("-e", "日本語とLatinの文字")
     expected = "EUC-JP"
-    assert_equal(expected, str.codeset)
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
   end
-  def test_guess_codeset_auto_sjis()
-    str = NKF.nkf('-s', "いろは\nにほへと\n")
-    str.extend CharString
+  def test_guess_encoding_eucjp_2()
+    str = NKF.nkf('-e', "漢字とカタカナとひらがなとLatinの文字と空白( )\n" * 10)
+    expected = "EUC-JP"
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
+  end
+  def test_guess_encoding_sjis_1()
+    str = NKF.nkf("-s", "日本語とLatinの文字")
     expected = "Shift_JIS"
-    assert_equal(expected, str.codeset)
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
   end
-  def test_guess_codeset_auto_utf8()
-    str = Uconv.euctou8("いろは\nにほへと\n")
-    str.extend CharString
+  def test_guess_encoding_sjis_2()
+    str = NKF.nkf('-s', "漢字と\nカタカナと\nひらがなと\nLatin")
+    expected = "Shift_JIS"
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
+  end
+  def test_guess_encoding_utf8_1()
+    str = Uconv.euctou8("日本語とLatinの文字")
     expected = "UTF-8"
-    assert_equal(expected, str.codeset)
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
   end
+  def test_guess_encoding_utf8_2()
+    str = Uconv.euctou8("いろは\nにほへと\n")
+    expected = "UTF-8"
+    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    assert_equal(expected, CharString.guess_encoding(str))
+  end
+
   def test_guess_eol_nil()
     str = nil
     expected = nil
@@ -1029,23 +980,20 @@ class TC_CharString < Test::Unit::TestCase
     expected = "UNKNOWN"
     assert_equal(expected, CharString.guess_eol(str))
   end
-  def test_guess_eol_auto_cr()
-    str = "foo\rbar\rbaz\r"
-    str.extend CharString
+  def test_guess_eol_cr()
+    str = "foo\rbar\rbaz\r".extend CharString
     expected = "CR"
-    assert_equal(expected, str.eol)
+    assert_equal(expected, CharString.guess_eol(str))
   end
-  def test_guess_eol_auto_lf()
-    str = "foo\nbar\nbaz\n"
-    str.extend CharString
+  def test_guess_eol_lf()
+    str = "foo\nbar\nbaz\n".extend CharString
     expected = "LF"
-    assert_equal(expected, str.eol)
+    assert_equal(expected, CharString.guess_eol(str))
   end
-  def test_guess_eol_auto_crlf()
-    str = "foo\r\nbar\r\nbaz\r\n"
-    str.extend CharString
+  def test_guess_eol_crlf()
+    str = "foo\r\nbar\r\nbaz\r\n".extend CharString
     expected = "CRLF"
-    assert_equal(expected, str.eol)
+    assert_equal(expected, CharString.guess_eol(str))
   end
 
   def teardown()

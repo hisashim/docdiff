@@ -4,20 +4,25 @@
 require 'charstring'
 require 'difference'
 
+class EncodingDetectionFailure < Exception
+end
+class EOLDetectionFailure < Exception
+end
+
 class Document
 
   def initialize(str, cs = nil, e = nil)
     @body = str
     @body.extend CharString
     if cs
-      @body.codeset = cs
+      @body.encoding = cs
     else
-      guessed_codeset = CharString.guess_codeset(str)
-      if guessed_codeset == "UNKNOWN"
-        raise "codeset not specified, and auto detection failed."
-        # @body.codeset = 'ASCII' # default to ASCII <= BAD!
+      guessed_encoding = CharString.guess_encoding(str)
+      if guessed_encoding == "UNKNOWN"
+        raise EncodingDetectionFailure, "encoding not specified, and auto detection failed."
+        # @body.encoding = 'ASCII' # default to ASCII <= BAD!
       else
-	@body.codeset = guessed_codeset
+	@body.encoding = guessed_encoding
       end
     end
     if e
@@ -25,18 +30,18 @@ class Document
     else
       guessed_eol = CharString.guess_eol(str)
       if guessed_eol == "UNKNOWN"
-        # raise "eol not specified, and auto detection failed."
-        @body.eol = 'LF' # default to LF
+        raise EOLDetectionFailure, "eol not specified, and auto detection failed."
+        # @body.eol = 'LF' # default to LF
       else
         @body.eol = guessed_eol
       end
     end
   end
-  def codeset()
-    @body.codeset
+  def encoding()
+    @body.encoding
   end
-  def codeset=(cs)
-    @body.codeset = cs
+  def encoding=(cs)
+    @body.encoding = cs
   end
   def eol()
     @body.eol
@@ -116,8 +121,8 @@ class Document
     @body.count_byte
   end
 
-#  def eol_char()
-#    @body.eol_char
-#  end
+  def eol_char()
+    @body.eol_char
+  end
 
 end  # class Document

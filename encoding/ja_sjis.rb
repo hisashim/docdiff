@@ -4,7 +4,7 @@
 module CharString
   module Shift_JIS
 
-    CodeSet = "Shift_JIS"
+    Encoding = "Shift_JIS"
 
     # character table based on: 
     # ftp://ftp.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT
@@ -250,7 +250,7 @@ module CharString
                        "|(?:[#{HIRA_EX}]+)", 
                        "|(?:.+?)"].join
 
-    CharString.register_codeset(self)
+    CharString.register_encoding(self)
 
   end  # module SJIS
 end
