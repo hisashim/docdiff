@@ -1,6 +1,8 @@
 PACKAGE = docdiff
 DATE = `date +%Y%m%d`
 PWDBASE = `pwd | sed "s|^.*[/\\]||"`
+TARFILE := $(PACKAGE)-snapshot$(DATE).tar.gz
+TARDIR := $(PWDBASE)
 
 test:
 	ruby testcharstring.rb && \
@@ -13,6 +15,6 @@ tar:
 	(cd ..; \
 	tar --create --verbose --gzip \
 	--exclude CVS --exclude junk --exclude tmp --exclude old --exclude "#*#" --exclude "~*"\
-	-f $(PACKAGE)-snapshot$(DATE).tar.gz $(PWDBASE))
+	-f $(TARFILE) $(TARDIR))
 pwdbase:
 	echo $(PWDBASE)
