@@ -9,38 +9,98 @@
 <body>
 <h1>DocDiff Readme</h1>
 <p>
- 2000-12-09..2004-02-24, Hisashi MORITA
+ 2000-12-09..2004-04-11, Hisashi MORITA
 </p>
+
 <hr />
 
-<h2>Description</h2>
+<h2>Table of Contents</h2>
+<ul>
+ <li><a href="#news">News</a></li>
+ <li><a href="#todo">Todo</a></li>
+ <li><a href="#description">Description</a></li>
+ <li><a href="#summary">Summary</a></li>
+ <li><a href="#requirement">Requirement</a></li>
+ <li><a href="#installation">Installation</a></li>
+ <li><a href="#usage">Usage</a></li>
+ <li><a href="#license">License</a></li>
+ <li><a href="#credits">Credits</a></li>
+ <li><a href="#resources">Resources</a></li>
+</ul>
+
+<hr />
+
+<h2 id="news">News</h2>
+
+<ul>
+ <li>0.3.0 (2004-04-11)<ul>
+  <li>Re-designed and re-written from scratch.</li>
+  <li>Support multiple encodings (ASCII, EUC-JP, Shift_JIS, UTF-8) and multiple
+      eols (CR, LF, CRLF).</li>
+  <li>Support more output formats (tty, HTML, XHTML, Manued, wdiff-like,
+      user-defined markup text).</li>
+  <li>Support configuration files (/etc/docdiff/docdiff.conf,
+      ~/etc/docdiff/docdiff.conf).</li>
+  <li>Approximately 200% faster than older versions, thanks to akr's diff
+      library.</li>
+  <li>Better documentation and help message.</li>
+  <li>License changed from Ruby's to modified BSD style.</li>
+  <li>Pure Ruby.  Does not require external diff program such as GNU diff, or
+      morphological analyzer such as ChaSen.</li>
+  <li>Unit tests introduced to decrease bugs and to encourage faster
+      development.</li>
+  <li>Makefile introduced.</li>
+ </ul></li>
+ <li>0.2 (2003; beta only, not publicly released)<ul>
+  <li>A bit faster than 0.1.x, using file cache.</li>
+  <li>A bit cleaner code.</li>
+ </ul></li>
+ <li>0.1 (2000; First release)<ul>
+  <li>Support ASCII, EUC-JP, LF only.</li>
+  <li>Support tty and HTML output.</li>
+  <li>Require GNU diff.</li>
+  <li>Japanese word by word comparison requires ChaSen.</li>
+ </ul></li>
+</ul>
+<p>See the ChangeLog for detail.</p>
+
+<h2 id="todo">Todo</h2>
+<ul>
+ <li>Better auto-recognition of encoding and eol.</li>
+ <li>Cleaner code, so that the author can maintain it and the users can read
+     it.</li>
+</ul>
+
+<hr />
+
+<h2 id="description">Description</h2>
 <p>
  Compares two files word by word / char by char
 </p>
 
-<h2>Summary</h2>
+<h2 id="summary">Summary</h2>
 <p>
- DocDiff compares two files and shows the difference.  It
- can compare files word by word, char by char, or line by
- line.  It has several output formats such as HTML/XHTML,
- tty, Manued, or user-defined markup.
+ DocDiff compares two files and shows the difference.  It can compare files word
+ by word, char by char, or line by line.  It has several output formats such as
+ HTML/XHTML, tty, Manued, or user-defined markup.
 </p>
 <p>
- It supports several encodings and end-of-line characters,
- including ASCII, UTF-8, EUC-JP, Shift_JIS, CR, LF, and
- CRLF.
+ It supports several encodings and end-of-line characters, including ASCII,
+ UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
 </p>
 
-<h2>Requirement</h2>
+<hr />
+
+<h2 id="requirement">Requirement</h2>
 <ul>
  <li><a href="http://www.ruby-lang.org">Ruby</a></li>
 </ul>
 
-<h2>Installation</h2>
+<h2 id="installation">Installation</h2>
 <ol>
 <li>
- Place docdiff/ directory and its contents to ruby library
- directory, so that ruby interpreter can load them.<br />
+ Place docdiff/ directory and its contents to ruby library directory, so that
+ ruby interpreter can load them.<br />
  (e.g. <kbd>% cp -r docdiff /usr/lib/ruby/1.8</kbd>)
 </li>
 <li>
@@ -50,22 +110,22 @@
  (e.g. <kbd>% mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd>)
 </li>
 <li>
- (optional) If you want site-wide configuration file, place
- docdiff.conf.example as /etc/docdiff/docdiff.conf and edit
- it.<br />
+ (Optional) If you want site-wide configuration file, place docdiff.conf.example
+ as /etc/docdiff/docdiff.conf and edit it.<br />
  (e.g. <kbd>% cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
  <kbd>% $EDITOR /etc/docdiff.conf</kbd>)
 </li>
 <li>
- (optional) If you want per-user configuration file, place
- docdiff.conf.example as ~/etc/docdiff/docdiff.conf and edit
- it.<br />
+ (Optional) If you want per-user configuration file, place docdiff.conf.example
+ as ~/etc/docdiff/docdiff.conf and edit it.<br />
  (e.g. <kbd>% cp docdiff.conf.example ~/etc/docdiff.conf</kbd><br />
  <kbd>% $EDITOR ~/etc/docdiff.conf</kbd>)
 </li>
 </ol>
 
-<h2>Usage</h2>
+<hr />
+
+<h2 id="usage">Usage</h2>
 
 <h3>Synopsis</h3>
 <p>
@@ -102,28 +162,32 @@ It's me who has created Ruby.  I am a Ruby hacker.<br />
 
 <h3>Troubleshooting</h3>
 <p>
-Sometimes DocDiff fails to auto-recognizing encoding and/or
-end-of-line character.  You may get an error like this.
+ Sometimes DocDiff fails to auto-recognizing encoding and/or end-of-line
+ character.  You may get an error like this.
 </p>
 <p><samp>
 charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
 </samp></p>
 <p>
-In such a case, try explicitly specifying encoding and
-end-of-line character.
+ In such a case, try explicitly specifying encoding and end-of-line character.
 </p>
 
-<h2>License</h2>
+<hr />
+
+<h2 id="license">License</h2>
 <p>
- This software is distributed under so-called
- <a href="http://www.opensource.org/licenses/bsd-license.php">
- modified BSD style license</a> (without advertisement clause).
+ This software is distributed under so-called modified BSD style license
+ (<a href="http://www.opensource.org/licenses/bsd-license.php">
+ http://www.opensource.org/licenses/bsd-license.php</a> (without advertisement
+ clause).  By contributing to this software, you agree that your contribution
+ may be incorporated under the same license.
 </p>
 
 <p>
-Copyright and condition of use of main portion of the source:
+ Copyright and condition of use of main portion of the source:
 </p>
 
+<blockquote>
 <pre>
 Copyright (C) Hisashi MORITA.  All rights reserved.
 
@@ -151,12 +215,12 @@ LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 </pre>
+</blockquote>
 
 <p>
- diff library (docdiff/diff.rb and docdiff/diff/*) was
- originally a part of Ruby/CVS by Akira TANAKA.
- Ruby/CVS is licensed under modified BSD style license.
- See the following for detail.
+ diff library (docdiff/diff.rb and docdiff/diff/*) was originally a part of
+ Ruby/CVS by Akira TANAKA.  Ruby/CVS is licensed under modified BSD style
+ license.  See the following for detail.
 </p>
 <ul>
  <li><a href="http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs">
@@ -165,7 +229,7 @@ SUCH DAMAGE.
      http://cvs.m17n.org/~akr/ruby-cvs/</a></li>
 </ul>
 
-<h2>Credits</h2>
+<h2 id="credits">Credits</h2>
 <ul>
  <li>Hisashi MORITA (primary author)</li>
  <li>Shin'ichiro HARA (initial idea and algorithm suggestion)</li>
@@ -175,33 +239,42 @@ SUCH DAMAGE.
  <li>Akira TANAKA (diff library author)</li>
 </ul>
 
-<h2>Resources</h2>
+<hr />
+
+<h2 id="resources">Resources</h2>
 
 <h3>Format</h3>
 <ul>
- <li><a href="http://www.w3c.org">HTML/XHTML</a></li>
- <li>tty (Graphic rendition using
-     <a href="http://vt100.net/docs/tp83/appendixb.html">VT100</a>
-     /<a href="http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html">ANSI</a>
-     escape sequence)</li>
- <li><a href="http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/">Manued</a>
-     (Manuscript Editing language: a proofreading method for text)</li>
+ <li>HTML/XHTML<br />
+     <a href="http://www.w3c.org">http://www.w3c.org</a></li>
+ <li>tty (Graphic rendition using VT100 / ANSI escape sequence)<br />
+     VT100: <a href="http://vt100.net/docs/tp83/appendixb.html">
+     http://vt100.net/docs/tp83/appendixb.html</a><br />
+     ANSI: <a href="http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html">
+     http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html</a></li>
+ <li>Manued (Manuscript Editing language: a proofreading method for text)<br />
+     <a href="http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/">
+     http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/</a></li>
 </ul>
 
 <h3>Similar Software</h3>
 <p>
- There are several other software that can compare text word
- by word and/or character by character.
+ There are several other software that can compare text word by word and/or
+ character by character.
 </p>
 <ul>
- <li>GNU <a href="http://www.gnu.org/directory/GNU/wdiff.html">wdiff</a>
-     (Seems to support single byte characters only.)</li>
- <li><a href="http://srekcah.org/~utashiro/perl/scripts/cdif">cdif</a>
-     by Kazumasa UTASHIRO (Supports several Japanese encodings.)</li>
- <li><a href="http://www.xemacs.org/Documentation/packages/html/ediff.html">ediff</a>
-     for Emacsen</li>
- <li><a href="http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html">Manuediff</a>
-     (Outputs difference in Manued format.)</li>
+ <li>GNU wdiff (Seems to support single byte characters only.)<br />
+     <a href="http://www.gnu.org/directory/GNU/wdiff.html">
+     http://www.gnu.org/directory/GNU/wdiff.html</a></li>
+ <li>cdif by Kazumasa UTASHIRO (Supports several Japanese encodings.)<br />
+     <a href="http://srekcah.org/~utashiro/perl/scripts/cdif">
+     http://srekcah.org/~utashiro/perl/scripts/cdif</a></li>
+ <li>ediff for Emacsen<br />
+     <a href="http://www.xemacs.org/Documentation/packages/html/ediff.html">
+     http://www.xemacs.org/Documentation/packages/html/ediff.html</a></li>
+ <li>Manuediff (Outputs difference in Manued format.)<br />
+     <a href="http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html">
+     http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html</a></li>
 </ul>
 
 <hr />

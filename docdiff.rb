@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
-# DocDiff 0.3
-# 2002-06-27 Thu ... 2003-03-25 Mon ...
+# DocDiff
+# 2002-06-27 Thu ... 2003-04-11 Sun
 # Hisashi MORITA
 # requirement for runtime: Ruby (> 1.6), diff library by akr (included in Ruby/CVS),
 # requirement for testing: above plus Uconv by Yoshidam
