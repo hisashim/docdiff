@@ -99,12 +99,12 @@ class TC_CharString < Test::Unit::TestCase
   # test eol split_to_line() method
   def test_cr_split_to_line()
     str = "foo\rbar\r".extend CharString
-    str.encoding = "ASCII"
-    str.eol = "CR"
+    encoding, eol = "ASCII", "CR"
+    str.encoding, str.eol = encoding, eol
     expected = ["foo\r", "bar\r"]
     assert_equal(expected, str.split_to_line)
-    assert_equal("ASCII", str.split_to_line.collect{|i|i.encoding}.uniq.to_s)
-    assert_equal("CR", str.split_to_line.collect{|i|i.eol}.uniq.to_s)
+    assert_equal(encoding, str.split_to_line.collect{|i|i.encoding}.uniq.to_s)
+    assert_equal(eol, str.split_to_line.collect{|i|i.eol}.uniq.to_s)
   end
   def test_cr_split_to_line_chomped_lastline()
     str = "foo\rbar".extend CharString
