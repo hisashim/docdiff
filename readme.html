@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+ <title>DocDiff Readme</title>
+</head>
+<body>
+<h1>DocDiff Readme</h1>
+<p>
+ 2000-12-09..2004-02-24, Hisashi MORITA
+</p>
+<hr />
+
+<h2>Description</h2>
+<p>
+ Compares two files word by word / char by char
+</p>
+
+<h2>Summary</h2>
+<p>
+ DocDiff compares two files and shows the difference.  It
+ can compare files word by word, char by char, or line by
+ line.  It has several output formats such as HTML/XHTML,
+ tty, Manued, or user-defined markup.
+</p>
+<p>
+ It supports several encodings and end-of-line characters,
+ including ASCII, UTF-8, EUC-JP, Shift_JIS, CR, LF, and
+ CRLF.
+</p>
+
+<h2>Requirement</h2>
+<ul>
+ <li><a href="http://www.ruby-lang.org">Ruby</a></li>
+</ul>
+
+<h2>Installation</h2>
+<ol>
+<li>
+ Place docdiff/ directory and its contents to ruby library
+ directory, so that ruby interpreter can load them.<br />
+ (e.g. <kbd>% cp -r docdiff /usr/lib/ruby/1.8</kbd>)
+</li>
+<li>
+ Place docdiff.rb in command binary directory.<br />
+ (e.g. <kbd>% cp docdiff.rb /usr/bin/</kbd>)<br />
+ Optionally you may want to rename it to docdiff.<br />
+ (e.g. <kbd>% mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd>)
+</li>
+<li>
+ (optional) If you want site-wide configuration file, place
+ docdiff.conf.example as /etc/docdiff/docdiff.conf and edit
+ it.<br />
+ (e.g. <kbd>% cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
+ <kbd>% $EDITOR /etc/docdiff.conf</kbd>)
+</li>
+<li>
+ (optional) If you want per-user configuration file, place
+ docdiff.conf.example as ~/etc/docdiff/docdiff.conf and edit
+ it.<br />
+ (e.g. <kbd>% cp docdiff.conf.example ~/etc/docdiff.conf</kbd><br />
+ <kbd>% $EDITOR ~/etc/docdiff.conf</kbd>)
+</li>
+</ol>
+
+<h2>Usage</h2>
+
+<h3>Synopsis</h3>
+<p>
+<kbd>docdiff [options] <var>oldfile</var> <var>newfile</var></kbd><br />
+e.g. <kbd>% docdiff old.txt new.txt > diff.html</kbd>
+</p>
+<p>
+ See the help message for detail (docdiff --help).
+</p>
+
+<h3>Example</h3>
+<p><samp>
+% cat sample/01.en.ascii.lf<br />
+Hello, my name is Watanabe.<br />
+I am just another Ruby porter.<br />
+% cat sample/02.en.ascii.lf<br />
+Hello, my name is matz.<br />
+It's me who has created Ruby.  I am a Ruby hacker.<br />
+% docdiff --xhtml sample/01.en.ascii.lf sample/02.en.ascii.lf<br />
+<span class="common">Hello,&nbsp;my&nbsp;name&nbsp;is&nbsp;</span>
+<span class="before_change"><del>Watanabe.</del></span>
+<span class="after_change"><ins>matz.</ins></span>
+<span class="common"><br /></span>
+<span class="add"><ins>It's&nbsp;me&nbsp;who&nbsp;has&nbsp;created&nbsp;Ruby.&nbsp;&nbsp;</ins></span>
+<span class="common">I&nbsp;am&nbsp;</span>
+<span class="before_change"><del>just&nbsp;another&nbsp;</del></span>
+<span class="after_change"><ins>a&nbsp;</ins></span>
+<span class="common">Ruby&nbsp;</span>
+<span class="before_change"><del>porter.</del></span>
+<span class="after_change"><ins>hacker.</ins></span>
+<span class="common"><br /></span>
+%<br />
+</samp></p>
+
+<h3>Troubleshooting</h3>
+<p>
+Sometimes DocDiff fails to auto-recognizing encoding and/or
+end-of-line character.  You may get an error like this.
+</p>
+<p><samp>
+charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
+</samp></p>
+<p>
+In such a case, try explicitly specifying encoding and
+end-of-line character.
+</p>
+
+<h2>License</h2>
+<p>
+ This software is licensed under 
+ <a href="http://www.opensource.org/licenses/bsd-license.php">
+ modified BSD style license</a> (without advertisement clause).
+</p>
+
+<h2>Credits</h2>
+<ul>
+ <li>Hisashi MORITA (primary author)</li>
+ <li>Shin'ichiro HARA (initial idea and algorithm suggestion)</li>
+ <li>Masatoshi SEKI (patch)</li>
+ <li>Akira YAMADA (patch, Debian package)</li>
+ <li>Kenshi Muto (testing, bug report)</li>
+ <li>Akira TANAKA (diff library author)</li>
+</ul>
+
+<h2>Resources</h2>
+
+<h3>Format</h3>
+<ul>
+ <li><a href="http://www.w3c.org">HTML/XHTML</a></li>
+ <li>tty (<a href="http://vt100.net/docs/tp83/appendixb.html">VT100</a>
+     /<a href="http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html">ANSI</a>
+     escape sequence for setting graphic rendition)</li>
+ <li><a href="http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/">Manued</a>
+     (Manuscript Editing language: a proofreading method for text)</li>
+</ul>
+
+<h3>Similar Software</h3>
+<p>
+ There are several other software that can compare text word
+ by word and/or character by character.
+</p>
+<ul>
+ <li>GNU <a href="http://www.gnu.org/directory/GNU/wdiff.html">wdiff</a>
+     (Seems to support single byte characters only.)</li>
+ <li><a href="http://srekcah.org/~utashiro/perl/scripts/cdif">cdif</a>
+     by Kazumasa UTASHIRO (Supports several Japanese encodings.)</li>
+ <li><a href="http://www.xemacs.org/Documentation/packages/html/ediff.html">ediff</a>
+     for Emacsen</li>
+ <li><a href="http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html">Manuediff</a>
+     (Outputs difference in Manued format.)</li>
+</ul>
+
+<hr />
+</body>
+</html>
