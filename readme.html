@@ -5,11 +5,21 @@
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
  <title>DocDiff Readme</title>
+ <style type="text/css">
+  li blockquote {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
+  li blockquote p {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
+  span.del {background: hotpink; border: thin inset;}
+  span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}
+  span.before_change {background: yellow; border: thin inset;}
+  span.after_change {background: lime; font-weight: bolder; border: thin outset;}
+  li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
+  li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0em;}
+ </style>
 </head>
 <body>
 <h1>DocDiff Readme</h1>
 <p>
- 2000-12-09..2004-04-11, Hisashi MORITA
+ 2000-12-09..2004-05-16, Hisashi MORITA
 </p>
 
 <hr />
@@ -33,14 +43,15 @@
 <h2 id="news">News</h2>
 
 <ul>
-<li>0.3.0 (2004-04-11)<ul>
+<li>0.3.0 (2004-05-16)<ul>
  <li>Re-designed and re-written from scratch.</li>
  <li>Supports multiple encodings (ASCII, EUC-JP, Shift_JIS, UTF-8) and multiple
      eols (CR, LF, CRLF).</li>
- <li>Supports more output formats (tty, HTML, XHTML, Manued, wdiff-like,
+ <li>Supports more output formats (tty, HTML, Manued, wdiff-like,
      user-defined markup text).</li>
  <li>Supports configuration files (/etc/docdiff/docdiff.conf,
-     ~/etc/docdiff/docdiff.conf).</li>
+     ~/etc/docdiff/docdiff.conf (or ~/.docdiff/docdiff.conf)).</li>
+ <li>Introduced digest (summary) mode.</li>
  <li>Approximately 200% faster than older versions, thanks to akr's diff
      library.</li>
  <li>Better documentation and help message.</li>
@@ -165,25 +176,25 @@
 <li>
  Place docdiff/ directory and its contents to ruby library directory, so that
  ruby interpreter can load them.<br />
- (e.g. <kbd>% cp -r docdiff /usr/lib/ruby/1.8</kbd>)
+ (e.g. <blockquote><p><samp>% <kbd>cp -r docdiff /usr/lib/ruby/1.8</kbd></samp></p></blockquote>)
 </li>
 <li>
  Place docdiff.rb in command binary directory.<br />
- (e.g. <kbd>% cp docdiff.rb /usr/bin/</kbd>)<br />
+ (e.g. <blockquote><p><samp>% <kbd>cp docdiff.rb /usr/bin/</kbd></samp></p></blockquote>)<br />
  Optionally you may want to rename it to docdiff.<br />
- (e.g. <kbd>% mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd>)
+ (e.g. <blockquote><p><samp>% <kbd>mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd></samp></p></blockquote>)
 </li>
 <li>
  (Optional) If you want site-wide configuration file, place docdiff.conf.example
  as /etc/docdiff/docdiff.conf and edit it.<br />
- (e.g. <kbd>% cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
- <kbd>% $EDITOR /etc/docdiff.conf</kbd>)
+ (e.g. <blockquote><p><samp>% <kbd>cp docdiff.conf.example /etc/docdiff.conf</kbd><br />
+ % <kbd>$EDITOR /etc/docdiff.conf</kbd></samp></p></blockquote>)
 </li>
 <li>
  (Optional) If you want per-user configuration file, place docdiff.conf.example
  as ~/etc/docdiff/docdiff.conf and edit it.<br />
- (e.g. <kbd>% cp docdiff.conf.example ~/etc/docdiff.conf</kbd><br />
- <kbd>% $EDITOR ~/etc/docdiff.conf</kbd>)
+ (e.g. <blockquote><p><samp>% <kbd>cp docdiff.conf.example ~/etc/docdiff.conf</kbd><br />
+ % <kbd>$EDITOR ~/etc/docdiff.conf</kbd></samp></p></blockquote>)
 </li>
 </ol>
 
@@ -194,7 +205,7 @@
 <h3>Synopsis</h3>
 <p>
 <kbd>docdiff [options] <var>oldfile</var> <var>newfile</var></kbd><br />
-e.g. <kbd>% docdiff old.txt new.txt > diff.html</kbd>
+e.g. <samp>% <kbd>docdiff old.txt new.txt > diff.html</kbd></samp>
 </p>
 <p>
  See the help message for detail (docdiff --help).
@@ -202,39 +213,67 @@ e.g. <kbd>% docdiff old.txt new.txt > diff.html</kbd>
 
 <h3>Example</h3>
 <p><samp>
-% cat sample/01.en.ascii.lf<br />
+% <kbd>cat sample/01.en.ascii.lf</kbd><br />
 Hello, my name is Watanabe.<br />
 I am just another Ruby porter.<br />
-% cat sample/02.en.ascii.lf<br />
+% <kbd>cat sample/02.en.ascii.lf</kbd><br />
 Hello, my name is matz.<br />
 It's me who has created Ruby.  I am a Ruby hacker.<br />
-% docdiff --xhtml sample/01.en.ascii.lf sample/02.en.ascii.lf<br />
-<span class="common">Hello,&nbsp;my&nbsp;name&nbsp;is&nbsp;</span>
+% <kbd>docdiff sample/01.en.ascii.lf sample/02.en.ascii.lf</kbd><br />
+<span class="common">Hello, my name is </span>
 <span class="before_change"><del>Watanabe.</del></span>
 <span class="after_change"><ins>matz.</ins></span>
 <span class="common"><br /></span>
-<span class="add"><ins>It's&nbsp;me&nbsp;who&nbsp;has&nbsp;created&nbsp;Ruby.&nbsp;&nbsp;</ins></span>
-<span class="common">I&nbsp;am&nbsp;</span>
-<span class="before_change"><del>just&nbsp;another&nbsp;</del></span>
-<span class="after_change"><ins>a&nbsp;</ins></span>
-<span class="common">Ruby&nbsp;</span>
+<span class="add"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span>
+<span class="common">I am </span>
+<span class="before_change"><del>just another </del></span>
+<span class="after_change"><ins>a </ins></span>
+<span class="common">Ruby </span>
 <span class="before_change"><del>porter.</del></span>
 <span class="after_change"><ins>hacker.</ins></span>
 <span class="common"><br /></span>
 %<br />
 </samp></p>
 
+<h3>Configuration</h3>
+<p>
+ You can place configuration files at:
+<ul>
+<li>/etc/docdiff/docdiff.conf (site-wide configuration)</li>
+<li>~/etc/docdiff/docdiff.conf (user configuration)<br />
+ (~/etc/docdiff/docdiff.conf is used by default in order to keep home directory clean, preventing dotfiles and dotdirs from scattering around. Alternatively, you can use ~/.docdiff/docdiff.conf as user configuration file name, following the traditional Unix convention.)</li>
+</ul>
+</p>
+<p>
+ Notation is as follows (also refer to the file docdiff.conf.example included in the distribution archive):
+</p>
+<blockquote>
+<p><code>
+# comment<br />
+key1 = value<br />
+key2 = value<br />
+...
+</code></p>
+</blockquote>
+<p>
+ Every value is treated as string, unless it seems like a number.  In such case, value is treated as a number (usually an integer).
+</p>
+
 <h3>Troubleshooting</h3>
+<ul>
+<li>
 <p>
  Sometimes DocDiff fails to auto-recognizing encoding and/or end-of-line
  character.  You may get an error like this.
 </p>
-<p><samp>
+<blockquote><p><samp>
 charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
-</samp></p>
+</samp></p></blockquote>
 <p>
  In such a case, try explicitly specifying encoding and end-of-line character.
 </p>
+</li>
+</ul>
 
 <hr />
 
@@ -243,7 +282,7 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
  This software is distributed under so-called modified BSD style license
  (<a href="http://www.opensource.org/licenses/bsd-license.php">
  http://www.opensource.org/licenses/bsd-license.php</a> (without advertisement
- clause).  By contributing to this software, you agree that your contribution
+ clause)).  By contributing to this software, you agree that your contribution
  may be incorporated under the same license.
 </p>
 

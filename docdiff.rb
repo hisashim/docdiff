@@ -19,6 +19,7 @@ class DocDiff
             "See the document for detail.\n"
   SystemConfigFileName = File.join(File::Separator, "etc", "docdiff", "docdiff.conf")
   UserConfigFileName = File.join(ENV['HOME'], "etc", "docdiff", "docdiff.conf")
+  AltUserConfigFileName = File.join(ENV['HOME'], ".docdiff", "docdiff.conf")
 
   def initialize()
     @config = {}
@@ -26,12 +27,12 @@ class DocDiff
   attr_accessor :config
 
   def DocDiff.parse_config_file_content(content)
-    raise "config file content is empty" if content.size <= 0
+    result = {}
+    return result if content.size <= 0
     lines = content.dup.split(/\r\n|\r|\n/).compact
     lines.collect!{|line| line.sub(/#.*$/, '')}
     lines.collect!{|line| line.strip}
     lines.delete_if{|line| line == ""}
-    result = {}
     lines.each{|line|
       raise 'line does not include " = ".' unless /[\s]+=[\s]+/.match line
       name_src, value_src = line.split(/[\s]+=[\s]+/)
@@ -216,7 +217,7 @@ if $0 == __FILE__
     o.def_option('--eol=EOL',
                  possible_eols = ['CR','LF','CRLF','auto'],
                  'specify end-of-line character',
-                 possible_eols.join('|'), '(default is auto)'
+                 possible_eols.join('|') + ' (default is auto)'
                 ){|clo[:eol]| clo[:eol] ||= "auto"}
     o.def_option('--cr', 'same as --eol=CR'){clo[:eol] = "CR"}
     o.def_option('--lf', 'same as --eol=LF'){clo[:eol] = "LF"}
@@ -227,19 +228,20 @@ if $0 == __FILE__
                  'specify output format',
                  possible_formats.join('|'),
                  "(default is html)",
-                 '(user tags have to be described in config file)'
+                 '(user tags can be defined in config file)'
                 ){|clo[:format]| clo[:format] ||= "manued"}
     o.def_option('--tty', 'same as --format=tty'){clo[:format] = "tty"}
     o.def_option('--manued', 'same as --format=manued'){clo[:format] = "manued"}
     o.def_option('--html', 'same as --format=html'){clo[:format] = "html"}
     o.def_option('--wdiff', 'same as --format=wdiff'){clo[:format] = "wdiff"}
-    o.def_option('--stat', 'same as --format=stat'){clo[:format] = "stat"}
+    o.def_option('--stat', 'same as --format=stat (not supported yet)'){clo[:format] = "stat"}
 
     o.def_option('--digest', 'digest output, do not show all'){clo[:digest] = true}
-    o.def_option('--cache', 'use file cache'){clo[:cache] = true}
+    o.def_option('--summary', 'same as --digest'){clo[:digest] = true}
+    o.def_option('--cache', 'use file cache (not supported yet)'){clo[:cache] = true}
     o.def_option('--no-config-file',
                  'do not read config files'){clo[:no_config_file] = true}
-    o.def_option('--verbose', 'run verbosely'){clo[:verbose] = true}
+    o.def_option('--verbose', 'run verbosely (not supported yet)'){clo[:verbose] = true}
 
     o.def_option('--help', 'show this message'){puts o; exit(0)}
     o.def_option('--version', 'show version'){puts DocDiff::AppVersion; exit(0)}
@@ -259,7 +261,15 @@ if $0 == __FILE__
     if clo[:verbose] == true || docdiff.config[:verbose] == true
       STDERR.print message
     end
-    message = docdiff.process_config_file(DocDiff::UserConfigFileName)
+#    message = docdiff.process_config_file(DocDiff::UserConfigFileName)
+    case
+    when File.exist?(DocDiff::UserConfigFileName) && File.exist?(DocDiff::AltUserConfigFileName)
+      raise "#{DocDiff::UserConfigFileName} and #{DocDiff::AltUserConfigFileName} cannot be used at the same time.  Remove or rename either one."
+    when File.exist?(DocDiff::UserConfigFileName)
+      message = docdiff.process_config_file(DocDiff::UserConfigFileName)
+    when File.exist?(DocDiff::AltUserConfigFileName)
+      message = docdiff.process_config_file(DocDiff::AltUserConfigFileName)
+    end
     if clo[:verbose] == true || docdiff.config[:verbose] == true
       STDERR.print message
     end

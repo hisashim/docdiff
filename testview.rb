@@ -205,7 +205,6 @@ class TC_View < Test::Unit::TestCase
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_tty_digest(nil, false))
   end
 
-
   def test_to_html_cr_ascii()
     array1 = ['a', "\r"]
     array2 = ['a', "\r"]

@@ -1,4 +1,5 @@
-# Comment out and modify the following lines as you like.
+## DocDiff configuration file
+## Comment out and modify the following lines as you like.
 #
 # resolution = word
 # encoding = UTF-8
@@ -6,4 +7,16 @@
 # format = html
 # digest = off
 # cache = off   # not implemented yet
-# verbose = no  # not implemented
+# verbose = no  # not implemented yet
+#
+## user-defined tags (not well-supported yet)
+# tag_common_start        = '<=>'
+# tag_common_end          = '</=>'
+# tag_del_start           = '<->'
+# tag_del_end             = '</->'
+# tag_add_start           = '<+>'
+# tag_add_end             = '</+>'
+# tag_change_before_start = '<!->'
+# tag_change_before_end   = '</!->'
+# tag_change_after_start  = '<!+>'
+# tag_change_after_end    = '</!+>'
