@@ -104,7 +104,7 @@ class DocDiff
     lines_words_and_chars
   end
 
-  def run(doc1, doc2, resolution, format, option = nil)
+  def run(doc1, doc2, resolution, format, digest, option = nil)
     raise unless (doc1.class == Document && doc2.class == Document)
     raise unless (doc1.encoding == doc2.encoding && doc1.eol == doc2.eol)
     case resolution
@@ -125,16 +125,31 @@ class DocDiff
                  :end_before_change   => (@config[:tag_change_before_end] ||= ''),
                  :start_after_change  => (@config[:tag_change_after_start] ||= ''),
                  :end_after_change    => (@config[:tag_change_after_end] ||= '')}
-    case format
-    when "terminal"; then result = view.to_terminal(option)
-    when "html";     then result = view.to_html(option)
-    when "xhtml";    then result = view.to_xhtml(option)
-    when "manued";   then result = view.to_manued(option)
-    when "wdiff";    then result = view.to_wdiff(option)
-    when "stat";     then result = view.to_stat(option)
-    when "user";     then result = view.to_user(user_tags)
-    else
-      raise "Unsupported output format: #{format.inspect}."
+    case digest
+    when true
+      case format
+      when "terminal"; then result = view.to_terminal_digest(option)
+      when "html";     then result = view.to_html_digest(option)
+      when "xhtml";    then result = view.to_xhtml_digest(option)
+      when "manued";   then result = view.to_manued_digest(option)
+      when "wdiff";    then result = view.to_wdiff_digest(option)
+      when "stat";     then result = view.to_stat(option)
+      when "user";     then result = view.to_user_digest(user_tags)
+      else
+        raise "Unsupported output format: #{format.inspect}."
+      end
+    when false
+      case format
+      when "terminal"; then result = view.to_terminal(option)
+      when "html";     then result = view.to_html(option)
+      when "xhtml";    then result = view.to_xhtml(option)
+      when "manued";   then result = view.to_manued(option)
+      when "wdiff";    then result = view.to_wdiff(option)
+      when "stat";     then result = view.to_stat(option)
+      when "user";     then result = view.to_user(user_tags)
+      else
+        raise "Unsupported output format: #{format.inspect}."
+      end
     end
     result.to_s
   end
@@ -297,7 +312,8 @@ if $0 == __FILE__
 
   output = docdiff.run(doc1, doc2,
                        docdiff.config[:resolution],
-                       docdiff.config[:format])
+                       docdiff.config[:format],
+                       docdiff.config[:digest])
   print output
 
 end # end if $0 == __FILE__

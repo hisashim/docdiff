@@ -48,21 +48,21 @@ class TC_Document < Test::Unit::TestCase
     doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
     docdiff = DocDiff.new
     expected = "[foo bar\n/foo beer\n]baz"
-    assert_equal(expected, docdiff.run(doc1, doc2, "line", "manued"))
+    assert_equal(expected, docdiff.run(doc1, doc2, "line", "manued", digest = false))
   end
   def test_run_word_manued()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
     docdiff = DocDiff.new
     expected = "foo [bar/beer]\nbaz"
-    assert_equal(expected, docdiff.run(doc1, doc2, "word", "manued"))
+    assert_equal(expected, docdiff.run(doc1, doc2, "word", "manued", digest = false))
   end
   def test_run_char_manued()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
     docdiff = DocDiff.new
     expected = "foo b[a/ee]r\nbaz"
-    assert_equal(expected, docdiff.run(doc1, doc2, "char", "manued"))
+    assert_equal(expected, docdiff.run(doc1, doc2, "char", "manued", digest = false))
   end
 
   def test_parse_config_file_content()
@@ -98,7 +98,7 @@ class TC_Document < Test::Unit::TestCase
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<!->foo bar\n</!-><!+>foo beer\n</!+><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, "line", "user"))
+    assert_equal(expected, docdiff.run(doc1, doc2, "line", "user", digest = false))
   end
   def test_run_word_user()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
@@ -116,7 +116,7 @@ class TC_Document < Test::Unit::TestCase
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<=>foo </=><!->bar</!-><!+>beer</!+><=>\n</=><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, "word", "user"))
+    assert_equal(expected, docdiff.run(doc1, doc2, "word", "user", digest = false))
   end
   def test_run_char_user()
     doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
@@ -134,7 +134,7 @@ class TC_Document < Test::Unit::TestCase
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<=>foo </=><=>b</=><!->a</!-><!+>ee</!+><=>r</=><=>\n</=><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, "char", "user"))
+    assert_equal(expected, docdiff.run(doc1, doc2, "char", "user", digest = false))
   end
 
 
