@@ -256,7 +256,7 @@ if $0 == __FILE__
     o.def_option('--license', 'show license'){puts DocDiff::License; exit(0)}
     o.def_option('--author', 'show author(s)'){puts DocDiff::Author; exit(0)}
 
-    o.on_tail("If invoked as worddiff or chardiff, resolution is set accordingly.",
+    o.on_tail("When invoked as worddiff or chardiff, resolution will be set accordingly.",
               "Config files: /etc/docdiff/docdiff.conf, ~/etc/docdiff/docdiff.conf")
 
     o.parse!
@@ -290,6 +290,7 @@ if $0 == __FILE__
 
   file1_content = nil
   file2_content = nil
+  raise "Try `#{File.basename($0)} --help' for more information." if ARGV[0].nil?
   raise "Specify at least 2 target files." unless ARGV[0] && ARGV[1]
   raise "No such file: #{ARGV[0]}." unless FileTest.exist?(ARGV[0])
   raise "No such file: #{ARGV[1]}." unless FileTest.exist?(ARGV[1])
