@@ -236,6 +236,9 @@ if $0 == __FILE__
     o.def_option('--wdiff', 'same as --format=wdiff'){clo[:format] = "wdiff"}
     o.def_option('--stat', 'same as --format=stat (not supported yet)'){clo[:format] = "stat"}
 
+    o.def_option('--label LABEL', '-L LABEL',
+                 'Use label instead of filename (not supported yet)'){|clo[:label1], clo[:label2]|}
+
     o.def_option('--digest', 'digest output, do not show all'){clo[:digest] = true}
     o.def_option('--summary', 'same as --digest'){clo[:digest] = true}
     o.def_option('--cache', 'use file cache (not supported yet)'){clo[:cache] = true}
