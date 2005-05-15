@@ -498,14 +498,14 @@ class TC_View < Test::Unit::TestCase
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").difference_whole)
   end
 
-  def test_difference_digest()
-    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"] # a \n  b  c  d           e \n  f \n
-    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"] #          c  d  X \n  Y  e \n  F \n
-    expected = [
-# something
-               ]
-    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").difference_digest)
-  end
+#   def test_difference_digest()
+#     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"] # a \n  b  c  d           e \n  f \n
+#     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"] #          c  d  X \n  Y  e \n  F \n
+#     expected = [
+# # something
+#                ]
+#     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").difference_digest)
+#   end
 
   def teardown()
     #

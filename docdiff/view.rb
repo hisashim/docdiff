@@ -89,92 +89,72 @@ class View
     end
     result.delete_if{|elem|elem==''}
   end
+
+  CONTEXT_PRE_LENGTH = 16
+  CONTEXT_POST_LENGTH = 16
   def apply_style_digest(tags, headfoot = true)
+    context_pre_pat  = Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z',
+                                  Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
+    context_post_pat = Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}',
+                                  Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
+    escape_in  = Proc.new {|str, tags|
+                           str.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]}}
+    escape_out = Proc.new {|str, tags|
+                           str.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]}}
     result = []
-    doc1_lnum = 1
-    doc2_lnum = 1
-    @difference.each_with_index{|block, i|
-      operation = block.first
+    d1l = doc1_line_number = 1
+    d2l = doc2_line_number = 1
+    @difference.each_with_index{|entry, i|
       if block_given?
-        source = yield block[1].to_s
-        target = yield block[2].to_s
+        source = yield entry[1].to_s
+        target = yield entry[2].to_s
       else
-        source = block[1].to_s
-        target = block[2].to_s
+        source = entry[1].to_s
+        target = entry[2].to_s
       end
       span1 = source_lines_involved = source.scan_lines(@eol).size
       span2 = target_lines_involved = target.scan_lines(@eol).size
-      pos = ""
+      pos_str = ""
+      context_pre  = @difference[i-1][1].to_s.scan(context_pre_pat).to_s
+      context_pre  = "" if  i == 0                      # no pre context for the first entry
+      context_post = @difference[i+1][1].to_s.scan(context_post_pat).to_s
+      context_post = "" if (i + 1) == @difference.size  # no post context for the last entry
+      # parts for an entry
+      e_header       = Proc.new {|pos_str|
+                                 tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]}
+      e_context_pre  = tags[:start_prefix] + escape_out.call(context_pre, tags) + tags[:end_prefix]
+      e_body_changed = tags[:start_before_change] + escape_in.call(source, tags) + tags[:end_before_change] +
+                       tags[:start_after_change] + escape_in.call(target, tags) + tags[:end_after_change]
+      e_body_deleted = tags[:start_del] + escape_out.call(source, tags) + tags[:end_del]
+      e_body_added   = tags[:start_add] + escape_out.call(target, tags) + tags[:end_add]
+      e_context_post = tags[:start_postfix] + escape_out.call(context_post, tags) + tags[:end_postfix]
+      e_footer       = tags[:end_entry] + (@eol_char||"")
 
-      case
-      when i == 0 then prefix = ""
-      else prefix = @difference[i-1][1].to_s.scan(prefix_pat).to_s
-      end
-      case
-      when (i + 1) == @difference.size then postfix = ""
-      else postfix = @difference[i+1][1].to_s.scan(postfix_pat).to_s
-      end
-
-      case operation
+      case operation = entry.first
       when :common_elt_elt
+        # skipping common part
       when :change_elt
-        pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
-        pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
-        result << (
-          tags[:start_entry] + 
-          tags[:start_position] + pos + tags[:end_position] + 
-          tags[:start_prefix] + prefix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_prefix] +
-          tags[:start_before_change] +
-          source.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
-          tags[:end_before_change] + 
-          tags[:start_after_change] +
-          target.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
-          tags[:end_after_change] +
-          tags[:start_postfix] + postfix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_postfix] +
-          tags[:end_entry] + (@eol_char||"")
-        )
+        pos_str = "#{d1l}" + "#{if span1 > 1 then '-'+(d1l + span1 - 1).to_s; end}" +
+                  ",#{d2l}" + "#{if span2 > 1 then '-'+(d2l + span2 - 1).to_s; end}"
+        result << (e_header.call(pos_str) + e_context_pre + e_body_changed + e_context_post + e_footer)
       when :del_elt
-        pos += "#{doc1_lnum}"
-        pos += "-#{doc1_lnum + span1 - 1}" if span1 > 1
-        pos += ",(#{doc2_lnum})"
-        result << (
-          tags[:start_entry] +
-          tags[:start_position] + pos + tags[:end_position] +
-          tags[:start_prefix] + prefix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_prefix] +
-          tags[:start_del] +
-          source.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
-          tags[:end_del] + 
-          tags[:start_postfix] + postfix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_postfix] +
-          tags[:end_entry] + (@eol_char||"")
-        )
+        pos_str = "#{d1l}" + "#{if span1 > 1 then '-'+(d1l + span1 - 1).to_s; end}" +
+                  ",(#{d2l})"
+        result << (e_header.call(pos_str) + e_context_pre + e_body_deleted + e_context_post + e_footer)
       when :add_elt
-        pos += "(#{doc1_lnum})"
-        pos += ",#{doc2_lnum}"
-        pos += "-#{doc2_lnum + span2 - 1}" if span2 > 1
-        result << (
-          tags[:start_entry] +
-          tags[:start_position] + pos + tags[:end_position] +
-          tags[:start_prefix] + prefix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_prefix] +
-          tags[:start_add] +
-          target.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
-          tags[:end_add] +
-          tags[:start_postfix] + postfix.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} + tags[:end_postfix] +
-          tags[:end_entry] + (@eol_char||"")
-        )
+        pos_str = "(#{d1l})" +
+                  ",#{d2l}" + "#{if span2 > 1 then '-'+(d2l + span2 - 1).to_s; end}"
+        result << (e_header.call(pos_str) + e_context_pre + e_body_added + e_context_post + e_footer)
       else
         raise "invalid attribute: #{block.first}\n"
       end
-      doc1_lnum += source.scan_eols(@eol).size
-      doc2_lnum += target.scan_eols(@eol).size
+      d1l += source.scan_eols(@eol).size
+      d2l += target.scan_eols(@eol).size
     }
     result.unshift(tags[:start_digest_body])
     result.push(tags[:end_digest_body])
-    if headfoot == true
-      result = tags[:header] + result + tags[:footer]
-    end
-    result.delete_if{|elem|elem==''}
+    result = tags[:header] + result + tags[:footer] if headfoot == true
+    result.delete_if{|elem| elem == ''}
   end
 
   def source_lines()
@@ -188,16 +168,6 @@ class View
       @target_lines = @difference.collect{|entry| entry[2]}.join.scan_lines(@eol)
     end
     @target_lines
-  end
-  PREFIX_LENGTH = 16
-  POSTFIX_LENGTH = 16
-  def prefix_pat()
-    Regexp.new('.{0,'+"#{PREFIX_LENGTH}"+'}\Z', Regexp::MULTILINE,
-               @encoding.sub(/ASCII/i, 'none'))
-  end
-  def postfix_pat()
-    Regexp.new('\A.{0,'+"#{POSTFIX_LENGTH}"+'}', Regexp::MULTILINE,
-               @encoding.sub(/ASCII/i, 'none'))
   end
 
   # tty (terminal)
