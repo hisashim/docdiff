@@ -115,10 +115,16 @@ class View
       span1 = source_lines_involved = source.scan_lines(@eol).size
       span2 = target_lines_involved = target.scan_lines(@eol).size
       pos_str = ""
-      context_pre  = @difference[i-1][1].to_s.scan(context_pre_pat).to_s
-      context_pre  = "" if  i == 0                      # no pre context for the first entry
-      context_post = @difference[i+1][1].to_s.scan(context_post_pat).to_s
-      context_post = "" if (i + 1) == @difference.size  # no post context for the last entry
+      if  i == 0
+        context_pre  = ""  # no pre context for the first entry
+      else
+        context_pre  = @difference[i-1][1].to_s.scan(context_pre_pat).to_s
+      end
+      if (i + 1) == @difference.size
+        context_post = ""  # no post context for the last entry
+      else
+        context_post = @difference[i+1][1].to_s.scan(context_post_pat).to_s
+      end
       # parts for an entry
       e_header       = Proc.new {|pos_str|
                                  tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]}
