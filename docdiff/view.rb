@@ -37,6 +37,14 @@ class View
 #     end
   end
 
+  def difference_whole()
+    @difference
+  end
+
+  def difference_digest()
+    #
+  end
+
   def apply_style(tags, headfoot = true)
     result = []
     @difference.each{|block|

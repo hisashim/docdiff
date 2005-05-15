@@ -486,6 +486,27 @@ class TC_View < Test::Unit::TestCase
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_user_digest(user_tags, false))
   end
 
+  def test_difference_whole()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"] # a \n  b  c  d           e \n  f \n
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"] #          c  d  X \n  Y  e \n  F \n
+    expected = [[:del_elt, ["a", "\n", "b"], nil],
+                [:common_elt_elt, ["c", "d"], ["c", "d"]],
+                [:add_elt, nil, ["X", "\n", "Y"]],
+                [:common_elt_elt, ["e", "\n"], ["e", "\n"]],
+                [:change_elt, ["f"], ["F"]],
+                [:common_elt_elt, ["\n"], ["\n"]]]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").difference_whole)
+  end
+
+  def test_difference_digest()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"] # a \n  b  c  d           e \n  f \n
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"] #          c  d  X \n  Y  e \n  F \n
+    expected = [
+# something
+               ]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").difference_digest)
+  end
+
   def teardown()
     #
   end
