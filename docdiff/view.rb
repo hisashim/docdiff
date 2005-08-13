@@ -45,6 +45,13 @@ class View
     #
   end
 
+  def escape_inside(str, tags)
+    str.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]}
+  end
+  def escape_outside(str, tags)
+    str.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]}
+  end
+
   def apply_style(tags, headfoot = true)
     result = []
     @difference.each{|block|
@@ -58,28 +65,14 @@ class View
       end
       case operation
       when :common_elt_elt
-        result << (
-          tags[:start_common] +
-          source.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]} +
-          tags[:end_common]
-        )
+        result << (tags[:start_common] + escape_outside(source, tags) + tags[:end_common])
       when :change_elt
-        result << (tags[:start_before_change] + 
-          source.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
-                   tags[:end_before_change] + 
-                   tags[:start_after_change] + 
-          target.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
-                   tags[:end_after_change])
+        result << (tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change] +
+                   tags[:start_after_change] + escape_inside(target, tags) + tags[:end_after_change])
       when :del_elt
-        result << (tags[:start_del] +
-          source.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
-          tags[:end_del]
-        )
+        result << (tags[:start_del] + escape_inside(source, tags) + tags[:end_del])
       when :add_elt
-        result << (tags[:start_add] +
-          target.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]} +
-          tags[:end_add]
-        )
+        result << (tags[:start_add] + escape_inside(target, tags) + tags[:end_add])
       else
         raise "invalid attribute: #{block.first}\n"
       end
@@ -97,10 +90,6 @@ class View
                                   Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
     context_post_pat = Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}',
                                   Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
-    escape_in  = Proc.new {|str, tags|
-                           str.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]}}
-    escape_out = Proc.new {|str, tags|
-                           str.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]}}
     result = []
     d1l = doc1_line_number = 1
     d2l = doc2_line_number = 1
@@ -112,9 +101,6 @@ class View
         source = entry[1].to_s
         target = entry[2].to_s
       end
-      span1 = source_lines_involved = source.scan_lines(@eol).size
-      span2 = target_lines_involved = target.scan_lines(@eol).size
-      pos_str = ""
       if  i == 0
         context_pre  = ""  # no pre context for the first entry
       else
@@ -125,17 +111,20 @@ class View
       else
         context_post = @difference[i+1][1].to_s.scan(context_post_pat).to_s
       end
-      # parts for an entry
+      # elements for an entry
       e_header       = Proc.new {|pos_str|
                                  tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]}
-      e_context_pre  = tags[:start_prefix] + escape_out.call(context_pre, tags) + tags[:end_prefix]
-      e_body_changed = tags[:start_before_change] + escape_in.call(source, tags) + tags[:end_before_change] +
-                       tags[:start_after_change] + escape_in.call(target, tags) + tags[:end_after_change]
-      e_body_deleted = tags[:start_del] + escape_out.call(source, tags) + tags[:end_del]
-      e_body_added   = tags[:start_add] + escape_out.call(target, tags) + tags[:end_add]
-      e_context_post = tags[:start_postfix] + escape_out.call(context_post, tags) + tags[:end_postfix]
+      e_context_pre  = tags[:start_prefix] + escape_outside(context_pre, tags) + tags[:end_prefix]
+      e_body_changed = tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change] +
+                       tags[:start_after_change] + escape_inside(target, tags) + tags[:end_after_change]
+      e_body_deleted = tags[:start_del] + escape_outside(source, tags) + tags[:end_del]
+      e_body_added   = tags[:start_add] + escape_outside(target, tags) + tags[:end_add]
+      e_context_post = tags[:start_postfix] + escape_outside(context_post, tags) + tags[:end_postfix]
       e_footer       = tags[:end_entry] + (@eol_char||"")
 
+      span1 = source_lines_involved = source.scan_lines(@eol).size
+      span2 = target_lines_involved = target.scan_lines(@eol).size
+      pos_str = ""
       case operation = entry.first
       when :common_elt_elt
         # skipping common part
