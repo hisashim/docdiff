@@ -312,62 +312,6 @@ END
     assert_equal(expected, result)
   end
 
-  def test_parse_classic_diff_old()
-    expected = [
-      "diff --text sample/1/a.en.ascii.lf sample/2/a.en.ascii.lf\n",
-      "1d0\n",
-      "< a\n",
-      "3,4d1\n",
-      "< c\n< d\n",
-      "6a4\n",
-      "> 0\n",
-      "7a6,7\n",
-      "> 1\n> 2\n",
-      "9c9\n",
-      "< i\n",
-      "---\n",
-      "> 3\n",
-      "11c11,12\n",
-      "< k\n",
-      "---\n",
-      "> 4\n> 5\n",
-      "13,14c14,15\n",
-      "< m\n< n\n",
-      "---\n",
-      "> 6\n> 7\n",
-      "22d22\n",
-      "< v\n",
-      "23a24,25\n",
-      "> 8\n> 9\n",
-      "25c27,28\n",
-      "< y\n",
-      "---\n",
-      "> A\n> B\n",
-      "diff --text sample/1/b.en.ascii.lf sample/2/b.en.ascii.lf\n",
-      "1c1,8\n",
-      "< a\n",
-      "---\n",
-      "> @\n> <\n> >\n> -\n> +\n> *\n> !\n>\n",
-      "9a17,19\n",
-      "> +\n>\n>\n",
-      "17d26\n",
-      "< q\n",
-      "24c33\n",
-      "< x\n",
-      "---\n",
-      "> *\n",
-      "26c35\n",
-      "< z\n",
-      "---\n",
-      "> z\n",
-      "\ No newline at end of file\n"
-    ]
-    result = DiffFile.new(@classic_diff).parse_classic_diff_old(@classic_diff)
-    assert_equal(expected, result)
-#   result.each{|e| 
-#     puts("#{e.inspect}#{if e.op then ": " + e.op.inspect + ': ' + e.counterpart.inspect; end}")
-#   }
-  end
   def test_parse_classic_diff
     expected = [
       "diff --text sample/1/a.en.ascii.lf sample/2/a.en.ascii.lf\n",

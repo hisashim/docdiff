@@ -114,53 +114,6 @@ class DiffFile
   end
   attr_reader(:src, :parsed_diff)
 
-  def parse_classic_diff_old(diff)  # obsolete
-    range = '[0-9]+(?:,[0-9]+)?'
-    op = '[dac]'
-    eol = '(?:\r\n|\n|\r)'
-
-    cmdline = '^[^-0-9<>].*?' + eol
-    hunk_header = range + op + range + eol
-    del = '(?:< ?.*?' + eol + ')+'
-    sep = '^---' + eol
-    add = '(?:> ?.*?' + eol + ')+'
-
-    pat = [cmdline, hunk_header, del, sep, add].join('|')
-    elements = diff.scan(Regexp.new(pat, Regexp::MULTILINE))
-    elements.collect_with_index{|elm, i|
-      case
-      when Regexp.compile("^" + del).match(elm) then
-        elm.op = "del"
-        elm.mark, elm.content = elm[0..1], elm[2..-1]
-        if ((i + 2) < elements.size) && (Regexp.compile(sep).match(elements[i + 1]))
-          elm.counterpart = elements[i + 2]
-        end
-      when Regexp.compile("^" + add).match(elm) then
-        elm.op = "add"
-        elm.mark, elm.content = elm[0..1], elm[2..-1]
-        if (0 <= (i - 2)) && (Regexp.compile(sep).match elements[i - 1])
-          elm.counterpart = elements[i - 2]
-        end
-      end
-      elm
-    }
-  end
-  def parse_classic_diff_compat_with_old(diff)  # obsolete
-    elements = tokenize_classic_diff(diff)
-    parsed = []
-    elements.collect_with_index{|elm, i|
-      case
-      when Regexp.new("^"+'(?:< ?.*?(?:\r\n|\n|\r))').match(elm) then elm.op = "del"
-      when Regexp.new("^"+'(?:> ?.*?(?:\r\n|\n|\r))').match(elm) then elm.op = "add"
-      end
-      if parsed.size > 0 && elm.op != nil && elm.op == parsed.last.op
-        parsed.last.replace(parsed.last + elm)
-      else
-        parsed << elm
-      end
-    }
-    parsed
-  end
   def parse_classic_diff(diff)
     elements = tokenize_classic_diff(diff)
     parsed = []
@@ -174,19 +127,20 @@ class DiffFile
     parsed
     # hack more
   end
+  module ClassicDiff
+    def re_range;       '[0-9]+(?:,[0-9]+)?'                  ; end
+    def re_op;          '[dac]'                               ; end
+    def re_eol;         '(?:\r\n|\n|\r)'                      ; end
+    def re_cmdline;     '^[^-0-9<>].*?' + re_eol              ; end
+    def re_hunk_header; re_range + re_op + re_range + re_eol  ; end
+    def re_del;         '(?:< ?.*?' + re_eol + ')'            ; end
+    def re_sep;         '^---' + re_eol                       ; end
+    def re_add;         '(?:> ?.*?' + re_eol + ')'            ; end
+    def re_pat; [re_cmdline, re_hunk_header, re_del, re_sep, re_add].join('|')  ; end
+  end
   def tokenize_classic_diff(diff)
-    range = '[0-9]+(?:,[0-9]+)?'
-    op = '[dac]'
-    eol = '(?:\r\n|\n|\r)'
-
-    cmdline = '^[^-0-9<>].*?' + eol
-    hunk_header = range + op + range + eol
-    del = '(?:< ?.*?' + eol + ')'
-    sep = '^---' + eol
-    add = '(?:> ?.*?' + eol + ')'
-
-    pat = [cmdline, hunk_header, del, sep, add].join('|')
-    return diff.scan(Regexp.new(pat, Regexp::MULTILINE))
+    extend ClassicDiff
+    return diff.scan(Regexp.new(re_pat, Regexp::MULTILINE))
   end
 
   def parse_context_diff(diff)
