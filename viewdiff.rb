@@ -114,19 +114,6 @@ class DiffFile
   end
   attr_reader(:src, :parsed_diff)
 
-  def parse_classic_diff(diff)
-    elements = tokenize_classic_diff(diff)
-    parsed = []
-    elements.collect_with_index{|elm, i|
-      case
-      when Regexp.new("^"+'(?:< ?.*?(?:\r\n|\n|\r))').match(elm) then elm.op = "del"
-      when Regexp.new("^"+'(?:> ?.*?(?:\r\n|\n|\r))').match(elm) then elm.op = "add"
-      end
-      parsed << elm
-    }
-    parsed
-    # hack more
-  end
   module ClassicDiff
     def re_range;       '[0-9]+(?:,[0-9]+)?'                  ; end
     def re_op;          '[dac]'                               ; end
@@ -140,6 +127,45 @@ class DiffFile
   end
   def tokenize_classic_diff(diff)
     extend ClassicDiff
+    return diff.scan(Regexp.new(re_pat, Regexp::MULTILINE))
+  end
+  def parse_classic_diff(diff)
+    elements = tokenize_classic_diff(diff)
+    parsed = []
+    elements.collect_with_index{|elm, i|
+      case
+#      when Regexp.new("^"+'(?:< ?.*?(?:\r\n|\n|\r))').match(elm) then elm.op = "del"
+#      when Regexp.new("^"+'(?:> ?.*?(?:\r\n|\n|\r))').match(elm) then elm.op = "add"
+      when Regexp.new("^"+re_del).match(elm) then elm.op = "del"
+      when Regexp.new("^"+re_add).match(elm) then elm.op = "add"
+      end
+      parsed << elm
+    }
+    parsed
+    # hack more
+  end
+
+  module ContextDiff
+    def re_eol;           '(?:\r\n|\n|\r)'                       ; end
+    def re_cmdline;       '^[^-\+\*\! ].*?' + re_eol             ; end
+    def re_hunk_sep;      '^\*+' + re_eol                        ; end
+    def re_file_header1;  '^\*{3} .*?' + re_eol                  ; end
+    def re_file_header2;  '^\-{3} .*?' + re_eol                  ; end
+    def re_hunk_heading1; '^\*{3} [0-9]+,[0-9]+ \*{4}' + re_eol  ; end
+    def re_hunk_heading2; '^\-{3} [0-9]+,[0-9]+ \-{4}' + re_eol  ; end
+#     def re_del;           '(?:\-[^-].*?' + re_eol + ')'         ; end
+#     def re_add;           '(?:\+[^+].*?' + re_eol + ')'         ; end
+    def re_del;           '(?:\-.*?' + re_eol + ')'              ; end
+    def re_add;           '(?:\+.*?' + re_eol + ')'              ; end
+    def re_change;        '(?:\! ?.*?' + re_eol + ')'            ; end
+    def re_any;           '(?:.*?)' + re_eol                     ; end
+    def re_pat
+      [re_cmdline, re_hunk_sep, re_file_header1, re_file_header2, re_hunk_heading1,
+       re_hunk_heading2, re_del, re_add, re_change, re_any].join('|')
+    end
+  end
+  def tokenize_context_diff(diff)
+    extend ContextDiff
     return diff.scan(Regexp.new(re_pat, Regexp::MULTILINE))
   end
 
