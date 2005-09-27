@@ -9,69 +9,6 @@ require "tempfile"
 
 $KCODE="e"
 
-=begin
-
-classic:
-
-  Diff
-    FilePair
-      commandline               diff --opt dir1/file dir2/file
-      file1                     nil
-      file2                     nil
-      Hunk
-        header                  1,2c3,4
-        file1_header            nil
-        Line
-          mark content          < foo
-        sep                     ---
-        file2_header            nil
-        mark content            > bar
-    Other                       Only in somedir: baz
-
-context:
-
-  Diff
-    FilePair
-      commandline               diff --opt dir1/file dir2/file
-      file1                     *** dir1/file timestamp
-      file2                     --- dir2/file timestamp
-      Hunk
-        header                  ***************
-        file1_header            *** 1,17 ****
-        Line
-          mark content          - foo
-        sep                     nil
-        file2_header            --- 1,18 ----
-        mark content            + bar
-    Other                       \ No newline at end of file
-
-unified:
-
-  Diff
-    FilePair
-      commandline               diff --opt dir1/file dir2/file
-      file1                     --- dir1/file timestamp
-      file2                     +++ dir2/file timestamp
-      Hunk
-        header                  @@ -1,17 +1,18 @@
-        file1_header            nil
-        Line
-          mark content          -foo
-        sep                     nil
-        file2_header            nil
-        mark content            +bar
-    Other                       \ No newline at end of file
-
-How to use:
-
-d = DiffFile.new(ARGF.read, encoding, eol)
-  (parse)
-print d.to_tty
-  (compare hunks)
-  (format)
-
-=end
-
 module Enumerable
   def collect_with_index
     ary = []
@@ -134,8 +71,6 @@ class DiffFile
     parsed = []
     elements.collect_with_index{|elm, i|
       case
-#      when Regexp.new("^"+'(?:< ?.*?(?:\r\n|\n|\r))').match(elm) then elm.op = "del"
-#      when Regexp.new("^"+'(?:> ?.*?(?:\r\n|\n|\r))').match(elm) then elm.op = "add"
       when Regexp.new("^"+re_del).match(elm) then elm.op = "del"
       when Regexp.new("^"+re_add).match(elm) then elm.op = "add"
       end

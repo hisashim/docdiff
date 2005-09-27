@@ -701,9 +701,6 @@ END
     ]
     result = DiffFile.new(@context_diff).tokenize_context_diff(@context_diff)
     assert_equal(expected, result)
-#    result.each{|e| 
-#      puts("#{e.inspect}#{if e.op then ": " + e.op.inspect + ': ' + e.counterpart.inspect; end}")
-#    }
   end
 
   def teardown()
