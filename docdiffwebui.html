@@ -1,19 +1,57 @@
 <html>
   <head>
     <title>DocDiff Web UI</title>
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <style type="text/css">
+      body {
+        margin: 1em 2em 1em 2em;
+      }
+      h1 {
+        border-left-width: thick;
+        border-left-style: solid;
+        border-style: solid none solid none;
+      }
+      .form {
+        border-style: outset;
+        padding: 0.5em 1em 0.5em 1em;
+        width: 70%;
+        max-width: 60%;
+        min-width: 40em;
+      }
+      .buttons {
+        float: right;
+        min-width: 30%;
+      }
+      .buttons + * {
+        clear: both;
+      }
+      .form dl {
+        margin-left: 1em;
+      }
+      .form dt {
+        float: left;
+        width: 25%;
+        max-width: 15em;
+        min-width: 7.5em;
+      }
+    </style>
   </head>
   <body>
   <h1>DocDiff Web UI</h1>
-  DocDiff is a word/char oriented text file comparison utility.
+  <p>DocDiff is a word/char oriented text file comparison utility.</p>
+  <p><strong>Caution: This web ui is totally experimental and insecure!  Do not use it on public site.</strong></p>
+  <div class="form">
   <form action="cgi-bin/docdiffwebui.cgi" method="post" enctype="multipart/form-data">
+    <fieldset>
+      <legend>Files to compare</legend>
+      <ol>
+        <li><input type="file" name="file1" size="72"></li>
+        <li><input type="file" name="file2" size="72"></li>
+      </ol>
+    </fieldset>
+    <fieldset>
+      <legend>Options</legend>
     <dl>
-      <dt>Files to compare:</dt>
-      <dd>
-        <ol>
-          <li><input type="file" name="file1" size="72"></li>
-          <li><input type="file" name="file2" size="72"></li>
-        </ol>
-      </dd>
       <dt>Resolution:</dt>
       <dd>
         <select name="resolution">
@@ -22,7 +60,7 @@
           <option value="char">Character</option>
         </select><br />
       </dd>
-      <dt>Format:</dt>
+      <dt>Output Format:</dt>
       <dd>
         <select name="format">
           <option value="html" selected>HTML (default)</option>
@@ -50,19 +88,25 @@
           <option value="cr">CR (Old Mac)</option>
         </select>
       </dd>
-      <dt>Digest?:</dt>
+      <dt>Digest?</dt>
       <dd>
         <input type="checkbox" name="digest" value="digest">
       </dd>
     </dl>
-    <p>
-      <input type="submit" value="Compare">
+  </fieldset>
+    <div class="buttons">
+      <p>
+      <input type="submit">
       <input type="reset">
-    </p>
-    <p>Wait for a while untill you get the result.</p>
-    <p>If you get an error, try specifying encoding and eol explicitly.  If that does not help, ask your system administrator who installed this software.</p>
+      </p>
+    </div>
+    <br />
   </form>
-<hr />
+</div>
+  <p>Wait for a while untill you get the result.</p>
+  <p>If you get an error, try specifying encoding and eol explicitly.  If that does not help, ask your system administrator who installed this software.</p>
+
+  <hr />
   2005-10-08..  Hisashi Morita
 </body>
 </html>
