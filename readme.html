@@ -61,6 +61,7 @@
  <li><a href="#usage">Usage</a></li>
  <li><a href="#license">License</a></li>
  <li><a href="#credits">Credits</a></li>
+ <li><a href="#acknowledgments">Acknowledgments</a></li>
  <li><a href="#resources">Resources</a></li>
 </ul>
 <ul lang="ja">
@@ -73,6 +74,7 @@
  <li><a href="#usage">使い方</a></li>
  <li><a href="#license">ライセンス</a></li>
  <li><a href="#credits">クレジット</a></li>
+ <li><a href="#acknowledgments">謝辞</a></li>
  <li><a href="#resources">情報源</a></li>
 </ul>
 
@@ -84,7 +86,8 @@
 </h2>
 <ul>
 <li>0.3.3 (200x-xx-xx)<ul>
- <li></li>
+ <li>Fixed arg test so that we can compare non-normal files, such as device file and named pipes (Thanks to Shugo Maeda).</li>
+ <li>Added DocDiff Web UI sample (experimental).</li>
  <li>Fixed HTML output to produce valid XHTML (thanks to Hiroshi OHKUBO).</li>
  <li>Replaced underscores(_) in CSS class names to hyphens(-) so that older UAs can understand them (thanks to Kazuhiro NISHIYAMA).</li>
 </ul></li>
@@ -407,7 +410,7 @@ key2 = value<br />
  character.  You may get an error like this.
 </p>
 <p lang="ja">
- DocDiffがたまにエンコーディングや行末文字の自動判定に失敗して、次のようなエラーを表示することがあります。
+ DocDiffがたまにエンコーディングや行末文字の自動判定に失敗して、次のようなエラーを出力することがあります。
 </p>
 <blockquote><p><samp>
 charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)<br />
@@ -416,7 +419,7 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
  In such a case, try explicitly specifying encoding and end-of-line character (e.g. <kbd>docdiff --utf8 --crlf</kbd>).
 </p>
 <p lang="ja">
- このような場合は、エンコーディングや行末文字を明示的に指定してやってみてください（e.g. <kbd>docdiff --utf8 --crlf</kbd>）。
+ このような場合は、エンコーディングや行末文字を明示的に指定してみてください（e.g. <kbd>docdiff --utf8 --crlf</kbd>）。
 </p>
 
 <h4>
@@ -541,11 +544,21 @@ SUCH DAMAGE.
 </h2>
 <ul>
  <li>Hisashi MORITA (primary author)</li>
+</ul>
+
+<h2 id="acknowledgments">
+ <span lang="en">Acknowledgments</span>
+ <span lang="ja">謝辞</span>
+</h2>
+<ul>
+ <li>Akira TANAKA (diff library author)</li>
  <li>Shin'ichiro HARA (initial idea and algorithm suggestion)</li>
  <li>Masatoshi SEKI (patch)</li>
  <li>Akira YAMADA (patch, Debian package)</li>
- <li>Kenshi Muto (testing, bug report)</li>
- <li>Akira TANAKA (diff library author)</li>
+ <li>Kenshi MUTO (testing, bug report, Debian package)</li>
+ <li>Kazuhiro NISHIYAMA (bug report)</li>
+ <li>Hiroshi OHKUBO (bug report)</li>
+ <li>Shugo MAEDA (bug report)</li>
 </ul>
 
 <hr />
