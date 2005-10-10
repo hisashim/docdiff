@@ -297,8 +297,10 @@ if $0 == __FILE__
   raise "Specify at least 2 target files." unless ARGV[0] && ARGV[1]
   raise "No such file: #{ARGV[0]}." unless FileTest.exist?(ARGV[0])
   raise "No such file: #{ARGV[1]}." unless FileTest.exist?(ARGV[1])
-  raise "#{ARGV[0]} is not a file." unless FileTest.file?(ARGV[0])
-  raise "#{ARGV[1]} is not a file." unless FileTest.file?(ARGV[1])
+  raise "#{ARGV[0]} is a directory." if FileTest.directory?(ARGV[0])
+  raise "#{ARGV[1]} is a directory." if FileTest.directory?(ARGV[1])
+  raise "#{ARGV[0]} is not readable." unless FileTest.readable?(ARGV[0])
+  raise "#{ARGV[1]} is not readable." unless FileTest.readable?(ARGV[1])
   File.open(ARGV[0], "r"){|f| file1_content = f.read}
   File.open(ARGV[1], "r"){|f| file2_content = f.read}
 

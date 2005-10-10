@@ -51,6 +51,9 @@ class DiffFile
   end
   attr_reader(:src, :parsed_diff)
 
+  def parse()
+  end
+
   module ClassicDiff
     def re_range;       '[0-9]+(?:,[0-9]+)?'                  ; end
     def re_op;          '[dac]'                               ; end
@@ -157,7 +160,19 @@ class DiffFile
   def parse_unified_diff(diff)
   end
 =end
+
+  def to_tty
+  end
+
+  def to_wdiff
+  end
+
+  def html
+  end
+
 end
+
+
 
 ########
 

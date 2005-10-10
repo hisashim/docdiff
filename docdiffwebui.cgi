@@ -8,8 +8,10 @@ require 'tempfile'
 require 'open3'
 require 'timeout'
 
+# <configuration>
 docdiff = "/usr/bin/docdiff"
-timeout_second = 15
+timeout_second = 30
+# </configuration>
 
 def errmsg(bndg) # receive binding and return error anatomy
   timeout_second = eval("timeout_second", bndg)
@@ -44,10 +46,11 @@ class TimeoutErrorPopen3 < TimeoutError
 end
 
 cgi = CGI.new("html4")
-file1 = Tempfile.new("file1-")
+progname = File.basename($0)
+file1 = Tempfile.new("#{progname}-file1-")
 file1.print(cgi.params['file1'][0].read)
 file1.close
-file2 = Tempfile.new("file2-")
+file2 = Tempfile.new("#{progname}-file2-")
 file2.print(cgi.params['file2'][0].read)
 file2.close
 
