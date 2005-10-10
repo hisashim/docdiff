@@ -8,10 +8,7 @@ require 'tempfile'
 require 'open3'
 require 'timeout'
 
-# <configuration>
 docdiff = "/usr/bin/docdiff"
-timeout_second = 30
-# </configuration>
 
 def errmsg(bndg) # receive binding and return error anatomy
   timeout_second = eval("timeout_second", bndg)
@@ -46,11 +43,10 @@ class TimeoutErrorPopen3 < TimeoutError
 end
 
 cgi = CGI.new("html4")
-progname = File.basename($0)
-file1 = Tempfile.new("#{progname}-file1-")
+file1 = Tempfile.new("file1-")
 file1.print(cgi.params['file1'][0].read)
 file1.close
-file2 = Tempfile.new("#{progname}-file2-")
+file2 = Tempfile.new("file2-")
 file2.print(cgi.params['file2'][0].read)
 file2.close
 
@@ -107,6 +103,18 @@ if digest && digest.read == "digest"
   digest = "--digest"
 else
   digest = ""
+end
+
+if timeout_second = cgi.params['timeout_second'][0]
+  case timeout_second.read
+  when "5"  then timeout_second = 5
+  when "15" then timeout_second = 15
+  when "30" then timeout_second = 30
+  when "60" then timeout_second = 60
+  else raise "Consult your system administrator.  Unsupported timeout period."
+  end
+else
+  raise "param 'timeout_second' was not available."
 end
 
 begin
