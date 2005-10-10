@@ -18,9 +18,15 @@ def errmsg(bndg) # receive binding and return error anatomy
   cmdline = eval("cmdline", bndg)
   file1   = eval("file1", bndg)
   file2   = eval("file2", bndg)
-  msg = ["<h1>I am so sorry, but an error occured.</h1>",
-         "<p>You may try again specifying encoding and eol explicitly.  If that does not help, please consult your system administrator (or nearest geek).</p>",
-         "<hr /><p>",
+  msg = ["<h1>I am so sorry, but something went wrong and an error occured.</h1>",
+         "<h2>For users:</h2>",
+         "<p>#{cgierr}</p>",
+         "<p>#{'You may try again specifying encoding and eol explicitly.' if cmderr.size > 0}</p>",
+         "<p>If you are still in trouble after self-help effort, please consult your system administrator (or nearest geek) with the detail below.</p>",
+         "<hr />",
+         "<h2>For system administrators:</h2>",
+         "<p>Technical detail of the error:</p>",
+         "<p>",
          "CGI error: #{CGI.escapeHTML(cgierr.inspect)}<br />",
          "Command error: #{CGI.escapeHTML(cmderr.inspect)}<br />",
          "Timeout: #{timeout_second}<br />",
@@ -37,6 +43,8 @@ def errmsg(bndg) # receive binding and return error anatomy
   return msg
 end
 
+class InvalidUsageError < StandardError
+end
 class TimeoutErrorPopen < TimeoutError
 end
 class TimeoutErrorPopen3 < TimeoutError
@@ -125,25 +133,28 @@ begin
             " --resolution=#{resolution} --format=#{format} " +
             " --encoding=#{encoding} --eol=#{eol} #{digest} " +
             " #{file1.path} #{file2.path} "
-  raise "file1 is empty." if FileTest.zero?(file1.path)
-  raise "file2 is empty." if FileTest.zero?(file2.path)
+  raise InvalidUsageError, "file1 is either empty (size 0) or not specified." if FileTest.zero?(file1.path)
+  raise InvalidUsageError, "file2 is either empty (size 0) or not specified." if FileTest.zero?(file2.path)
   raise "file1 is unreadable." unless FileTest.readable?(file1.path)
   raise "file2 is unreadable." unless FileTest.readable?(file2.path)
   meth = "IO.popen"
   timeout(timeout_second, TimeoutErrorPopen){
     output = IO.popen(cmdline, "rb").read
-    raise "stdout is nil." if output == nil
-    raise "stdout is empty." if output == ""
+    raise "stdout from docdiff is nil." if output == nil
+    raise "stdout from docdiff is not nil, but empty." if output == ""
   }
+rescue InvalidUsageError => cgierr
+  output = errmsg(binding())
+
 rescue TimeoutErrorPopen => cgierr
   # popen failed, so falling back to open3, though open3 can fail too...
   meth = "Open3.popen3"
 
   timeout(timeout_second, TimeoutErrorPopen3){
     stdin, stdout, stderr = Open3.popen3(cmdline)
-    raise "stdin is nil." unless stdin
-    raise "stdout is nil." unless stdout
-    raise "stderr is nil." unless stderr
+    raise "stdin to docdiff is nil." unless stdin
+    raise "stdout from docdiff is nil." unless stdout
+    raise "stderr from docdiff is nil." unless stderr
     cmderr = stderr.read
     raise cmderr if cmderr && cmderr.length > 0
     output = stdout.read
