@@ -6,21 +6,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>DocDiff</title>
  <style type="text/css">
+  body {
+   margin-left: 5%;
+  }
+  h1, h2 {
+   margin-left: -5%;
+  }
+  h1 {
+   border: medium outset;
+   padding: 0.5em;
+  }
+  h2 {
+   border-top:    thin  solid;
+   border-right:  thin  solid;
+   border-left:   thick solid;
+   border-bottom: thin  solid;
+   padding-left:  0.3em;
+  }
+  h3 {
+   border-left:   thick solid;
+   padding-left:  0.3em;
+  }
   .figure {
-    padding: 0.5em 0em;
-    clear: both;
+   padding: 0.5em 0em;
+   clear: both;
   }
   .img {
-    margin-right: 0.5em;
+   margin-right: 0.5em;
   }
   .img:first-child {
-    float: left;
+   float: left;
   }
   .img + .img {
-    float: left;
+   float: left;
   }
   h1, h2, h3, hr {
-    clear: both;
+   clear: both;
+  }
+  .img > p {
+   margin-top: 0.5em;
+   margin-bottom: 0.25em;
   }
  </style>
  <style title="en" type="text/css">
@@ -34,75 +59,84 @@
 </head>
 <body>
 <h1>DocDiff</h1>
-<p>
-<a href="http://www.kt.rim.or.jp/~hisashim/docdiff/">DocDiff</a> compares two text files by word or by character.
-</p>
-<hr />
-<h2 id="toc">Table of Contents</h2>
+<div class="toc">
+<p>Table of Contents</p>
 <ul>
-<li><a href="#document">Document</a></li>
+<li><a href="#summary">Summary</a></li>
 <li><a href="#screenshot">Screenshot</a></li>
 <li><a href="#download">Download</a></li>
 <li><a href="#community">Community</a></li>
 </ul>
-<hr />
-<h2 id="document">Document</h2>
-<ul>
-<li><a href="readme.html">readme.html</a></li>
-<li><a href="readme.en.html">readme.en.html</a> (English)</li>
-<li><a href="readme.ja.html">readme.ja.html</a> (Japanese)</li>
-</ul>
+</div>
+<div class="content">
+<h2 id="summary">
+ <span lang="en">Summary</span>
+ <span lang="ja">概要</span>
+</h2>
+<p lang="en">
+ <a href="http://www.kt.rim.or.jp/~hisashim/docdiff/">DocDiff</a> compares two text files and shows the difference.  It can compare files word by word, char by char, or line by line.  It has several output formats such as HTML, tty, Manued, or user-defined markup.
+</p>
+<p lang="ja">
+ <a href="http://www.kt.rim.or.jp/~hisashim/docdiff/">DocDiff</a>は2つのテキストファイルを比較してその違いを表示します。単語ごと、文字ごと、そして行ごとにファイルを比較できます。結果を出力する形式は、HTML, tty（文字 端末向けのエスケープシーケンス）, Manued（真鵺道という校正用のマークアップ形式）などが用意されており、ユーザ定義のタグを使うこともできます。
+</p>
+<p lang="en">
+ It supports several encodings and end-of-line characters, including ASCII, UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
+</p>
+<p lang="ja">
+ 次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
+</p>
 <hr />
 <h2 id="screenshot">Screenshot</h2>
 <p style="clear: both;">All shots are in the <a href="img/">img</a> directory.</p>
 <div class="figure">
 <span class="img">
-You can compare text files by line, word, or character (format: tty)<br />
+<p>You can compare text files by line, word, or character (format: tty)</p>
 <img src="img/docdiff-screenshot-resolution-linewordchar-xterm.png" alt="screenshot" />
 </span>
 </div>
 <div class="figure">
 <span class="img">
-Output in web browser (format: HTML)<br />
+<p>Output in web browser (format: HTML)</p>
 <img src="img/docdiff-screenshot-format-html-firefox.png" alt="screenshot" />
 </span>
 <span class="img">
-Output in web browser (format: HTML, digest)<br />
+<p>Output in web browser (format: HTML, digest)</p>
 <img src="img/docdiff-screenshot-format-html-digest-firefox.png" alt="screenshot" />
 </span>
 </div>
 <div class="figure">
 <span class="img">
-Output in terminal (format: tty(escape sequence))<br />
+<p>Output in terminal (format: tty(escape sequence))</p>
 <img src="img/docdiff-screenshot-format-tty-rxvtunicode-en.png" alt="screenshot" />
 </span>
 <span class="img">
-Output in terminal (format: tty(escape sequence))<br />
+<p>Output in terminal (format: tty(escape sequence))</p>
 <img src="img/docdiff-screenshot-format-tty-rxvtunicode-ja.png" alt="screenshot" />
 </span>
 </div>
 <div class ="figure">
 <span class="img">
-Output in terminal (format: tty(escape sequence))<br />
+<p>Output in terminal (format: tty(escape sequence))</p>
 <img src="img/docdiff-screenshot-format-tty-xterm-en.png" alt="screenshot" />
 </span>
 <span class="img">
-Output in terminal (format: tty(escape sequence))<br />
+<p>Output in terminal (format: tty(escape sequence))</p>
 <img src="img/docdiff-screenshot-format-tty-xterm-ja.png" alt="screenshot" />
 </span>
 </div>
 <div class="figure">
 <span class="img">
-Comparing ASCII text (codepage 437) on Windows (Cygwin)<br />
+<p>Comparing English text (codepage 437) on Windows (Cygwin)</p>
 <img src="img/docdiff-screenshot-format-tty-cmdexe-en.png" alt="screenshot" />
 </span>
 <span class="img">
-Comparing Japanese text (codepage 932) on Windows (Cygwin)<br />
+<p>Comparing Japanese text (codepage 932) on Windows (Cygwin)</p>
 <img src="img/docdiff-screenshot-format-tty-cmdexe-ja.png" alt="screenshot" />
 </span>
 </div>
 <hr />
 <h2 id="download">Download</h2>
+<p>Please read the readme before you download.</p>
 <ul>
 <li><a href="docdiff-0.1.5.tar.gz">docdiff-0.1.5.tar.gz</a></li>
 <li><a href="docdiff-0.1.7.tar.gz">docdiff-0.1.7.tar.gz</a></li>
@@ -126,11 +160,12 @@ To subscribe to DocDiff ML, send email as follows:
 <code>Cc: hisashim at kt dot rim dot or dot jp</code><br />
 </p>
 </blockquote>
+</div>
 <hr>
 <a href ="../">Up</a>
 <hr>
-2005-01-03 +0900<br>
-2001-02-12 +0900<br>
-Copyright (C) 2001-2005 Hisashi MORITA<br>
+2005-01-03 +0900<br />
+2001-02-12 +0900<br />
+Copyright (C) 2001-2005 Hisashi MORITA<br />
 </body>
 </html>
