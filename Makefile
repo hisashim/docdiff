@@ -3,7 +3,7 @@ VERSION = 0.3.3
 # DATE = `date +%Y%m%d`
 DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
        docdiffwebui.html docdiffwebui.cgi \
-       readme.html readme.en.html readme.ja.html sample \
+       index.html img readme.html readme.en.html readme.ja.html sample \
        testcharstring.rb testdiff.rb testdifference.rb testdocdiff.rb testdocument.rb testview.rb
 # PWDBASE = `pwd | sed "s|^.*[/\\]||"`
 
