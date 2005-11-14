@@ -14,9 +14,9 @@
       .form {
         border-style: outset;
         padding: 0.5em 1em 0.5em 1em;
-        width: 70%;
-        max-width: 60%;
-        min-width: 40em;
+        width: 100%;
+        max-width: 50%;
+        min-width: 30em;
       }
       .buttons {
         float: right;
@@ -25,14 +25,16 @@
       .buttons + * {
         clear: both;
       }
-      .form dl {
+      .form .options {
         margin-left: 1em;
       }
-      .form dt {
+      .form .options dt {
         float: left;
-        width: 25%;
-        max-width: 15em;
-        min-width: 7.5em;
+        width: 30%;
+        max-width: 20em;
+      }
+      .form .options dd {
+        width: 70%;
       }
     </style>
   </head>
@@ -51,7 +53,7 @@
     </fieldset>
     <fieldset>
       <legend>Options</legend>
-    <dl>
+    <dl class="options">
       <dt>Resolution:</dt>
       <dd>
         <select name="resolution">
