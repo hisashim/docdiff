@@ -45,11 +45,11 @@
  </style>
  <style title="en" type="text/css">
   * [lang="ja"] {display: none}
-  * [lang="en"] {display: inherit}
+  * [lang="en"] {display: compact}
  </style>
  <style title="ja" type="text/css">
   * [lang="en"] {display: none}
-  * [lang="ja"] {display: inherit}
+  * [lang="ja"] {display: compact}
  </style>
 </head>
 <body>
@@ -500,6 +500,26 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
 </p></blockquote>
 <blockquote><p>Subversion:<br />
  <samp>% <kbd>docdiff =(svn cat -r3 http://svn.example.org/repos/foo.html) =(curl --silent http://www.example.org/foo.html)</kbd></samp>
+</p></blockquote>
+<h3>
+ <span lang="en">Comparing HTML, Microsoft Word and Other Files Using DocDiff</span>
+ <span lang="ja">HTMLやWord文書やその他のファイルをDocDiffを使って比較する</span>
+</h3>
+<p lang="en">
+ You can compare files other than plain text, such as HTML and Microsoft Word documents, if you use appropriate converter.
+</p>
+<p lang="ja">
+ 適切な変換ツールを使えば、HTMLやMicrosoft Word文書など、プレーンテキスト以外のファイルも比較できます。
+</p>
+<blockquote><p>
+<span lang="en">Comparing the content of two HTML documents (without tags)</span>
+<span lang="ja">HTML文書の内容（タグを除く）を比較</span>:<br />
+ <samp>% <kbd>docdiff =(w3m -dump -cols 10000 foo.html) =(w3m -dump -cols 10000 http://www.example.org/foo.html)</kbd></samp>
+</p></blockquote>
+<blockquote><p>
+<span lang="en">Comparing the content of two Microsoft Word documents</span>
+<span lang="ja">Microsoft Word文書の内容を比較</span>:<br />
+ <samp>% <kbd>docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)</kbd></samp>
 </p></blockquote>
 
 <hr />
