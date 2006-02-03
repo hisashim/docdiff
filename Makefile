@@ -45,4 +45,6 @@ clean:
 	rm -f ChangeLog
 	rm -f readme.en.html
 	rm -f readme.ja.html
+
+distclean: clean
 	rm -f $(PACKAGE)-$(VERSION).tar.gz
