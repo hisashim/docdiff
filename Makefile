@@ -1,5 +1,5 @@
 PACKAGE = docdiff
-VERSION = 0.3.3
+VERSION = 0.3.4
 # DATE = `date +%Y%m%d`
 DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
        docdiffwebui.html docdiffwebui.cgi \
