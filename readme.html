@@ -275,8 +275,11 @@
 <li>
  Place <samp>docdiff.rb</samp> in command binary directory.<br />
  (e.g. <blockquote><p><samp># <kbd>cp docdiff.rb /usr/bin/</kbd></samp></p></blockquote>)<br />
- Optionally you may want to rename it to <samp>docdiff</samp>.<br />
- (e.g. <blockquote><p><samp># <kbd>mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd></samp></p></blockquote>)
+ (Optional) You may want to rename it to <samp>docdiff</samp>.<br />
+ (e.g. <blockquote><p><samp># <kbd>mv /usr/bin/docdiff.rb /usr/bin/docdiff</kbd></samp></p></blockquote>)<br />
+ (Optional) When invoked as <samp>chardiff</samp> or <samp>worddiff</samp>, docdiff runs with resolution set to <samp>char</samp> or <samp>word</samp>, respectively.<br />
+ (e.g. <blockquote><p><samp># <kbd>ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb</kbd></samp><br />
+<samp># <kbd>ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb</kbd></samp></p></blockquote>)
 </li>
 <li>
  Set appropriate permission.<br />
@@ -525,6 +528,19 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
 <span lang="en">Comparing the content of two Microsoft Word documents</span>
 <span lang="ja">Microsoft Word文書の内容を比較</span>:<br />
  <samp>% <kbd>docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)</kbd></samp>
+</p></blockquote>
+<h3>
+ <span lang="en">Workaround for Latin-* (ISO-8859-*) encodings: Use ASCII</span>
+ <span lang="ja">Latin-* (ISO-8859-*) のための回避策: ASCIIを指定する</span>
+</h3>
+<p lang="en">
+ If you want to compare Latin-* (ISO-8859-*) texts, try using ASCII as their encoding.  When ASCII is specified, DocDiff assumes single-byte characters.
+</p>
+<p lang="ja">
+ 文字コードがLatin-* (ISO-8859-*) のテキストを扱うときは、文字コードにASCIIを指定してみてください。ASCIIが指定されると、DocDiffは対象をシングルバイト文字のテキストとして扱います。
+</p>
+<blockquote><p>Comparing Latin-1 texts:<br />
+ <samp>% <kbd>docdiff --encoding=ASCII latin-1-old.txt latin-1-new.txt</kbd></samp>
 </p></blockquote>
 
 <hr />
