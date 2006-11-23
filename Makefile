@@ -1,5 +1,6 @@
 PACKAGE = docdiff
 VERSION = 0.3.4
+RUBY = ruby
 # DATE = `date +%Y%m%d`
 DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
        docdiffwebui.html docdiffwebui.cgi \
@@ -10,17 +11,17 @@ DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
 test: testdocdiff testcharstring testdocument testdiff testdifference testview
 
 testdocdiff:
-	ruby testdocdiff.rb
+	$(RUBY) -I. testdocdiff.rb
 testcharstring:
-	ruby testcharstring.rb
+	$(RUBY) -I. testcharstring.rb
 testdocument:
-	ruby testdocument.rb
+	$(RUBY) -I. testdocument.rb
 testdiff:
-	ruby testdiff.rb
+	$(RUBY) -I. testdiff.rb
 testdifference:
-	ruby testdifference.rb
+	$(RUBY) -I. testdifference.rb
 testview:
-	ruby testview.rb
+	$(RUBY) -I. testview.rb
 
 ChangeLog:
 	svn log -rHEAD:0 -v > ChangeLog
@@ -28,9 +29,9 @@ ChangeLog:
 
 readme.en.html: readme.html
 	rm -f readme.en.html
-	ruby -e 'print ARGF.read.gsub(/<([a-z]+) +(?:lang="ja"|title="ja").*?>.*?<\/\1>[\r\n]?/m, "")' readme.html > readme.en.html
+	$(RUBY) -e 'print ARGF.read.gsub(/<([a-z]+) +(?:lang="ja"|title="ja").*?>.*?<\/\1>[\r\n]?/m, "")' readme.html > readme.en.html
 readme.ja.html: readme.html
-	ruby -e 'print ARGF.read.gsub(/<([a-z]+) +(?:lang="en"|title="en").*?>.*?<\/\1>[\r\n]?/m, "")' readme.html > readme.ja.html
+	$(RUBY) -e 'print ARGF.read.gsub(/<([a-z]+) +(?:lang="en"|title="en").*?>.*?<\/\1>[\r\n]?/m, "")' readme.html > readme.ja.html
 
 document: ChangeLog readme.en.html readme.ja.html
 
