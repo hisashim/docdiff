@@ -225,6 +225,7 @@ module CharString
   def split_to_byte()
     scan(/./nm)
   end
+  alias to_bytes split_to_byte
 
   def count_byte()
     split_to_byte().size
@@ -245,6 +246,7 @@ module CharString
       )
     end
   end
+  alias to_chars split_to_char
 
   def count_char()  # eol = 1 char
     split_to_char().size
@@ -298,6 +300,7 @@ module CharString
                     encoding.sub(/ASCII/i, 'none'))
     )
   end
+  alias to_words split_to_word
 
   def count_word()
     split_to_word().size
@@ -358,6 +361,7 @@ module CharString
       )
     end
   end
+  alias to_lines split_to_line
 
   def count_line()  # this is common to all encodings.
     split_to_line.size

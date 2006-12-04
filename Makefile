@@ -8,7 +8,7 @@ DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
        testcharstring.rb testdiff.rb testdifference.rb testdocdiff.rb testdocument.rb testview.rb
 # PWDBASE = `pwd | sed "s|^.*[/\\]||"`
 
-test: testdocdiff testcharstring testdocument testdiff testdifference testview
+test: testdocdiff testcharstring testdocument testdiff testdifference testview testviewdiff
 
 testdocdiff:
 	$(RUBY) -I. testdocdiff.rb
@@ -22,6 +22,8 @@ testdifference:
 	$(RUBY) -I. testdifference.rb
 testview:
 	$(RUBY) -I. testview.rb
+testviewdiff:
+	$(RUBY) -I. testviewdiff.rb
 
 ChangeLog:
 	svn log -rHEAD:0 -v > ChangeLog
