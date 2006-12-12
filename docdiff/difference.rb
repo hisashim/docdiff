@@ -65,4 +65,28 @@ class Difference < Array
   end
   attr_accessor :raw_list
 
+  def former_only()
+    elms = self.dup.delete_if{|e| e[0] == :add_elt}
+    elms.collect!{|e|
+      if e[0] == :change_elt
+        [e[0], e[1], nil]
+      else
+        e
+      end
+    }
+    return elms
+  end
+
+  def latter_only()
+    elms = self.dup.delete_if{|e| e[0] == :del_elt}
+    elms.collect!{|e|
+      if e[0] == :change_elt
+        [e[0], nil, e[2]]
+      else
+        e
+      end
+    }
+    return elms
+  end
+
 end  # class Difference

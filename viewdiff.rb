@@ -234,9 +234,9 @@ def anatomize_classic(src)
   src.scan(Regexp.new(elements, Regexp::MULTILINE)){|m|
     case
     when /\A[0-9]/.match(m) then # hunk
-      diffed = diffed + anatomize_classic_hunk(m, src_encoding, src_eol)
+      diffed.concat(anatomize_classic_hunk(m, src_encoding, src_eol))
     else # not hunk
-      diffed = diffed + Difference.new(m.to_a, m.to_a)
+      diffed.concat(Difference.new(m.to_a, m.to_a))
     end
   }
   return diffed
@@ -251,35 +251,25 @@ def anatomize_classic_hunk(a_hunk, src_encoding, src_eol)
       e.encoding, e.eol = src_encoding, src_eol
       e
     }
-    diffed = diffed + Difference.new(head.split_to_word, head.split_to_word)
+    diffed.concat(Difference.new(head.split_to_word, head.split_to_word))
     case
     when /d/.match(head) # del
-      diffed = diffed + Difference.new(body.split_to_word, [])
+      diffed.concat(Difference.new(body.split_to_word, []))
     when /a/.match(head) # add
-      diffed = diffed + Difference.new([], body.split_to_word)
+      diffed.concat(Difference.new([], body.split_to_word))
     when /c/.match(head) # change (need tweak)
       former, latter = body.split(/#{sep}/).collect{|e|
         e.extend(CharString)
         e.encoding, e.eol = src_encoding, src_eol
         e
       }
-      diffed_former = []
-      diffed_latter = []
-      Difference.new(former.split_to_word, latter.split_to_word).each{|e|
-        case e.first
-        when :change_elt then diffed_former << [e[0], e[1], nil]
-                              diffed_latter << [e[0], nil, e[2]]
-        when :del_elt then    diffed_former << e
-        when :add_elt then    diffed_latter << e
-        when :common_elt_elt then diffed_former << e
-                                  diffed_latter << e
-        else raise "bummers!: #{e.first}"
-        end
-      }
+      d = Difference.new(former.split_to_word, latter.split_to_word)
+      diffed_former = d.former_only
+      diffed_latter = d.latter_only
       sepstr = /#{sep}/.match(body).to_s.extend(CharString)
       sepstr.encoding, sepstr.eol = src_encoding, src_eol
       sepelm = Difference.new(sepstr.split_to_word, sepstr.split_to_word)
-      diffed = diffed + diffed_former + sepelm + diffed_latter
+      diffed.concat(diffed_former + sepelm + diffed_latter)
     else
       raise "invalid hunk header: #{head}"
     end
@@ -334,11 +324,11 @@ def anatomize_context(src)
   src.scan(/#{elements}/m){|m|
     case
     when /\A\*{10,}/.match(m) then # hunk
-      diffed = diffed + anatomize_context_hunk(m.to_s, src_encoding, src_eol)
+      diffed.concat(anatomize_context_hunk(m.to_s, src_encoding, src_eol))
     else # not hunk
       m.extend(CharString)
       m.encoding, m.eol = src_encoding, src_eol
-      diffed = diffed + Difference.new(m.to_words, m.to_words)
+      diffed.concat(Difference.new(m.to_words, m.to_words))
     end
   }
   return diffed
@@ -356,18 +346,18 @@ def anatomize_context_hunk(a_hunk, src_encoding, src_eol)
     }
   }
   diffed_former, diffed_latter = anatomize_context_hunk_scanbodies(body_f, body_l, src_encoding, src_eol)
-  diffed = diffed +
-           Difference.new(h.split_to_word, h.split_to_word) +
-           Difference.new(sh_f.split_to_word, sh_f.split_to_word) +
-           diffed_former +
-           Difference.new(sh_l.split_to_word, sh_l.split_to_word) +
-           diffed_latter
+  diffed.concat(Difference.new(h.split_to_word, h.split_to_word) +
+                Difference.new(sh_f.split_to_word, sh_f.split_to_word) +
+                diffed_former +
+                Difference.new(sh_l.split_to_word, sh_l.split_to_word) +
+                diffed_latter)
   return diffed
 end
 
 def anatomize_context_hunk_scanbodies(body_f, body_l, src_encoding, src_eol)
   self.extend ContextDiff
-  changes_f, changes_l = [body_f, body_l].collect{|b|
+  changes_org = [[], []]
+  changes_org[0], changes_org[1] = [body_f, body_l].collect{|b|
     b.scan(/#{change}+/).collect{|ch|
       if ch
         ch.extend(CharString)
@@ -376,12 +366,12 @@ def anatomize_context_hunk_scanbodies(body_f, body_l, src_encoding, src_eol)
       ch
     }
   }
-  changes_f_bak, changes_l_bak = changes_f.dup, changes_l.dup
-  diffed_f_l = [[], []]
+  changes = changes_org.dup
+  diffed = [[], []]
   [body_f, body_l].each_with_index{|half, i|
-    changes_f, changes_l = changes_f_bak.dup, changes_l_bak.dup
+    changes[0], changes[1] = changes_org[0].dup, changes_org[1].dup
     half.scan(/(#{del}+)|(#{add}+)|(#{change}+)|(#{misc}+)/m){|elm|
-      elm_d, elm_a, elm_c, elm_cmn = [elm[0], elm[1], elm[2], elm[3]]
+      elm_d, elm_a, elm_c, elm_cmn = elm[0..3]
       [elm_d, elm_a, elm_c, elm_cmn].collect{|e|
         if e
           e.extend(CharString)
@@ -390,31 +380,22 @@ def anatomize_context_hunk_scanbodies(body_f, body_l, src_encoding, src_eol)
         e
       }
       case
-      when elm_d then diffed_f_l[0] = diffed_f_l.first + Difference.new(elm_d.to_words, [])
-      when elm_a then diffed_f_l[1] = diffed_f_l.last + Difference.new([], elm_a.to_words)
-      when elm_c then diffed_f_l[i] = diffed_f_l[i] +
-        Difference.new(changes_f.shift.to_words, changes_l.shift.to_words).collect{|chg|
-          chg_modified = nil
-          case chg.first
-          when :change_elt then     chg_modified = [:change_elt, chg[1], nil] if i == 0
-                                    chg_modified = [:change_elt, nil, chg[2]] if i == 1
-          when :del_elt then        chg_modified = nil if i == 0
-                                    chg_modified = chg_modified if i == 1
-          when :add_elt then        chg_modified = chg_modified if i == 0
-                                    chg_modified = nil if i == 1
-          when :common_elt_elt then chg_modified = chg
-          else
-            raise "bummers!"
-          end
-          chg_modified
-        }
-      when elm_cmn then diffed_f_l[i] = diffed_f_l[i] + Difference.new(elm_cmn.to_words, elm_cmn.to_words)
+      when elm_d then d = Difference.new(elm_d.to_words, [])
+      when elm_a then d = Difference.new([], elm_a.to_words)
+      when elm_c then d = Difference.new(changes[0].shift.to_words, changes[1].shift.to_words)
+        case i
+        when 0 then d = d.former_only
+        when 1 then d = d.latter_only
+        else raise
+        end
+      when elm_cmn then d = Difference.new(elm_cmn.to_words, elm_cmn.to_words)
       else
         raise "bummers!"
       end
+      diffed[i].concat(d)
     } # end half.scan
   } # end each_with_index
-  return diffed_f_l
+  return diffed
 end
 
 module UnifiedDiff
@@ -461,11 +442,11 @@ def anatomize_unified(src)
   src.scan(/#{elements}/m){|m|
     case
     when /\A@@ /.match(m) then # hunk
-      diffed = diffed + anatomize_unified_hunk(m.to_s, src_encoding, src_eol)
+      diffed.concat(anatomize_unified_hunk(m.to_s, src_encoding, src_eol))
     else # not hunk
       m.extend(CharString)
       m.encoding, m.eol = src_encoding, src_eol
-      diffed = diffed + Difference.new(m.to_words, m.to_words)
+      diffed.concat(Difference.new(m.to_words, m.to_words))
     end
   }
   return diffed
@@ -480,9 +461,9 @@ def anatomize_unified_hunk(a_hunk, src_encoding, src_eol)
       e.extend(CharString)
       e.encoding, e.eol = src_encoding, src_eol
     }
-    diffed = diffed + Difference.new(head.to_words, head.to_words)
+    diffed.concat(Difference.new(head.to_words, head.to_words))
     body.scan(/(#{del}+)(#{add}+)|(#{del}+#{eol}?)|(#{add}+)|(#{common}+#{eol}?)|(.*#{eol}?)/m){|m|
-      cf, cl, d, a, cmn, msc = m[0], m[1], m[2], m[3], m[4], m[5]
+      cf, cl, d, a, cmn, msc = m[0..5]
       [cf, cl, d, a, cmn, msc].collect{|e|
         e.extend(CharString)
         e.encoding, e.eol = src_encoding, src_eol
@@ -499,10 +480,10 @@ def anatomize_unified_hunk(a_hunk, src_encoding, src_eol)
           else raise "bummers! (#{e.inspect})"
           end
         }
-      when d           then diffed = diffed + Difference.new(d.to_words, [])
-      when a           then diffed = diffed + Difference.new([], a.to_words)
-      when cmn         then diffed = diffed + Difference.new(cmn.to_words, cmn.to_words)
-      when msc         then diffed = diffed + Difference.new(msc.to_words, msc.to_words)
+      when d           then diffed.concat(Difference.new(d.to_words, []))
+      when a           then diffed.concat(Difference.new([], a.to_words))
+      when cmn         then diffed.concat(Difference.new(cmn.to_words, cmn.to_words))
+      when msc         then diffed.concat(Difference.new(msc.to_words, msc.to_words))
       else raise "bummers! (#{m.inspect})"
       end
     }
