@@ -16,6 +16,16 @@ class String
   end
 end
 
+def scan_text_for_diffs(src)
+  eol = "(?:\r\n|\n|\r)"
+  pats = {
+    :classic => "(?:[0-9]+(?:,[0-9]+)?[dac][0-9]+(?:,[0-9]+)?#{eol}.+?(?=^[^-<>0-9]))",
+    :context => "(?:^\\*{3} .+?#{eol}--- .+?#{eol}(?=^[^-+! *]))",
+    :unified => "(?:^--- .+?#{eol}\\+{3} .+?#{eol}(?=^[^-+ @]|\\z))"
+  }
+  src.scan(/#{pats.values.join("|")}|(?:.+?#{eol})/m)
+end
+
 class DiffFile < Array
 
   def initialize(src)
@@ -31,8 +41,7 @@ class DiffFile < Array
     when (/^[<>] /m).match(text)  then return "classic"
     when (/^[-+!] /m).match(text) then return "context"
     when (/^[-+]/m).match(text)   then return "unified"
-    else
-      raise "unknown diff format: #{text[0..256].inspect}..."
+    else                               return "unknown"
     end
   end
 
@@ -167,7 +176,7 @@ module ContextDiff
     "(?:[-\\*]{3} #{noneol}+?#{eol})"
   end
   def elements
-    "(?:#{file_header}|#{hunk_header}#{hunk_subheader_former}#{any}*?#{hunk_subheader_latter}#{any}+?|#{misc}|#{noneol}+#{eol})"
+    "(?:#{file_header}|#{hunk_header}#{hunk_subheader_former}#{any}*?#{hunk_subheader_latter}#{any}+|#{misc}|#{noneol}+#{eol})"
   end
 end
 
@@ -176,7 +185,7 @@ def anatomize_context(src)
   diffed = []
   src_encoding = CharString.guess_encoding(src)
   src_eol = CharString.guess_eol(src)
-  src.scan(/#{elements}/m){|m|
+  src.scan(/#{elements}|(?:.*)/m){|m|
     case
     when /\A\*{10,}/.match(m) then # hunk
       diffed.concat(anatomize_context_hunk(m.to_s, src_encoding, src_eol))
@@ -193,8 +202,8 @@ def anatomize_context_hunk(a_hunk, src_encoding, src_eol)
   self.extend ContextDiff
   diffed = []
   h, sh_f, body_f, sh_l, body_l = nil
-  a_hunk.scan(/(#{hunk_header})(#{hunk_subheader_former})(.*?)(#{hunk_subheader_latter})(.*?)\z/m){
-    h, sh_f, body_f, sh_l, body_l = [$1, $2, $3, $4, $5].collect{|he|
+  a_hunk.scan(/(#{hunk_header})(#{hunk_subheader_former})(.*?)(#{hunk_subheader_latter})(.*?)\z/m){|m|
+    h, sh_f, body_f, sh_l, body_l = m[0..4].collect{|he|
       he.extend(CharString)
       he.encoding, he.eol = src_encoding, src_eol
       he
@@ -210,6 +219,8 @@ def anatomize_context_hunk(a_hunk, src_encoding, src_eol)
 end
 
 def anatomize_context_hunk_scanbodies(body_f, body_l, src_encoding, src_eol)
+  body_f = '' if body_f.nil?
+  body_l = '' if body_l.nil?
   self.extend ContextDiff
   changes_org = [[], []]
   changes_org[0], changes_org[1] = [body_f, body_l].collect{|b|
@@ -350,11 +361,13 @@ if $0 == __FILE__
 
   src = ARGF.read
   enc, eol = CharString.guess_encoding(src), CharString.guess_eol(src)
-
-  anatomy = DiffFile.new(src).anatomize
-  view = View.new(anatomy, enc, eol)
-
-  print view.to_tty
-  p view
+  scan_text_for_diffs(src).each{|fragment|
+    if DiffFile.new('').guess_diff_type(fragment) == "unknown"
+      print fragment
+    else
+      diff = DiffFile.new(fragment).anatomize
+      print View.new(diff, enc, eol).to_tty
+    end
+  }
 
 end

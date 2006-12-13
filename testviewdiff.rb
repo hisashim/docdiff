@@ -328,14 +328,8 @@ END
     assert_equal(expected, result)
   end
   def test_guess_diff_type_unknown()
-    expected = true
-    result =   begin
-                 DiffFile.new(@unified_diff).guess_diff_type("")
-               rescue RuntimeError
-                 true
-               else
-                 false
-               end
+    expected = "unknown"
+    result = DiffFile.new(@unified_diff).guess_diff_type("")
     assert_equal(expected, result)
   end
 
@@ -345,174 +339,11 @@ END
     assert_equal(expected, result)
   end
 
-=begin obsolete
-  def test_difffile_classic()
-    expected = [
-      "diff --text sample/1/a.en.ascii.lf sample/2/a.en.ascii.lf\n",
-      {:hunk_header => "1d0\n",
-       :del => "< a\n"},
-      {:hunk_header => "3,4d1\n",
-       :del => "< c\n< d\n"},
-      {:hunk_header => "6a4\n",
-       :add => "> 0\n"},
-      {:hunk_header => "7a6,7\n",
-       :add => "> 1\n> 2\n"},
-      {:hunk_header => "9c9\n",
-       :del => "< i\n",
-       :sep => "---\n",
-       :add => "> 3\n"},
-      {:hunk_header => "11c11,12\n",
-       :del => "< k\n",
-       :sep => "---\n",
-       :add => "> 4\n> 5\n"},
-      {:hunk_header => "13,14c14,15\n",
-       :del => "< m\n< n\n",
-       :sep => "---\n",
-       :add => "> 6\n> 7\n"},
-      {:hunk_header => "22d22\n",
-       :del => "< v\n"},
-      {:hunk_header => "23a24,25\n",
-       :add => "> 8\n> 9\n"},
-      {:hunk_header => "25c27,28\n",
-       :del => "< y\n",
-       :sep => "---\n",
-       :add => "> A\n> B\n"},
-      "diff --text sample/1/b.en.ascii.lf sample/2/b.en.ascii.lf\n",
-      {:hunk_header => "1c1,8\n",
-       :del => "< a\n",
-       :sep => "---\n",
-       :add => "> @\n> <\n> >\n> -\n> +\n> *\n> !\n>\n"},
-      {:hunk_header => "9a17,19\n",
-       :add => "> +\n>\n>\n"},
-      {:hunk_header => "17d26\n",
-       :del => "< q\n"},
-      {:hunk_header => "24c33\n",
-       :del => "< x\n",
-       :sep => "---\n",
-       :add => "> *\n"},
-      {:hunk_header => "26c35\n",
-       :del => "< z\n",
-       :sep => "---\n",
-       :add => "> z\n"},
-      "\ No newline at end of file\n"
-    ]
-    result = DiffFile.new(@classic_diff).parse_classic(@classic_diff)
+  def test_scan_text_for_diffs()
+    expected = 13
+    result = scan_text_for_diffs(@classic_diff + @context_diff + @unified_diff).size
     assert_equal(expected, result)
   end
-
-  def test_difffile_classic_hunk()
-    expected = {:hunk_header => "22d22\n", :del => "< v\n"}
-    result = DiffFile.new(@classic_diff).parse_classic_hunk("22d22\n< v\n")
-    assert_equal(expected, result)
-    expected = {:hunk_header => "23a24,25\n", :add => "> 8\n> 9\n"}
-    result = DiffFile.new(@classic_diff).parse_classic_hunk("23a24,25\n> 8\n> 9\n")
-    assert_equal(expected, result)
-    expected = {:hunk_header => "13,14c14,15\n",
-                :del => "< m\n< n\n", :sep => "---\n", :add => "> 6\n> 7\n"}
-    result = DiffFile.new(@classic_diff).parse_classic_hunk("13,14c14,15\n< m\n< n\n---\n> 6\n> 7\n")
-    assert_equal(expected, result)
-  end
-
-  def test_difffile_differentiate_classic()
-    expected = [
-      [:common_elt_elt,
-       ["diff --text sample/1/a.en.ascii.lf sample/2/a.en.ascii.lf\n"],
-       ["diff --text sample/1/a.en.ascii.lf sample/2/a.en.ascii.lf\n"]],
-      [:common_elt_elt, ["1d0\n"], ["1d0\n"]],
-      [:del_elt, ["< a\n"], nil],
-      [:common_elt_elt, ["3,4d1\n"], ["3,4d1\n"]],
-      [:del_elt, ["< c\n< d\n"], nil],
-      [:common_elt_elt, ["6a4\n"], ["6a4\n"]],
-      [:add_elt, nil, ["> 0\n"]],
-      [:common_elt_elt, ["7a6,7\n"], ["7a6,7\n"]],
-      [:add_elt, nil, ["> 1\n> 2\n"]],
-      [:common_elt_elt, ["9c9\n"], ["9c9\n"]],
-      [:change_elt, ["< i\n"], nil],
-      [:common_elt_elt, ["---\n"], ["---\n"]],
-      [:change_elt, nil, ["> 3\n"]],
-      [:common_elt_elt, ["11c11,12\n"], ["11c11,12\n"]],
-      [:change_elt, ["< k\n"], nil],
-      [:common_elt_elt, ["---\n"], ["---\n"]],
-      [:change_elt, nil, ["> 4\n> 5\n"]],
-      [:common_elt_elt, ["13,14c14,15\n"], ["13,14c14,15\n"]],
-      [:change_elt, ["< m\n< n\n"], nil],
-      [:common_elt_elt, ["---\n"], ["---\n"]],
-      [:change_elt, nil, ["> 6\n> 7\n"]],
-      [:common_elt_elt, ["22d22\n"], ["22d22\n"]],
-      [:del_elt, ["< v\n"], nil],
-      [:common_elt_elt, ["23a24,25\n"], ["23a24,25\n"]],
-      [:add_elt, nil, ["> 8\n> 9\n"]],
-      [:common_elt_elt, ["25c27,28\n"], ["25c27,28\n"]],
-      [:change_elt, ["< y\n"], nil],
-      [:common_elt_elt, ["---\n"], ["---\n"]],
-      [:change_elt, nil, ["> A\n> B\n"]],
-      [:common_elt_elt,
-       ["diff --text sample/1/b.en.ascii.lf sample/2/b.en.ascii.lf\n"],
-       ["diff --text sample/1/b.en.ascii.lf sample/2/b.en.ascii.lf\n"]],
-      [:common_elt_elt, ["1c1,8\n"], ["1c1,8\n"]],
-      [:change_elt, ["< a\n"], nil],
-      [:common_elt_elt, ["---\n"], ["---\n"]],
-      [:change_elt, nil, ["> @\n> <\n> >\n> -\n> +\n> *\n> !\n>\n"]],
-      [:common_elt_elt, ["9a17,19\n"], ["9a17,19\n"]],
-      [:add_elt, nil, ["> +\n>\n>\n"]],
-      [:common_elt_elt, ["17d26\n"], ["17d26\n"]],
-      [:del_elt, ["< q\n"], nil],
-      [:common_elt_elt, ["24c33\n"], ["24c33\n"]],
-      [:change_elt, ["< x\n"], nil],
-      [:common_elt_elt, ["---\n"], ["---\n"]],
-      [:change_elt, nil, ["> *\n"]],
-      [:common_elt_elt, ["26c35\n"], ["26c35\n"]],
-      [:change_elt, ["< z\n"], nil],
-      [:common_elt_elt, ["---\n"], ["---\n"]],
-      [:change_elt, nil, ["> z\n"]],
-      [:common_elt_elt,
-       [" No newline at end of file\n"],
-       [" No newline at end of file\n"]]
-    ]
-    result = DiffFile.new(@classic_diff).differentiate_classic(@classic_diff)
-    assert_equal(expected, result)
-  end
-
-  def test_difffile_differentiate_classic_hunk()
-    expected = [[:common_elt_elt, ["22d22\n"], ["22d22\n"]],
-                [:del_elt, ["< v\n"], nil]]
-    result = DiffFile.new(@classic_diff).differentiate_classic_hunk(
-               {:hunk_header => "22d22\n", :del => "< v\n"})
-    assert_equal(expected, result)
-    expected = [[:common_elt_elt, ["23a24,25\n"], ["23a24,25\n"]],
-                [:add_elt, nil, ["> 8\n> 9\n"]]]
-    result = DiffFile.new(@classic_diff).differentiate_classic_hunk(
-               {:hunk_header => "23a24,25\n", :add => "> 8\n> 9\n"})
-    assert_equal(expected, result)
-    expected = [[:common_elt_elt, ["13,14c14,15\n"], ["13,14c14,15\n"]],
-                [:change_elt, ["< m\n< n\n"], nil],
-                [:common_elt_elt, ["---\n"], ["---\n"]],
-                [:change_elt, nil, ["> 6\n> 7\n"]]]
-    result = DiffFile.new(@classic_diff).differentiate_classic_hunk(
-               {:hunk_header => "13,14c14,15\n",
-                :del => "< m\n< n\n", :sep => "---\n", :add => "> 6\n> 7\n"})
-    assert_equal(expected, result)
-  end
-
-  def test_difffile_classic_manued()
-    expected = [
-      "defparentheses [ ]\n",
-      "defdelete      /\n",
-      "defswap        |\n",
-      "defcomment     ;\n",
-      "defescape      ~\n",
-      "deforder       newer-last\n",
-      "defversion     0.9.5\n",
-      "13,14c14,15\n",
-      "[< m\n< n\n/]",
-      "---\n",
-      "[/> 6\n> 7\n]"
-    ]
-    src = ["13,14c14,15\n", "< m\n< n\n", "---\n", "> 6\n> 7\n"].join
-    result = DiffFile.new(src).to_manued_classic
-    assert_equal(expected, result)
-  end
-=end obsolete
 
   def test_anatomize_classic()
     expected = [
