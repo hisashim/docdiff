@@ -339,9 +339,131 @@ END
     assert_equal(expected, result)
   end
 
-  def test_scan_text_for_diffs()
-    expected = 13
+  def test_scan_text_for_diffs_simplified()
+    expected = 12
     result = scan_text_for_diffs(@classic_diff + @context_diff + @unified_diff).size
+    assert_equal(expected, result)
+  end
+
+  def test_scan_text_for_diffs()
+    expected = [
+ "diff file1 file2\n",
+ "1d0\n< a\n6a4\n> 0\n7a6,7\n> 1\n> 2\n9c9\n< i\n---\n> 3\n",
+ "diff -o f3 f4\n",
+ "26c35\n< z\n---\n> z\n No newline at end of file\n",
+ "lorem insum\n",
+ "diff -o f1 f2\n",
+ "*** f1 blah\n--- f2 blab\n***************\n*** 1,17 ****\n- a\n  b\n  p\n  q\n--- 1,18 ----\n  b\n  e\n  f\n+ 0\n  g\n+ 1\n+ 2\n  h\n***************\n*** 19,26 ****\n  w\n  x\n! y\n  z\n--- 20,29 ----\n  x\n! A\n! B\n  z\n No newline at end of file\n",
+ "diff f3 f4\n",
+ "*** f3 foo\n--- f4 bar\n***************\n*** 7,12 ****\n--- 14,22 ----\n  g\n  h\n  i\n+ +\n+\n+\n  j\n  k\n  l\n",
+ "\n",
+ "foo\n\n",
+ "diff -o\n",
+ "--- f1 foo\n+++ f2 bar\n@@ -19,8 +20,10 @@\n s\n t\n u\n-v\n w\n+8\n+9\n x\n-y\n+A\n+B\n z\n",
+ "diff -o\n",
+ "--- f3\n+++ f4\n@@ -7,6 +14,9 @@\n g\n h\n i\n++\n+\n+\n j\n k\n l\n@@ -14,13 +24,12 @@\n y\n-z\n+z\n No newline at end of file"
+    ]
+    result = scan_text_for_diffs("diff file1 file2
+1d0
+< a
+6a4
+> 0
+7a6,7
+> 1
+> 2
+9c9
+< i
+---
+> 3
+diff -o f3 f4
+26c35
+< z
+---
+> z
+\ No newline at end of file
+lorem insum
+diff -o f1 f2
+*** f1 blah
+--- f2 blab
+***************
+*** 1,17 ****
+- a
+  b
+  p
+  q
+--- 1,18 ----
+  b
+  e
+  f
++ 0
+  g
++ 1
++ 2
+  h
+***************
+*** 19,26 ****
+  w
+  x
+! y
+  z
+--- 20,29 ----
+  x
+! A
+! B
+  z
+\ No newline at end of file
+diff f3 f4
+*** f3 foo
+--- f4 bar
+***************
+*** 7,12 ****
+--- 14,22 ----
+  g
+  h
+  i
++ +
++
++
+  j
+  k
+  l
+
+foo
+
+diff -o
+--- f1 foo
++++ f2 bar
+@@ -19,8 +20,10 @@
+ s
+ t
+ u
+-v
+ w
++8
++9
+ x
+-y
++A
++B
+ z
+diff -o
+--- f3
++++ f4
+@@ -7,6 +14,9 @@
+ g
+ h
+ i
+++
++
++
+ j
+ k
+ l
+@@ -14,13 +24,12 @@
+ y
+-z
++z
+\ No newline at end of file")
     assert_equal(expected, result)
   end
 
@@ -599,13 +721,184 @@ diff -c --text 1b 2b
     assert_equal(expected, result)
   end
 
-=begin TBD
   def test_anatomize_unified()
-    expected = []
+    expected = 
+[[:common_elt_elt,
+  ["diff ",
+   "-u ",
+   "--text ",
+   "sample/1/a.en.ascii.lf ",
+   "sample/2/a.en.ascii.lf",
+   "\n",
+   "--- ",
+   "sample/1/a.en.ascii.lf ",
+   "     ",
+   "2005-08-30 ",
+   "07:07:45.000000000 ",
+   "+0900",
+   "\n",
+   "+++ ",
+   "sample/2/a.en.ascii.lf ",
+   "     ",
+   "2005-08-30 ",
+   "07:33:51.000000000 ",
+   "+0900",
+   "\n"],
+  ["diff ",
+   "-u ",
+   "--text ",
+   "sample/1/a.en.ascii.lf ",
+   "sample/2/a.en.ascii.lf",
+   "\n",
+   "--- ",
+   "sample/1/a.en.ascii.lf ",
+   "     ",
+   "2005-08-30 ",
+   "07:07:45.000000000 ",
+   "+0900",
+   "\n",
+   "+++ ",
+   "sample/2/a.en.ascii.lf ",
+   "     ",
+   "2005-08-30 ",
+   "07:33:51.000000000 ",
+   "+0900",
+   "\n"]],
+ [:common_elt_elt,
+  ["@@ ", "-1,17 ", "+1,18 ", "@@", "\n"],
+  ["@@ ", "-1,17 ", "+1,18 ", "@@", "\n"]],
+ [:del_elt, ["-a", "\n"], nil],
+ [:common_elt_elt, [" ", "b", "\n"], [" ", "b", "\n"]],
+ [:common_elt_elt, ["-c", "\n"], ["-c", "\n"]],
+ [:common_elt_elt, ["-d", "\n"], ["-d", "\n"]],
+ [:common_elt_elt, [" ", "e", "\n"], [" ", "e", "\n"]],
+ [:common_elt_elt, [" ", "f", "\n"], [" ", "f", "\n"]],
+ [:common_elt_elt, ["+0", "\n"], ["+0", "\n"]],
+ [:common_elt_elt, [" ", "g", "\n"], [" ", "g", "\n"]],
+ [:common_elt_elt, ["+1", "\n"], ["+1", "\n"]],
+ [:common_elt_elt, ["+2", "\n"], ["+2", "\n"]],
+ [:common_elt_elt, [" ", "h", "\n"], [" ", "h", "\n"]],
+ [:common_elt_elt, ["-i", "\n"], ["-i", "\n"]],
+ [:common_elt_elt, ["+3", "\n"], ["+3", "\n"]],
+ [:common_elt_elt, [" ", "j", "\n"], [" ", "j", "\n"]],
+ [:common_elt_elt, ["-k", "\n"], ["-k", "\n"]],
+ [:common_elt_elt, ["+4", "\n"], ["+4", "\n"]],
+ [:common_elt_elt, ["+5", "\n"], ["+5", "\n"]],
+ [:common_elt_elt, [" ", "l", "\n"], [" ", "l", "\n"]],
+ [:common_elt_elt, ["-m", "\n"], ["-m", "\n"]],
+ [:common_elt_elt, ["-n", "\n"], ["-n", "\n"]],
+ [:common_elt_elt, ["+6", "\n"], ["+6", "\n"]],
+ [:common_elt_elt, ["+7", "\n"], ["+7", "\n"]],
+ [:common_elt_elt, [" ", "o", "\n"], [" ", "o", "\n"]],
+ [:common_elt_elt, [" ", "p", "\n"], [" ", "p", "\n"]],
+ [:common_elt_elt, [" ", "q", "\n"], [" ", "q", "\n"]],
+ [:common_elt_elt,
+  ["@@ ", "-19,8 ", "+20,10 ", "@@", "\n"],
+  ["@@ ", "-19,8 ", "+20,10 ", "@@", "\n"]],
+ [:common_elt_elt,
+  [" ", "s", "\n ", "t", "\n ", "u", "\n"],
+  [" ", "s", "\n ", "t", "\n ", "u", "\n"]],
+ [:common_elt_elt, ["-v", "\n"], ["-v", "\n"]],
+ [:common_elt_elt, [" ", "w", "\n"], [" ", "w", "\n"]],
+ [:common_elt_elt, ["+8", "\n"], ["+8", "\n"]],
+ [:common_elt_elt, ["+9", "\n"], ["+9", "\n"]],
+ [:common_elt_elt, [" ", "x", "\n"], [" ", "x", "\n"]],
+ [:common_elt_elt, ["-y", "\n"], ["-y", "\n"]],
+ [:common_elt_elt, ["+A", "\n"], ["+A", "\n"]],
+ [:common_elt_elt, ["+B", "\n"], ["+B", "\n"]],
+ [:common_elt_elt, [" ", "z"], [" ", "z"]],
+ [:common_elt_elt,
+  ["diff ",
+   "-u ",
+   "--text ",
+   "sample/1/b.en.ascii.lf ",
+   "sample/2/b.en.ascii.lf",
+   "\n",
+   "--- ",
+   "sample/1/b.en.ascii.lf ",
+   "     ",
+   "2005-08-30 ",
+   "07:31:52.000000000 ",
+   "+0900",
+   "\n",
+   "+++ ",
+   "sample/2/b.en.ascii.lf ",
+   "     ",
+   "2005-08-30 ",
+   "07:41:01.000000000 ",
+   "+0900",
+   "\n"],
+  ["diff ",
+   "-u ",
+   "--text ",
+   "sample/1/b.en.ascii.lf ",
+   "sample/2/b.en.ascii.lf",
+   "\n",
+   "--- ",
+   "sample/1/b.en.ascii.lf ",
+   "     ",
+   "2005-08-30 ",
+   "07:31:52.000000000 ",
+   "+0900",
+   "\n",
+   "+++ ",
+   "sample/2/b.en.ascii.lf ",
+   "     ",
+   "2005-08-30 ",
+   "07:41:01.000000000 ",
+   "+0900",
+   "\n"]],
+ [:common_elt_elt,
+  ["@@ ", "-1,4 ", "+1,11 ", "@@", "\n"],
+  ["@@ ", "-1,4 ", "+1,11 ", "@@", "\n"]],
+ [:del_elt, ["-a", "\n"], nil],
+ [:common_elt_elt, ["+@", "\n"], ["+@", "\n"]],
+ [:common_elt_elt, ["+<", "\n"], ["+<", "\n"]],
+ [:common_elt_elt, ["+>", "\n"], ["+>", "\n"]],
+ [:common_elt_elt, ["+-", "\n"], ["+-", "\n"]],
+ [:common_elt_elt, ["++", "\n"], ["++", "\n"]],
+ [:common_elt_elt, ["+*", "\n"], ["+*", "\n"]],
+ [:common_elt_elt, ["+!", "\n"], ["+!", "\n"]],
+ [:common_elt_elt, ["+", "\n"], ["+", "\n"]],
+ [:common_elt_elt, [" ", "b", "\n"], [" ", "b", "\n"]],
+ [:common_elt_elt, [" ", "c", "\n"], [" ", "c", "\n"]],
+ [:common_elt_elt, [" ", "d", "\n"], [" ", "d", "\n"]],
+ [:common_elt_elt,
+  ["@@ ", "-7,6 ", "+14,9 ", "@@", "\n"],
+  ["@@ ", "-7,6 ", "+14,9 ", "@@", "\n"]],
+ [:common_elt_elt,
+  [" ", "g", "\n ", "h", "\n ", "i", "\n"],
+  [" ", "g", "\n ", "h", "\n ", "i", "\n"]],
+ [:common_elt_elt, ["++", "\n"], ["++", "\n"]],
+ [:common_elt_elt, ["+", "\n"], ["+", "\n"]],
+ [:common_elt_elt, ["+", "\n"], ["+", "\n"]],
+ [:common_elt_elt, [" ", "j", "\n"], [" ", "j", "\n"]],
+ [:common_elt_elt, [" ", "k", "\n"], [" ", "k", "\n"]],
+ [:common_elt_elt, [" ", "l", "\n"], [" ", "l", "\n"]],
+ [:common_elt_elt,
+  ["@@ ", "-14,13 ", "+24,12 ", "@@", "\n"],
+  ["@@ ", "-14,13 ", "+24,12 ", "@@", "\n"]],
+ [:common_elt_elt,
+  [" ", "n", "\n ", "o", "\n ", "p", "\n"],
+  [" ", "n", "\n ", "o", "\n ", "p", "\n"]],
+ [:common_elt_elt, ["-q", "\n"], ["-q", "\n"]],
+ [:common_elt_elt, [" ", "r", "\n"], [" ", "r", "\n"]],
+ [:common_elt_elt, [" ", "s", "\n"], [" ", "s", "\n"]],
+ [:common_elt_elt, [" ", "t", "\n"], [" ", "t", "\n"]],
+ [:common_elt_elt, [" ", "u", "\n"], [" ", "u", "\n"]],
+ [:common_elt_elt, [" ", "v", "\n"], [" ", "v", "\n"]],
+ [:common_elt_elt, [" ", "w", "\n"], [" ", "w", "\n"]],
+ [:common_elt_elt, ["-x", "\n"], ["-x", "\n"]],
+ [:common_elt_elt, ["+*", "\n"], ["+*", "\n"]],
+ [:common_elt_elt, [" ", "y", "\n"], [" ", "y", "\n"]],
+ [:common_elt_elt, ["-z", "\n"], ["-z", "\n"]],
+ [:common_elt_elt, ["+z", "\n"], ["+z", "\n"]],
+ [:common_elt_elt,
+  [" ", "No ", "newline ", "at ", "end ", "of ", "file", "\n"],
+  [" ", "No ", "newline ", "at ", "end ", "of ", "file", "\n"]]]
     result = anatomize_unified(@unified_diff)
     assert_equal(expected, result)
   end
-=end
 
   def teardown()
     #

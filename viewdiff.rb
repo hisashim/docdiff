@@ -19,11 +19,11 @@ end
 def scan_text_for_diffs(src)
   eol = "(?:\r\n|\n|\r)"
   pats = {
-    :classic => "(?:[0-9]+(?:,[0-9]+)?[dac][0-9]+(?:,[0-9]+)?#{eol}.+?(?=^[^-<>0-9]))",
-    :context => "(?:^\\*{3} .+?#{eol}--- .+?#{eol}(?=^[^-+! *]))",
-    :unified => "(?:^--- .+?#{eol}\\+{3} .+?#{eol}(?=^[^-+ @]|\\z))"
+    :classic => "(?:[0-9]+(?:,[0-9]+)?[dac][0-9]+(?:,[0-9]+)?#{eol}.+?(?=^[^-<>0-9 ]))",
+    :context => "(?:^\\*{3} .+?#{eol}--- .+?#{eol}.+?(?=^[^-+! *]|\\z))",
+    :unified => "(?:^--- .+?#{eol}^\\+{3} .+?#{eol}.+?(?=^[^-+ @]|\\z))"
   }
-  src.scan(/#{pats.values.join("|")}|(?:.+?#{eol})/m)
+  src.scan(/(?:#{pats.values.join("|")})|(?:.*?#{eol}+)/m)
 end
 
 class DiffFile < Array
@@ -115,24 +115,24 @@ def anatomize_classic_hunk(a_hunk, src_encoding, src_eol)
       e.encoding, e.eol = src_encoding, src_eol
       e
     }
-    diffed.concat(Difference.new(head.split_to_word, head.split_to_word))
+    diffed.concat(Difference.new(head.to_words, head.to_words))
     case
     when /d/.match(head) # del
-      diffed.concat(Difference.new(body.split_to_word, []))
+      diffed.concat(Difference.new(body.to_words, []))
     when /a/.match(head) # add
-      diffed.concat(Difference.new([], body.split_to_word))
+      diffed.concat(Difference.new([], body.to_words))
     when /c/.match(head) # change (need tweak)
       former, latter = body.split(/#{sep}/).collect{|e|
         e.extend(CharString)
         e.encoding, e.eol = src_encoding, src_eol
         e
       }
-      d = Difference.new(former.split_to_word, latter.split_to_word)
+      d = Difference.new(former.to_words, latter.to_words)
       diffed_former = d.former_only
       diffed_latter = d.latter_only
       sepstr = /#{sep}/.match(body).to_s.extend(CharString)
       sepstr.encoding, sepstr.eol = src_encoding, src_eol
-      sepelm = Difference.new(sepstr.split_to_word, sepstr.split_to_word)
+      sepelm = Difference.new(sepstr.to_words, sepstr.to_words)
       diffed.concat(diffed_former + sepelm + diffed_latter)
     else
       raise "invalid hunk header: #{head}"
@@ -185,10 +185,10 @@ def anatomize_context(src)
   diffed = []
   src_encoding = CharString.guess_encoding(src)
   src_eol = CharString.guess_eol(src)
-  src.scan(/#{elements}|(?:.*)/m){|m|
+  src.scan(/#{elements}/m){|m|
     case
-    when /\A\*{10,}/.match(m) then # hunk
-      diffed.concat(anatomize_context_hunk(m.to_s, src_encoding, src_eol))
+    when /\A\*{10,}#{eol}^\*{3} /.match(m) then # hunk
+      diffed.concat(anatomize_context_hunk(m, src_encoding, src_eol))
     else # not hunk
       m.extend(CharString)
       m.encoding, m.eol = src_encoding, src_eol
@@ -204,16 +204,18 @@ def anatomize_context_hunk(a_hunk, src_encoding, src_eol)
   h, sh_f, body_f, sh_l, body_l = nil
   a_hunk.scan(/(#{hunk_header})(#{hunk_subheader_former})(.*?)(#{hunk_subheader_latter})(.*?)\z/m){|m|
     h, sh_f, body_f, sh_l, body_l = m[0..4].collect{|he|
-      he.extend(CharString)
-      he.encoding, he.eol = src_encoding, src_eol
+      if he
+        he.extend(CharString)
+        he.encoding, he.eol = src_encoding, src_eol
+      end
       he
     }
   }
   diffed_former, diffed_latter = anatomize_context_hunk_scanbodies(body_f, body_l, src_encoding, src_eol)
-  diffed.concat(Difference.new(h.split_to_word, h.split_to_word) +
-                Difference.new(sh_f.split_to_word, sh_f.split_to_word) +
+  diffed.concat(Difference.new(h.to_words, h.to_words) +
+                Difference.new(sh_f.to_words, sh_f.to_words) +
                 diffed_former +
-                Difference.new(sh_l.split_to_word, sh_l.split_to_word) +
+                Difference.new(sh_l.to_words, sh_l.to_words) +
                 diffed_latter)
   return diffed
 end
