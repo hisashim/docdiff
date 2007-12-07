@@ -215,9 +215,10 @@ if $0 == __FILE__
     o.def_option('--encoding=ENCODING',
                  possible_encodings = ['ASCII','EUC-JP','Shift_JIS','UTF-8','auto'],
                  'specify character encoding',
-                 possible_encodings.join('|'), '(default is auto)'
+                 possible_encodings.join('|'), "(default is auto. try ASCII for single byte encodings such as ISO-8859-X)"
                 ){|clo[:encoding]| clo[:encoding] ||= "auto"}
     o.def_option('--ascii', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
+    o.def_option('--iso8859x', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
     o.def_option('--eucjp', 'same as --encoding=EUC-JP'){clo[:encoding] = "EUC-JP"}
     o.def_option('--sjis', 'same as --encoding=Shift_JIS'){clo[:encoding] = "Shift_JIS"}
     o.def_option('--utf8', 'same as --encoding=UTF-8'){clo[:encoding] = "UTF-8"}
