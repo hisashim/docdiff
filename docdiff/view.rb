@@ -57,22 +57,22 @@ class View
     @difference.each{|block|
       operation = block.first
       if block_given?
-        source = yield block[1].to_s
-        target = yield block[2].to_s
+        src = yield block[1].to_s
+        tgt = yield block[2].to_s
       else
-        source = block[1].to_s
-        target = block[2].to_s
+        src = block[1].to_s
+        tgt = block[2].to_s
       end
       case operation
       when :common_elt_elt
-        result << (tags[:start_common] + escape_outside(source, tags) + tags[:end_common])
+        result << (tags[:start_common] + escape_outside(src, tags) + tags[:end_common])
       when :change_elt
-        result << (tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change] +
-                   tags[:start_after_change] + escape_inside(target, tags) + tags[:end_after_change])
+        result << (tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change] +
+                   tags[:start_after_change]  + escape_inside(tgt, tags) + tags[:end_after_change])
       when :del_elt
-        result << (tags[:start_del] + escape_inside(source, tags) + tags[:end_del])
+        result << (tags[:start_del] + escape_inside(src, tags) + tags[:end_del])
       when :add_elt
-        result << (tags[:start_add] + escape_inside(target, tags) + tags[:end_add])
+        result << (tags[:start_add] + escape_inside(tgt, tags) + tags[:end_add])
       else
         raise "invalid attribute: #{block.first}\n"
       end
@@ -85,48 +85,49 @@ class View
 
   CONTEXT_PRE_LENGTH = 16
   CONTEXT_POST_LENGTH = 16
-  def apply_style_digest(tags, headfoot = true, display = 'inline')
-    context_pre_pat  = Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z',
-                                  Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
-    context_post_pat = Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}',
-                                  Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
+  def apply_style_digest(tags, headfoot = true)
+    cxt_pre_pat  = Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z',
+                              Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
+    cxt_post_pat = Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}',
+                              Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
+    display = (tags and tags[:display]) || 'inline'
     result = []
     d1l = doc1_line_number = 1
     d2l = doc2_line_number = 1
     @difference.each_with_index{|entry, i|
       if block_given?
-        source = yield entry[1].to_s
-        target = yield entry[2].to_s
+        src = yield entry[1].to_s
+        tgt = yield entry[2].to_s
       else
-        source = entry[1].to_s
-        target = entry[2].to_s
+        src = entry[1].to_s
+        tgt = entry[2].to_s
       end
-      if  i == 0
-        context_pre  = ""  # no pre context for the first entry
-      else
-        context_pre  = @difference[i-1][1].to_s.scan(context_pre_pat).to_s
-      end
-      if (i + 1) == @difference.size
-        context_post = ""  # no post context for the last entry
-      else
-        context_post = @difference[i+1][1].to_s.scan(context_post_pat).to_s
-      end
+      cxt_pre = if i == 0
+                   ""  # no pre context for the first entry
+                else
+                  @difference[i-1][1].to_s.scan(cxt_pre_pat).to_s
+                end
+      cxt_post = if (i + 1) == @difference.size
+                   ""  # no post context for the last entry
+                 else
+                   @difference[i+1][1].to_s.scan(cxt_post_pat).to_s
+                 end
       # elements for an entry
-      e_header       = Proc.new {|pos_str|
-                                 tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]}
-      e_context_pre  = tags[:start_prefix] + escape_outside(context_pre, tags) + tags[:end_prefix]
-      e_body_source  = escape_inside(source, tags)
-      e_body_changed = tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change] +
-                       tags[:start_after_change] + escape_inside(target, tags) + tags[:end_after_change]
-      e_body_chdel   = tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change]
-      e_body_chadd   = tags[:start_after_change] + escape_inside(target, tags) + tags[:end_after_change]
-      e_body_deleted = tags[:start_del] + escape_outside(source, tags) + tags[:end_del]
-      e_body_added   = tags[:start_add] + escape_outside(target, tags) + tags[:end_add]
-      e_context_post = tags[:start_postfix] + escape_outside(context_post, tags) + tags[:end_postfix]
-      e_footer       = tags[:end_entry] + (@eol_char||"")
+      e_head     = Proc.new {|pos_str|
+                             tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]}
+      e_cxt_pre  = tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
+      e_src      = escape_inside(src, tags)
+      e_chg      = tags[:start_before_change] + escape_inside(src, tags)  + tags[:end_before_change] +
+                   tags[:start_after_change]  + escape_inside(tgt, tags)  + tags[:end_after_change]
+      e_chgdel   = tags[:start_before_change] + escape_inside(src, tags)  + tags[:end_before_change]
+      e_chgadd   = tags[:start_after_change]  + escape_inside(tgt, tags)  + tags[:end_after_change]
+      e_del      = tags[:start_del]           + escape_outside(src, tags) + tags[:end_del]
+      e_add      = tags[:start_add]           + escape_outside(tgt, tags) + tags[:end_add]
+      e_cxt_post = tags[:start_postfix]       + escape_outside(cxt_post, tags) + tags[:end_postfix]
+      e_foot     = tags[:end_entry] + (@eol_char||"")
 
-      span1 = source_lines_involved = source.scan_lines(@eol).size
-      span2 = target_lines_involved = target.scan_lines(@eol).size
+      span1 = source_lines_involved = src.scan_lines(@eol).size
+      span2 = target_lines_involved = tgt.scan_lines(@eol).size
       pos_str = ""
       case operation = entry.first
       when :common_elt_elt
@@ -136,10 +137,10 @@ class View
                   ",#{d2l}" + "#{if span2 > 1 then '-'+(d2l + span2 - 1).to_s; end}"
         case display
         when 'inline'
-          result << (e_header.call(pos_str) + e_context_pre + e_body_changed + e_context_post + e_footer)
+          result << (e_head.call(pos_str) + e_cxt_pre + e_chg + e_cxt_post + e_foot)
         when 'multi'
-          result << (e_header.call(pos_str) + e_context_pre + e_body_chdel + e_context_post +
-                                              e_context_pre + e_body_chadd + e_context_post + e_footer)
+          result << (e_head.call(pos_str) + e_cxt_pre + e_chgdel + e_cxt_post +
+                                            e_cxt_pre + e_chgadd + e_cxt_post + e_foot)
         else raise "Unsupported display type: #{display}"
         end
       when :del_elt
@@ -147,10 +148,10 @@ class View
                   ",(#{d2l})"
         case display
         when 'inline'
-          result << (e_header.call(pos_str) + e_context_pre + e_body_deleted + e_context_post + e_footer)
+          result << (e_head.call(pos_str) + e_cxt_pre + e_del + e_cxt_post + e_foot)
         when 'multi'
-          result << (e_header.call(pos_str) + e_context_pre + e_body_source  + e_context_post +
-                                              e_context_pre + e_body_deleted + e_context_post + e_footer)
+          result << (e_head.call(pos_str) + e_cxt_pre + e_src + e_cxt_post +
+                                            e_cxt_pre + e_del + e_cxt_post + e_foot)
         else raise "Unsupported display type: #{display}"
         end
       when :add_elt
@@ -158,17 +159,17 @@ class View
                   ",#{d2l}" + "#{if span2 > 1 then '-'+(d2l + span2 - 1).to_s; end}"
         case display
         when 'inline'
-          result << (e_header.call(pos_str) + e_context_pre + e_body_added + e_context_post + e_footer)
+          result << (e_head.call(pos_str) + e_cxt_pre + e_add + e_cxt_post + e_foot)
         when 'multi'
-          result << (e_header.call(pos_str) + e_context_pre + e_body_source + e_context_post +
-                                              e_context_pre + e_body_added  + e_context_post + e_footer)
+          result << (e_head.call(pos_str) + e_cxt_pre + e_src + e_cxt_post +
+                                            e_cxt_pre + e_add + e_cxt_post + e_foot)
         else raise "Unsupported display type: #{display}"
         end
       else
         raise "invalid attribute: #{block.first}\n"
       end
-      d1l += source.scan_eols(@eol).size
-      d2l += target.scan_eols(@eol).size
+      d1l += src.scan_eols(@eol).size
+      d2l += tgt.scan_eols(@eol).size
     }
     result.unshift(tags[:start_digest_body])
     result.push(tags[:end_digest_body])
@@ -226,16 +227,15 @@ class View
      :start_after_change  => "\033[7;1;32m",  # Inverted, Bold, Green
      :end_after_change    => "\033[0m"}
   end
-  def to_tty(overriding_tags = nil, headfoot = true)  # color escape sequence
+  def to_tty(overriding_opts = nil, headfoot = true)  # color escape sequence
     tags = tty_tags()
-    tags.update(overriding_tags) if overriding_tags
+    tags.update(overriding_opts) if overriding_opts
     apply_style(tags, headfoot)
   end
-  def to_tty_digest(overriding_tags = nil, headfoot = true)
-    display = (overriding_tags and overriding_tags[:display]) || 'inline'
+  def to_tty_digest(overriding_opts = nil, headfoot = true)
     tags = tty_tags
-    tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot, display)
+    tags.update(overriding_opts) if overriding_opts
+    apply_style_digest(tags, headfoot)
   end
 
   # HTML (XHTML)
@@ -292,16 +292,15 @@ class View
      :start_after_change  => '<span class="after-change"><ins>',
      :end_after_change    => '</ins></span>'}
   end
-  def to_html(overriding_tags = nil, headfoot = true)
+  def to_html(overriding_opts = nil, headfoot = true)
     tags = html_tags()
-    tags.update(overriding_tags) if overriding_tags
+    tags.update(overriding_opts) if overriding_opts
     apply_style(tags, headfoot)
   end
-  def to_html_digest(overriding_tags = nil, headfoot = true)
-    display = (overriding_tags and overriding_tags[:display]) || 'inline'
+  def to_html_digest(overriding_opts = nil, headfoot = true)
     tags = html_tags()
-    tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot, display)
+    tags.update(overriding_opts) if overriding_opts
+    apply_style_digest(tags, headfoot)
   end
 
   # Manued
@@ -350,20 +349,20 @@ class View
      :end_after_change    => ']'
     }
   end
-  def to_manued(overriding_tags = nil, headfoot = true)  # [ / ; ]
+  def to_manued(overriding_opts = nil, headfoot = true)  # [ / ; ]
     tags = manued_tags()
-    tags.update(overriding_tags) if overriding_tags
+    tags.update(overriding_opts) if overriding_opts
     apply_style(tags, headfoot)
   end
-  def to_manued_digest(overriding_tags = nil, headfoot = true)  # [ / ; ]
-    display = (overriding_tags and overriding_tags[:display]) || 'inline'
+  def to_manued_digest(overriding_opts = nil, headfoot = true)  # [ / ; ]
     tags = manued_tags()
     # manued specific kludge: change should be [a/b] in inline, [a/][/b] in multi
+    display = (overriding_opts and overriding_opts[:display]) || 'inline'
     if display == 'multi'
       tags.update({:end_before_change => '/]', :start_after_change => '[/'})
     end
-    tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot, display)
+    tags.update(overriding_opts) if overriding_opts
+    apply_style_digest(tags, headfoot)
   end
 
   # wdiff-like
@@ -403,16 +402,15 @@ class View
      :start_after_change  => '{+',
      :end_after_change    => '+}'}
   end
-  def to_wdiff(overriding_tags = nil, headfoot = true)
+  def to_wdiff(overriding_opts = nil, headfoot = true)
     tags = wdiff_tags()
-    tags.update(overriding_tags) if overriding_tags
+    tags.update(overriding_opts) if overriding_opts
     apply_style(tags)
   end
-  def to_wdiff_digest(overriding_tags = nil, headfoot = true)
-    display = (overriding_tags and overriding_tags[:display]) || 'inline'
+  def to_wdiff_digest(overriding_opts = nil, headfoot = true)
     tags = wdiff_tags()
-    tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot, display)
+    tags.update(overriding_opts) if overriding_opts
+    apply_style_digest(tags, headfoot)
   end
 
   # user defined markup
@@ -448,16 +446,15 @@ class View
      :start_after_change  => '',
      :end_after_change    => ''}
   end
-  def to_user(overriding_tags = nil, headfoot = true)
+  def to_user(overriding_opts = nil, headfoot = true)
     tags = user_tags()
-    tags.update(overriding_tags) if overriding_tags
+    tags.update(overriding_opts) if overriding_opts
     apply_style(tags, headfoot)
   end
-  def to_user_digest(overriding_tags = nil, headfoot = true)
-    display = (overriding_tags and overriding_tags[:display]) || 'inline'
+  def to_user_digest(overriding_opts = nil, headfoot = true)
     tags = user_tags()
-    tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot, display)
+    tags.update(overriding_opts) if overriding_opts
+    apply_style_digest(tags, headfoot)
   end
 
   def to_debug()
