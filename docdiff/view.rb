@@ -83,8 +83,8 @@ class View
     result.delete_if{|elem|elem==''}
   end
 
-  CONTEXT_PRE_LENGTH = 16
-  CONTEXT_POST_LENGTH = 16
+  CONTEXT_PRE_LENGTH  = 32
+  CONTEXT_POST_LENGTH = 32
   def apply_style_digest(tags, headfoot = true)
     cxt_pre_pat  = Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z',
                               Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
