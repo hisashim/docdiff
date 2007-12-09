@@ -139,7 +139,7 @@ class DocDiff
     when true
       case option[:format]
       when "tty";      then result = view.to_tty_digest(option)
-      when "html";    then result = view.to_html_digest(option)
+      when "html";     then result = view.to_html_digest(option)
       when "manued";   then result = view.to_manued_digest(option)
       when "wdiff";    then result = view.to_wdiff_digest(option)
       when "stat";     then result = view.to_stat(option)
@@ -250,6 +250,11 @@ if $0 == __FILE__
 
     o.def_option('--digest', 'digest output, do not show all'){clo[:digest] = true}
     o.def_option('--summary', 'same as --digest'){clo[:digest] = true}
+    o.def_option('--display=DISPLAY',
+                 possible_types = ['inline', 'multi'],
+                 'specify presentation type (effective only with digest; experimental feature)',
+                 possible_types.join('|'),
+                 '(default is inline)'){|s| clo[:display] ||= s.downcase}
     o.def_option('--cache', 'use file cache (not supported yet)'){clo[:cache] = true}
     o.def_option('--no-config-file',
                  'do not read config files'){clo[:no_config_file] = true}
@@ -341,7 +346,8 @@ if $0 == __FILE__
   output = docdiff.run(doc1, doc2,
                         {:resolution => docdiff.config[:resolution],
                          :format     => docdiff.config[:format],
-                         :digest     => docdiff.config[:digest]})
+                         :digest     => docdiff.config[:digest],
+                         :display    => docdiff.config[:display]})
   print output
 
 end # end if $0 == __FILE__

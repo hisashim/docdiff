@@ -204,6 +204,15 @@ class TC_View < Test::Unit::TestCase
                   "3,3\ne\n\033[7;4;33mf\033[0m\033[7;1;32mF\033[0m\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_tty_digest(nil, false))
   end
+  def test_to_tty_digest_multi()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
+    expected =   ["----\n",
+                  "1-2,(1)\na\nbcd\n\033[7;4;31ma\nb\033[0mcd\n----\n",
+                  "(2),1-2\ncde\n\ncd\033[7;1;34mX\nY\033[0me\n\n----\n",
+                  "3,3\ne\n\033[7;4;33mf\033[0m\n\ne\n\033[7;1;32mF\033[0m\n\n----\n"]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_tty_digest({:display=>'multi'}, false))
+  end
 
   def test_to_html_cr_ascii()
     array1 = ['a', "\r"]
@@ -242,6 +251,16 @@ class TC_View < Test::Unit::TestCase
                   "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before-change\"><del>f</del></span><span class=\"after-change\"><ins>F</ins></span><br />\n</p></blockquote></li>\n",
                   "</ul>"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html_digest(nil,false))
+  end
+  def test_to_html_digest_multi()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
+    expected =   ["<ul>",
+                  "<li class=\"entry\"><p class=\"position\">1-2,(1)</p><blockquote class=\"body\"><p class=\"body\">a<br />\nbcd</p><p class=\"body\"><span class=\"del\"><del>a<br />\nb</del></span>cd</p></blockquote></li>\n",
+                  "<li class=\"entry\"><p class=\"position\">(2),1-2</p><blockquote class=\"body\"><p class=\"body\">cde<br />\n</p><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e<br />\n</p></blockquote></li>\n",
+                  "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before-change\"><del>f</del></span><br />\n</p><p class=\"body\">e<br />\n<span class=\"after-change\"><ins>F</ins></span><br />\n</p></blockquote></li>\n",
+                  "</ul>"]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_html_digest({:display=>'multi'},false))
   end
 
   def test_to_html_del_add_ascii()
@@ -365,6 +384,15 @@ class TC_View < Test::Unit::TestCase
                   "3,3\ne\n[f/F]\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_manued_digest(nil,false))
   end
+  def test_to_manued_digest_multi()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
+    expected =   ["----\n",
+                  "1-2,(1)\na\nbcd\n[a\nb/]cd\n----\n",
+                  "(2),1-2\ncde\n\ncd[/X\nY]e\n\n----\n",
+                  "3,3\ne\n[f/]\n\ne\n[/F]\n\n----\n"]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_manued_digest({:display=>'multi'},false))
+  end
 
   def test_to_wdiff_del_add_ascii()
     array1 = ['a', 'b', 'c']
@@ -427,6 +455,15 @@ class TC_View < Test::Unit::TestCase
                 "3,3\ne\n[-f-]{+F+}\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_wdiff_digest(nil,false))
   end
+  def test_to_wdiff_digest_multi()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
+    expected = ["----\n",
+                "1-2,(1)\na\nbcd\n[-a\nb-]cd\n----\n",
+                "(2),1-2\ncde\n\ncd{+X\nY+}e\n\n----\n",
+                "3,3\ne\n[-f-]\n\ne\n{+F+}\n\n----\n"]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_wdiff_digest({:display => 'multi'}, false))
+  end
 
   def test_to_user_del_add_en()
     array1 = ['a', 'b', 'c']
@@ -483,6 +520,25 @@ class TC_View < Test::Unit::TestCase
     expected = ["1-2,(1) <->a\nb</->cd\n",
                 "(2),1-2 cd<+>X\nY</+>e\n\n",
                 "3,3 e\n<!->f</!-><!+>F</!+>\n\n"]
+    assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_user_digest(user_tags, false))
+  end
+  def test_to_user_digest_multi()
+    array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
+    array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
+    user_tags = {:start_common        => '<=>',
+                 :end_common          => '</=>',
+                 :start_del           => '<->',
+                 :end_del             => '</->',
+                 :start_add           => '<+>',
+                 :end_add             => '</+>',
+                 :start_before_change => '<!->',
+                 :end_before_change   => '</!->',
+                 :start_after_change  => '<!+>',
+                 :end_after_change    => '</!+>',
+                 :display             => 'multi'}
+    expected = ["1-2,(1) a\nbcd<->a\nb</->cd\n",
+                "(2),1-2 cde\ncd<+>X\nY</+>e\n\n",
+                "3,3 e\n<!->f</!->\ne\n<!+>F</!+>\n\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "ASCII", "LF").to_user_digest(user_tags, false))
   end
 

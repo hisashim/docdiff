@@ -85,7 +85,7 @@ class View
 
   CONTEXT_PRE_LENGTH = 16
   CONTEXT_POST_LENGTH = 16
-  def apply_style_digest(tags, headfoot = true)
+  def apply_style_digest(tags, headfoot = true, display = 'inline')
     context_pre_pat  = Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z',
                                   Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
     context_post_pat = Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}',
@@ -115,8 +115,11 @@ class View
       e_header       = Proc.new {|pos_str|
                                  tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]}
       e_context_pre  = tags[:start_prefix] + escape_outside(context_pre, tags) + tags[:end_prefix]
+      e_body_source  = escape_inside(source, tags)
       e_body_changed = tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change] +
                        tags[:start_after_change] + escape_inside(target, tags) + tags[:end_after_change]
+      e_body_chdel   = tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change]
+      e_body_chadd   = tags[:start_after_change] + escape_inside(target, tags) + tags[:end_after_change]
       e_body_deleted = tags[:start_del] + escape_outside(source, tags) + tags[:end_del]
       e_body_added   = tags[:start_add] + escape_outside(target, tags) + tags[:end_add]
       e_context_post = tags[:start_postfix] + escape_outside(context_post, tags) + tags[:end_postfix]
@@ -131,15 +134,36 @@ class View
       when :change_elt
         pos_str = "#{d1l}" + "#{if span1 > 1 then '-'+(d1l + span1 - 1).to_s; end}" +
                   ",#{d2l}" + "#{if span2 > 1 then '-'+(d2l + span2 - 1).to_s; end}"
-        result << (e_header.call(pos_str) + e_context_pre + e_body_changed + e_context_post + e_footer)
+        case display
+        when 'inline'
+          result << (e_header.call(pos_str) + e_context_pre + e_body_changed + e_context_post + e_footer)
+        when 'multi'
+          result << (e_header.call(pos_str) + e_context_pre + e_body_chdel + e_context_post +
+                                              e_context_pre + e_body_chadd + e_context_post + e_footer)
+        else raise "Unsupported display type: #{display}"
+        end
       when :del_elt
         pos_str = "#{d1l}" + "#{if span1 > 1 then '-'+(d1l + span1 - 1).to_s; end}" +
                   ",(#{d2l})"
-        result << (e_header.call(pos_str) + e_context_pre + e_body_deleted + e_context_post + e_footer)
+        case display
+        when 'inline'
+          result << (e_header.call(pos_str) + e_context_pre + e_body_deleted + e_context_post + e_footer)
+        when 'multi'
+          result << (e_header.call(pos_str) + e_context_pre + e_body_source  + e_context_post +
+                                              e_context_pre + e_body_deleted + e_context_post + e_footer)
+        else raise "Unsupported display type: #{display}"
+        end
       when :add_elt
         pos_str = "(#{d1l})" +
                   ",#{d2l}" + "#{if span2 > 1 then '-'+(d2l + span2 - 1).to_s; end}"
-        result << (e_header.call(pos_str) + e_context_pre + e_body_added + e_context_post + e_footer)
+        case display
+        when 'inline'
+          result << (e_header.call(pos_str) + e_context_pre + e_body_added + e_context_post + e_footer)
+        when 'multi'
+          result << (e_header.call(pos_str) + e_context_pre + e_body_source + e_context_post +
+                                              e_context_pre + e_body_added  + e_context_post + e_footer)
+        else raise "Unsupported display type: #{display}"
+        end
       else
         raise "invalid attribute: #{block.first}\n"
       end
@@ -182,13 +206,13 @@ class View
      :start_digest_body   => "----#{@eol_char||''}",
      :end_digest_body     => '',
      :start_entry         => '',
-     :end_entry           => "#{@eol_char||''}----",
+     :end_entry           => "----",
      :start_position      => '',
      :end_position        => "#{@eol_char||''}",
      :start_prefix        => '',
      :end_prefix          => '',
      :start_postfix       => '',
-     :end_postfix         => '',
+     :end_postfix         => "#{@eol_char||''}",
      :header              => tty_header(),
      :footer              => tty_footer(),
      :start_common        => '',
@@ -208,9 +232,10 @@ class View
     apply_style(tags, headfoot)
   end
   def to_tty_digest(overriding_tags = nil, headfoot = true)
+    display = (overriding_tags and overriding_tags[:display]) || 'inline'
     tags = tty_tags
     tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot)
+    apply_style_digest(tags, headfoot, display)
   end
 
   # HTML (XHTML)
@@ -247,13 +272,13 @@ class View
      :start_digest_body   => '<ul>',
      :end_digest_body     => '</ul>',
      :start_entry         => '<li class="entry">',
-     :end_entry           => '</p></blockquote></li>',
+     :end_entry           => '</blockquote></li>',
      :start_position      => '<p class="position">',
-     :end_position        => '</p><blockquote class="body"><p class="body">',
-     :start_prefix        => '',
+     :end_position        => '</p><blockquote class="body">',
+     :start_prefix        => '<p class="body">',
      :end_prefix          => '',
      :start_postfix       => '',
-     :end_postfix         => '',
+     :end_postfix         => '</p>',
      :header              => html_header(),
      :footer              => html_footer(),
      :start_common        => '<span class="common">',
@@ -273,9 +298,10 @@ class View
     apply_style(tags, headfoot)
   end
   def to_html_digest(overriding_tags = nil, headfoot = true)
+    display = (overriding_tags and overriding_tags[:display]) || 'inline'
     tags = html_tags()
     tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot)
+    apply_style_digest(tags, headfoot, display)
   end
 
   # Manued
@@ -303,13 +329,13 @@ class View
      :start_digest_body   => "----#{@eol_char||''}",
      :end_digest_body     => '',
      :start_entry         => '',
-     :end_entry           => "#{@eol_char||''}----",
+     :end_entry           => "----",
      :start_position      => '',
      :end_position        => "#{@eol_char||''}",
      :start_prefix        => '',
      :end_prefix          => '',
      :start_postfix       => '',
-     :end_postfix         => '',
+     :end_postfix         => "#{@eol_char||''}",
      :header              => manued_header(),
      :footer              => manued_footer(),
      :start_common        => '',
@@ -330,9 +356,14 @@ class View
     apply_style(tags, headfoot)
   end
   def to_manued_digest(overriding_tags = nil, headfoot = true)  # [ / ; ]
+    display = (overriding_tags and overriding_tags[:display]) || 'inline'
     tags = manued_tags()
+    # manued specific kludge: change should be [a/b] in inline, [a/][/b] in multi
+    if display == 'multi'
+      tags.update({:end_before_change => '/]', :start_after_change => '[/'})
+    end
     tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot)
+    apply_style_digest(tags, headfoot, display)
   end
 
   # wdiff-like
@@ -352,13 +383,13 @@ class View
      :start_digest_body   => "----#{@eol_char||''}",
      :end_digest_body     => '',
      :start_entry         => '',
-     :end_entry           => "#{@eol_char||''}----",
+     :end_entry           => "----",
      :start_position      => '',
      :end_position        => "#{@eol_char||''}",
      :start_prefix        => '',
      :end_prefix          => '',
      :start_postfix       => '',
-     :end_postfix         => '',
+     :end_postfix         => "#{@eol_char||''}",
      :header              => wdiff_header(),
      :footer              => wdiff_footer(),
      :start_common        => '',
@@ -378,9 +409,10 @@ class View
     apply_style(tags)
   end
   def to_wdiff_digest(overriding_tags = nil, headfoot = true)
+    display = (overriding_tags and overriding_tags[:display]) || 'inline'
     tags = wdiff_tags()
     tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot)
+    apply_style_digest(tags, headfoot, display)
   end
 
   # user defined markup
@@ -422,9 +454,10 @@ class View
     apply_style(tags, headfoot)
   end
   def to_user_digest(overriding_tags = nil, headfoot = true)
+    display = (overriding_tags and overriding_tags[:display]) || 'inline'
     tags = user_tags()
     tags.update(overriding_tags) if overriding_tags
-    apply_style_digest(tags, headfoot)
+    apply_style_digest(tags, headfoot, display)
   end
 
   def to_debug()
