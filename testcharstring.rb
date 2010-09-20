@@ -13,7 +13,7 @@ class TC_CharString < Test::Unit::TestCase
   # test encoding module registration
   def test_encoding_ascii()
     str = "foo".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     expected = CharString::ASCII
     assert_equal(expected, CharString::Encodings[str.encoding])
   end
@@ -99,63 +99,63 @@ class TC_CharString < Test::Unit::TestCase
   # test eol split_to_line() method
   def test_cr_split_to_line()
     str = "foo\rbar\r".extend CharString
-    encoding, eol = "ASCII", "CR"
+    encoding, eol = "US-ASCII", "CR"
     str.encoding, str.eol = encoding, eol
     expected = ["foo\r", "bar\r"]
     assert_equal(expected, str.split_to_line)
   end
   def test_cr_split_to_line_chomped_lastline()
     str = "foo\rbar".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["foo\r", "bar"]
     assert_equal(expected, str.split_to_line)
   end
   def test_cr_split_to_line_empty_line()
     str = "foo\r\rbar\r".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["foo\r", "\r", "bar\r"]
     assert_equal(expected, str.split_to_line)
   end
   def test_lf_split_to_line()
     str = "foo\nbar\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "bar\n"]
     assert_equal(expected, str.split_to_line)
   end
   def test_lf_split_to_line_chomped_lastline()
     str = "foo\nbar".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "bar"]
     assert_equal(expected, str.split_to_line)
   end
   def test_lf_split_to_line_empty_line()
     str = "foo\n\nbar\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "\n", "bar\n"]
     assert_equal(expected, str.split_to_line)
   end
   def test_crlf_split_to_line()
     str = "foo\r\nbar\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "bar\r\n"]
     assert_equal(expected, str.split_to_line)
   end
   def test_crlf_split_to_line_chomped_lastline()
     str = "foo\r\nbar".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "bar"]
     assert_equal(expected, str.split_to_line)
   end
   def test_crlf_split_to_line_empty_line()
     str = "foo\r\n\r\nbar\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "\r\n", "bar\r\n"]
     assert_equal(expected, str.split_to_line)
@@ -164,156 +164,156 @@ class TC_CharString < Test::Unit::TestCase
   # test ASCII module
   def test_ascii_split_to_word()
     str = "foo bar".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     expected = ["foo ", "bar"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_word_withsymbol()
     str = "foo (bar) baz-baz".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     expected = ["foo ", "(bar) ", "baz-baz"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_word_withquote()
     str = "foo's 'foo' \"bar\" 'baz.'".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     expected = ["foo's ", "'foo' ", "\"bar\" ", "'baz.'"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_word_withlongspace()
     str = " foo  bar".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     expected = [" ", "foo ", " ", "bar"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_word_withdash()
     str = "foo -- bar, baz - quux".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     expected = ["foo ", "-- ", "bar, ", "baz ", "- ", "quux"]
     assert_equal(expected, str.split_to_word)
   end
   def test_ascii_split_to_char()
     str = "foo bar".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["f","o","o"," ","b","a","r"]
     assert_equal(expected, str.split_to_char)
   end
   def test_ascii_split_to_char_with_eol_cr()
     str = "foo bar\r".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["f","o","o"," ","b","a","r","\r"]
     assert_equal(expected, str.split_to_char)
   end
   def test_ascii_split_to_char_with_eol_lf()
     str = "foo bar\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["f","o","o"," ","b","a","r","\n"]
     assert_equal(expected, str.split_to_char)
   end
   def test_ascii_split_to_char_with_eol_crlf()
     str = "foo bar\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["f","o","o"," ","b","a","r","\r\n"]
     assert_equal(expected, str.split_to_char)
   end
   def test_ascii_split_to_byte()
     str = "foo bar\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["f","o","o"," ","b","a","r","\r","\n"]
     assert_equal(expected, str.split_to_byte)
   end
   def test_ascii_count_byte()
     str = "foo bar\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 9
     assert_equal(expected, str.count_byte)
   end
   def test_ascii_count_char()
     str = "foo bar\r\nbaz quux\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 17
     assert_equal(expected, str.count_char)
   end
   def test_ascii_count_latin_graph_char()
     str = "foo bar\r\nbaz quux\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 13
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_ascii_count_graph_char()
     str = "foo bar\r\nbaz quux\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 13
     assert_equal(expected, str.count_graph_char)
   end
   def test_ascii_count_latin_blank_char()
     str = "foo bar\r\nbaz\tquux\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_ascii_count_blank_char()
     str = "foo bar\r\nbaz\tquux\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_blank_char)
   end
   def test_ascii_count_word()
     str = "foo bar   \r\nbaz quux\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_word)
   end
   def test_ascii_count_latin_word()
     str = "foo bar   \r\nbaz quux\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 5  # "  " is also counted as a word
     assert_equal(expected, str.count_latin_word)
   end
   def test_ascii_count_latin_valid_word()
     str = "1 foo   \r\n%%% ()\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_ascii_count_line()
     str = "foo\r\nbar".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_line)
   end
   def test_ascii_count_graph_line()
     str = "foo\r\n ".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_graph_line)
   end
   def test_ascii_count_empty_line()
     str = "foo\r\n \r\n\t\r\n\r\n".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_ascii_count_blank_line()
     str = "\r\n \r\n\t\r\n ".extend CharString
-    str.encoding = "ASCII"
+    str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_line)
@@ -876,14 +876,14 @@ class TC_CharString < Test::Unit::TestCase
   end
   def test_guess_encoding_ascii_1()
     str = "ASCII string"
-    expected = "ASCII"
+    expected = "US-ASCII"
     assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
     assert_equal(expected, CharString.guess_encoding_using_iconv(str))
     assert_equal(expected, CharString.guess_encoding(str))
   end
   def test_guess_encoding_ascii_2()
     str = "abc\ndef\n"
-    expected = "ASCII"
+    expected = "US-ASCII"
     assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
     assert_equal(expected, CharString.guess_encoding_using_iconv(str))
     assert_equal(expected, CharString.guess_encoding(str))

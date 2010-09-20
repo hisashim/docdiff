@@ -246,6 +246,9 @@ if ruby_m17n?
   end
 
   # load encoding modules
+  require 'docdiff/encoding/en_ascii'
+  require 'docdiff/encoding/ja_eucjp'
+  require 'docdiff/encoding/ja_sjis'
   require 'docdiff/encoding/ja_utf8'
 else
   # for Ruby-1.8
@@ -266,7 +269,7 @@ else
     extend Encodings[@encoding]  # ; p "Hey, I extended #{Encodings[@encoding]}!"
   end
 
-  # returns nil, 'ASCII', 'JIS', 'EUC-JP', 'Shift_JIS', 'UTF-8', or 'UNKNOWN'
+  # returns nil, 'US-ASCII', 'JIS', 'EUC-JP', 'Shift_JIS', 'UTF-8', or 'UNKNOWN'
   def CharString.guess_encoding(string)
     return nil if string == nil
     result_using_pureruby = CharString.guess_encoding_using_pureruby(string)
@@ -278,7 +281,7 @@ else
     end
   end
 
-  # returns nil, 'ASCII', 'JIS', 'EUC-JP', 'Shift_JIS', 'UTF-8', or 'UNKNOWN'
+  # returns nil, 'US-ASCII', 'JIS', 'EUC-JP', 'Shift_JIS', 'UTF-8', or 'UNKNOWN'
   def CharString.guess_encoding_using_pureruby(string)
     return nil if string == nil
 
@@ -314,7 +317,7 @@ else
     when 0 < jis_escseq_count                 # JIS escape sequense found
       guessed_encoding = 'JIS'
     when ascii_match_length == string.length  # every char is ASCII (but not JIS)
-      guessed_encoding = 'ASCII'
+      guessed_encoding = 'US-ASCII'
     else
       case
       when eucjp_match_length < (string.length / 2) && 
@@ -352,7 +355,7 @@ else
     when string == nil
       nil
     when valid_as_ascii
-      "ASCII"
+      "US-ASCII"
     when valid_as_jis  # Iconv sometimes recognizes JIS for ASCII, ignoring JIS escape sequence.
       "JIS"
     when valid_as_eucjp

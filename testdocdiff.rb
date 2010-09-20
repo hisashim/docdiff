@@ -11,16 +11,16 @@ class TC_Document < Test::Unit::TestCase
   end
 
   def test_compare_by_line()
-    doc1 = Document.new("Foo bar.\nBaz quux.", 'ASCII', 'LF')
-    doc2 = Document.new("Foo.\nBaz quux.", 'ASCII', 'LF')
+    doc1 = Document.new("Foo bar.\nBaz quux.", 'US-ASCII', 'LF')
+    doc2 = Document.new("Foo.\nBaz quux.", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
     expected = [[:change_elt,     ["Foo bar.\n"], ["Foo.\n"]],
                 [:common_elt_elt, ['Baz quux.'], ['Baz quux.']]]
     assert_equal(expected, docdiff.compare_by_line(doc1, doc2))
   end
   def test_compare_by_line_word()
-    doc1 = Document.new("a b c d\ne f", 'ASCII', 'LF')
-    doc2 = Document.new("a x c d\ne f", 'ASCII', 'LF')
+    doc1 = Document.new("a b c d\ne f", 'US-ASCII', 'LF')
+    doc2 = Document.new("a x c d\ne f", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
     expected = [[:common_elt_elt, ["a "], ["a "]],
                 [:change_elt,     ["b "], ["x "]],
@@ -30,8 +30,8 @@ class TC_Document < Test::Unit::TestCase
                  docdiff.compare_by_line_word(doc1, doc2))
   end
   def test_compare_by_line_word_char()
-    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
     expected = [[:common_elt_elt, ['foo '], ['foo ']],
                 [:common_elt_elt, ['b'], ['b']],
@@ -44,14 +44,14 @@ class TC_Document < Test::Unit::TestCase
   end
 
   def test_run_line_html()
-    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
-    expected = '<?xml version="1.0" encoding="ASCII"?>' + "\n" +
+    expected = '<?xml version="1.0" encoding="US-ASCII"?>' + "\n" +
      '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + "\n" +
      '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + "\n" +
      '<html><head>' + "\n" +
-     '<meta http-equiv="Content-Type" content="text/html; charset=ASCII" />' + "\n" +
+     '<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />' + "\n" +
      '<title>Difference</title>' + "\n" +
      '<style type="text/css">' + "\n" +
      ' body {font-family: monospace;}' + "\n" +
@@ -71,8 +71,8 @@ class TC_Document < Test::Unit::TestCase
   end
 
   def test_run_line_manued()
-    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
     expected = "defparentheses [ ]\n" +
                "defdelete      /\n" +
@@ -85,8 +85,8 @@ class TC_Document < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "manued", :digest => false}))
   end
   def test_run_word_manued()
-    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
     expected = "defparentheses [ ]\n" +
                "defdelete      /\n" +
@@ -99,8 +99,8 @@ class TC_Document < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "manued", :digest => false}))
   end
   def test_run_char_manued()
-    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
     expected = "defparentheses [ ]\n" +
                "defdelete      /\n" +
@@ -131,8 +131,8 @@ class TC_Document < Test::Unit::TestCase
   end
 
   def test_run_line_user()
-    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     config = {:tag_common_start          => '<=>',
               :tag_common_end            => '</=>',
               :tag_del_start             => '<->',
@@ -149,8 +149,8 @@ class TC_Document < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "user", :digest => false}))
   end
   def test_run_word_user()
-    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     config = {:tag_common_start          => '<=>',
               :tag_common_end            => '</=>',
               :tag_del_start             => '<->',
@@ -167,8 +167,8 @@ class TC_Document < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "user", :digest => false}))
   end
   def test_run_char_user()
-    doc1 = Document.new("foo bar\nbaz", 'ASCII', 'LF')
-    doc2 = Document.new("foo beer\nbaz", 'ASCII', 'LF')
+    doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
+    doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     config = {:tag_common_start          => '<=>',
               :tag_common_end            => '</=>',
               :tag_del_start             => '<->',

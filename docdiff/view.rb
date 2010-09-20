@@ -87,9 +87,9 @@ class View
   CONTEXT_POST_LENGTH = 32
   def apply_style_digest(tags, headfoot = true)
     cxt_pre_pat  = Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z',
-                              Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
+                              Regexp::MULTILINE, @encoding.sub(/US-ASCII/i, 'none'))
     cxt_post_pat = Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}',
-                              Regexp::MULTILINE, @encoding.sub(/ASCII/i, 'none'))
+                              Regexp::MULTILINE, @encoding.sub(/US-ASCII/i, 'none'))
     display = (tags and tags[:display]) || 'inline'
     result = []
     d1l = doc1_line_number = 1

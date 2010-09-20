@@ -12,19 +12,23 @@ class TC_Document < Test::Unit::TestCase
 
   def test_encoding()
     doc = Document.new("Foo bar.\nBaz quux.")
-    doc.encoding = 'ASCII'
+    doc.encoding = 'US-ASCII'
     doc.eol = 'LF'
-    expected = 'ASCII'
+    expected = 'US-ASCII'
     assert_equal(expected, doc.encoding)
   end
   def test_encoding_auto()
-    doc = Document.new("Foo bar.\nBaz quux.")
-    expected = 'ASCII'
+    doc = if CharString.ruby_m17n?
+            Document.new("Foo bar.\nBaz quux.".encode("US-ASCII"))
+          else
+            Document.new("Foo bar.\nBaz quux.")
+          end
+    expected = 'US-ASCII'
     assert_equal(expected, doc.encoding)
   end
   def test_eol()
     doc = Document.new("Foo bar.\nBaz quux.")
-    doc.encoding = 'ASCII'
+    doc.encoding = 'US-ASCII'
     doc.eol = 'LF'
     expected = 'LF'
     assert_equal(expected, doc.eol)
@@ -41,7 +45,7 @@ class TC_Document < Test::Unit::TestCase
   end
   def test_eol_char_lf()
     doc = Document.new("Foo bar.\nBaz quux.")
-#    doc.encoding = "ASCII"
+#    doc.encoding = "US-ASCII"
 #    doc.eol = "LF"
     expected = "\n"
     assert_equal(expected, doc.eol_char)

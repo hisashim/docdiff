@@ -549,7 +549,7 @@ diff -o
       [:change_elt, nil, ["> ", "3"]],
       [:common_elt_elt, ["\n"], ["\n"]],
     ]
-    result = anatomize_classic_hunk("9c9\n< i\n---\n> 3\n", "ASCII", "LF")
+    result = anatomize_classic_hunk("9c9\n< i\n---\n> 3\n", "US-ASCII", "LF")
     assert_equal(expected, result)
   end
 
@@ -647,7 +647,7 @@ diff -c --text 1b 2b
 ! A
 ! B
   z
-", "ASCII", "LF")
+", "US-ASCII", "LF")
     assert_equal(expected, result)
   end
 
@@ -674,7 +674,7 @@ diff -c --text 1b 2b
 ", "  w
 ! *
   y
-", "ASCII", "LF")
+", "US-ASCII", "LF")
     assert_equal(expected, result)
   end
 
@@ -688,7 +688,7 @@ diff -c --text 1b 2b
         [:common_elt_elt, ["  ", "b", "\n"], ["  ", "b", "\n"]]
       ]
     ]
-    result = anatomize_context_hunk_scanbodies("","  a\n+ x\n  b\n", "ASCII", "LF")
+    result = anatomize_context_hunk_scanbodies("","  a\n+ x\n  b\n", "US-ASCII", "LF")
     assert_equal(expected, result)
   end
 
@@ -718,7 +718,7 @@ diff -c --text 1b 2b
 +A
 +B
  z
-", "ASCII", "LF")
+", "US-ASCII", "LF")
     assert_equal(expected, result)
   end
 
