@@ -1,5 +1,5 @@
 PACKAGE = docdiff
-VERSION = 0.3.4
+VERSION = 0.4.0
 RUBY = ruby
 # DATE = `date +%Y%m%d`
 DIST = ChangeLog Makefile devutil docdiff docdiff.conf.example docdiff.rb \
