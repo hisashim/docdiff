@@ -4,7 +4,6 @@ require 'test/unit'
 require 'docdiff/view'
 require 'docdiff/difference'
 require 'nkf'
-require 'uconv'
 
 class TC_View < Test::Unit::TestCase
 
@@ -175,9 +174,9 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
                                          array2.collect{|i|NKF.nkf("-s",i)}),
                           "Shift_JIS", nil).to_tty(nil, false))
-    assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-                 View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-                                         array2.collect{|i|Uconv.euctou8(i)}),
+    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
+                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
+                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
                           "UTF-8", nil).to_tty(nil, false))
   end
   def test_to_tty_change_ja()
@@ -191,9 +190,9 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
                                          array2.collect{|i|NKF.nkf("-s",i)}),
                           "Shift_JIS", nil).to_tty(nil, false))
-    assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-                 View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-                                         array2.collect{|i|Uconv.euctou8(i)}),
+    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
+                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
+                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
                           "UTF-8", nil).to_tty(nil, false))
   end
   def test_to_tty_digest()
@@ -295,9 +294,9 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
                                          array2.collect{|i|NKF.nkf("-s",i)}),
                           "Shift_JIS", nil).to_html(nil, false))
-    assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-                 View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-                                         array2.collect{|i|Uconv.euctou8(i)}),
+    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
+                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
+                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
                           "UTF-8", nil).to_html(nil, false))
   end
   def test_to_html_change_ja()
@@ -311,9 +310,9 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
                                          array2.collect{|i|NKF.nkf("-s",i)}),
                           "Shift_JIS", nil).to_html(nil, false))
-    assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-                 View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-                                         array2.collect{|i|Uconv.euctou8(i)}),
+    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
+                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
+                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
                           "UTF-8", nil).to_html(nil, false))
   end
 
@@ -348,9 +347,9 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
                                          array2.collect{|i|NKF.nkf("-s",i)}),
                           "Shift_JIS", nil).to_manued(nil, false))
-    assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-                 View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-                                         array2.collect{|i|Uconv.euctou8(i)}),
+    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
+                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
+                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
                           "UTF-8", nil).to_manued(nil, false))
   end
   def test_to_manued_change_ja()
@@ -364,9 +363,9 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
                                          array2.collect{|i|NKF.nkf("-s",i)}),
                           "Shift_JIS", nil).to_manued(nil, false))
-    assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-                 View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-                                         array2.collect{|i|Uconv.euctou8(i)}),
+    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
+                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
+                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
                           "UTF-8", nil).to_manued(nil, false))
   end
   def test_to_manued_escaping_ascii()
@@ -426,9 +425,9 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
                                          array2.collect{|i|NKF.nkf("-s",i)}),
                           "Shift_JIS", nil).to_wdiff(nil, false))
-    assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-                 View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-                                         array2.collect{|i|Uconv.euctou8(i)}),
+    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
+                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
+                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
                           "UTF-8", nil).to_wdiff(nil, false))
   end
   def test_to_wdiff_change_ja()
@@ -442,9 +441,9 @@ class TC_View < Test::Unit::TestCase
                  View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
                                          array2.collect{|i|NKF.nkf("-s",i)}),
                           "Shift_JIS", nil).to_wdiff(nil, false))
-    assert_equal(expected.collect{|i|Uconv.euctou8(i)},
-                 View.new(Difference.new(array1.collect{|i|Uconv.euctou8(i)},
-                                         array2.collect{|i|Uconv.euctou8(i)}),
+    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
+                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
+                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
                           "UTF-8", nil).to_wdiff(nil, false))
   end
   def test_to_wdiff_digest()

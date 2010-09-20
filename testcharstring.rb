@@ -3,7 +3,6 @@
 require 'test/unit'
 require 'docdiff/charstring'
 require 'nkf'
-require 'uconv'
 
 class TC_CharString < Test::Unit::TestCase
 
@@ -678,176 +677,176 @@ class TC_CharString < Test::Unit::TestCase
 
   # test UTF8 module
   def test_utf8_split_to_word()
-    str = Uconv.euctou8("日本語の文字foo bar").extend CharString
+    str = NKF.nkf("-E -w", "日本語の文字foo bar").extend CharString
     str.encoding = "UTF-8"
-    expected = ["日本語の", "文字", "foo ", "bar"].collect{|c| Uconv.euctou8(c)}
+    expected = ["日本語の", "文字", "foo ", "bar"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_kanhira()
-    str = Uconv.euctou8("日本語の文字").extend CharString
+    str = NKF.nkf("-E -w", "日本語の文字").extend CharString
     str.encoding = "UTF-8"
-    expected = ["日本語の", "文字"].collect{|c| Uconv.euctou8(c)}
+    expected = ["日本語の", "文字"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_katahira()
-    str = Uconv.euctou8("カタカナの文字").extend CharString
+    str = NKF.nkf("-E -w", "カタカナの文字").extend CharString
     str.encoding = "UTF-8"
-    expected = ["カタカナの", "文字"].collect{|c| Uconv.euctou8(c)}
+    expected = ["カタカナの", "文字"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_kataonbiki()
-    str = Uconv.euctou8("ルビーの指輪").extend CharString
+    str = NKF.nkf("-E -w", "ルビーの指輪").extend CharString
     str.encoding = "UTF-8"
-    expected = ["ルビーの", "指輪"].collect{|c| Uconv.euctou8(c)}
+    expected = ["ルビーの", "指輪"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_hiraonbiki()
-    str = Uconv.euctou8("わールビーだ").extend CharString
+    str = NKF.nkf("-E -w", "わールビーだ").extend CharString
     str.encoding = "UTF-8"
-    expected = ["わー", "ルビーだ"].collect{|c| Uconv.euctou8(c)}
+    expected = ["わー", "ルビーだ"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_latinmix()
-    str = Uconv.euctou8("日本語とLatinの文字").extend CharString
+    str = NKF.nkf("-E -w", "日本語とLatinの文字").extend CharString
     str.encoding = "UTF-8"
-    expected = ["日本語と", "Latin", "の", "文字"].collect{|c| Uconv.euctou8(c)}
+    expected = ["日本語と", "Latin", "の", "文字"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_char()
-    str = Uconv.euctou8("日本語a b").extend CharString
+    str = NKF.nkf("-E -w", "日本語a b").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"        #<= needed to pass the test
-    expected = ["日", "本", "語", "a", " ", "b"].collect{|c| Uconv.euctou8(c)}
+    expected = ["日", "本", "語", "a", " ", "b"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_cr()
-    str = Uconv.euctou8("日本語a b\r").extend CharString
+    str = NKF.nkf("-E -w", "日本語a b\r").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CR"
-    expected = ["日","本","語","a"," ","b","\r"].collect{|c| Uconv.euctou8(c)}
+    expected = ["日","本","語","a"," ","b","\r"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_lf()
-    str = Uconv.euctou8("日本語a b\n").extend CharString
+    str = NKF.nkf("-E -w", "日本語a b\n").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"
-    expected = ["日","本","語","a"," ","b","\n"].collect{|c| Uconv.euctou8(c)}
+    expected = ["日","本","語","a"," ","b","\n"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_crlf()
-    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本語a b\r\n").extend CharString
     str.encoding = "UTF-8"#<= needed to pass the test
     str.eol = "CRLF"
-    expected = ["日","本","語","a"," ","b","\r\n"].collect{|c| Uconv.euctou8(c)}
+    expected = ["日","本","語","a"," ","b","\r\n"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_count_char()
-    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本語a b\r\n").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 7
     assert_equal(expected, str.count_char)
   end
   def test_utf8_count_latin_graph_char()
-    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本語a b\r\n").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_utf8_count_ja_graph_char()
-    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本語a b\r\n").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_graph_char)
   end
   def test_utf8_count_graph_char()
-    str = Uconv.euctou8("日本語a b\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本語a b\r\n").extend CharString
     str.encoding = "UTF-8" #<= needed to passs the test
     str.eol = "CRLF"
     expected = 5
     assert_equal(expected, str.count_graph_char)
   end
   def test_utf8_count_latin_blank_char()
-    str = Uconv.euctou8("日本語\ta b\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本語\ta b\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_utf8_count_ja_blank_char()
-    str = Uconv.euctou8("日本　語\ta b\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本　語\ta b\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_ja_blank_char)
   end
   def test_utf8_count_blank_char()
-    str = Uconv.euctou8("日本　語\ta b\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本　語\ta b\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_char)
   end
   def test_utf8_count_word()
-    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本　語a b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, str.count_word)
   end
   def test_utf8_count_ja_word()
-    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本　語a b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_word)
   end
   def test_utf8_count_latin_valid_word()
-    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本　語a b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_utf8_count_ja_valid_word()
-    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本　語a b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_ja_valid_word)
   end
   def test_utf8_count_valid_word()
-    str = Uconv.euctou8("日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("-E -w", "日本　語a b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 4
     assert_equal(expected, str.count_valid_word)
   end
   def test_utf8_count_line()
-    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("-E -w", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_line)
   end
   def test_utf8_count_graph_line()
-    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("-E -w", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_graph_line)
   end
   def test_utf8_count_empty_line()
-    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("-E -w", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_utf8_count_blank_line()
-    str = Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("-E -w", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
@@ -940,14 +939,14 @@ class TC_CharString < Test::Unit::TestCase
     assert_equal(expected, CharString.guess_encoding(str))
   end
   def test_guess_encoding_utf8_1()
-    str = Uconv.euctou8("日本語とLatinの文字")
+    str = NKF.nkf("-E -w", "日本語とLatinの文字")
     expected = "UTF-8"
     assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
     assert_equal(expected, CharString.guess_encoding_using_iconv(str))
     assert_equal(expected, CharString.guess_encoding(str))
   end
   def test_guess_encoding_utf8_2()
-    str = Uconv.euctou8("いろは\nにほへと\n")
+    str = NKF.nkf("-E -w", "いろは\nにほへと\n")
     expected = "UTF-8"
     assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
     assert_equal(expected, CharString.guess_encoding_using_iconv(str))

@@ -1,8 +1,8 @@
 #!/usr/bin/ruby
+# -*- coding: us-ascii; -*-
 require 'test/unit'
 require 'docdiff'
 require 'nkf'
-require 'uconv'
 
 class TC_Document < Test::Unit::TestCase
 

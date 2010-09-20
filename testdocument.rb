@@ -3,7 +3,6 @@
 require 'test/unit'
 require 'docdiff/document'
 require 'nkf'
-require 'uconv'
 
 class TC_Document < Test::Unit::TestCase
 
@@ -483,132 +482,132 @@ class TC_Document < Test::Unit::TestCase
 
   # test UTF8 module
   def test_utf8_split_to_word()
-    doc = Document.new(Uconv.euctou8("日本語の文字foo bar"))
-    expected = ["日本語の", "文字", "foo ", "bar"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "日本語の文字foo bar"))
+    expected = ["日本語の", "文字", "foo ", "bar"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_kanhira()
-    doc = Document.new(Uconv.euctou8("日本語の文字"))
-    expected = ["日本語の", "文字"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "日本語の文字"))
+    expected = ["日本語の", "文字"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_katahira()
-    doc = Document.new(Uconv.euctou8("カタカナの文字"))
-    expected = ["カタカナの", "文字"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "カタカナの文字"))
+    expected = ["カタカナの", "文字"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_kataonbiki()
-    doc = Document.new(Uconv.euctou8("ルビーの指輪"))
-    expected = ["ルビーの", "指輪"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "ルビーの指輪"))
+    expected = ["ルビーの", "指輪"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_hiraonbiki()
-    doc = Document.new(Uconv.euctou8("わールビーだ"))
-    expected = ["わー", "ルビーだ"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "わールビーだ"))
+    expected = ["わー", "ルビーだ"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_latinmix()
-    doc = Document.new(Uconv.euctou8("日本語とLatinの文字"))
-    expected = ["日本語と", "Latin", "の", "文字"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "日本語とLatinの文字"))
+    expected = ["日本語と", "Latin", "の", "文字"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_char()
-    doc = Document.new(Uconv.euctou8("日本語a b"), "UTF-8")
-    expected = ["日", "本", "語", "a", " ", "b"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "日本語a b"), "UTF-8")
+    expected = ["日", "本", "語", "a", " ", "b"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_cr()
-    doc = Document.new(Uconv.euctou8("日本語a b\r"), "UTF-8")
-    expected = ["日","本","語","a"," ","b","\r"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "日本語a b\r"), "UTF-8")
+    expected = ["日","本","語","a"," ","b","\r"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_lf()
-    doc = Document.new(Uconv.euctou8("日本語a b\n"), "UTF-8")
-    expected = ["日","本","語","a"," ","b","\n"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "日本語a b\n"), "UTF-8")
+    expected = ["日","本","語","a"," ","b","\n"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_crlf()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
-    expected = ["日","本","語","a"," ","b","\r\n"].collect{|c| Uconv.euctou8(c)}
+    doc = Document.new(NKF.nkf("-E -w", "日本語a b\r\n"), "UTF-8")
+    expected = ["日","本","語","a"," ","b","\r\n"].collect{|c| NKF.nkf("-E -w", c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_count_char()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
+    doc = Document.new(NKF.nkf("-E -w", "日本語a b\r\n"), "UTF-8")
     expected = 7
     assert_equal(expected, doc.count_char)
   end
   def test_utf8_count_latin_graph_char()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
+    doc = Document.new(NKF.nkf("-E -w", "日本語a b\r\n"), "UTF-8")
     expected = 2
     assert_equal(expected, doc.count_latin_graph_char)
   end
   def test_utf8_count_ja_graph_char()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
+    doc = Document.new(NKF.nkf("-E -w", "日本語a b\r\n"), "UTF-8")
     expected = 3
     assert_equal(expected, doc.count_ja_graph_char)
   end
   def test_utf8_count_graph_char()
-    doc = Document.new(Uconv.euctou8("日本語a b\r\n"), "UTF-8")
+    doc = Document.new(NKF.nkf("-E -w", "日本語a b\r\n"), "UTF-8")
     expected = 5
     assert_equal(expected, doc.count_graph_char)
   end
   def test_utf8_count_latin_blank_char()
-    doc = Document.new(Uconv.euctou8("日本語\ta b\r\n"))
+    doc = Document.new(NKF.nkf("-E -w", "日本語\ta b\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_blank_char)
   end
   def test_utf8_count_ja_blank_char()
-    doc = Document.new(Uconv.euctou8("日本　語\ta b\r\n"))
+    doc = Document.new(NKF.nkf("-E -w", "日本　語\ta b\r\n"))
     expected = 1
     assert_equal(expected, doc.count_ja_blank_char)
   end
   def test_utf8_count_blank_char()
-    doc = Document.new(Uconv.euctou8("日本　語\ta b\r\n"))
+    doc = Document.new(NKF.nkf("-E -w", "日本　語\ta b\r\n"))
     expected = 3
     assert_equal(expected, doc.count_blank_char)
   end
   def test_utf8_count_word()
-    doc = Document.new(Uconv.euctou8("日本　語a b --\r\n"))
+    doc = Document.new(NKF.nkf("-E -w", "日本　語a b --\r\n"))
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, doc.count_word)
   end
   def test_utf8_count_ja_word()
-    doc = Document.new(Uconv.euctou8("日本　語a b --\r\n"))
+    doc = Document.new(NKF.nkf("-E -w", "日本　語a b --\r\n"))
     expected = 3
     assert_equal(expected, doc.count_ja_word)
   end
   def test_utf8_count_latin_valid_word()
-    doc = Document.new(Uconv.euctou8("日本　語a b --\r\n"))
+    doc = Document.new(NKF.nkf("-E -w", "日本　語a b --\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_valid_word)
   end
   def test_utf8_count_ja_valid_word()
-    doc = Document.new(Uconv.euctou8("日本　語a b --\r\n"))
+    doc = Document.new(NKF.nkf("-E -w", "日本　語a b --\r\n"))
     expected = 2
     assert_equal(expected, doc.count_ja_valid_word)
   end
   def test_utf8_count_valid_word()
-    doc = Document.new(Uconv.euctou8("日本　語a b --\r\n"))
+    doc = Document.new(NKF.nkf("-E -w", "日本　語a b --\r\n"))
     expected = 4
     assert_equal(expected, doc.count_valid_word)
   end
   def test_utf8_count_line()
-    doc = Document.new(Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("-E -w", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar"))
     expected = 6
     assert_equal(expected, doc.count_line)
   end
   def test_utf8_count_graph_line()
-    doc = Document.new(Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("-E -w", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar"))
     expected = 3
     assert_equal(expected, doc.count_graph_line)
   end
   def test_utf8_count_empty_line()
-    doc = Document.new(Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("-E -w", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar"))
     expected = 1
     assert_equal(expected, doc.count_empty_line)
   end
   def test_utf8_count_blank_line()
-    doc = Document.new(Uconv.euctou8("日本語\r\n　\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("-E -w", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar"))
     expected = 2
     assert_equal(expected, doc.count_blank_line)
   end

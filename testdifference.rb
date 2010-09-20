@@ -2,7 +2,6 @@
 require 'test/unit'
 require 'docdiff/difference'
 require 'nkf'
-require 'uconv'
 
 class TC_Difference < Test::Unit::TestCase
 
