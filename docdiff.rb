@@ -207,7 +207,7 @@ if $0 == __FILE__
                  possible_resolutions = ['line', 'word', 'char'],
                  'specify resolution (granularity)',
                  possible_resolutions.join('|') + ' (default is word)'
-                ){|clo[:resolution]| clo[:resolution] ||= "word"}
+                ){|s| clo[:resolution] = (s || "word")}
     o.def_option('--line', 'set resolution to line'){clo[:resolution] = "line"}
     o.def_option('--word', 'set resolution to word'){clo[:resolution] = "word"}
     o.def_option('--char', 'set resolution to char'){clo[:resolution] = "char"}
@@ -216,7 +216,7 @@ if $0 == __FILE__
                  possible_encodings = ['ASCII','EUC-JP','Shift_JIS','UTF-8','auto'],
                  'specify character encoding',
                  possible_encodings.join('|'), "(default is auto. try ASCII for single byte encodings such as ISO-8859-X)"
-                ){|clo[:encoding]| clo[:encoding] ||= "auto"}
+                ){|s| clo[:encoding] = (s || "auto")}
     o.def_option('--ascii', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
     o.def_option('--iso8859x', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
     o.def_option('--eucjp', 'same as --encoding=EUC-JP'){clo[:encoding] = "EUC-JP"}
@@ -227,7 +227,7 @@ if $0 == __FILE__
                  possible_eols = ['CR','LF','CRLF','auto'],
                  'specify end-of-line character',
                  possible_eols.join('|') + ' (default is auto)'
-                ){|clo[:eol]| clo[:eol] ||= "auto"}
+                ){|s| clo[:eol] = (s || "auto")}
     o.def_option('--cr', 'same as --eol=CR'){clo[:eol] = "CR"}
     o.def_option('--lf', 'same as --eol=LF'){clo[:eol] = "LF"}
     o.def_option('--crlf', 'same as --eol=CRLF'){clo[:eol] = "CRLF"}
@@ -238,7 +238,7 @@ if $0 == __FILE__
                  possible_formats.join('|'),
                  "(default is html)",
                  '(user tags can be defined in config file)'
-                ){|clo[:format]| clo[:format] ||= "manued"}
+                ){|s| clo[:format] = (s || "manued")}
     o.def_option('--tty', 'same as --format=tty'){clo[:format] = "tty"}
     o.def_option('--manued', 'same as --format=manued'){clo[:format] = "manued"}
     o.def_option('--html', 'same as --format=html'){clo[:format] = "html"}
@@ -246,7 +246,8 @@ if $0 == __FILE__
     o.def_option('--stat', 'same as --format=stat (not supported yet)'){clo[:format] = "stat"}
 
     o.def_option('--label LABEL', '-L LABEL',
-                 'Use label instead of filename (not supported yet)'){|clo[:label1], clo[:label2]|}
+                 'Use label instead of filename (not supported yet)'
+                 ){|s1, s2| clo[:label1], clo[:label2] = s1, s2}
 
     o.def_option('--digest', 'digest output, do not show all'){clo[:digest] = true}
     o.def_option('--summary', 'same as --digest'){clo[:digest] = true}
