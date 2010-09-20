@@ -57,9 +57,9 @@ class DocDiff
     words = Difference.new
     lines.each{|line|
       if line.first == :change_elt
-        before_change = Document.new(line[1].to_s,
+        before_change = Document.new(line[1].join,
                                      doc1.encoding, doc1.eol)
-        after_change  = Document.new(line[2].to_s,
+        after_change  = Document.new(line[2].join,
                                      doc2.encoding, doc2.eol)
         Difference.new(before_change.split_to_word,
                        after_change.split_to_word).each{|word|
@@ -78,9 +78,9 @@ class DocDiff
     lines_and_words = Difference.new
     lines.each{|line|
       if line.first == :change_elt
-        before_change = Document.new(line[1].to_s,
+        before_change = Document.new(line[1].join,
                                      doc1.encoding, doc1.eol)
-        after_change  = Document.new(line[2].to_s,
+        after_change  = Document.new(line[2].join,
                                      doc2.encoding, doc2.eol)
         Difference.new(before_change.split_to_word,
                        after_change.split_to_word).each{|word|
@@ -93,8 +93,8 @@ class DocDiff
     lines_words_and_chars = Difference.new
     lines_and_words.each{|line_or_word|
       if line_or_word.first == :change_elt
-        before_change = Document.new(line_or_word[1].to_s, doc1.encoding, doc1.eol)
-        after_change  = Document.new(line_or_word[2].to_s, doc2.encoding, doc2.eol)
+        before_change = Document.new(line_or_word[1].join, doc1.encoding, doc1.eol)
+        after_change  = Document.new(line_or_word[2].join, doc2.encoding, doc2.eol)
         Difference.new(before_change.split_to_char, after_change.split_to_char).each{|char|
           lines_words_and_chars << char
         }
@@ -159,7 +159,7 @@ class DocDiff
         raise "Unsupported output format: #{option[:format].inspect}."
       end
     end
-    result.to_s
+    result.join
   end
 
   def process_config_file(filename)

@@ -123,7 +123,7 @@ class TC_Document < Test::Unit::TestCase
                "foo1 = tRue\n",
                "\n",
                "",
-               nil].to_s
+               nil].join
     expected = {:foo1=>true, :foo2=>"bar baz", :foo3=>123, :foo4=>false}
     docdiff = DocDiff.new
     assert_equal(expected,
