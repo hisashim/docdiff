@@ -100,7 +100,7 @@ def anatomize_classic(src)
     when /\A[0-9]/.match(m) then # hunk
       diffed.concat(anatomize_classic_hunk(m, src_encoding, src_eol))
     else # not hunk
-      diffed.concat(Difference.new(m.to_a, m.to_a))
+      diffed.concat(Difference.new(m.split(/^/), m.split(/^/)))
     end
   }
   return diffed

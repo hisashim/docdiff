@@ -57,11 +57,11 @@ class View
     @difference.each{|block|
       operation = block.first
       if block_given?
-        src = yield block[1].to_s
-        tgt = yield block[2].to_s
+        src = yield((block[1] || []).join)
+        tgt = yield((block[1] || []).join)
       else
-        src = block[1].to_s
-        tgt = block[2].to_s
+        src = (block[1] || []).join
+        tgt = (block[2] || []).join
       end
       case operation
       when :common_elt_elt
@@ -96,21 +96,21 @@ class View
     d2l = doc2_line_number = 1
     @difference.each_with_index{|entry, i|
       if block_given?
-        src = yield entry[1].to_s
-        tgt = yield entry[2].to_s
+        src = yield((entry[1] || []).join)
+        tgt = yield((entry[1] || []).join)
       else
-        src = entry[1].to_s
-        tgt = entry[2].to_s
+        src = (entry[1] || []).join
+        tgt = (entry[2] || []).join
       end
       cxt_pre = if i == 0
                    ""  # no pre context for the first entry
                 else
-                  @difference[i-1][1].to_s.scan(cxt_pre_pat).to_s
+                  (@difference[i-1][1] || []).join.scan(cxt_pre_pat).join
                 end
       cxt_post = if (i + 1) == @difference.size
                    ""  # no post context for the last entry
                  else
-                   @difference[i+1][1].to_s.scan(cxt_post_pat).to_s
+                   (@difference[i+1][1] || []).join.scan(cxt_post_pat).join
                  end
       # elements for an entry
       e_head     = Proc.new {|pos_str|

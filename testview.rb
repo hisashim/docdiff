@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# -*- coding: euc-jp; -*-
 require 'test/unit'
 require 'docdiff/view'
 require 'docdiff/difference'

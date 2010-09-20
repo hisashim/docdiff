@@ -15,7 +15,7 @@ class Document
     @body.extend CharString
     if enc
       @body.encoding = enc
-    else
+    elsif !@body.encoding
       guessed_encoding = CharString.guess_encoding(str)
       if guessed_encoding == "UNKNOWN"
         raise EncodingDetectionFailure, "encoding not specified, and auto detection failed."
