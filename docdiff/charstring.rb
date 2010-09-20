@@ -139,7 +139,11 @@ if ruby_m17n?
   end
 
   def CharString.guess_encoding(string)
-    return string.encoding.to_s
+    if string
+      string.encoding.to_s
+    else
+      nil
+    end
   end
 
   def split_to_byte()

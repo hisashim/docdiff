@@ -855,12 +855,18 @@ class TC_CharString < Test::Unit::TestCase
 
   # test module functions
 
+  def assert_guess_encoding(expected, str)
+    unless CharString.ruby_m17n?
+      assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
+      assert_equal(expected, CharString.guess_encoding_using_iconv(str))
+    end
+    assert_equal(expected, CharString.guess_encoding(str))
+  end
+
   def test_guess_encoding_nil()
     str = nil
     expected = nil
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    assert_guess_encoding(expected, str)
   end
 #   def test_guess_encoding_binary()
 #     str = "\xFF\xFF"
@@ -868,89 +874,80 @@ class TC_CharString < Test::Unit::TestCase
 #     assert_equal(expected, CharString.guess_encoding(str))
 #   end
   def test_guess_encoding_unknown()
-    str = "\xff\xff\xff\xff"  # "\xDE\xAD\xBE\xEF"
-    expected = "UNKNOWN"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    if CharString.ruby_m17n?
+      str = "".encode("BINARY") # cannot put invalid string literal
+      expected = "ASCII-8BIT"
+    else
+      str = "\xff\xff\xff\xff"  # "\xDE\xAD\xBE\xEF"
+      expected = "UNKNOWN"
+    end
+    assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_ascii_1()
-    str = "ASCII string"
-    expected = "US-ASCII"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    if CharString.ruby_m17n?
+      str = "ASCII string".encode("US-ASCII")
+      expected = "US-ASCII"
+    else
+      str = "ASCII string"
+      expected = "US-ASCII"
+    end
+    assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_ascii_2()
-    str = "abc\ndef\n"
-    expected = "US-ASCII"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    if CharString.ruby_m17n?
+      str = "abc\ndef\n".encode("US-ASCII")
+      expected = "US-ASCII"
+    else
+      str = "abc\ndef\n"
+      expected = "US-ASCII"
+    end
+    assert_guess_encoding(expected, str)
   end
 # CharString.guess_encoding mistakes JIS for ASCII sometimes, due to Iconv.
 #   def test_guess_encoding_jis_1()
 #     str = NKF.nkf("-j", "漢字とカタカナとひらがな\n")
 #     expected = "JIS"
-#     assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-#     assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-#     assert_equal(expected, CharString.guess_encoding(str))
+#     assert_guess_encoding(expected, str)
 #   end
 #   def test_guess_encoding_jis_2()
 #     str = NKF.nkf("-j", "漢字とカタカナとひらがなとLatinの文字と空白( )と記号@\n" * 100)
 #     expected = "JIS"
-#     assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-#     assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-#     assert_equal(expected, CharString.guess_encoding(str))
+#     assert_guess_encoding(expected, str)
 #   end
   def test_guess_encoding_eucjp_1()
     str = NKF.nkf("-e", "日本語とLatinの文字")
     expected = "EUC-JP"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_eucjp_2()
     str = NKF.nkf('-e', "漢字とカタカナとひらがなとLatinの文字と空白( )\n" * 10)
     expected = "EUC-JP"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_eucjp_3()
     str = NKF.nkf('-e', "こんばんは、私の名前はまつもとです。\nRubyを作ったのは私です。私はRuby Hackerです。\n")
     expected = "EUC-JP"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_sjis_1()
     str = NKF.nkf("-s", "日本語とLatinの文字")
     expected = "Shift_JIS"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_sjis_2()
     str = NKF.nkf('-s', "漢字と\nカタカナと\nひらがなと\nLatin")
     expected = "Shift_JIS"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_utf8_1()
     str = NKF.nkf("-E -w", "日本語とLatinの文字")
     expected = "UTF-8"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_utf8_2()
     str = NKF.nkf("-E -w", "いろは\nにほへと\n")
     expected = "UTF-8"
-    assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-    assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    assert_equal(expected, CharString.guess_encoding(str))
+    assert_guess_encoding(expected, str)
   end
 
   def test_guess_eol_nil()
