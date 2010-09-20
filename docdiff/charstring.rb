@@ -87,6 +87,10 @@ module CharString
     end
   end
 
+  def CharString.ruby_m17n?
+    "".respond_to?(:force_encoding)
+  end
+
   # Note that some languages (like Japanese) do not have 'word' or 'phrase', 
   # thus some of the following methods are not 'linguistically correct'.
 
@@ -124,7 +128,7 @@ module CharString
     }.compact.size
   end
 
-if "".respond_to?(:force_encoding)
+if ruby_m17n?
   # for Ruby-1.9
   def encoding()
     String.new(self).encoding.to_s
@@ -516,7 +520,7 @@ else
   require 'docdiff/encoding/ja_eucjp'
   require 'docdiff/encoding/ja_sjis'
   require 'docdiff/encoding/ja_utf8'
-end
+end # end ruby_m17n?
   alias to_bytes split_to_byte
   alias to_chars split_to_char
   alias to_words split_to_word
