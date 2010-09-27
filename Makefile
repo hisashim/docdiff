@@ -23,9 +23,11 @@ test: $(TESTLOGS)
 test%.log:
 	$(RUBY) -I. test$*.rb | tee $@
 
+docs:	$(GENERATEDDOCS)
+
 ChangeLog:
 # For real ChangeLog style, try http://arthurdejong.org/svn2cl/
-	@if [ -d .svn ] ; then \
+	if [ -d .svn ] ; then \
 	  svn log -rHEAD:0 -v > ChangeLog ; \
 	else \
 	  git svn log > ChangeLog ; \
@@ -50,4 +52,4 @@ clean:
 distclean: clean
 	rm -f $(PACKAGE)-$(VERSION).tar.gz
 
-.PHONY:	testall test dist clean distclean
+.PHONY:	testall test docs dist clean distclean
