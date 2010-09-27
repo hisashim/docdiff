@@ -55,7 +55,7 @@
 <body>
 <h1>DocDiff Readme</h1>
 <p>
- 2000-12-09..200x-xx-xx Hisashi MORITA
+ 2000-12-09..201x-xx-xx Hisashi MORITA
 </p>
 
 <hr />
@@ -211,12 +211,10 @@
  <span lang="ja">予定</span>
 </h2>
 <ul>
- <li>Fixing bugs.</li>
- <li>Incorporate user feedback.</li>
+ <li>Incorporate ignore space patch.</li>
  <li>Better auto-recognition of encodings and eols.</li>
  <li>Make CSS and tty escape sequence customizable in config files.</li>
- <li>Make stand-alone Windows application using Exerb, hopefully with fancy GUI.</li>
- <li>Multilingualization (M17N), when Ruby is multilingualized.</li>
+ <li>Better multilingualization using Ruby 1.9 feature.</li>
  <li>Write "DocPatch".</li>
 </ul>
 
@@ -227,10 +225,10 @@
  <span lang="ja">簡単な説明</span>
 </h2>
 <p lang="en">
- Compares two text files word by word / char by char
+ Compares two text files by word, by character, or by line
 </p>
 <p lang="ja">
- 2つのテキストファイルを単語ごとあるいは文字ごとに比較する
+ 2つのテキストファイルを単語ごと、文字ごと、あるいは行ごとに比較する
 </p>
 
 <h2 id="summary">
@@ -497,14 +495,30 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
  <span lang="ja">DocDiffをバージョン管理システムと組み合わせて使う</span>
 </h3>
 <p lang="en">
- If you want to use DocDiff as an external diff program from Subversion, the following may work.
+ If you want to use DocDiff as an external diff program from VCSs, the following may work.
 </p>
 <p lang="ja">
- DocDiffをSubversionなどの外部diffプログラムとして使いたければ、次のようにするとよいでしょう。
+ DocDiffをVCSの外部diffプログラムとして使いたければ、次のようにするとよいでしょう。
 </p>
-<blockquote><p>
- <samp>% <kbd>svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"</kbd></samp>
-</p></blockquote>
+<dl>
+<dt>Subversion</dt>
+<dd>
+ <p>
+  <samp>% <kbd>svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"</kbd></samp>
+ </p>
+</dd>
+<dt>Git</dt>
+<dd>
+ <p>
+  <samp>% <kbd>GIT_EXTERNAL_DIFF=~/bin/gitdocdiff.sh git diff</kbd></samp>
+ </p>
+ <p>
+  ~/bin/gitdocdiff.sh:
+ </p>
+ <pre>#!/bin/sh
+docdiff --ascii --lf --tty --digest $2 $5</pre>
+</dd>
+</dl>
 <p lang="en">
  With zsh, you can use DocDiff or other utility to compare arbitrary sources.  In the following example, we compare specific revision of foo.html in a repository with one on a website.
 </p>
