@@ -13,6 +13,10 @@ DIST = Makefile devutil docdiff docdiff.conf.example docdiff.rb \
 TESTLOGS = testdocdiff.log testcharstring.log testdocument.log \
 	testdiff.log testdifference.log testview.log testviewdiff.log
 # PWDBASE = `pwd | sed "s|^.*[/\\]||"`
+WWWUSER = hisashim,docdiff
+WWWSITE = web.sourceforge.net
+WWWSITEPATH = htdocs/
+WWWDRYRUN = --dry-run
 
 testall:
 	$(MAKE) test RUBY=ruby1.9.1
@@ -44,6 +48,13 @@ dist: $(DIST)
 	tar -z -v -c --exclude "*/.svn" -f \
 	  $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
 	rm -fr $(PACKAGE)-$(VERSION)
+
+wwwupload:
+	make www WWWDRYRUN=
+www: $(DOCS) $(GENERATEDDOCS)
+	rsync $(WWWDRYRUN) -auv -e ssh --delete --exclude='.svn' \
+	$(DOCS) $(GENERATEDDOCS) \
+	$(WWWUSER)@$(WWWSITE):$(WWWSITEPATH)
 
 clean:
 	rm -f $(GENERATEDDOCS)
