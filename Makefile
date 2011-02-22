@@ -1,4 +1,4 @@
-PACKAGE = docdiff
+PRODUCT = docdiff
 VERSION = 0.4.0
 RUBY = ruby
 # DATE = `date +%Y%m%d`
@@ -17,6 +17,12 @@ WWWUSER = hisashim,docdiff
 WWWSITE = web.sourceforge.net
 WWWSITEPATH = htdocs/
 WWWDRYRUN = --dry-run
+
+DESTDIR =
+PREFIX  = /usr/local
+datadir = $(DESTDIR)$(PREFIX)/share
+rubylibdir = $(shell $(RUBY) -rrbconfig -e \
+                             "Config::CONFIG['rubylibdir'].display")
 
 testall:
 	$(MAKE) test RUBY=ruby1.9.1
@@ -42,12 +48,41 @@ readme.%.html: readme.html
 index.%.html: index.html
 	$(RUBY) langfilter.rb --$* $< > $@
 
+install: $(DIST)
+	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
+	  mkdir -p $(DESTDIR)$(PREFIX)/bin; \
+	fi
+	cp -Ppv docdiff.rb $(DESTDIR)$(PREFIX)/bin/docdiff
+	chmod +x $(DESTDIR)$(PREFIX)/bin/docdiff
+
+	@if [ ! -d $(DESTDIR)$(rubylibdir) ]; then \
+	  mkdir -p $(DESTDIR)$(rubylibdir); \
+	fi
+	(tar --exclude=.svn --exclude=.git -cf - docdiff) \
+	 | (cd $(DESTDIR)$(rubylibdir) && tar -xpf -)
+
+	@if [ ! -d $(DESTDIR)/etc/$(PRODUCT) ]; then \
+	  mkdir -p $(DESTDIR)/etc/$(PRODUCT); \
+	fi
+	cp -Pprv docdiff.conf.example $(DESTDIR)/etc/$(PRODUCT)/docdiff.conf
+
+	@if [ ! -d $(datadir)/doc/$(PRODUCT) ]; then \
+	  mkdir -p $(datadir)/doc/$(PRODUCT); \
+	fi
+	cp -Pprv $(DOCS) $(GENERATEDDOCS) $(datadir)/doc/$(PRODUCT)
+
+uninstall:
+	-rm -fr $(DESTDIR)$(PREFIX)/bin/docdiff
+	-rm -fr $(DESTDIR)$(rubylibdir)/$(PRODUCT)
+	-rm -fr $(DESTDIR)/etc/$(PRODUCT)
+	-rm -fr $(datadir)/doc/$(PRODUCT)
+
 dist: $(DIST)
-	mkdir $(PACKAGE)-$(VERSION)
-	cp -rp $(DIST) $(PACKAGE)-$(VERSION)
+	mkdir $(PRODUCT)-$(VERSION)
+	cp -rp $(DIST) $(PRODUCT)-$(VERSION)
 	tar -z -v -c --exclude "*/.svn" -f \
-	  $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
-	rm -fr $(PACKAGE)-$(VERSION)
+	  $(PRODUCT)-$(VERSION).tar.gz $(PRODUCT)-$(VERSION)
+	rm -fr $(PRODUCT)-$(VERSION)
 
 wwwupload:
 	make www WWWDRYRUN=
@@ -61,6 +96,6 @@ clean:
 	rm -f $(TESTLOGS)
 
 distclean: clean
-	rm -f $(PACKAGE)-$(VERSION).tar.gz
+	rm -f $(PRODUCT)-$(VERSION).tar.gz
 
 .PHONY:	testall test docs dist clean distclean
