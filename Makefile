@@ -1,18 +1,19 @@
 PRODUCT = docdiff
 VERSION = 0.4.0
 RUBY = ruby
-# DATE = `date +%Y%m%d`
-GENERATEDDOCS = ChangeLog readme.en.html readme.ja.html \
-	index.en.html index.ja.html
-DOCS = readme.html index.html img sample
-TESTS = testcharstring.rb testdiff.rb testdifference.rb \
-	testdocdiff.rb testdocument.rb testview.rb
-DIST = Makefile devutil docdiff docdiff.conf.example docdiff.rb \
-	docdiffwebui.html docdiffwebui.cgi \
-	$(DOCS) $(GENERATEDDOCS) $(TESTS)
+TAR_XVCS = tar --exclude=.svn --exclude=.git
+
+DOCS   = ChangeLog readme.en.html readme.ja.html \
+         index.en.html index.ja.html
+DOCSRC = readme.html index.html img sample
+TESTS  = testcharstring.rb testdiff.rb testdifference.rb \
+         testdocdiff.rb testdocument.rb testview.rb
+DIST   = Makefile devutil docdiff docdiff.conf.example docdiff.rb \
+         docdiffwebui.html docdiffwebui.cgi \
+         $(DOCSRC) $(DOCS) $(TESTS)
 TESTLOGS = testdocdiff.log testcharstring.log testdocument.log \
-	testdiff.log testdifference.log testview.log testviewdiff.log
-# PWDBASE = `pwd | sed "s|^.*[/\\]||"`
+         testdiff.log testdifference.log testview.log testviewdiff.log
+
 WWWUSER = hisashim,docdiff
 WWWSITE = web.sourceforge.net
 WWWSITEPATH = htdocs/
@@ -24,6 +25,8 @@ datadir = $(DESTDIR)$(PREFIX)/share
 rubylibdir = $(shell $(RUBY) -rrbconfig -e \
                              "Config::CONFIG['rubylibdir'].display")
 
+all:	$(DOCS)
+
 testall:
 	$(MAKE) test RUBY=ruby1.9.1
 	$(MAKE) test RUBY=ruby1.8
@@ -33,7 +36,7 @@ test: $(TESTLOGS)
 test%.log:
 	$(RUBY) -I. test$*.rb | tee $@
 
-docs:	$(GENERATEDDOCS)
+docs:	$(DOCS)
 
 ChangeLog:
 # For real ChangeLog style, try http://arthurdejong.org/svn2cl/
@@ -44,9 +47,9 @@ ChangeLog:
 	fi
 
 readme.%.html: readme.html
-	$(RUBY) langfilter.rb --$* $< > $@
+	$(RUBY) -Ku langfilter.rb --$* $< > $@
 index.%.html: index.html
-	$(RUBY) langfilter.rb --$* $< > $@
+	$(RUBY) -Ku langfilter.rb --$* $< > $@
 
 install: $(DIST)
 	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
@@ -58,8 +61,7 @@ install: $(DIST)
 	@if [ ! -d $(DESTDIR)$(rubylibdir) ]; then \
 	  mkdir -p $(DESTDIR)$(rubylibdir); \
 	fi
-	(tar --exclude=.svn --exclude=.git -cf - docdiff) \
-	 | (cd $(DESTDIR)$(rubylibdir) && tar -xpf -)
+	($(TAR_XVCS) -cf - docdiff) | (cd $(DESTDIR)$(rubylibdir) && tar -xpf -)
 
 	@if [ ! -d $(DESTDIR)/etc/$(PRODUCT) ]; then \
 	  mkdir -p $(DESTDIR)/etc/$(PRODUCT); \
@@ -69,7 +71,7 @@ install: $(DIST)
 	@if [ ! -d $(datadir)/doc/$(PRODUCT) ]; then \
 	  mkdir -p $(datadir)/doc/$(PRODUCT); \
 	fi
-	cp -Pprv $(DOCS) $(GENERATEDDOCS) $(datadir)/doc/$(PRODUCT)
+	cp -Pprv $(DOCSRC) $(DOCS) $(datadir)/doc/$(PRODUCT)
 
 uninstall:
 	-rm -fr $(DESTDIR)$(PREFIX)/bin/docdiff
@@ -80,22 +82,23 @@ uninstall:
 dist: $(DIST)
 	mkdir $(PRODUCT)-$(VERSION)
 	cp -rp $(DIST) $(PRODUCT)-$(VERSION)
-	tar -z -v -c --exclude "*/.svn" -f \
-	  $(PRODUCT)-$(VERSION).tar.gz $(PRODUCT)-$(VERSION)
-	rm -fr $(PRODUCT)-$(VERSION)
+	$(TAR_XVCS) -zvcf $(PRODUCT)-$(VERSION).tar.gz $(PRODUCT)-$(VERSION)
+	-rm -fr $(PRODUCT)-$(VERSION)
 
 wwwupload:
-	make www WWWDRYRUN=
-www: $(DOCS) $(GENERATEDDOCS)
-	rsync $(WWWDRYRUN) -auv -e ssh --delete --exclude='.svn' \
-	$(DOCS) $(GENERATEDDOCS) \
-	$(WWWUSER)@$(WWWSITE):$(WWWSITEPATH)
+	$(MAKE) www WWWDRYRUN=
+www: $(DOCSRC) $(DOCS)
+	rsync $(WWWDRYRUN) -auv -e ssh --delete \
+	  --exclude='.svn' --exclude='.git' \
+	  $(DOCSRC) $(DOCS) \
+	  $(WWWUSER)@$(WWWSITE):$(WWWSITEPATH)
 
 clean:
-	rm -f $(GENERATEDDOCS)
-	rm -f $(TESTLOGS)
+	-rm -fr $(DOCS)
+	-rm -fr $(TESTLOGS)
 
 distclean: clean
-	rm -f $(PRODUCT)-$(VERSION).tar.gz
+	-rm -fr $(PRODUCT)-$(VERSION).tar.gz
 
-.PHONY:	testall test docs dist clean distclean
+.PHONY:	all testall test docs install uninstall dist \
+	wwwupload www clean distclean
