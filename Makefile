@@ -22,8 +22,6 @@ WWWDRYRUN = --dry-run
 DESTDIR =
 PREFIX  = /usr/local
 datadir = $(DESTDIR)$(PREFIX)/share
-rubylibdir = $(shell $(RUBY) -rrbconfig -e \
-                             "Config::CONFIG['rubylibdir'].display")
 
 all:	$(DOCS)
 
@@ -58,10 +56,10 @@ install: $(DIST)
 	cp -Ppv docdiff.rb $(DESTDIR)$(PREFIX)/bin/docdiff
 	chmod +x $(DESTDIR)$(PREFIX)/bin/docdiff
 
-	@if [ ! -d $(DESTDIR)$(rubylibdir) ]; then \
-	  mkdir -p $(DESTDIR)$(rubylibdir); \
+	@if [ ! -d $(datadir)$(PRODUCT) ]; then \
+	  mkdir -p $(datadir)$(PRODUCT); \
 	fi
-	($(TAR_XVCS) -cf - docdiff) | (cd $(DESTDIR)$(rubylibdir) && tar -xpf -)
+	($(TAR_XVCS) -cf - docdiff) | (cd $(datadir)$(PRODUCT) && tar -xpf -)
 
 	@if [ ! -d $(DESTDIR)/etc/$(PRODUCT) ]; then \
 	  mkdir -p $(DESTDIR)/etc/$(PRODUCT); \
@@ -75,7 +73,7 @@ install: $(DIST)
 
 uninstall:
 	-rm -fr $(DESTDIR)$(PREFIX)/bin/docdiff
-	-rm -fr $(DESTDIR)$(rubylibdir)/$(PRODUCT)
+	-rm -fr $(datadir)/$(PRODUCT)
 	-rm -fr $(DESTDIR)/etc/$(PRODUCT)
 	-rm -fr $(datadir)/doc/$(PRODUCT)
 

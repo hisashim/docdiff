@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/ruby -I /usr/share/docdiff
 # DocDiff: word/char-oriented text comparison utility
 # 2002-06-27 Thu ... 201x-xx-xx xxx
 # Hisashi MORITA
