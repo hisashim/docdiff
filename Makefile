@@ -9,6 +9,7 @@ DOCSRC = readme.html index.html img sample
 TESTS  = testcharstring.rb testdiff.rb testdifference.rb \
          testdocdiff.rb testdocument.rb testview.rb
 DIST   = Makefile devutil docdiff docdiff.conf.example docdiff.rb \
+         docdiff.gemspec \
          docdiffwebui.html docdiffwebui.cgi \
          $(DOCSRC) $(DOCS) $(TESTS)
 TESTLOGS = testdocdiff.log testcharstring.log testdocument.log \
@@ -83,6 +84,10 @@ dist: $(DIST)
 	$(TAR_XVCS) -zvcf $(PRODUCT)-$(VERSION).tar.gz $(PRODUCT)-$(VERSION)
 	-rm -fr $(PRODUCT)-$(VERSION)
 
+gem: $(PRODUCT)-$(VERSION).gem
+$(PRODUCT)-$(VERSION).gem: $(PRODUCT).gemspec
+	gem build $<
+
 wwwupload:
 	$(MAKE) www WWWDRYRUN=
 www: $(DOCSRC) $(DOCS)
@@ -97,6 +102,7 @@ clean:
 
 distclean: clean
 	-rm -fr $(PRODUCT)-$(VERSION).tar.gz
+	-rm -fr $(PRODUCT)-$(VERSION).gem
 
-.PHONY:	all testall test docs install uninstall dist \
+.PHONY:	all testall test docs install uninstall dist gem \
 	wwwupload www clean distclean
