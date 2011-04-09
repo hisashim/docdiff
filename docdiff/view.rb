@@ -83,13 +83,26 @@ class View
     result.delete_if{|elem|elem==''}
   end
 
+  def encname_for_regexp(encname)
+    def ruby_m17n?
+      "".respond_to?(:force_encoding)
+    end
+    if ruby_m17n?
+      # in 1.9.x, encoding names are deprecated except for N (ASCII-8BIT (binary))
+      nil
+    else
+      # in 1.8.x, U|E|S|N are accepted
+      encname.sub(/US-ASCII/i, 'none')
+    end
+  end
+
   CONTEXT_PRE_LENGTH  = 32
   CONTEXT_POST_LENGTH = 32
   def apply_style_digest(tags, headfoot = true)
     cxt_pre_pat  = Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z',
-                              Regexp::MULTILINE, @encoding.sub(/US-ASCII/i, 'none'))
+                              Regexp::MULTILINE, encname_for_regexp(@encoding))
     cxt_post_pat = Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}',
-                              Regexp::MULTILINE, @encoding.sub(/US-ASCII/i, 'none'))
+                              Regexp::MULTILINE, encname_for_regexp(@encoding))
     display = (tags and tags[:display]) || 'inline'
     result = []
     d1l = doc1_line_number = 1
