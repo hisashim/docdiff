@@ -1,7 +1,11 @@
 #!/usr/bin/ruby -I /usr/share/docdiff
-# DocDiff: word/character-oriented text comparison utility
-# Copyright (C) 2002-2011 Hisashi MORITA
-# Requirements: Ruby (>= 1.8)
+# ----------------------------------------
+# THIS FILE IS FOR BACKWORD COMPATIBILITY
+# (using in Makefile)
+# ----------------------------------------
+#DocDiff: word/character-oriented text comparison utility
+#Copyright (C) 2002-2011 Hisashi MORITA
+#Requirements: Ruby (>= 1.8)
 
 require 'docdiff/difference'
 require 'docdiff/document'
