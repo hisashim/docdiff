@@ -1,9 +1,10 @@
 # -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "docdiff/version"
 
 Gem::Specification.new do |s|
   s.name        = "docdiff"
-  s.version     = "0.4.0"
-  s.platform    = Gem::Platform::RUBY
+  s.version     = Docdiff::VERSION
   s.authors     = ["Hisashi Morita"]
   s.email       = ["hisashim at users.sourceforge.net"]
   s.homepage    = "http://docdiff.sourceforge.net"
@@ -14,14 +15,9 @@ Gem::Specification.new do |s|
                      several output formats such as HTML, tty, Manued,
                      or user-defined markup.}
   s.rubyforge_project = "docdiff"
-  s.files       = Dir.glob %w{Makefile Rakefile devutil/**/*
-                              docdiff.conf.example docdiff.gemspec
-                              docdiff.rb docdiff/**/* docdiffwebui.cgi
-                              docdiffwebui.html img/**/* index.html
-                              langfilter.rb readme.html sample/**/*
-                              test*.rb viewdiff.rb}
-  s.test_files  = Dir.glob %w{test*.rb}
-  s.bindir      = "."
-  s.executables = "docdiff.rb"
-  s.require_paths = ["."]
+
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib", "."]
 end
