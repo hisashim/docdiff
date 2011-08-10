@@ -1,9 +1,10 @@
 # DocDiff: word/character-oriented text comparison utility
 # Copyright (C) 2002-2011 Hisashi MORITA
 # Requirements: Ruby (>= 1.8)
+require 'docdiff/version'
 class DocDiff
 
-  AppVersion = '0.4.0'
+  AppVersion = Docdiff::VERSION
   Author = "Copyright (C) 2002-2011 Hisashi MORITA.\n" +
            "diff library originates from Ruby/CVS by TANAKA Akira.\n"
   License = "This software is licensed under so-called modified BSD license.\n" +
