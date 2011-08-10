@@ -143,7 +143,7 @@ end
 
 module ContextDiff
   def eol
-    "(?:\r\n|\n|\r|\z)"
+    "(?:\r\n|\n|\r|\\z)"
   end
   def noneol
     "(?:[^\r\n])"
