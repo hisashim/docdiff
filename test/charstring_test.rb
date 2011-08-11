@@ -985,17 +985,17 @@ class TC_CharString < Test::Unit::TestCase
     expected = "UNKNOWN"
     assert_equal(expected, CharString.guess_eol(str))
   end
-  def test_guess_eol_cr()
+  def test_guess_eol_cr2()
     str = "foo\rbar\rbaz\r".extend CharString
     expected = "CR"
     assert_equal(expected, CharString.guess_eol(str))
   end
-  def test_guess_eol_lf()
+  def test_guess_eol_lf2()
     str = "foo\nbar\nbaz\n".extend CharString
     expected = "LF"
     assert_equal(expected, CharString.guess_eol(str))
   end
-  def test_guess_eol_crlf()
+  def test_guess_eol_crlf2()
     str = "foo\r\nbar\r\nbaz\r\n".extend CharString
     expected = "CRLF"
     assert_equal(expected, CharString.guess_eol(str))
