@@ -33,7 +33,7 @@ testall:
 test: $(TESTLOGS)
 
 test%.log:
-	$(RUBY) -I. test$*.rb | tee $@
+	$(RUBY) -I. test/test$*.rb | tee $@
 
 docs:	$(DOCS)
 
