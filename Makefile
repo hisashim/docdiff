@@ -38,12 +38,7 @@ test%.log:
 docs:	$(DOCS)
 
 ChangeLog:
-# For real ChangeLog style, try http://arthurdejong.org/svn2cl/
-	if [ -d .svn ] ; then \
-	  svn log -rHEAD:0 -v > ChangeLog ; \
-	else \
-	  git svn log > ChangeLog ; \
-	fi
+	devutil/changelog.sh > $@
 
 readme.%.html: readme.html
 	$(RUBY) -Ku langfilter.rb --$* $< > $@
