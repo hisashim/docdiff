@@ -6,14 +6,14 @@ TAR_XVCS = tar --exclude=.svn --exclude=.git
 DOCS   = ChangeLog readme.en.html readme.ja.html \
          index.en.html index.ja.html
 DOCSRC = readme.html index.html img sample
-TESTS  = testcharstring.rb testdiff.rb testdifference.rb \
-         testdocdiff.rb testdocument.rb testview.rb
+TESTS  = test/*_test.rb
 DIST   = Makefile devutil docdiff docdiff.conf.example docdiff.rb \
          docdiff.gemspec \
          docdiffwebui.html docdiffwebui.cgi \
          $(DOCSRC) $(DOCS) $(TESTS)
-TESTLOGS = testdocdiff.log testcharstring.log testdocument.log \
-         testdiff.log testdifference.log testview.log testviewdiff.log
+TESTLOGS = $(foreach t,\
+                     $(wildcard test/*_test.rb),\
+                     $(t:test/%_test.rb=%_test.log)) \
 
 WWWUSER = hisashim,docdiff
 WWWSITE = web.sourceforge.net
@@ -32,8 +32,8 @@ testall:
 
 test: $(TESTLOGS)
 
-test%.log:
-	$(RUBY) -I. test/test$*.rb | tee $@
+%_test.log:
+	$(RUBY) -I./lib test/$*_test.rb | tee $@
 
 docs:	$(DOCS)
 
