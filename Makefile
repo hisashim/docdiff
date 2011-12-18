@@ -1,5 +1,5 @@
 PRODUCT = docdiff
-VERSION = 0.4.0
+VERSION = $(shell $(RUBY) -r./lib/docdiff/version.rb -e 'Docdiff::VERSION.display')
 RUBY = ruby
 TAR_XVCS = tar --exclude=.svn --exclude=.git
 
