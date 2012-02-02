@@ -7,7 +7,7 @@ DOCS   = ChangeLog readme.en.html readme.ja.html \
          index.en.html index.ja.html
 DOCSRC = readme.html index.html img sample
 TESTS  = test/*_test.rb
-DIST   = Makefile devutil docdiff docdiff.conf.example docdiff.rb \
+DIST   = Makefile devutil lib docdiff.conf.example bin/docdiff \
          docdiff.gemspec \
          docdiffwebui.html docdiffwebui.cgi \
          $(DOCSRC) $(DOCS) $(TESTS)
@@ -49,13 +49,13 @@ install: $(DIST)
 	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
 	  mkdir -p $(DESTDIR)$(PREFIX)/bin; \
 	fi
-	cp -Ppv docdiff.rb $(DESTDIR)$(PREFIX)/bin/docdiff
+	cp -Ppv bin/docdiff $(DESTDIR)$(PREFIX)/bin/
 	chmod +x $(DESTDIR)$(PREFIX)/bin/docdiff
 
-	@if [ ! -d $(datadir)$(PRODUCT) ]; then \
-	  mkdir -p $(datadir)$(PRODUCT); \
+	@if [ ! -d $(datadir)/$(PRODUCT) ]; then \
+	  mkdir -p $(datadir)/$(PRODUCT); \
 	fi
-	($(TAR_XVCS) -cf - docdiff) | (cd $(datadir)$(PRODUCT) && tar -xpf -)
+	(cd lib && $(TAR_XVCS) -cf - *) | (cd $(datadir)/$(PRODUCT) && tar -xpf -)
 
 	@if [ ! -d $(DESTDIR)/etc/$(PRODUCT) ]; then \
 	  mkdir -p $(DESTDIR)/etc/$(PRODUCT); \
