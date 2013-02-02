@@ -31,36 +31,50 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 Note that you need appropriate permission for proper installation (you may have to have a root/administrator privilege).
 
-1. Place _docdiff/_ directory and its contents to ruby library directory, so that ruby interpreter can load them.
+* Place _docdiff/_ directory and its contents to ruby library directory, so that ruby interpreter can load them.
 
-    # cp -r docdiff /usr/lib/ruby/1.9.1
+```
+# cp -r docdiff /usr/lib/ruby/1.9.1
+```
 
-2. Place _docdiff.rb_ in command binary directory.
+* Place _docdiff.rb_ in command binary directory.
 
-    # cp docdiff.rb /usr/bin/
+```
+# cp docdiff.rb /usr/bin/
+```
 
-3. (Optional) You may want to rename it to _docdiff_.
+* (Optional) You may want to rename it to _docdiff_.
 
-    # mv /usr/bin/docdiff.rb /usr/bin/docdiff
+```
+# mv /usr/bin/docdiff.rb /usr/bin/docdiff
+```
 
-4. (Optional) When invoked as `chardiff` or `worddiff`, docdiff runs with resolution set to `char` or `word`, respectively.
+* (Optional) When invoked as `chardiff` or `worddiff`, docdiff runs with resolution set to `char` or `word`, respectively.
 
-    # ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
-    # ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
+```
+# ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
+# ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
+```
 
-5. Set appropriate permission.
+* Set appropriate permission.
 
-    # chmod +x /usr/bin/docdiff.rb
+```
+# chmod +x /usr/bin/docdiff.rb
+```
 
-6. (Optional) If you want site-wide configuration file, place `docdiff.conf.example` as `/etc/docdiff/docdiff.conf` and edit it.
+* (Optional) If you want site-wide configuration file, place `docdiff.conf.example` as `/etc/docdiff/docdiff.conf` and edit it.
 
-    # cp docdiff.conf.example /etc/docdiff.conf
-    # $EDITOR /etc/docdiff.conf
+```
+# cp docdiff.conf.example /etc/docdiff.conf
+# $EDITOR /etc/docdiff.conf
+```
 
-7. (Optional) If you want per-user configuration file, place `docdiff.conf.example` as `~/etc/docdiff/docdiff.conf` and edit it.
+* (Optional) If you want per-user configuration file, place `docdiff.conf.example` as `~/etc/docdiff/docdiff.conf` and edit it.
 
-    % cp docdiff.conf.example ~/etc/docdiff.conf
-    % $EDITOR ~/etc/docdiff.conf
+```
+% cp docdiff.conf.example ~/etc/docdiff.conf
+% $EDITOR ~/etc/docdiff.conf
+```
 
 ## Usage
 
