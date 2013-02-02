@@ -86,7 +86,7 @@ e.g.
 
     % docdiff old.txt new.txt > diff.html
 
-See the help message for detail (docdiff --help).
+See the help message for detail (`docdiff --help`).
 
 ## License
 
@@ -122,7 +122,7 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 ```
 
-diff library (docdiff/diff.rb and docdiff/diff/*) was originally a part of Ruby/CVS by Akira TANAKA.
+diff library (`docdiff/diff.rb` and `docdiff/diff/*`) was originally a part of Ruby/CVS by Akira TANAKA.
 Ruby/CVS is licensed under modified BSD style license.
 See the following for detail.
 
