@@ -45,7 +45,7 @@ Note that you need appropriate permission for proper installation (you may have 
        `# ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb`)
 
 5. Set appropriate permission.
- (e.g. <blockquote><p>`# chmod +x /usr/bin/docdiff.rb`</p></blockquote>)
+ (e.g. `# chmod +x /usr/bin/docdiff.rb`)
 
 6. (Optional) If you want site-wide configuration file, place `docdiff.conf.example` as `/etc/docdiff/docdiff.conf` and edit it.
    (e.g. `# cp docdiff.conf.example /etc/docdiff.conf`
