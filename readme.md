@@ -31,19 +31,19 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 Note that you need appropriate permission for proper installation (you may have to have a root/administrator privilege).
 
-* Place _docdiff/_ directory and its contents to ruby library directory, so that ruby interpreter can load them.
+* Place `docdiff/` directory and its contents to ruby library directory, so that ruby interpreter can load them.
 
 ```
 # cp -r docdiff /usr/lib/ruby/1.9.1
 ```
 
-* Place _docdiff.rb_ in command binary directory.
+* Place `docdiff.rb` in command binary directory.
 
 ```
 # cp docdiff.rb /usr/bin/
 ```
 
-* (Optional) You may want to rename it to _docdiff_.
+* (Optional) You may want to rename it to `docdiff`.
 
 ```
 # mv /usr/bin/docdiff.rb /usr/bin/docdiff
