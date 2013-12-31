@@ -939,6 +939,11 @@ class TC_CharString < Test::Unit::TestCase
     expected = "Shift_JIS"
     assert_guess_encoding(expected, str)
   end
+  def test_guess_encoding_cp932_1()
+    str = NKF.nkf('--oc=CP932', "\\u2460") # CIRCLED DIGIT ONE
+    expected = "Windows-31J" # CP932 == Windows-31J in Ruby 1.9+
+    assert_guess_encoding(expected, str)
+  end
   def test_guess_encoding_utf8_1()
     str = NKF.nkf("-E -w", "日本語とLatinの文字")
     expected = "UTF-8"
