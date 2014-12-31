@@ -1,3 +1,5 @@
+# Warning: this Makefile is obsolete, use Rakefile instead
+
 PRODUCT = docdiff
 VERSION = $(shell $(RUBY) -r./lib/docdiff/version.rb -e 'Docdiff::VERSION.display')
 RUBY = ruby
