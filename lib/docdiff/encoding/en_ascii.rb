@@ -1,6 +1,7 @@
 # English ASCII encoding module for CharString
 # 2003- Hisashi MORITA
 
+class DocDiff
 module CharString
   module ASCII
 
@@ -94,4 +95,5 @@ module CharString
     CharString.register_encoding(self)
 
   end  # module ASCII
-end
+end  # module CharString
+end  # class DocDiff

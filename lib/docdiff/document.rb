@@ -8,6 +8,7 @@ end
 class EOLDetectionFailure < Exception
 end
 
+class DocDiff
 class Document
 
   def initialize(str, enc = nil, e = nil)
@@ -125,3 +126,4 @@ class Document
   end
 
 end  # class Document
+end  # class DocDiff

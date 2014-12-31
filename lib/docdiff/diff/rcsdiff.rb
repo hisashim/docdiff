@@ -1,3 +1,4 @@
+class DocDiff
 class Diff
   def Diff.rcsdiff(a, b)
     al = []
@@ -105,3 +106,4 @@ class Diff
     end
   end
 end
+end  # class DocDiff

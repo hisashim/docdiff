@@ -2,7 +2,8 @@
 require 'test/unit'
 require 'docdiff/difference'
 
-class TC_Difference < Test::Unit::TestCase
+class TC_DocDiff_Difference < Test::Unit::TestCase
+  Difference = DocDiff::Difference
 
   def setup()
     #

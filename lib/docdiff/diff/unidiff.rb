@@ -1,3 +1,4 @@
+class DocDiff
 class Diff
   def Diff.unidiff(a, b, algorithm=nil)
     al = []
@@ -122,3 +123,4 @@ class Diff
     end
   end
 end
+end  # class DocDiff

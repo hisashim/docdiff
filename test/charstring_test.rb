@@ -4,7 +4,8 @@ require 'test/unit'
 require 'docdiff/charstring'
 require 'nkf'
 
-class TC_CharString < Test::Unit::TestCase
+class TC_DocDiff_CharString < Test::Unit::TestCase
+  CharString = DocDiff::CharString
 
   def setup()
     #

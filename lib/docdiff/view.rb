@@ -21,6 +21,7 @@ class String
   end
 end
 
+class DocDiff
 class View
 
 #  EOL_CHARS_PAT = Regexp.new(/\r\n|\r(?!\n)|(?:\A|[^\r])\n/m)
@@ -474,3 +475,4 @@ class View
   end
 
 end
+end  # class DocDiff

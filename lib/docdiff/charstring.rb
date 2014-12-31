@@ -3,6 +3,7 @@
 # To use, include to String, or extend String.
 # 2003- Hisashi MORITA
 
+class DocDiff
 module CharString
 
   Encodings = {}
@@ -573,6 +574,7 @@ end # end ruby_m17n?
   end
 
 end  # module CharString
+end  # class DocDiff
 
 # class String
 #   include CharString

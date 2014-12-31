@@ -4,6 +4,7 @@
 
 require 'docdiff/diff'
 
+class DocDiff
 class Difference < Array
 
 #  @resolution = nil # char, word, phrase, sentence, line, paragraph..
@@ -90,3 +91,4 @@ class Difference < Array
   end
 
 end  # class Difference
+end  # class DocDiff

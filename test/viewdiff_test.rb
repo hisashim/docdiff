@@ -3,9 +3,12 @@
 require 'test/unit'
 require 'viewdiff'
 
-class TC_Document < Test::Unit::TestCase
+class TC_DocDiff_Document < Test::Unit::TestCase
+  DiffFile = DocDiff::DiffFile
 
   def setup()
+    @docdiff = DocDiff.new
+
     @classic_diff = <<END
 diff --text sample/1/a.en.ascii.lf sample/2/a.en.ascii.lf
 1d0
@@ -342,7 +345,7 @@ END
 
   def test_scan_text_for_diffs_simplified()
     expected = 12
-    result = scan_text_for_diffs(@classic_diff + @context_diff + @unified_diff).size
+    result = @docdiff.scan_text_for_diffs(@classic_diff + @context_diff + @unified_diff).size
     assert_equal(expected, result)
   end
 
@@ -364,7 +367,7 @@ END
  "diff -o\n",
  "--- f3\n+++ f4\n@@ -7,6 +14,9 @@\n g\n h\n i\n++\n+\n+\n j\n k\n l\n@@ -14,13 +24,12 @@\n y\n-z\n+z\n No newline at end of file"
     ]
-    result = scan_text_for_diffs("diff file1 file2
+    result = @docdiff.scan_text_for_diffs("diff file1 file2
 1d0
 < a
 6a4
@@ -536,7 +539,7 @@ diff -o
       [:common_elt_elt, ["z", "\n"], ["z", "\n"]],
       [:common_elt_elt, [" No newline at end of file\n"], [" No newline at end of file\n"]]
     ]
-    result = anatomize_classic(@classic_diff)
+    result = @docdiff.anatomize_classic(@classic_diff)
     assert_equal(expected, result)
   end
 
@@ -549,7 +552,7 @@ diff -o
       [:change_elt, nil, ["> ", "3"]],
       [:common_elt_elt, ["\n"], ["\n"]],
     ]
-    result = anatomize_classic_hunk("9c9\n< i\n---\n> 3\n", "US-ASCII", "LF")
+    result = @docdiff.anatomize_classic_hunk("9c9\n< i\n---\n> 3\n", "US-ASCII", "LF")
     assert_equal(expected, result)
   end
 
@@ -581,7 +584,7 @@ diff -o
       [:common_elt_elt, ["--- ", "14,22 ", "----", "\n"], ["--- ", "14,22 ", "----", "\n"]],
       [:add_elt, nil, ["+ ", "g", "\n"]]
     ]
-    result = anatomize_context("diff -c --text 1a 2a
+    result = @docdiff.anatomize_context("diff -c --text 1a 2a
 *** 1a
 --- 2a
 ***************
@@ -626,7 +629,7 @@ diff -c --text 1b 2b
       [:common_elt_elt, ["\n"], ["\n"]],
       [:common_elt_elt, ["  ", "z", "\n"], ["  ", "z", "\n"]],
     ]
-    result = anatomize_context_hunk("***************
+    result = @docdiff.anatomize_context_hunk("***************
 *** 19,26 ****
   s
   t
@@ -668,7 +671,7 @@ diff -c --text 1b 2b
         [:common_elt_elt, ["  ", "y", "\n"], ["  ", "y", "\n"]]
       ]
     ]
-    result = anatomize_context_hunk_scanbodies("  w
+    result = @docdiff.anatomize_context_hunk_scanbodies("  w
 ! x
   y
 ", "  w
@@ -688,7 +691,7 @@ diff -c --text 1b 2b
         [:common_elt_elt, ["  ", "b", "\n"], ["  ", "b", "\n"]]
       ]
     ]
-    result = anatomize_context_hunk_scanbodies("","  a\n+ x\n  b\n", "US-ASCII", "LF")
+    result = @docdiff.anatomize_context_hunk_scanbodies("","  a\n+ x\n  b\n", "US-ASCII", "LF")
     assert_equal(expected, result)
   end
 
@@ -705,7 +708,7 @@ diff -c --text 1b 2b
       [:common_elt_elt, ["\n"], ["\n"]],
       [:common_elt_elt, [" ", "z", "\n"], [" ", "z", "\n"]]
     ]
-    result = anatomize_unified_hunk("@@ -19,8 +20,10 @@
+    result = @docdiff.anatomize_unified_hunk("@@ -19,8 +20,10 @@
  s
  t
  u
@@ -897,7 +900,7 @@ diff -c --text 1b 2b
  [:common_elt_elt,
   [" ", "No ", "newline ", "at ", "end ", "of ", "file", "\n"],
   [" ", "No ", "newline ", "at ", "end ", "of ", "file", "\n"]]]
-    result = anatomize_unified(@unified_diff)
+    result = @docdiff.anatomize_unified(@unified_diff)
     assert_equal(expected, result)
   end
 

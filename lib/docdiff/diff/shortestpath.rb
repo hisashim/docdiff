@@ -6,6 +6,7 @@ An O(NP) Sequence Comparison Algorithm,
 Information Processing Letters 35, 1990, 317-323
 =end
 
+class DocDiff
 class Diff
   class ShortestPath
     def initialize(a, b)
@@ -91,3 +92,4 @@ class Diff
     end
   end
 end
+end  # class DocDiff

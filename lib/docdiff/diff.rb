@@ -50,6 +50,7 @@ So, reduced input has following properties:
 * Any elemnt in B is also exist in A.
 
 =end
+class DocDiff
 class Diff
   def initialize(a, b)
     @original_a = a
@@ -215,3 +216,4 @@ class Diff
     end
   end
 end
+end  # class DocDiff

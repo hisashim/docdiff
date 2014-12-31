@@ -1,6 +1,7 @@
 require 'docdiff/diff/rcsdiff'
 require 'docdiff/diff/unidiff'
 
+class DocDiff
 class Diff
   class EditScript
     def initialize
@@ -146,3 +147,4 @@ class Diff
     end
   end
 end
+end  # class DocDiff

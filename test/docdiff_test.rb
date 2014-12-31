@@ -4,7 +4,8 @@ require 'test/unit'
 require 'docdiff'
 require 'nkf'
 
-class TC_Document < Test::Unit::TestCase
+class TC_DocDiff_Document < Test::Unit::TestCase
+  Document = DocDiff::Document
 
   def setup()
     #

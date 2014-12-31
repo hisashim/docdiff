@@ -1,3 +1,4 @@
+class DocDiff
 class Diff
   class Subsequence
     def initialize
@@ -37,3 +38,4 @@ class Diff
     end
   end
 end
+end  # class DocDiff

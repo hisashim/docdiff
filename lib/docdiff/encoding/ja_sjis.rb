@@ -1,6 +1,7 @@
 # Japanese Shift_JIS encoding module for CharString
 # 2003- Hisashi MORITA
 
+class DocDiff
 module CharString
   module Shift_JIS
 
@@ -257,4 +258,5 @@ module CharString
     CharString.register_encoding(self)
 
   end  # module SJIS
-end
+end  # module CharString
+end  # class DocDiff

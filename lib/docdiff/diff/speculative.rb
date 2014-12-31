@@ -2,6 +2,7 @@ require 'docdiff/diff/shortestpath'
 require 'docdiff/diff/contours'
 require 'thread'
 
+class DocDiff
 class Diff
   class Speculative
     def initialize(a, b)
@@ -38,3 +39,4 @@ class Diff
     end
   end
 end
+end  # class DocDiff

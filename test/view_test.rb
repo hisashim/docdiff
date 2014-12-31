@@ -5,7 +5,9 @@ require 'docdiff/view'
 require 'docdiff/difference'
 require 'nkf'
 
-class TC_View < Test::Unit::TestCase
+class TC_DocDiff_View < Test::Unit::TestCase
+  View = DocDiff::View
+  Difference = DocDiff::Difference
 
   def setup()
     #

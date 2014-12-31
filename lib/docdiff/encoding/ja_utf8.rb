@@ -2,6 +2,7 @@
 # Japanese UTF-8 encoding module for CharString
 # 2003- Hisashi MORITA
 
+class DocDiff
 module CharString
   module UTF8
 
@@ -6971,4 +6972,5 @@ module CharString
     CharString.register_encoding(self)
 
   end  # module UTF8
-end
+end  # module CharString
+end  # class DocDiff

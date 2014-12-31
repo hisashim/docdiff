@@ -1,6 +1,7 @@
 # Japanese EUC-JP encoding module for CharString
 # 2003- Hisashi MORITA
 
+class DocDiff
 module CharString
   module EUC_JP
 
@@ -266,4 +267,5 @@ module CharString
     CharString.register_encoding(self)
 
   end  # module EUCJP
-end
+end  # module CharString
+end  # class DocDiff

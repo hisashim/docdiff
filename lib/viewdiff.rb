@@ -16,6 +16,7 @@ class String
   end
 end
 
+class DocDiff
 def scan_text_for_diffs(src)
   eol = "(?:\r\n|\n|\r)"
   pats = {
@@ -358,17 +359,19 @@ def anatomize_unified_hunk(a_hunk, src_encoding, src_eol)
   }
   return diffed
 end
+end  # class DocDiff
 
 if $0 == __FILE__
 
   src = ARGF.read
-  enc, eol = CharString.guess_encoding(src), CharString.guess_eol(src)
-  scan_text_for_diffs(src).each{|fragment|
-    if DiffFile.new('').guess_diff_type(fragment) == "unknown"
+  enc, eol = DocDiff::CharString.guess_encoding(src),
+             DocDiff::CharString.guess_eol(src)
+  DocDiff.new.scan_text_for_diffs(src).each{|fragment|
+    if DocDiff::DiffFile.new('').guess_diff_type(fragment) == "unknown"
       print fragment
     else
-      diff = DiffFile.new(fragment).anatomize
-      print View.new(diff, enc, eol).to_tty
+      diff = DocDiff::DiffFile.new(fragment).anatomize
+      print DocDiff::View.new(diff, enc, eol).to_tty
     end
   }
 
