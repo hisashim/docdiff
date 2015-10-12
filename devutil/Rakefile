@@ -1,0 +1,9 @@
+require 'rake/clean'
+
+file 'JIS0208.TXT' do |t|
+  sh 'curl -O ftp://ftp.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT'
+end
+
+task :default => 'JIS0208.TXT'
+
+CLOBBER.include('JIS0208.TXT')
