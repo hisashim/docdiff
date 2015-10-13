@@ -185,7 +185,13 @@ class TC_DocDiff_Document < Test::Unit::TestCase
     expected = "<=>foo </=><=>b</=><!->a</!-><!+>ee</!+><=>r</=><=>\n</=><=>baz</=>"
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "user", :digest => false}))
   end
-
+  def test_cli()
+    expected = "Hello, my name is [-Watanabe.-]{+matz.+}\n"
+    cmd = "ruby -I lib bin/docdiff --wdiff" +
+      " sample/01.en.ascii.lf sample/02.en.ascii.lf"
+    actual = `#{cmd}`.scan(/^.*?$\n/m).first
+    assert_equal(expected, actual)
+  end
 
   def teardown()
     #
