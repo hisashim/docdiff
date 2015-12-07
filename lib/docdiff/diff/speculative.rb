@@ -15,21 +15,22 @@ class Diff
       result = nil
 
       tg = ThreadGroup.new
+      m = Mutex.new
 
       # Since ShortestPath is faster than Contours if two sequences are very similar,
       # try it first.
       tg.add(Thread.new {
 	#print "ShortestPath start.\n"
 	result = ShortestPath.new(@a, @b).lcs
-	Thread.exclusive {tg.list.each {|t| t.kill if t != Thread.current}}
+	m.synchronize {tg.list.each {|t| t.kill if t != Thread.current}}
 	#print "ShortestPath win.\n"
       })
 
-      # start Contours unless ShortestPath is already ended with first quantum, 
+      # start Contours unless ShortestPath is already ended with first quantum,
       tg.add(Thread.new {
 	#print "Contours start.\n"
 	result = Contours.new(@a, @b).lcs
-	Thread.exclusive {tg.list.each {|t| t.kill if t != Thread.current}}
+	m.synchronize {tg.list.each {|t| t.kill if t != Thread.current}}
 	#print "Contours win.\n"
       }) unless tg.list.empty?
 
