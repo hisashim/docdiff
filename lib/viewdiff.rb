@@ -334,6 +334,7 @@ def anatomize_unified_hunk(a_hunk, src_encoding, src_eol)
     body.scan(/(#{del}+)(#{add}+)|(#{del}+#{eol}?)|(#{add}+)|(#{common}+#{eol}?)|(.*#{eol}?)/m){|m|
       cf, cl, d, a, cmn, msc = m[0..5]
       [cf, cl, d, a, cmn, msc].collect{|e|
+        next if e.nil?
         e.extend(CharString)
         e.encoding, e.eol = src_encoding, src_eol
       }
