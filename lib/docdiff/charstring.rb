@@ -73,9 +73,14 @@ module CharString
     # returns 'CR', 'LF', 'CRLF', 'UNKNOWN'(binary), 
     # 'NONE'(1-line), or nil
     return nil if string == nil  #=> nil (argument missing)
-    eol_counts = {'CR'   => string.scan(/(\r)(?!\n)/o).size,
-                  'LF'   => string.scan(/(?:\A|[^\r])(\n)/o).size,
-                  'CRLF' => string.scan(/(\r\n)/o).size}
+    if CharString.ruby_m17n?
+      bin_string = string.force_encoding("ASCII-8BIT")
+    else
+      bin_string = string
+    end
+    eol_counts = {'CR'   => bin_string.scan(/(\r)(?!\n)/o).size,
+                  'LF'   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
+                  'CRLF' => bin_string.scan(/(\r\n)/o).size}
     eol_counts.delete_if{|eol, count| count == 0}  # Remove missing EOL
     eols = eol_counts.keys
     eol_variety = eols.size  # numbers of flavors found
