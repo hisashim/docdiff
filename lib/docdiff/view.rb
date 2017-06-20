@@ -85,16 +85,8 @@ class View
   end
 
   def encname_for_regexp(encname)
-    def ruby_m17n?
-      "".respond_to?(:force_encoding)
-    end
-    if ruby_m17n?
-      # in 1.9.x, encoding names are deprecated except for N (ASCII-8BIT (binary))
-      nil
-    else
-      # in 1.8.x, U|E|S|N are accepted
-      encname.sub(/US-ASCII/i, 'none')
-    end
+    # in 1.9.x, encoding names are deprecated except for N (ASCII-8BIT (binary))
+    nil
   end
 
   CONTEXT_PRE_LENGTH  = 32
