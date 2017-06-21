@@ -20,11 +20,7 @@ class TC_DocDiff_Document < Test::Unit::TestCase
     assert_equal(expected, doc.encoding)
   end
   def test_encoding_auto()
-    doc = if CharString.ruby_m17n?
-            Document.new("Foo bar.\nBaz quux.".encode("US-ASCII"))
-          else
-            Document.new("Foo bar.\nBaz quux.")
-          end
+    doc = Document.new("Foo bar.\nBaz quux.".encode("US-ASCII"))
     expected = 'US-ASCII'
     assert_equal(expected, doc.encoding)
   end

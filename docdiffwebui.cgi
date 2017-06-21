@@ -1,7 +1,7 @@
 #!/usr/bin/ruby
 # DocDiff Web UI (CGI)
 # 2005-10-08.. Hisashi Morita
-# requirement: Ruby 1.8+ (for timeout.rb)
+# requirement: Ruby 2.0+ (for timeout.rb)
 
 require 'cgi'
 require 'tempfile'

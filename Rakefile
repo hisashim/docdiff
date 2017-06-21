@@ -41,21 +41,10 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-if RUBY_VERSION < '1.9'
-  require 'rcov/rcovtask'
-  Rcov::RcovTask.new do |t|
-    t.test_files = FileList['test/test*.rb']
-    t.output_dir = 'coverage'
-    t.rcov_opts = ["--exclude /gems/*"]
-    t.verbose = true
-  end
-end
-
 task :default => DOCS
 
 task :testall do |t|
   sh 'rake test RUBY=ruby1.9.1'
-  sh 'rake test RUBY=ruby1.8'
 end
 
 task :test => TESTLOGS

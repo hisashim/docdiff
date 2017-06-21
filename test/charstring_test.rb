@@ -857,10 +857,6 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   # test module functions
 
   def assert_guess_encoding(expected, str)
-    unless CharString.ruby_m17n?
-      assert_equal(expected, CharString.guess_encoding_using_pureruby(str))
-      assert_equal(expected, CharString.guess_encoding_using_iconv(str))
-    end
     assert_equal(expected, CharString.guess_encoding(str))
   end
 
@@ -875,33 +871,18 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 #     assert_equal(expected, CharString.guess_encoding(str))
 #   end
   def test_guess_encoding_unknown()
-    if CharString.ruby_m17n?
-      str = "".encode("BINARY") # cannot put invalid string literal
-      expected = "ASCII-8BIT"
-    else
-      str = "\xff\xff\xff\xff"  # "\xDE\xAD\xBE\xEF"
-      expected = "UNKNOWN"
-    end
+    str = "".encode("BINARY") # cannot put invalid string literal
+    expected = "ASCII-8BIT"
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_ascii_1()
-    if CharString.ruby_m17n?
-      str = "ASCII string".encode("US-ASCII")
-      expected = "US-ASCII"
-    else
-      str = "ASCII string"
-      expected = "US-ASCII"
-    end
+    str = "ASCII string".encode("US-ASCII")
+    expected = "US-ASCII"
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_ascii_2()
-    if CharString.ruby_m17n?
-      str = "abc\ndef\n".encode("US-ASCII")
-      expected = "US-ASCII"
-    else
-      str = "abc\ndef\n"
-      expected = "US-ASCII"
-    end
+    str = "abc\ndef\n".encode("US-ASCII")
+    expected = "US-ASCII"
     assert_guess_encoding(expected, str)
   end
 # CharString.guess_encoding mistakes JIS for ASCII sometimes, due to Iconv.

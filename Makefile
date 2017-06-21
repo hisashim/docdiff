@@ -30,7 +30,6 @@ all:	$(DOCS)
 
 testall:
 	$(MAKE) test RUBY=ruby1.9.1
-	$(MAKE) test RUBY=ruby1.8
 
 test: $(TESTLOGS)
 
