@@ -74,7 +74,7 @@ module CharString
     # 'NONE'(1-line), or nil
     return nil if string == nil  #=> nil (argument missing)
     if CharString.ruby_m17n?
-      bin_string = string.force_encoding("ASCII-8BIT")
+      bin_string = string.dup.force_encoding("ASCII-8BIT")
     else
       bin_string = string
     end
