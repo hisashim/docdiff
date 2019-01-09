@@ -157,7 +157,7 @@ See the following for detail.
 * Manued (Manuscript Editing language: a proofreading method for text)
     * http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/index.shtml
 
-=== Similar Software
+### Similar Software
 
 There are several other software that can compare text word by word and/or character by character.
 
