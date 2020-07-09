@@ -135,16 +135,23 @@ See the following for detail.
 
 ## Acknowledgments
 
-* Akira TANAKA (diff library author)</li>
-* Shin'ichiro HARA (initial idea and algorithm suggestion)</li>
-* Masatoshi SEKI (patch)</li>
-* Akira YAMADA (patch, Debian package)</li>
-* Kenshi MUTO (testing, bug report, Debian package)</li>
-* Kazuhiro NISHIYAMA (bug report)</li>
-* Hiroshi OHKUBO (bug report)</li>
-* Shugo MAEDA (bug report)</li>
-* Kazuhiko (patch)</li>
+* Akira TANAKA (diff library author)
+* Shin'ichiro HARA (initial idea and algorithm suggestion)
+* Masatoshi SEKI (patch)
+* Akira YAMADA (patch, Debian package)
+* Kenshi MUTO (testing, bug report, Debian package)
+* Kazuhiro NISHIYAMA (bug report)
+* Hiroshi OHKUBO (bug report)
+* Shugo MAEDA (bug report)
+* Kazuhiko (patch)
+* Shintaro Kakutani (patches)
+* Masayoshi Takahashi (patches)
+* Masakazu Takahashi (patch)
+* Hibariya (bug report)
+* Hiroshi SHIBATA (patch)
 
+Excuse us this list is far from complete and fails to acknowledge many
+more who have helped us somehow. We really appreciate it.
 
 ## Resources
 
