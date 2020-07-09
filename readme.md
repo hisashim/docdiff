@@ -1,6 +1,6 @@
 # DocDiff
 
-2000-12-09..2011-02-23 Hisashi MORITA
+(C) 2000 Hisashi MORITA
 
 ## Todo
 

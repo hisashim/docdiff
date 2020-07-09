@@ -55,7 +55,7 @@
 <body>
 <h1>DocDiff Readme</h1>
 <p>
- 2000-12-09..2011-02-23 Hisashi MORITA
+ (C) 2000 Hisashi MORITA
 </p>
 
 <hr />
@@ -101,10 +101,23 @@
 </h2>
 <ul>
 <!--
-<li>0.5.x (xxxx-xx-xx)<ul>
+<li>x.y.z (xxxx-xx-xx)<ul>
  <li></li>
 </ul></li>
  -->
+<li>0.6.0 (2020-07-10)<ul>
+  <li>User-visible changes:<ul>
+    <li>Drop support for Ruby 1.8 (thanks to takahashim).</li>
+    <li>Fix various encoding problems (thanks to takahashim).</li>
+    <li>Add CP932 (Windows-31J) support through a new option <code>--cp932</code> (thanks to emasaka).</li>
+    <li>Introduce readme.md, which will obsolete readme.html eventually (thanks to takahashim).</li>
+  </ul></li>
+  <li>Developer-related changes:<ul>
+    <li>Use Mutex#synchronize instead of Thread.exclusive (thanks to hsbt).</li>
+    <li>Remove JIS0208.TXT to comply with its terms of use (thanks to kmuto).</li>
+    <li>Introduce top-level class DocDiff to avoid name conflict (thanks to hibariya).</li>
+  </ul></li>
+</ul></li>
 <li>0.5.0 (2011-08-12)<ul>
 <li>Gemify. Now you can download docdiff via rubygems.org.</li>
 <li>Fix failing test on ruby1.9.2-p290.</li>
