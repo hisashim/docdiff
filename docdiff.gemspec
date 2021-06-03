@@ -5,16 +5,16 @@ require "docdiff/version"
 Gem::Specification.new do |s|
   s.name        = "docdiff"
   s.version     = Docdiff::VERSION
+  s.license     = "BSD-3-Clause"
   s.authors     = ["Hisashi Morita"]
-  s.email       = ["hisashim at users.sourceforge.net"]
-  s.homepage    = "http://docdiff.sourceforge.net"
+  s.email       = ["hisashim at workbook.org"]
+  s.homepage    = "https://github.com/hisashim/docdiff"
   s.summary     = %q{Word-by-word diff}
   s.description = %q{DocDiff compares two text files and shows the
                      difference. It can compare files word by word,
                      character by character, or line by line. It has
                      several output formats such as HTML, tty, Manued,
                      or user-defined markup.}
-  s.rubyforge_project = "docdiff"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
