@@ -3,9 +3,10 @@ require 'rake/testtask'
 require 'bundler/gem_tasks'
 
 RUBY    = ENV['RUBY'] ||= 'ruby'
-DOCS   = FileList['ChangeLog', 'readme.en.html', 'readme.ja.html',
+MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
+DOCS   = FileList['ChangeLog', 'readme.en.html', 'readme.ja.html', 'news.html',
                   'index.en.html', 'index.ja.html']
-DOCSRC = FileList['readme.html', 'index.html', 'img', 'sample']
+DOCSRC = FileList['readme.html', 'news.md', 'index.html', 'img', 'sample']
 TESTS  = FileList['test/*_test.rb']
 TESTLOGS = Dir.glob('test/*_test.rb').map{|f|
   File.basename(f).ext('log')
@@ -34,6 +35,10 @@ rule(/.*\.(?:en|ja)\.html/ => proc{|tn| tn.gsub(/\.(?:en|ja)/, '')}) do |t|
   sh "#{RUBY} -E UTF-8 langfilter.rb" +
     " --#{t.name.gsub(/.*?\.(en|ja)\.html/){$1}}" +
     " #{t.prerequisites.first} > #{t.name}"
+end
+
+file 'news.html' => 'news.md' do |t|
+  sh "#{MD2HTML} --html-title='News' #{t.source} > #{t.name}"
 end
 
 desc "force to rsync web contents"

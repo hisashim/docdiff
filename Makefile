@@ -4,10 +4,11 @@ PRODUCT = docdiff
 VERSION = $(shell $(RUBY) -r./lib/docdiff/version.rb -e 'Docdiff::VERSION.display')
 RUBY = ruby
 TAR_XVCS = tar --exclude=.svn --exclude=.git
+MD2HTML = md2html --full-html
 
-DOCS   = ChangeLog readme.en.html readme.ja.html \
+DOCS   = ChangeLog readme.en.html readme.ja.html news.html \
          index.en.html index.ja.html
-DOCSRC = readme.html index.html img sample
+DOCSRC = readme.html news.md index.html img sample
 TESTS  = test/*_test.rb
 DIST   = Makefile devutil lib docdiff.conf.example bin/docdiff \
          docdiff.gemspec \
@@ -43,6 +44,8 @@ ChangeLog:
 
 readme.%.html: readme.html
 	$(RUBY) -Ku langfilter.rb --$* $< > $@
+news.html: news.md
+	$(MD2HTML) --html-title="News" $< > $@
 index.%.html: index.html
 	$(RUBY) -Ku langfilter.rb --$* $< > $@
 

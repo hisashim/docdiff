@@ -65,7 +65,6 @@
  <span lang="ja">目次</span>
 </h2>
 <ul lang="en">
- <li><a href="#news">News</a></li>
  <li><a href="#todo">Todo</a></li>
  <li><a href="#description">Description</a></li>
  <li><a href="#summary">Summary</a></li>
@@ -79,7 +78,6 @@
  <li><a href="#resources">Resources</a></li>
 </ul>
 <ul lang="ja">
- <li><a href="#news">ニュース</a></li>
  <li><a href="#todo">予定</a></li>
  <li><a href="#description">簡単な説明</a></li>
  <li><a href="#summary">概要</a></li>
@@ -94,148 +92,6 @@
 </ul>
 
 <hr />
-
-<h2 id="news">
- <span lang="en">News</span>
- <span lang="ja">ニュース</span>
-</h2>
-<ul>
-<!--
-<li>x.y.z (xxxx-xx-xx)<ul>
- <li></li>
-</ul></li>
- -->
-<li>0.6.2 (2025-11-28)<ul>
-  <li>User-visible changes:<ul>
-    <li>Add support for stdin (-) in command line arguments (thanks to tamo)</li>
-    <li>Add --config-file option (thanks to tamo)</li>
-    <li>Fix incompatibility with Ruby 3.4 Regexp (thanks to yoshuki)</li>
-    <li>Resolve frozen literal warnings introduced by Ruby 3.4.</li>
-  </ul></li>
-  <li>Developer-related changes:<ul>
-    <li>Update email address in .gemspec.</li>
-  </ul></li>
-</ul></li>
-<li>0.6.1 (2021-06-07)<ul>
-  <li>Update information in .gemspec.</li>
-</ul></li>
-<li>0.6.0 (2020-07-10)<ul>
-  <li>User-visible changes:<ul>
-    <li>Drop support for Ruby 1.8 (thanks to takahashim).</li>
-    <li>Fix various encoding problems (thanks to takahashim).</li>
-    <li>Add CP932 (Windows-31J) support through a new option <code>--cp932</code> (thanks to emasaka).</li>
-    <li>Introduce readme.md, which will obsolete readme.html eventually (thanks to takahashim).</li>
-  </ul></li>
-  <li>Developer-related changes:<ul>
-    <li>Use Mutex#synchronize instead of Thread.exclusive (thanks to hsbt).</li>
-    <li>Remove JIS0208.TXT to comply with its terms of use (thanks to kmuto).</li>
-    <li>Introduce top-level class DocDiff to avoid name conflict (thanks to hibariya).</li>
-  </ul></li>
-</ul></li>
-<li>0.5.0 (2011-08-12)<ul>
-<li>Gemify. Now you can download docdiff via rubygems.org.</li>
-<li>Fix failing test on ruby1.9.2-p290.</li>
-</ul></li>
-<li>0.4.0 (2011-02-23)<ul>
- <li>Compatible with Ruby 1.9 (thanks to Kazuhiko).</li>
-</ul></li>
-<li>0.3.4 (2007-12-10)<ul>
- <li>Increased context length in digest mode from 16 to 32.</li>
- <li>Added --display=inline|multi option. With inline, things before change and things after change are displayed inline. With multi, they are displayed in separate blocks. Default is inline.</li>
- <li>Added --iso8859x option as an alias to --encoding=ASCII, so that users notice DocDiff can handle text in ISO-8859-* encoding.</li>
-</ul></li>
-<li>0.3.3 (2006-02-03)<ul>
- <li>Fixed arg test so that we can compare non-normal files, such as device files and named pipes (thanks to Shugo Maeda).</li>
- <li>Added DocDiff Web UI sample (experimental).</li>
- <li>Fixed HTML output to produce valid XHTML (thanks to Hiroshi OHKUBO).  Note that CSS in HTML output is slightly changed.</li>
- <li>Replaced underscores(_) in CSS class names to hyphens(-) so that older UAs can understand them (thanks to Kazuhiro NISHIYAMA).</li>
-</ul></li>
-<li>0.3.2 (2005-01-03)<ul>
- <li>Readme is multilingualized (added partial Japanese translation).  Try switching CSS between en and ja.  Monolingual files are also available (readme.en.html, readme.ja.html).</li>
- <li>Outputs better error messages when it failed to auto-detect the encoding and/or eol, though the accuracy is the same.</li>
- <li>Switched revision control system from CVS to Subversion.</li>
-</ul></li>
-<li>0.3.1 (2004-08-29)<ul>
- <li>Added -L (--label) option place holder in order to be used as external diff program from Subversion.</li>
-</ul></li>
-<li>0.3.0 (2004-05-29)<ul>
- <li>Re-designed and re-written from scratch.</li>
- <li>Supports multiple encodings (ASCII, EUC-JP, Shift_JIS, UTF-8) and multiple eols (CR, LF, CRLF).</li>
- <li>Supports more output formats (tty, HTML, Manued, wdiff-like, user-defined markup text).</li>
- <li>Supports configuration files (/etc/docdiff/docdiff.conf, ~/etc/docdiff/docdiff.conf (or ~/.docdiff/docdiff.conf)).</li>
- <li>Introduced digest (summary) mode.</li>
- <li>Approximately 200% faster than older versions, thanks to akr's diff library.</li>
- <li>Better documentation and help message.</li>
- <li>License changed from Ruby's to modified BSD style.</li>
- <li>Pure Ruby.  Does not require external diff program such as GNU diff, or morphological analyzer such as ChaSen.</li>
- <li>Runs on both Unix and Windows (tested on Debian GNU/Linux and Cygwin)</li>
- <li>Unit tests introduced to decrease bugs and to encourage faster development.</li>
- <li>Makefile introduced.</li>
-</ul></li>
-<li>0.1.8 (2003-12-14)<ul>
- <li>Displays warning when --bymorpheme is specified but ChaSen is not available (patch by Akira YAMADA: Debian bug #192258).</li>
- <li>Supports system-wide configuration file (if ~/.chasenrc.docdiff does not exist, reads /etc/docdiff/chasenrc) (patch by Akira YAMADA: Debian bug #192261).</li>
-</ul></li>
-<li>0.1.7 (2003-11-21)<ul>
- <li>HTML output retains spaces (&amp;nbsp; patch by Akira YAMADA). </li>
- <li>Manued output is added.  Use --manued command line option to get result in Manued-like format.</li>
- <li>Fixed .chasenrc.docdiff to be compatible with the latest ChaSen, so that it does not cause error.</li>
- <li>Alphabet words in the output may look ugly, since ChaSen does not keep spaces between alphabetical words recently.</li>
- <li>Other minor bug fixes and code cleanup.</li>
-</ul></li>
-<li>0.2.0b2 (2001-08-31)<ul>
- <li>Code cleanup.</li>
-</ul></li>
-<li>0.2.0b1 (2001-08-31)<ul>
- <li>A bit faster than 0.1.x, using file cache.</li>
- <li>A bit cleaner code.</li>
-</ul></li>
-<li>0.1.6 (2001-05-16)<ul>
- <li>Increased diff option number from 100000 to 1000000 in order to support 900KB+ text files.</li>
-</ul></li>
-<li>0.1.5 (2001-01-17)<ul>
- <li>Erased useless old code which were already commented out.</li>
- <li>Added documentation. (Updated README, more comments)</li>
- <li>First public release.  Registered to RAA.</li>
-</ul></li>
-<li>0.1.4 (2001-01-16)<ul>
- <li>Output is like &lt;tag&gt;ab&lt;/tag&gt;, instead of ugly &lt;tag&gt;a&lt;/tag&gt;&lt;tag&gt;b&lt;/tag&gt; (thanks again to Masatoshi Seki for suggestion).</li>
- <li>Fixed hidden bug ('puts' was used to output result).</li>
- <li>Some code clean-up, though still hairy enough.</li>
-</ul></li>
-<li>0.1.3 (2001-01-09)<ul>
- <li>Tested with Ruby 1.6.2.</li>
- <li>Fixed "meth(a,b,)" bug (thanks to Masatoshi Seki).</li>
- <li>Switched development platform from Windows to Linux, but it should work fine on Windows too, except for ChaSen stuff.</li>
-</ul></li>
-<li>0.1.2 (2000-12-28)<ul>
- <li>Mostly bug fix.</li>
-</ul></li>
-<li>0.1.1 (2000-12-25)<ul>
- <li>Bug fix and some cleanup.</li>
- <li>Quotes some of HTML special characters (&lt;&gt;&amp;) when output in HTML.</li>
- <li>Added support for tty output using escape sequence.</li>
-</ul></li>
-<li>0.1.0 (2000-12-19)<ul>
- <li>ChaSen works fine now.</li>
- <li>GetOptLong was introduced to support command line options.</li>
-</ul></li>
-<li>0.1.0a1 (2000-12-16)<ul>
- <li>Added ChaSen support.  Japanese word by word comparison requires ChaSen.</li>
- <li>Converted scripts from Shift_JIS/CRLF to EUC-JP/LF.</li>
-</ul></li>
-<li>0.0.2 (2000-12-10)<ul>
- <li>Rewritten to use class.</li>
-</ul></li>
-<li>0.0.1 (2000-12-09)<ul>
- <li>First version.  Proof-of-concept.</li>
- <li>Supports ASCII, EUC-JP, LF only.</li>
- <li>Supports HTML output only.</li>
- <li>Requires GNU diff.</li>
- <li>Distributed under the same license as Ruby's</li>
-</ul></li>
-</ul>
-<p>See the ChangeLog for detail.</p>
 
 <h2 id="todo">
  <span lang="en">Todo</span>
