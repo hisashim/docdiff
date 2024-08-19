@@ -84,6 +84,8 @@ ARGV.options {|o|
   o.def_option('--cache', 'use file cache (not supported yet)'){clo[:cache] = true}
   o.def_option('--no-config-file',
     'do not read config files'){clo[:no_config_file] = true}
+  o.def_option('--config-file=FILE',
+    'specify config file to read'){|s| clo[:config_file] = s}
   o.def_option('--verbose', 'run verbosely (not supported yet)'){clo[:verbose] = true}
 
   o.def_option('--help', 'show this message'){puts o; exit(0)}
@@ -115,6 +117,16 @@ unless clo[:no_config_file] == true # process_commandline_option
   end
   if clo[:verbose] == true || docdiff.config[:verbose] == true
     STDERR.print message
+  end
+end
+unless clo[:config_file].nil?
+  if File.exist?(clo[:config_file])
+    message = docdiff.process_config_file(clo[:config_file])
+  else
+    raise "#{clo[:config_file]} does not exist."
+  end
+  if clo[:verbose] == true || docdiff.config[:verbose] == true
+    STDERR.pring message
   end
 end
 docdiff.config.update(clo)
