@@ -20,7 +20,6 @@ class Diff
     end
 
     def unidiff(out='', context_lines=3)
-      state = :common
       l1 = l2 = 1
       hunk = []
       hunk_l1 = hunk_l2 = 1

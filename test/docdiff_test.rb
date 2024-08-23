@@ -4,7 +4,7 @@ require 'test/unit'
 require 'docdiff'
 require 'nkf'
 
-class TC_DocDiff_Document < Test::Unit::TestCase
+class TC_DocDiff < Test::Unit::TestCase
   Document = DocDiff::Document
 
   def setup()
@@ -126,7 +126,6 @@ class TC_DocDiff_Document < Test::Unit::TestCase
                "",
                nil].join
     expected = {:foo1=>true, :foo2=>"bar baz", :foo3=>123, :foo4=>false}
-    docdiff = DocDiff.new
     assert_equal(expected,
                  DocDiff.parse_config_file_content(content))
   end
