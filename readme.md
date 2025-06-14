@@ -149,6 +149,8 @@ See the following for detail.
 * Masakazu Takahashi (patch)
 * Hibariya (bug report)
 * Hiroshi SHIBATA (patch)
+* Tamotsu Takahashi (patches)
+* MIKAMI Yoshiyuki (patch)
 
 Excuse us this list is far from complete and fails to acknowledge many
 more who have helped us somehow. We really appreciate it.
