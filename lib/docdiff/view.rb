@@ -93,13 +93,13 @@ class View
   CONTEXT_POST_LENGTH = 32
   def apply_style_digest(tags, headfoot = true)
     cxt_pre_pat =
-      if RUBY_VERSION >= "3.4.0"
+      if RUBY_VERSION >= "2.3.1"
         Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z', Regexp::MULTILINE)
       else
         Regexp.new('.{0,'+"#{CONTEXT_PRE_LENGTH}"+'}\Z', Regexp::MULTILINE, encname_for_regexp(@encoding))
       end
     cxt_post_pat =
-      if RUBY_VERSION >= "3.4.0"
+      if RUBY_VERSION >= "2.3.1"
         Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}', Regexp::MULTILINE)
       else
         Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+'}', Regexp::MULTILINE, encname_for_regexp(@encoding))
