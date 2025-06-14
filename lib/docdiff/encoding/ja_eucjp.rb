@@ -1,6 +1,8 @@
 # Japanese EUC-JP encoding module for CharString
 # 2003- Hisashi MORITA
 
+# frozen_string_literal: false
+
 class DocDiff
 module CharString
   module EUC_JP

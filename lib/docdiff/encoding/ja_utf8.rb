@@ -2,6 +2,8 @@
 # Japanese UTF-8 encoding module for CharString
 # 2003- Hisashi MORITA
 
+# frozen_string_literal: false
+
 class DocDiff
 module CharString
   module UTF8

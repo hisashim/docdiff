@@ -1,5 +1,8 @@
 #!/usr/bin/ruby
 # -*- coding: us-ascii; -*-
+
+# frozen_string_literal: false
+
 require 'test/unit'
 require 'docdiff'
 require 'nkf'
