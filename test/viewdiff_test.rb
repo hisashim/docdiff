@@ -3,7 +3,7 @@
 require 'test/unit'
 require 'viewdiff'
 
-class TC_DocDiff_Document < Test::Unit::TestCase
+class TC_DocDiff_ViewDiff < Test::Unit::TestCase
   DiffFile = DocDiff::DiffFile
 
   def setup()

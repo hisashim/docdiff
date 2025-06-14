@@ -231,10 +231,11 @@ module CharString
   end
 
   def count_graph_line()
+    graph = (Encodings['UTF-8']::GRAPH +
+             Encodings['UTF-8']::JA_GRAPH).chars.uniq.join
+    re_graph = Regexp.new("[#{Regexp.quote(graph)}]", Regexp::MULTILINE)
     split_to_line.collect{|line|
-      line if Regexp.new("[#{Encodings['UTF-8']::GRAPH}" + 
-                         "#{Encodings['UTF-8']::JA_GRAPH}]", 
-                         Regexp::MULTILINE).match line.encode('UTF-8')
+      line if re_graph.match line.encode('UTF-8')
     }.compact.size
   end
 
