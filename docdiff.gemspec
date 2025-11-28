@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Docdiff::VERSION
   s.license     = "BSD-3-Clause"
   s.authors     = ["Hisashi Morita"]
-  s.email       = ["hisashim at workbook.org"]
+  s.email       = ["hisashim@icloud.com"]
   s.homepage    = "https://github.com/hisashim/docdiff"
   s.summary     = %q{Word-by-word diff}
   s.description = %q{DocDiff compares two text files and shows the
