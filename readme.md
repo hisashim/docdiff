@@ -8,7 +8,6 @@
 * Better auto-recognition of encodings and eols.
 * Make CSS and tty escape sequence customizable in config files.
 * Better multilingualization using Ruby 1.9 feature.
-* Write "DocPatch".
 
 
 ## Description
