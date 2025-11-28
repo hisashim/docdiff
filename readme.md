@@ -15,6 +15,41 @@
 
 Compares two text files by word, by character, or by line
 
+## Screenshots
+
+<div style="display: grid; grid-template-columns: 1fr 1fr;">
+
+<p>HTML output in web browser<br />
+<img src="img/docdiff-screenshot-format-html-firefox.png" alt="HTML output in web browser"/></p>
+
+<p>HTML output in web browser (digest)<br />
+<img src="img/docdiff-screenshot-format-html-digest-firefox.png" alt="HTML output in web browser (digest)" /></p>
+
+<p>tty output in terminal<br />
+<img src="img/docdiff-screenshot-format-tty-rxvtunicode-en.png" alt="tty output in terminal" /></p>
+
+<p>tty output in terminal (comparing Japanese text)<br />
+<img src="img/docdiff-screenshot-format-tty-rxvtunicode-ja.png" alt="tty output in terminal (comparing Japanese text)" /></p>
+
+<p>tty output in terminal<br />
+<img src="img/docdiff-screenshot-format-tty-xterm-en.png" alt="tty output in terminal" /></p>
+
+<p>tty output in terminal (comparing Japanese text)<br />
+<img src="img/docdiff-screenshot-format-tty-xterm-ja.png" alt="tty output in terminal (comparing Japanese text)" /></p>
+
+</div>
+
+<p>Comparing English text (codepage 437) on Windows (Cygwin)<br />
+<img src="img/docdiff-screenshot-format-tty-cmdexe-en.png" alt="Comparing English text (codepage 437) on Windows (Cygwin)" /></p>
+
+<p>Comparing Japanese text (codepage 932) on Windows (Cygwin)<br />
+<img src="img/docdiff-screenshot-format-tty-cmdexe-ja.png" alt="Comparing Japanese text (codepage 932) on Windows (Cygwin)" /></p>
+
+<p>You can compare text files by line, word, or character (format: tty)<br/>
+<img src="img/docdiff-screenshot-resolution-linewordchar-xterm.png" alt="You can compare text files by line, word, or character (format: tty)" /></p>
+
+Screenshots as of version 0.3.2.  All shots are in the [img](img) directory.
+
 ## Summary
 
 DocDiff compares two text files and shows the difference.  It can compare files word by word, character by character, or line by line.  It has several output formats such as HTML, tty, Manued, or user-defined markup.

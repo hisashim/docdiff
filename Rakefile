@@ -4,9 +4,8 @@ require 'bundler/gem_tasks'
 
 RUBY    = ENV['RUBY'] ||= 'ruby'
 MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
-DOCS   = FileList['ChangeLog', 'readme.en.html', 'readme.ja.html', 'news.html',
-                  'index.en.html', 'index.ja.html']
-DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'index.html', 'img', 'sample']
+DOCS   = FileList['ChangeLog', 'readme.en.html', 'readme.ja.html', 'news.html']
+DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'img', 'sample']
 TESTS  = FileList['test/*_test.rb']
 TESTLOGS = Dir.glob('test/*_test.rb').map{|f|
   File.basename(f).ext('log')
@@ -29,12 +28,6 @@ task :docs => DOCS
 
 file 'ChangeLog' do |t|
   sh "devutil/changelog.sh > #{t.name}"
-end
-
-rule(/.*\.(?:en|ja)\.html/ => proc{|tn| tn.gsub(/\.(?:en|ja)/, '')}) do |t|
-  sh "#{RUBY} -E UTF-8 langfilter.rb" +
-    " --#{t.name.gsub(/.*?\.(en|ja)\.html/){$1}}" +
-    " #{t.prerequisites.first} > #{t.name}"
 end
 
 file 'readme.en.html' => 'readme.md' do |t|

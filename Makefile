@@ -6,9 +6,8 @@ RUBY = ruby
 TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
-DOCS   = ChangeLog readme.en.html readme.ja.html news.html \
-         index.en.html index.ja.html
-DOCSRC = readme.md readme_ja.md news.md index.html img sample
+DOCS   = ChangeLog readme.en.html readme.ja.html news.html
+DOCSRC = readme.md readme_ja.md news.md img sample
 TESTS  = test/*_test.rb
 DIST   = Makefile devutil lib docdiff.conf.example bin/docdiff \
          docdiff.gemspec \
@@ -50,9 +49,6 @@ readme.ja.html: readme_ja.md
 
 news.html: news.md
 	$(MD2HTML) --html-title="News" $< > $@
-
-index.%.html: index.html
-	$(RUBY) -Ku langfilter.rb --$* $< > $@
 
 install: $(DIST)
 	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
