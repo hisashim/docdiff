@@ -11,7 +11,6 @@
 * Make CSS and tty escape sequence customizable in config files.
 * Better multilingualization using Ruby 1.9 feature.
 
-
 ## Description
 
 Compares two text files by word, by character, or by line
@@ -22,70 +21,74 @@ DocDiff compares two text files and shows the difference.  It can compare files 
 
 It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
 
-
 ## Requirement
 
-* Ruby (http://www.ruby-lang.org)
+* [Ruby](http://www.ruby-lang.org)
+
   (Note that you may need additional ruby library such as iconv, if your OS's Ruby package does not include those.)
 
 ## Installation
 
 Note that you need appropriate permission for proper installation (you may have to have a root/administrator privilege).
 
-* Place `docdiff/` directory and its contents to ruby library directory, so that ruby interpreter can load them.
+1. Place `docdiff/` directory and its contents to ruby library directory, so that ruby interpreter can load them.
 
-```
-# cp -r docdiff /usr/lib/ruby/1.9.1
-```
+   ```
+   # cp -r docdiff /usr/lib/ruby/1.9.1
+   ```
 
-* Place `docdiff.rb` in command binary directory.
+2. Place `docdiff.rb` in command binary directory.
 
-```
-# cp docdiff.rb /usr/bin/
-```
+   ```
+   # cp docdiff.rb /usr/bin/
+   ```
 
-* (Optional) You may want to rename it to `docdiff`.
+3. (Optional) You may want to rename it to `docdiff`.
 
-```
-# mv /usr/bin/docdiff.rb /usr/bin/docdiff
-```
+   ```
+   # mv /usr/bin/docdiff.rb /usr/bin/docdiff
+   ```
 
-* (Optional) When invoked as `chardiff` or `worddiff`, docdiff runs with resolution set to `char` or `word`, respectively.
+4. (Optional) When invoked as `chardiff` or `worddiff`, docdiff runs with resolution set to `char` or `word`, respectively.
 
-```
-# ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
-# ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
-```
+   ```
+   # ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
+   # ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
+   ```
 
-* Set appropriate permission.
+5. Set appropriate permission.
 
-```
-# chmod +x /usr/bin/docdiff.rb
-```
+   ```
+   # chmod +x /usr/bin/docdiff.rb
+   ```
 
-* (Optional) If you want site-wide configuration file, place `docdiff.conf.example` as `/etc/docdiff/docdiff.conf` and edit it.
+6. (Optional) If you want site-wide configuration file, place `docdiff.conf.example` as `/etc/docdiff/docdiff.conf` and edit it.
 
-```
-# cp docdiff.conf.example /etc/docdiff.conf
-# $EDITOR /etc/docdiff.conf
-```
+   ```
+   # cp docdiff.conf.example /etc/docdiff.conf
+   # $EDITOR /etc/docdiff.conf
+   ```
 
-* (Optional) If you want per-user configuration file, place `docdiff.conf.example` as `~/etc/docdiff/docdiff.conf` and edit it.
+7. (Optional) If you want per-user configuration file, place `docdiff.conf.example` as `~/etc/docdiff/docdiff.conf` and edit it.
 
-```
-% cp docdiff.conf.example ~/etc/docdiff.conf
-% $EDITOR ~/etc/docdiff.conf
-```
+   ```
+   % cp docdiff.conf.example ~/etc/docdiff.conf
+   % $EDITOR ~/etc/docdiff.conf
+   ```
 
 ## Usage
 
 ### Synopsis
 
-    % docdiff [options] oldfile newfile
+```
+% docdiff [options] oldfile newfile
+```
 
 e.g.
 
-    % docdiff old.txt new.txt > diff.html
+```
+% docdiff old.txt new.txt > diff.html
+```
 
 See the help message for detail (`docdiff --help`).
 
@@ -104,7 +107,7 @@ Hello, my name is <span class="before-change" style="background: yellow; border:
 %
 </pre>
 
-### Configuration
+## Configuration
 
 You can place configuration files at:
 
@@ -226,7 +229,7 @@ Comparing Latin-1 texts:
 
 ## License
 
-This software is distributed under so-called modified BSD style license (http://www.opensource.org/licenses/bsd-license.php (without advertisement clause)).  By contributing to this software, you agree that your contribution may be incorporated under the same license.
+This software is distributed under so-called modified BSD style license (<http://www.opensource.org/licenses/bsd-license.php>) (without advertisement clause)).  By contributing to this software, you agree that your contribution may be incorporated under the same license.
 
 Copyright and condition of use of main portion of the source:
 
@@ -258,12 +261,10 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 ```
 
-diff library (`docdiff/diff.rb` and `docdiff/diff/*`) was originally a part of Ruby/CVS by Akira TANAKA.
-Ruby/CVS is licensed under modified BSD style license.
-See the following for detail.
+diff library (`docdiff/diff.rb` and `docdiff/diff/*`) was originally a part of Ruby/CVS by Akira TANAKA.  Ruby/CVS is licensed under modified BSD style license.  See the following for detail.
 
-* http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs
-* http://cvs.m17n.org/~akr/ruby-cvs/
+* <http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs>
+* <http://cvs.m17n.org/~akr/ruby-cvs/>
 
 ## Credits
 
@@ -295,28 +296,20 @@ more who have helped us somehow. We really appreciate it.
 
 ### Format
 
-* HTML/XHTML http://www.w3.org
+* [HTML/XHTML](http://www.w3.org)
 * tty (Graphic rendition using VT100 / ANSI escape sequence)
-    * VT100: http://vt100.net/docs/tp83/appendixb.html
-    * ANSI: http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html
-* Manued (Manuscript Editing language: a proofreading method for text)
-    * http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/index.shtml
+  - [VT100](http://vt100.net/docs/tp83/appendixb.html)
+  - [ANSI](http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
+* [Manued](http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/index.shtml) (Manuscript Editing language: a proofreading method for text)
 
 ### Similar Software
 
 There are several other software that can compare text word by word and/or character by character.
 
-* GNU wdiff (Seems to support single byte characters only.)
-     http://www.gnu.org/directory/GNU/wdiff.html
-* cdif by Kazumasa UTASHIRO (Supports several Japanese encodings.)
-     http://srekcah.org/~utashiro/perl/scripts/cdif
-* ediff for Emacsen
-     http://www.xemacs.org/Documentation/packages/html/ediff.html
-* diff-detail for xyzzy, by Hiroshi OHKUBO
-     http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail
-* Manuediff (Outputs difference in Manued format.)
-     http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html
-* YASDiff (Yet Another Scheme powered diff) by Y. Fujisawa
-     http://nnri.dip.jp/~yf/cgi-bin/yaswiki2.cgi?name=YASDiff&amp;parentid=0
-* WinMerge (GUI diff tool for Windows)
-     http://winmerge.org/
+* [GNU wdiff](http://www.gnu.org/directory/GNU/wdiff.html) (Seems to support single byte characters only.)
+* [cdif](http://srekcah.org/~utashiro/perl/scripts/cdif) by Kazumasa UTASHIRO (Supports several Japanese encodings.)
+* [ediff](http://www.xemacs.org/Documentation/packages/html/ediff.html) for Emacsen
+* [diff-detail](http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail) for xyzzy, by Hiroshi OHKUBO
+* [Manuediff](http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html) (Outputs difference in Manued format.)
+* [YASDiff](http://nnri.dip.jp/~yf/cgi-bin/yaswiki2.cgi?name=YASDiff&parentid=0) (Yet Another Scheme powered diff) by Y. Fujisawa
+* [WinMerge](http://winmerge.org/) (GUI diff tool for Windows)

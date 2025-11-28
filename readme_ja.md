@@ -11,7 +11,6 @@
 * Make CSS and tty escape sequence customizable in config files.
 * Better multilingualization using Ruby 1.9 feature.
 
-
 ## 簡単な説明
 
 2つのテキストファイルを単語ごと、文字ごと、あるいは行ごとに比較する
@@ -22,70 +21,74 @@ DocDiffは2つのテキストファイルを比較してその違いを表示し
 
 次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII（およびISO-8859-*などのシングルバイトエンコーディング）, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
 
-
 ## 必要なもの
 
-* Ruby (http://www.ruby-lang.org)
+* [Ruby](http://www.ruby-lang.org)
+
   （注意: あなたが使っているOS向けのRubyパッケージがiconvなどのライブラリを含んでいない場合は、別途それらを手に入れる必要があるかもしれません。）
 
 ## インストール方法
 
 注意: 正しくインストールするためには適切なファイルアクセス権限が必要です（管理者権限が必要な場合があります）。
 
-* `docdiff/`ディレクトリとその内容をrubyのライブラリを格納するディレクトリに配置して、Rubyインタプリタがdocdiffライブラリをロードできるようにする。
+1. `docdiff/`ディレクトリとその内容をrubyのライブラリを格納するディレクトリに配置して、Rubyインタプリタがdocdiffライブラリをロードできるようにする。
 
-```
-# cp -r docdiff /usr/lib/ruby/1.9.1
-```
+   ```
+   # cp -r docdiff /usr/lib/ruby/1.9.1
+   ```
 
-* `docdiff.rb`をコマンドを格納するディレクトリに配置する。
+2. `docdiff.rb`をコマンドを格納するディレクトリに配置する。
 
-```
-# cp docdiff.rb /usr/bin/
-```
+   ```
+   # cp docdiff.rb /usr/bin/
+   ```
 
-* (オプション) ここで必要に応じてファイル名を`docdiff`のように変更してもよい。
+3. (オプション) ここで必要に応じてファイル名を`docdiff`のように変更してもよい。
 
-```
-# mv /usr/bin/docdiff.rb /usr/bin/docdiff
-```
+   ```
+   # mv /usr/bin/docdiff.rb /usr/bin/docdiff
+   ```
 
-* (オプション) docdiffは、`chardiff`や`worddiff`という名前で起動されると、それぞれ比較粒度が`char`や`word`に設定された状態で動作する。
+4. (オプション) docdiffは、`chardiff`や`worddiff`という名前で起動されると、それぞれ比較粒度が`char`や`word`に設定された状態で動作する。
 
-```
-# ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
-# ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
-```
+   ```
+   # ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
+   # ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
+   ```
 
-* 適切なパーミッションを設定する。
+5. 適切なパーミッションを設定する。
 
-```
-# chmod +x /usr/bin/docdiff.rb
-```
+   ```
+   # chmod +x /usr/bin/docdiff.rb
+   ```
 
-* (オプション) もしサイトの全ユーザに適用される設定ファイルが必要なら、`docdiff.conf.example`を`/etc/docdiff/docdiff.conf`として配置し、編集する。
+6. (オプション) もしサイトの全ユーザに適用される設定ファイルが必要なら、`docdiff.conf.example`を`/etc/docdiff/docdiff.conf`として配置し、編集する。
 
-```
-# cp docdiff.conf.example /etc/docdiff.conf
-# $EDITOR /etc/docdiff.conf
-```
+   ```
+   # cp docdiff.conf.example /etc/docdiff.conf
+   # $EDITOR /etc/docdiff.conf
+   ```
 
-* (オプション) もしユーザごとの設定ファイルが必要なら、`docdiff.conf.example`を`~/etc/docdiff/docdiff.conf`として配置し、編集する。
+7. (オプション) もしユーザごとの設定ファイルが必要なら、`docdiff.conf.example`を`~/etc/docdiff/docdiff.conf`として配置し、編集する。
 
-```
-% cp docdiff.conf.example ~/etc/docdiff.conf
-% $EDITOR ~/etc/docdiff.conf
-```
+   ```
+   % cp docdiff.conf.example ~/etc/docdiff.conf
+   % $EDITOR ~/etc/docdiff.conf
+   ```
 
 ## 使い方
 
 ### 概要
 
-    % docdiff [options] oldfile newfile
+```
+% docdiff [options] oldfile newfile
+```
 
 e.g.
 
-    % docdiff old.txt new.txt > diff.html
+```
+% docdiff old.txt new.txt > diff.html
+```
 
 詳しくはヘルプメッセージを参照してください（`docdiff --help`）。
 
@@ -104,7 +107,7 @@ Rubyを作ったのは私です。私はRuby Hackerです。
 %
 </pre>
 
-### 設定
+## 設定
 
 設定ファイルは次の場所に配置すると有効になります:
 
@@ -225,7 +228,7 @@ Latin-1テキストを比較:
 
 ## ライセンス
 
-このソフトウェアはいわゆる修正BSDスタイルライセンス（http://www.opensource.org/licenses/bsd-license.php （広告条項なし））のもとで配布されています。このソフトウェアに貢献すると、あなたは貢献したものが同ライセンスのもとに取り込まれることに同意したとみなされます。
+このソフトウェアはいわゆる修正BSDスタイルライセンス（<http://www.opensource.org/licenses/bsd-license.php>（広告条項なし））のもとで配布されています。このソフトウェアに貢献すると、あなたは貢献したものが同ライセンスのもとに取り込まれることに同意したとみなされます。
 
 ソースコードの主となる部分の著作権と使用条件は次のとおりです:
 
@@ -259,8 +262,8 @@ SUCH DAMAGE.
 
 diffライブラリ（`docdiff/diff.rb`および`docdiff/diff/*`）は、もともと田中哲さんによるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布されています。詳細は次を参照してください。
 
-* http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs
-* http://cvs.m17n.org/~akr/ruby-cvs/
+* <http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs>
+* <http://cvs.m17n.org/~akr/ruby-cvs/>
 
 ## クレジット
 
@@ -291,28 +294,20 @@ diffライブラリ（`docdiff/diff.rb`および`docdiff/diff/*`）は、もと�
 
 ### フォーマット
 
-* HTML/XHTML http://www.w3.org
+* [HTML/XHTML](http://www.w3.org)
 * tty (Graphic rendition using VT100 / ANSI escape sequence)
-    * VT100: http://vt100.net/docs/tp83/appendixb.html
-    * ANSI: http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html
-* Manued (Manuscript Editing language: a proofreading method for text)
-    * http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/index.shtml
+  - [VT100](http://vt100.net/docs/tp83/appendixb.html)
+  - [ANSI](http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
+* [Manued](http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/index.shtml) (Manuscript Editing language: a proofreading method for text)
 
 ### 同様の目的を持ったソフトウェア
 
 テキストを単語単位や文字単位で比較することができるソフトウェアは、ほかにもあります。
 
-* GNU wdiff (Seems to support single byte characters only.)
-     http://www.gnu.org/directory/GNU/wdiff.html
-* cdif by Kazumasa UTASHIRO (Supports several Japanese encodings.)
-     http://srekcah.org/~utashiro/perl/scripts/cdif
-* ediff for Emacsen
-     http://www.xemacs.org/Documentation/packages/html/ediff.html
-* diff-detail for xyzzy, by Hiroshi OHKUBO
-     http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail
-* Manuediff (Outputs difference in Manued format.)
-     http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html
-* YASDiff (Yet Another Scheme powered diff) by Y. Fujisawa
-     http://nnri.dip.jp/~yf/cgi-bin/yaswiki2.cgi?name=YASDiff&amp;parentid=0
-* WinMerge (GUI diff tool for Windows)
-     http://winmerge.org/
+* [GNU wdiff](http://www.gnu.org/directory/GNU/wdiff.html) (Seems to support single byte characters only.)
+* [cdif](http://srekcah.org/~utashiro/perl/scripts/cdif) by Kazumasa UTASHIRO (Supports several Japanese encodings.)
+* [ediff](http://www.xemacs.org/Documentation/packages/html/ediff.html) for Emacsen
+* [diff-detail](http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail) for xyzzy, by Hiroshi OHKUBO
+* [Manuediff](http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html) (Outputs difference in Manued format.)
+* [YASDiff](http://nnri.dip.jp/~yf/cgi-bin/yaswiki2.cgi?name=YASDiff&parentid=0) (Yet Another Scheme powered diff) by Y. Fujisawa
+* [WinMerge](http://winmerge.org/) (GUI diff tool for Windows)
