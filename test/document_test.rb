@@ -1,5 +1,8 @@
 #!/usr/bin/ruby
 # -*- coding: euc-jp; -*-
+
+# frozen_string_literal: false
+
 require 'test/unit'
 require 'docdiff/document'
 require 'nkf'
