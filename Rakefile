@@ -6,7 +6,7 @@ RUBY    = ENV['RUBY'] ||= 'ruby'
 MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
 DOCS   = FileList['ChangeLog', 'readme.en.html', 'readme.ja.html', 'news.html',
                   'index.en.html', 'index.ja.html']
-DOCSRC = FileList['readme.html', 'news.md', 'index.html', 'img', 'sample']
+DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'index.html', 'img', 'sample']
 TESTS  = FileList['test/*_test.rb']
 TESTLOGS = Dir.glob('test/*_test.rb').map{|f|
   File.basename(f).ext('log')
@@ -35,6 +35,14 @@ rule(/.*\.(?:en|ja)\.html/ => proc{|tn| tn.gsub(/\.(?:en|ja)/, '')}) do |t|
   sh "#{RUBY} -E UTF-8 langfilter.rb" +
     " --#{t.name.gsub(/.*?\.(en|ja)\.html/){$1}}" +
     " #{t.prerequisites.first} > #{t.name}"
+end
+
+file 'readme.en.html' => 'readme.md' do |t|
+  sh "#{MD2HTML} --html-title='Readme' #{t.source} > #{t.name}"
+end
+
+file 'readme.ja.html' => 'readme_ja.md' do |t|
+  sh "#{MD2HTML} --html-title='Readme (ja)' #{t.source} > #{t.name}"
 end
 
 file 'news.html' => 'news.md' do |t|

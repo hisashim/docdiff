@@ -8,7 +8,7 @@ MD2HTML = md2html --full-html
 
 DOCS   = ChangeLog readme.en.html readme.ja.html news.html \
          index.en.html index.ja.html
-DOCSRC = readme.html news.md index.html img sample
+DOCSRC = readme.md readme_ja.md news.md index.html img sample
 TESTS  = test/*_test.rb
 DIST   = Makefile devutil lib docdiff.conf.example bin/docdiff \
          docdiff.gemspec \
@@ -42,10 +42,15 @@ docs:	$(DOCS)
 ChangeLog:
 	devutil/changelog.sh > $@
 
-readme.%.html: readme.html
-	$(RUBY) -Ku langfilter.rb --$* $< > $@
+readme.en.html: readme.md
+	$(MD2HTML) --html-title="Readme" $< > $@
+
+readme.ja.html: readme_ja.md
+	$(MD2HTML) --html-title="Readme (ja)" $< > $@
+
 news.html: news.md
 	$(MD2HTML) --html-title="News" $< > $@
+
 index.%.html: index.html
 	$(RUBY) -Ku langfilter.rb --$* $< > $@
 

@@ -1,5 +1,7 @@
 # DocDiff
 
+* English | [Japanese](readme_ja.md)
+
 (C) 2000 Hisashi MORITA
 
 ## Todo
@@ -86,6 +88,141 @@ e.g.
     % docdiff old.txt new.txt > diff.html
 
 See the help message for detail (`docdiff --help`).
+
+### Example
+
+<pre>
+% cat sample/01.en.ascii.lf
+Hello, my name is Watanabe.
+I am just another Ruby porter.
+% cat sample/02.en.ascii.lf
+Hello, my name is matz.
+It's me who has created Ruby.  I am a Ruby hacker.
+% docdiff sample/01.en.ascii.lf sample/02.en.ascii.lf
+Hello, my name is <span class="before-change" style="background: yellow; border: thin inset;"><del>Watanabe.</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>matz.</ins></span>
+<span class="add" style="background: deepskyblue; font-weight: bolder; border: thin outset;"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span>I am <span class="before-change" style="background: yellow; border: thin inset;"><del>just another </del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>a </ins></span>Ruby <span class="before-change" style="background: yellow; border: thin inset;"><del>porter.</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>hacker.</ins></span>
+%
+</pre>
+
+### Configuration
+
+You can place configuration files at:
+
+* `/etc/docdiff/docdiff.conf` (site-wide configuration)
+* `~/etc/docdiff/docdiff.conf` (user configuration)
+  (`~/etc/docdiff/docdiff.conf` is used by default in order to keep home directory clean, preventing dotfiles and dotdirs from scattering around. Alternatively, you can use `~/.docdiff/docdiff.conf` as user configuration file name, following the traditional Unix convention.)
+
+Notation is as follows (also refer to the file `docdiff.conf.example` included in the distribution archive):
+
+```
+# comment
+key1 = value
+key2 = value
+...
+```
+
+Every value is treated as string, unless it seems like a number.  In such case, value is treated as a number (usually an integer).
+
+## Troubleshooting and Tips
+
+### wrong argument type nil (expected Module) (TypeError)
+
+Sometimes DocDiff fails to auto-recognize encoding and/or end-of-line character.  You may get an error like this.
+
+```
+charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)
+```
+
+In such a case, try explicitly specifying encoding and end-of-line character (e.g. `docdiff --utf8 --crlf`).
+
+### Inappropriate Insertion / Deletion
+
+When comparing space-separated texts (such as English or program source code), the word next to the end of line is sometimes unnecessarily deleted and inserted.  This is due to the limitation of DocDiff's word splitter.  It splits strings into words like the following.
+
+text 1:
+
+```
+foo bar
+```
+
+(`"foo bar"  => ["foo ", "bar"]`)
+
+text 2:
+
+```
+foo
+bar
+```
+
+(`"foo\nbar" => ["foo", "\n", "bar"]`)
+
+comparison result:
+
+<pre>
+<del>foo </del><ins>foo</ins><ins>
+</ins>bar
+</pre>
+
+(`"<del>foo </del><ins>foo</ins><ins>\n</ins>bar"`)
+
+Foo is (unnecessarily) deleted and inserted at the same time.
+
+I would like to fix this sometime, but it's not easy.  If you split single space as single element (i.e. `["foo", " ", "bar"]`), the word order of the comparison result will be less natural.  Suggestions are welcome.
+
+### Using DocDiff with Version Control Systems
+
+If you want to use DocDiff as an external diff program from VCSs, the following may work.
+
+* Subversion
+  ```
+  % svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"
+  ```
+* Git
+  ```
+  % GIT_EXTERNAL_DIFF=~/bin/gitdocdiff.sh git diff
+  ```
+  `~/bin/gitdocdiff.sh`:
+  ```
+  #!/bin/sh
+  docdiff --ascii --lf --tty --digest $2 $5
+  ```
+
+With zsh, you can use DocDiff or other utility to compare arbitrary sources.  In the following example, we compare specific revision of foo.html in a repository with one on a website.
+
+* CVS:
+  ```
+  % docdiff =(cvs -Q update -p -r 1.3 foo.html) =(curl --silent http://www.example.org/foo.html)
+  ```
+* Subversion:
+  ```
+  % docdiff =(svn cat -r3 http://svn.example.org/repos/foo.html) =(curl --silent http://www.example.org/foo.html)
+  ```
+
+### Comparing Non-plain Text Files Such As HTML or Microsoft Word Documents
+
+You can compare files other than plain text, such as HTML and Microsoft Word documents, if you use appropriate converter.
+
+Comparing the content of two HTML documents (without tags):
+
+```
+% docdiff =(w3m -dump -cols 10000 foo.html) =(w3m -dump -cols 10000 http://www.example.org/foo.html)
+```
+
+Comparing the content of two Microsoft Word documents:
+
+```
+% docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)
+```
+
+### Workaround for Latin-* (ISO-8859-*) encodings: Use ASCII
+
+If you want to compare Latin-* (ISO-8859-*) texts, try using ASCII as their encoding.  When ASCII is specified, DocDiff assumes single-byte characters.
+
+Comparing Latin-1 texts:
+
+```
+% docdiff --encoding=ASCII latin-1-old.txt latin-1-new.txt
+```
 
 ## License
 
