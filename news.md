@@ -1,8 +1,23 @@
 ## News
 
+### 0.6.2 (2025-11-28)
+
+* User-visible changes:
+  - Add support for stdin (`-`) in command line arguments (thanks to tamo)
+  - Add `--config-file` option (thanks to tamo)
+  - Fix incompatibility with Ruby 3.4 `Regexp` (thanks to yoshuki)
+  - Resolve frozen literal warnings introduced by Ruby 3.4.
+* Developer-related changes:
+  - Remove unused files: ViewDiff and its tests.
+  - Update email address in `.gemspec`.
+
 ### 0.6.1 (2021-06-07)
 
-* Update information in `.gemspec`.
+* User-visible changes:
+  - none
+* Developer-related changes:
+  - Update information in `.gemspec`. (Primary repository is now GitHub, etc.)
+  - Fix: Use `VERSION` from local library when building a gem.
 
 ### 0.6.0 (2020-07-10)
 
