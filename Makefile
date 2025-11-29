@@ -6,7 +6,7 @@ RUBY = ruby
 TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
-DOCS   = ChangeLog readme.en.html readme.ja.html news.html
+DOCS   = readme.en.html readme.ja.html news.html
 DOCSRC = readme.md readme_ja.md news.md img sample
 TESTS  = test/*_test.rb
 DIST   = Makefile devutil lib docdiff.conf.example bin/docdiff \
@@ -37,9 +37,6 @@ test: $(TESTLOGS)
 	$(RUBY) -I./lib test/$*_test.rb | tee $@
 
 docs:	$(DOCS)
-
-ChangeLog:
-	devutil/changelog.sh > $@
 
 readme.en.html: readme.md
 	$(MD2HTML) --html-title="Readme" $< > $@

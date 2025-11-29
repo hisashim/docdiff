@@ -4,7 +4,7 @@ require 'bundler/gem_tasks'
 
 RUBY    = ENV['RUBY'] ||= 'ruby'
 MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
-DOCS   = FileList['ChangeLog', 'readme.en.html', 'readme.ja.html', 'news.html']
+DOCS   = FileList['readme.en.html', 'readme.ja.html', 'news.html']
 DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'img', 'sample']
 TESTS  = FileList['test/*_test.rb']
 TESTLOGS = Dir.glob('test/*_test.rb').map{|f|
@@ -25,10 +25,6 @@ task :default => :test
 
 desc "generate documents"
 task :docs => DOCS
-
-file 'ChangeLog' do |t|
-  sh "devutil/changelog.sh > #{t.name}"
-end
 
 file 'readme.en.html' => 'readme.md' do |t|
   sh "#{MD2HTML} --html-title='Readme' #{t.source} > #{t.name}"

@@ -154,4 +154,4 @@
 * Requires GNU diff.
 * Distributed under the same license as Ruby's.
 
-See the `ChangeLog` for detail.
+See the source repository for detail.
