@@ -17,11 +17,6 @@ TESTLOGS = $(foreach t,\
                      $(wildcard test/*_test.rb),\
                      $(t:test/%_test.rb=%_test.log)) \
 
-WWWUSER = hisashim,docdiff
-WWWSITE = web.sourceforge.net
-WWWSITEPATH = htdocs/
-WWWDRYRUN = --dry-run
-
 DESTDIR =
 PREFIX  = /usr/local
 datadir = $(DESTDIR)$(PREFIX)/share
@@ -85,14 +80,6 @@ gem: $(PRODUCT)-$(VERSION).gem
 $(PRODUCT)-$(VERSION).gem: $(PRODUCT).gemspec
 	gem build $<
 
-wwwupload:
-	$(MAKE) www WWWDRYRUN=
-www: $(DOCSRC) $(DOCS)
-	rsync $(WWWDRYRUN) -auv -e ssh --delete \
-	  --exclude='.svn' --exclude='.git' \
-	  $(DOCSRC) $(DOCS) \
-	  $(WWWUSER)@$(WWWSITE):$(WWWSITEPATH)
-
 clean:
 	-rm -fr $(DOCS)
 	-rm -fr $(TESTLOGS)
@@ -101,5 +88,4 @@ distclean: clean
 	-rm -fr $(PRODUCT)-$(VERSION).tar.gz
 	-rm -fr $(PRODUCT)-$(VERSION).gem
 
-.PHONY:	all testall test docs install uninstall dist gem \
-	wwwupload www clean distclean
+.PHONY:	all testall test docs install uninstall dist gem clean distclean

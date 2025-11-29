@@ -11,11 +11,6 @@ TESTLOGS = Dir.glob('test/*_test.rb').map{|f|
   File.basename(f).ext('log')
 }
 
-WWWUSER     = ENV['WWWUSER']     ||= 'hisashim,docdiff'
-WWWSITE     = ENV['WWWSITE']     ||= 'web.sourceforge.net'
-WWWSITEPATH = ENV['WWWSITEPATH'] ||= 'htdocs/'
-WWWDRYRUN   = ENV['WWWDRYRUN']   ||= '--dry-run'
-
 Rake::TestTask.new do |t|
   t.test_files = TESTS
   t.verbose = true
@@ -36,19 +31,6 @@ end
 
 file 'news.html' => 'news.md' do |t|
   sh "#{MD2HTML} --html-title='News' #{t.source} > #{t.name}"
-end
-
-desc "force to rsync web contents"
-task :wwwupload do |t|
-  sh "rake www WWWDRYRUN="
-end
-
-desc "rsync web contents"
-task :www => DOCSRC + DOCS do |t|
-  sh "rsync #{WWWDRYRUN} -auv -e ssh --delete" +
-    " --exclude='.svn' --exclude='.git'" +
-    t.prerequisites.join(' ') +
-    " #{WWWUSER}@#{WWWSITE}:#{WWWSITEPATH}"
 end
 
 CLEAN.include(DOCS, TESTLOGS)
