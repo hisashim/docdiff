@@ -4,8 +4,8 @@ require 'bundler/gem_tasks'
 
 RUBY    = ENV['RUBY'] ||= 'ruby'
 MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
-DOCS   = FileList['readme.en.html', 'readme.ja.html', 'news.html']
-DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'img', 'sample']
+DOCS   = FileList['doc/readme.en.html', 'doc/readme.ja.html', 'doc/news.html']
+DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'doc/img', 'sample']
 TESTS  = FileList['test/*_test.rb']
 TESTLOGS = Dir.glob('test/*_test.rb').map{|f|
   File.basename(f).ext('log')
@@ -21,16 +21,31 @@ task :default => :test
 desc "generate documents"
 task :docs => DOCS
 
-file 'readme.en.html' => 'readme.md' do |t|
-  sh "#{MD2HTML} --html-title='Readme' #{t.source} > #{t.name}"
+file 'doc/readme.en.html' => 'readme.md' do |t|
+  title =  File.read(t.source, encoding: "UTF-8").scan(/^# (.*)$/).first.first
+  sh <<~EOS
+    #{MD2HTML} --html-title='#{title}' #{t.source} \
+    | sed 's/\\(href\\|src\\)="doc\\/\\([^"]*\\)"/\\1="\\2"/g' \
+    | sed 's/href="\\([^"]*\\).md"/href="\\1.html"/g' > #{t.name}
+  EOS
 end
 
-file 'readme.ja.html' => 'readme_ja.md' do |t|
-  sh "#{MD2HTML} --html-title='Readme (ja)' #{t.source} > #{t.name}"
+file 'doc/readme.ja.html' => 'readme_ja.md' do |t|
+  title =  File.read(t.source, encoding: "UTF-8").scan(/^# (.*)$/).first.first
+  sh <<~EOS
+    #{MD2HTML} --html-title='#{title}' #{t.source} \
+    | sed 's/\\(href\\|src\\)="doc\\/\\([^"]*\\)"/\\1="\\2"/g' \
+    | sed 's/href="\\([^"]*\\).md"/href="\\1.html"/g' > #{t.name}
+  EOS
 end
 
-file 'news.html' => 'news.md' do |t|
-  sh "#{MD2HTML} --html-title='News' #{t.source} > #{t.name}"
+file 'doc/news.html' => 'news.md' do |t|
+  title =  File.read(t.source, encoding: "UTF-8").scan(/^# (.*)$/).first.first
+  sh <<~EOS
+    #{MD2HTML} --html-title='#{title}' #{t.source} \
+    | sed 's/\\(href\\|src\\)="doc\\/\\([^"]*\\)"/\\1="\\2"/g' \
+    | sed 's/href="\\([^"]*\\).md"/href="\\1.html"/g' > #{t.name}
+  EOS
 end
 
 CLEAN.include(DOCS, TESTLOGS)

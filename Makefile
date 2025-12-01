@@ -6,8 +6,8 @@ RUBY = ruby
 TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
-DOCS   = readme.en.html readme.ja.html news.html
-DOCSRC = readme.md readme_ja.md news.md img sample
+DOCS   = doc/readme.en.html doc/readme.ja.html doc/news.html
+DOCSRC = readme.md readme_ja.md news.md doc/img sample
 TESTS  = test/*_test.rb
 DIST   = Makefile devutil lib docdiff.conf.example bin/docdiff \
          docdiff.gemspec \
@@ -33,14 +33,20 @@ test: $(TESTLOGS)
 
 docs:	$(DOCS)
 
-readme.en.html: readme.md
-	$(MD2HTML) --html-title="Readme" $< > $@
+doc/readme.en.html: readme.md
+	$(MD2HTML) --html-title="$(shell grep '^# .*' $< | head -n 1 | sed 's/^# //')" $< \
+	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
+	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
 
-readme.ja.html: readme_ja.md
-	$(MD2HTML) --html-title="Readme (ja)" $< > $@
+doc/readme.ja.html: readme_ja.md
+	$(MD2HTML) --html-title="$(shell grep '^# .*' $< | head -n 1 | sed 's/^# //')" $< \
+	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
+	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
 
-news.html: news.md
-	$(MD2HTML) --html-title="News" $< > $@
+doc/news.html: news.md
+	$(MD2HTML) --html-title="$(shell grep '^# .*' $< | head -n 1 | sed 's/^# //')" $< \
+	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
+	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
 
 install: $(DIST)
 	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
