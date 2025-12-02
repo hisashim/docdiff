@@ -6,7 +6,7 @@ RUBY = ruby
 TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
-DOCS   = doc/readme.en.html doc/readme.ja.html doc/news.html
+DOCS   = doc/readme.en.md doc/readme.ja.md doc/readme.en.html doc/readme.ja.html doc/news.html
 DOCSRC = readme.md readme_ja.md doc/news.md doc/img doc/example
 TESTS  = test/*_test.rb
 DIST   = $(shell git ls-files)
@@ -22,20 +22,16 @@ test: $(TESTS)
 
 docs:	$(DOCS)
 
-doc/readme.en.html: readme.md
+%.html: %.md
 	$(MD2HTML) --html-title="$(shell grep '^# .*' $< | head -n 1 | sed 's/^# //')" $< \
 	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
 	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
 
-doc/readme.ja.html: readme_ja.md
-	$(MD2HTML) --html-title="$(shell grep '^# .*' $< | head -n 1 | sed 's/^# //')" $< \
-	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
-	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
+doc/readme.en.md: readme.md
+	cp $^ $@
 
-doc/news.html: doc/news.md
-	$(MD2HTML) --html-title="$(shell grep '^# .*' $< | head -n 1 | sed 's/^# //')" $< \
-	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
-	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
+doc/readme.ja.md: readme_ja.md
+	cp $^ $@
 
 install: $(DIST) $(DOCS)
 	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
