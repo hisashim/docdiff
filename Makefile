@@ -9,10 +9,7 @@ MD2HTML = md2html --full-html
 DOCS   = doc/readme.en.html doc/readme.ja.html doc/news.html
 DOCSRC = readme.md readme_ja.md news.md doc/img sample
 TESTS  = test/*_test.rb
-DIST   = Makefile devutil lib docdiff.conf.example bin/docdiff \
-         docdiff.gemspec \
-         docdiffwebui.html docdiffwebui.cgi \
-         $(DOCSRC) $(DOCS) $(TESTS)
+DIST   = $(shell git ls-files)
 
 DESTDIR =
 PREFIX  = /usr/local
@@ -40,7 +37,7 @@ doc/news.html: news.md
 	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
 	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
 
-install: $(DIST)
+install: $(DIST) $(DOCS)
 	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
 	  mkdir -p $(DESTDIR)$(PREFIX)/bin; \
 	fi
@@ -68,11 +65,8 @@ uninstall:
 	-rm -fr $(DESTDIR)/etc/$(PRODUCT)
 	-rm -fr $(datadir)/doc/$(PRODUCT)
 
-dist: $(DIST)
-	mkdir $(PRODUCT)-$(VERSION)
-	cp -rp $(DIST) $(PRODUCT)-$(VERSION)
-	$(TAR_XVCS) -zvcf $(PRODUCT)-$(VERSION).tar.gz $(PRODUCT)-$(VERSION)
-	-rm -fr $(PRODUCT)-$(VERSION)
+dist:
+	git archive --prefix="$(PRODUCT)-$(VERSION)/" --format=tar HEAD --output="$(PRODUCT)-$(VERSION).tar.gz"
 
 gem: $(PRODUCT)-$(VERSION).gem
 $(PRODUCT)-$(VERSION).gem: $(PRODUCT).gemspec
