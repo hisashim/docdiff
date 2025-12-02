@@ -7,7 +7,7 @@ TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
 DOCS   = doc/readme.en.html doc/readme.ja.html doc/news.html
-DOCSRC = readme.md readme_ja.md news.md doc/img
+DOCSRC = readme.md readme_ja.md news.md doc/img doc/example
 TESTS  = test/*_test.rb
 DIST   = $(shell git ls-files)
 
@@ -52,7 +52,7 @@ install: $(DIST) $(DOCS)
 	@if [ ! -d $(DESTDIR)/etc/$(PRODUCT) ]; then \
 	  mkdir -p $(DESTDIR)/etc/$(PRODUCT); \
 	fi
-	cp -Pprv docdiff.conf.example $(DESTDIR)/etc/$(PRODUCT)/docdiff.conf
+	cp -Pprv doc/example/docdiff.conf.example $(DESTDIR)/etc/$(PRODUCT)/docdiff.conf
 
 	@if [ ! -d $(datadir)/doc/$(PRODUCT) ]; then \
 	  mkdir -p $(datadir)/doc/$(PRODUCT); \
