@@ -7,9 +7,6 @@ MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
 DOCS   = FileList['doc/readme.en.html', 'doc/readme.ja.html', 'doc/news.html']
 DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'doc/img', 'sample']
 TESTS  = FileList['test/*_test.rb']
-TESTLOGS = Dir.glob('test/*_test.rb').map{|f|
-  File.basename(f).ext('log')
-}
 
 Rake::TestTask.new do |t|
   t.test_files = TESTS
@@ -48,4 +45,4 @@ file 'doc/news.html' => 'news.md' do |t|
   EOS
 end
 
-CLEAN.include(DOCS, TESTLOGS)
+CLEAN.include(DOCS)

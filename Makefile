@@ -13,9 +13,6 @@ DIST   = Makefile devutil lib docdiff.conf.example bin/docdiff \
          docdiff.gemspec \
          docdiffwebui.html docdiffwebui.cgi \
          $(DOCSRC) $(DOCS) $(TESTS)
-TESTLOGS = $(foreach t,\
-                     $(wildcard test/*_test.rb),\
-                     $(t:test/%_test.rb=%_test.log)) \
 
 DESTDIR =
 PREFIX  = /usr/local
@@ -23,13 +20,8 @@ datadir = $(DESTDIR)$(PREFIX)/share
 
 all:	$(DOCS)
 
-testall:
-	$(MAKE) test RUBY=ruby1.9.1
-
-test: $(TESTLOGS)
-
-%_test.log:
-	$(RUBY) -I./lib test/$*_test.rb | tee $@
+test: $(TESTS)
+	$(RUBY) -I./lib -e 'ARGV.map{|a| require_relative "#{a}"}' $^
 
 docs:	$(DOCS)
 
@@ -88,10 +80,9 @@ $(PRODUCT)-$(VERSION).gem: $(PRODUCT).gemspec
 
 clean:
 	-rm -fr $(DOCS)
-	-rm -fr $(TESTLOGS)
 
 distclean: clean
 	-rm -fr $(PRODUCT)-$(VERSION).tar.gz
 	-rm -fr $(PRODUCT)-$(VERSION).gem
 
-.PHONY:	all testall test docs install uninstall dist gem clean distclean
+.PHONY:	all test docs install uninstall dist gem clean distclean
