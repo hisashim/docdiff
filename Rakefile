@@ -4,8 +4,8 @@ require 'bundler/gem_tasks'
 
 RUBY    = ENV['RUBY'] ||= 'ruby'
 MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
-DOCS   = FileList['doc/readme.en.md', 'doc/readme.ja.md', 'doc/readme.en.html', 'doc/readme.ja.html', 'doc/news.html']
-DOCSRC = FileList['readme.md', 'readme_ja.md', 'doc/news.md', 'doc/img', 'doc/example']
+DOCS   = FileList['doc/README.md', 'doc/README_ja.md', 'doc/README.html', 'doc/README_ja.html', 'doc/news.html']
+DOCSRC = FileList['README.md', 'README_ja.md', 'doc/news.md', 'doc/img', 'doc/example']
 TESTS  = FileList['test/*_test.rb']
 
 Rake::TestTask.new do |t|
@@ -27,11 +27,11 @@ rule '.html' => '.md' do |t|
   EOS
 end
 
-file 'doc/readme.en.md' => 'readme.md' do |t|
+file 'doc/README.md' => 'README.md' do |t|
   cp t.source, t.name
 end
 
-file 'doc/readme.ja.md' => 'readme_ja.md' do |t|
+file 'doc/README_ja.md' => 'README_ja.md' do |t|
   cp t.source, t.name
 end
 

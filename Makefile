@@ -6,8 +6,8 @@ RUBY = ruby
 TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
-DOCS   = doc/readme.en.md doc/readme.ja.md doc/readme.en.html doc/readme.ja.html doc/news.html
-DOCSRC = readme.md readme_ja.md doc/news.md doc/img doc/example
+DOCS   = doc/README.md doc/README_ja.md doc/README.html doc/README_ja.html doc/news.html
+DOCSRC = README.md README_ja.md doc/news.md doc/img doc/example
 TESTS  = test/*_test.rb
 DIST   = $(shell git ls-files)
 
@@ -27,10 +27,7 @@ docs:	$(DOCS)
 	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
 	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
 
-doc/readme.en.md: readme.md
-	cp $^ $@
-
-doc/readme.ja.md: readme_ja.md
+doc/%.md: %.md
 	cp $^ $@
 
 install: $(DIST) $(DOCS)
@@ -53,7 +50,8 @@ install: $(DIST) $(DOCS)
 	@if [ ! -d $(datadir)/doc/$(PRODUCT) ]; then \
 	  mkdir -p $(datadir)/doc/$(PRODUCT); \
 	fi
-	cp -Pprv $(DOCSRC) $(DOCS) $(datadir)/doc/$(PRODUCT)
+	cp -Pprv $(DOCSRC) $(datadir)/doc/$(PRODUCT)
+	cp -Pprv $(DOCS) $(datadir)/doc/$(PRODUCT)
 
 uninstall:
 	-rm -fr $(DESTDIR)$(PREFIX)/bin/docdiff
