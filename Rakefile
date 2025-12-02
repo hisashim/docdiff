@@ -5,7 +5,7 @@ require 'bundler/gem_tasks'
 RUBY    = ENV['RUBY'] ||= 'ruby'
 MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
 DOCS   = FileList['doc/readme.en.html', 'doc/readme.ja.html', 'doc/news.html']
-DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'doc/img', 'sample']
+DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'doc/img']
 TESTS  = FileList['test/*_test.rb']
 
 Rake::TestTask.new do |t|

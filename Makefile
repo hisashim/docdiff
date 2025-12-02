@@ -7,7 +7,7 @@ TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
 DOCS   = doc/readme.en.html doc/readme.ja.html doc/news.html
-DOCSRC = readme.md readme_ja.md news.md doc/img sample
+DOCSRC = readme.md readme_ja.md news.md doc/img
 TESTS  = test/*_test.rb
 DIST   = $(shell git ls-files)
 
