@@ -5,7 +5,7 @@ require 'bundler/gem_tasks'
 RUBY    = ENV['RUBY'] ||= 'ruby'
 MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
 DOCS   = FileList['doc/readme.en.html', 'doc/readme.ja.html', 'doc/news.html']
-DOCSRC = FileList['readme.md', 'readme_ja.md', 'news.md', 'doc/img', 'doc/example']
+DOCSRC = FileList['readme.md', 'readme_ja.md', 'doc/news.md', 'doc/img', 'doc/example']
 TESTS  = FileList['test/*_test.rb']
 
 Rake::TestTask.new do |t|
@@ -36,7 +36,7 @@ file 'doc/readme.ja.html' => 'readme_ja.md' do |t|
   EOS
 end
 
-file 'doc/news.html' => 'news.md' do |t|
+file 'doc/news.html' => 'doc/news.md' do |t|
   title =  File.read(t.source, encoding: "UTF-8").scan(/^# (.*)$/).first.first
   sh <<~EOS
     #{MD2HTML} --html-title='#{title}' #{t.source} \

@@ -7,7 +7,7 @@ TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
 DOCS   = doc/readme.en.html doc/readme.ja.html doc/news.html
-DOCSRC = readme.md readme_ja.md news.md doc/img doc/example
+DOCSRC = readme.md readme_ja.md doc/news.md doc/img doc/example
 TESTS  = test/*_test.rb
 DIST   = $(shell git ls-files)
 
@@ -32,7 +32,7 @@ doc/readme.ja.html: readme_ja.md
 	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
 	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
 
-doc/news.html: news.md
+doc/news.html: doc/news.md
 	$(MD2HTML) --html-title="$(shell grep '^# .*' $< | head -n 1 | sed 's/^# //')" $< \
 	| sed 's/\(href\|src\)="doc\/\([^"]*\)"/\1="\2"/g' \
 	| sed 's/href="\([^"]*\).md"/href="\1.html"/g' > $@
