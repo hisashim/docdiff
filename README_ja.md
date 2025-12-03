@@ -12,55 +12,55 @@
 
 <div style="display: grid; grid-template-columns: 1fr 1fr;">
 
-<p>HTML output in web browser<br />
-<img src="doc/img/docdiff-screenshot-format-html-firefox.png" alt="HTML output in web browser"/></p>
+<p>HTML出力<br />
+<img src="doc/img/docdiff-screenshot-format-html-firefox.png" alt="HTML output"/></p>
 
-<p>HTML output in web browser (digest)<br />
-<img src="doc/img/docdiff-screenshot-format-html-digest-firefox.png" alt="HTML output in web browser (digest)" /></p>
+<p>HTML出力（ダイジェスト）<br />
+<img src="doc/img/docdiff-screenshot-format-html-digest-firefox.png" alt="HTML output (digest)" /></p>
 
-<p>tty output in terminal<br />
-<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-en.png" alt="tty output in terminal" /></p>
+<p>tty出力<br />
+<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-en.png" alt="tty output" /></p>
 
-<p>tty output in terminal (comparing Japanese text)<br />
-<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-ja.png" alt="tty output in terminal (comparing Japanese text)" /></p>
+<p>tty出力（日本語のテキストを比較）<br />
+<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-ja.png" alt="tty output (comparing Japanese text)" /></p>
 
-<p>tty output in terminal<br />
-<img src="doc/img/docdiff-screenshot-format-tty-xterm-en.png" alt="tty output in terminal" /></p>
+<p>tty出力<br />
+<img src="doc/img/docdiff-screenshot-format-tty-xterm-en.png" alt="tty output" /></p>
 
-<p>tty output in terminal (comparing Japanese text)<br />
-<img src="doc/img/docdiff-screenshot-format-tty-xterm-ja.png" alt="tty output in terminal (comparing Japanese text)" /></p>
+<p>tty出力（日本語のテキストを比較）<br />
+<img src="doc/img/docdiff-screenshot-format-tty-xterm-ja.png" alt="tty output (comparing Japanese text)" /></p>
 
 </div>
 
-<p>Comparing English text (codepage 437) on Windows (Cygwin)<br />
+<p>英語のテキスト（コードページ437）を比較（Windows上のCygwin環境）<br />
 <img src="doc/img/docdiff-screenshot-format-tty-cmdexe-en.png" alt="Comparing English text (codepage 437) on Windows (Cygwin)" /></p>
 
-<p>Comparing Japanese text (codepage 932) on Windows (Cygwin)<br />
+<p>日本語のテキスト（コードページ937）を比較（Windows上のCygwin環境）<br />
 <img src="doc/img/docdiff-screenshot-format-tty-cmdexe-ja.png" alt="Comparing Japanese text (codepage 932) on Windows (Cygwin)" /></p>
 
-<p>You can compare text files by line, word, or character (format: tty)<br/>
+<p>行ごと、単語ごと、文字ごとの比較が可能（フォーマットはtty）<br/>
 <img src="doc/img/docdiff-screenshot-resolution-linewordchar-xterm.png" alt="You can compare text files by line, word, or character (format: tty)" /></p>
 
-バージョン0.3.2時点のスクリーンショットです。
+（バージョン0.3.2時点のスクリーンショットです。）
 
 ## 概要
 
-DocDiffは2つのテキストファイルを比較してその違いを表示します。単語ごと、文字ごと、そして行ごとにファイルを比較できます。結果を出力する形式は、HTML, tty（文字端末向けのエスケープシーケンス）, Manued（真鵺道という校正用のマークアップ形式）などが用意されており、ユーザ定義のタグを使うこともできます。
+DocDiffは2つのテキストファイルを比較してその違いを表示します。単語ごと、文字ごと、そして行ごとにファイルを比較できます。結果を出力する形式は、HTML、tty（文字端末向けのエスケープシーケンス）、Manued（真鵺道という校正用のマークアップ形式）などが用意されており、ユーザ定義のタグを使うこともできます。
 
-次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII（およびISO-8859-*などのシングルバイトエンコーディング）, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
+次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII（およびISO-8859-*などのシングルバイトエンコーディング）、UTF-8、EUC-JP、Shift_JIS（Windows-31J）、そしてCR、LF、CRLF。
 
 ## 使い方
 
 ### 概要
 
 ```
-% docdiff [options] oldfile newfile
+$ docdiff [options] oldfile newfile
 ```
 
 e.g.
 
 ```
-% docdiff old.txt new.txt > diff.html
+$ docdiff old.txt new.txt > diff.html
 ```
 
 詳しくはヘルプメッセージを参照してください（`docdiff --help`）。
@@ -68,16 +68,16 @@ e.g.
 ### 例
 
 <pre>
-% cat sample/01.ja.eucjp.lf
+$ cat 01.ja.eucjp.lf
 こんにちは、私の名前はわたなべです。
 私はJust Another Ruby Porterです。
-% cat sample/02.ja.eucjp.lf
+$ cat 02.ja.eucjp.lf
 こんばんは、私の名前はまつもとです。
 Rubyを作ったのは私です。私はRuby Hackerです。
-% docdiff sample/01.ja.eucjp.lf sample/02.ja.eucjp.lf
+$ docdiff --tty 01.ja.eucjp.lf 02.ja.eucjp.lf
 <span class="before-change" style="background: yellow; border: thin inset;"><del>こんにちは</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>こんばんは</ins></span>、私の<span class="before-change" style="background: yellow; border: thin inset;"><del>名前はわたなべです</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>名前はまつもとです</ins></span>。
 <span class="add" style="background: deepskyblue; font-weight: bolder; border: thin outset;"><ins>Rubyを作ったのは私です。</ins></span>私は<span class="del" style="background: hotpink; border: thin inset;"><del>Just Another </del></span>Ruby <span class="before-change" style="background: yellow; border: thin inset;"><del>Porter</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>Hacker</ins></span>です。
-%
+$
 </pre>
 
 ## 必要なソフトウェア
@@ -295,14 +295,14 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 ```
 
-diffライブラリ（`docdiff/diff.rb`および`docdiff/diff/*`）は、もともと田中哲さんによるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布されています。詳細は次を参照してください。
+Diffライブラリ（`lib/docdiff/diff.rb`および`lib/docdiff/diff/*`）は、もともと田中哲さんによるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布されています。詳細は次を参照してください。
 
 * <http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs>
 * <http://cvs.m17n.org/~akr/ruby-cvs/>
 
 ## クレジット
 
-* Hisashi MORITA (primary author)
+* Hisashi MORITA (author)
 
 ## 謝辞
 
@@ -329,20 +329,21 @@ diffライブラリ（`docdiff/diff.rb`および`docdiff/diff/*`）は、もと�
 
 ### フォーマット
 
-* [HTML/XHTML](http://www.w3.org)
-* tty (Graphic rendition using VT100 / ANSI escape sequence)
-  - [VT100](http://vt100.net/docs/tp83/appendixb.html)
-  - [ANSI](http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
-* [Manued](http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/index.shtml) (Manuscript Editing language: a proofreading method for text)
+* [HTML/XHTML](https://www.w3.org/)
+* tty (Graphic rendition using VT100 / ANSI escape sequences)
+  - [VT100](https://vt100.net/docs/tp83/appendixb.html)
+  - [ANSI](https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
+* [Manued](https://sundayresearch.eu/hitoshi/otherprojects/manued/) ([in Japanese](https://sundayresearch.eu/hitoshi/otherprojects/manued/index-j.html)) (Manuscript Editing Language: a proofreading method for text)
 
-### 同様の目的を持ったソフトウェア
+### 同様の機能を備えたソフトウェア
 
-テキストを単語単位や文字単位で比較することができるソフトウェアは、ほかにもあります。
+テキストを単語単位や文字単位で比較することができるソフトウェアは、数多く存在します。
 
-* [GNU wdiff](http://www.gnu.org/directory/GNU/wdiff.html) (Seems to support single byte characters only.)
-* [cdif](http://srekcah.org/~utashiro/perl/scripts/cdif) by Kazumasa UTASHIRO (Supports several Japanese encodings.)
-* [ediff](http://www.xemacs.org/Documentation/packages/html/ediff.html) for Emacsen
-* [diff-detail](http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail) for xyzzy, by Hiroshi OHKUBO
-* [Manuediff](http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html) (Outputs difference in Manued format.)
-* [YASDiff](http://nnri.dip.jp/~yf/cgi-bin/yaswiki2.cgi?name=YASDiff&parentid=0) (Yet Another Scheme powered diff) by Y. Fujisawa
-* [WinMerge](http://winmerge.org/) (GUI diff tool for Windows)
+* CLI:
+  - [wdiff](https://www.gnu.org/software/wdiff/) (requires spaces between words)
+  - cdif / [sdif-tools](https://github.com/kaz-utashiro/sdif-tools)
+* GUI:
+  - [WinMerge](https://winmerge.org/) (Windows)
+* Editor extensions:
+  - [ediff](https://www.gnu.org/software/emacs/manual/html_mono/ediff.html) (Emacs)
+  - [diff-detail](http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail) ([xyzzy](https://github.com/xyzzy-022/xyzzy))

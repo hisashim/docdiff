@@ -12,23 +12,23 @@ Compares two text files by word, by character, or by line
 
 <div style="display: grid; grid-template-columns: 1fr 1fr;">
 
-<p>HTML output in web browser<br />
-<img src="doc/img/docdiff-screenshot-format-html-firefox.png" alt="HTML output in web browser"/></p>
+<p>HTML output<br />
+<img src="doc/img/docdiff-screenshot-format-html-firefox.png" alt="HTML output"/></p>
 
-<p>HTML output in web browser (digest)<br />
-<img src="doc/img/docdiff-screenshot-format-html-digest-firefox.png" alt="HTML output in web browser (digest)" /></p>
+<p>HTML output (digest)<br />
+<img src="doc/img/docdiff-screenshot-format-html-digest-firefox.png" alt="HTML output (digest)" /></p>
 
-<p>tty output in terminal<br />
-<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-en.png" alt="tty output in terminal" /></p>
+<p>tty output<br />
+<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-en.png" alt="tty output" /></p>
 
-<p>tty output in terminal (comparing Japanese text)<br />
-<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-ja.png" alt="tty output in terminal (comparing Japanese text)" /></p>
+<p>tty output (comparing Japanese text)<br />
+<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-ja.png" alt="tty output (comparing Japanese text)" /></p>
 
-<p>tty output in terminal<br />
-<img src="doc/img/docdiff-screenshot-format-tty-xterm-en.png" alt="tty output in terminal" /></p>
+<p>tty output<br />
+<img src="doc/img/docdiff-screenshot-format-tty-xterm-en.png" alt="tty output" /></p>
 
-<p>tty output in terminal (comparing Japanese text)<br />
-<img src="doc/img/docdiff-screenshot-format-tty-xterm-ja.png" alt="tty output in terminal (comparing Japanese text)" /></p>
+<p>tty output (comparing Japanese text)<br />
+<img src="doc/img/docdiff-screenshot-format-tty-xterm-ja.png" alt="tty output (comparing Japanese text)" /></p>
 
 </div>
 
@@ -41,26 +41,26 @@ Compares two text files by word, by character, or by line
 <p>You can compare text files by line, word, or character (format: tty)<br/>
 <img src="doc/img/docdiff-screenshot-resolution-linewordchar-xterm.png" alt="You can compare text files by line, word, or character (format: tty)" /></p>
 
-Screenshots as of version 0.3.2.
+(Screenshots as of version 0.3.2.)
 
 ## Summary
 
-DocDiff compares two text files and shows the difference.  It can compare files word by word, character by character, or line by line.  It has several output formats such as HTML, tty, Manued, or user-defined markup.
+DocDiff compares two text files and shows the difference. It can compare files word by word, character by character, or line by line. It has several output formats such as HTML, tty, Manued, or user-defined markup.
 
-It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
+It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS (Windows-31J), CR, LF, and CRLF.
 
 ## Usage
 
 ### Synopsis
 
 ```
-% docdiff [options] oldfile newfile
+$ docdiff [options] oldfile newfile
 ```
 
 e.g.
 
 ```
-% docdiff old.txt new.txt > diff.html
+$ docdiff old.txt new.txt > diff.html
 ```
 
 See the help message for detail (`docdiff --help`).
@@ -68,16 +68,16 @@ See the help message for detail (`docdiff --help`).
 ### Example
 
 <pre>
-% cat sample/01.en.ascii.lf
+$ cat 01.en.ascii.lf
 Hello, my name is Watanabe.
 I am just another Ruby porter.
-% cat sample/02.en.ascii.lf
+$ cat 02.en.ascii.lf
 Hello, my name is matz.
 It's me who has created Ruby.  I am a Ruby hacker.
-% docdiff sample/01.en.ascii.lf sample/02.en.ascii.lf
+$ docdiff --tty 01.en.ascii.lf 02.en.ascii.lf
 Hello, my name is <span class="before-change" style="background: yellow; border: thin inset;"><del>Watanabe.</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>matz.</ins></span>
 <span class="add" style="background: deepskyblue; font-weight: bolder; border: thin outset;"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span>I am <span class="before-change" style="background: yellow; border: thin inset;"><del>just another </del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>a </ins></span>Ruby <span class="before-change" style="background: yellow; border: thin inset;"><del>porter.</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>hacker.</ins></span>
-%
+$
 </pre>
 
 ## Requirements
@@ -158,7 +158,7 @@ key2 = value
 ...
 ```
 
-Every value is treated as string, unless it seems like a number.  In such case, value is treated as a number (usually an integer).
+Every value is treated as string, unless it seems like a number. In such case, value is treated as a number (usually an integer).
 
 ## Troubleshooting and Tips
 
@@ -263,7 +263,7 @@ If you want to compare Latin-* (ISO-8859-*) text files, try using `ASCII` as the
 
 ## License
 
-This software is distributed under so-called modified BSD style license (<http://www.opensource.org/licenses/bsd-license.php>) (without advertisement clause)).  By contributing to this software, you agree that your contribution may be incorporated under the same license.
+This software is distributed under so-called modified BSD style license (<http://www.opensource.org/licenses/bsd-license.php>) (without advertisement clause)). By contributing to this software, you agree that your contribution may be incorporated under the same license.
 
 Copyright and condition of use of main portion of the source:
 
@@ -295,14 +295,14 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 ```
 
-diff library (`docdiff/diff.rb` and `docdiff/diff/*`) was originally a part of Ruby/CVS by Akira TANAKA.  Ruby/CVS is licensed under modified BSD style license.  See the following for detail.
+Diff library (`lib/docdiff/diff.rb` and `lib/docdiff/diff/*`) was originally a part of Ruby/CVS by Akira TANAKA. Ruby/CVS is licensed under modified BSD style license. See the following for detail.
 
 * <http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs>
 * <http://cvs.m17n.org/~akr/ruby-cvs/>
 
 ## Credits
 
-* Hisashi MORITA (primary author)
+* Hisashi MORITA (author)
 
 ## Acknowledgments
 
@@ -323,27 +323,27 @@ diff library (`docdiff/diff.rb` and `docdiff/diff/*`) was originally a part of R
 * Tamotsu Takahashi (patches)
 * MIKAMI Yoshiyuki (patch)
 
-Excuse us this list is far from complete and fails to acknowledge many
-more who have helped us somehow. We really appreciate it.
+Excuse us this list is far from complete and fails to acknowledge many more who have helped us somehow. We really appreciate it.
 
 ## Resources
 
-### Format
+### Formats
 
-* [HTML/XHTML](http://www.w3.org)
-* tty (Graphic rendition using VT100 / ANSI escape sequence)
-  - [VT100](http://vt100.net/docs/tp83/appendixb.html)
-  - [ANSI](http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
-* [Manued](http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/index.shtml) (Manuscript Editing language: a proofreading method for text)
+* [HTML/XHTML](https://www.w3.org/)
+* tty (Graphic rendition using VT100 / ANSI escape sequences)
+  - [VT100](https://vt100.net/docs/tp83/appendixb.html)
+  - [ANSI](https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
+* [Manued](https://sundayresearch.eu/hitoshi/otherprojects/manued/) ([in Japanese](https://sundayresearch.eu/hitoshi/otherprojects/manued/index-j.html)) (Manuscript Editing Language: a proofreading method for text)
 
-### Similar Software
+### Software with Similar Features
 
-There are several other software that can compare text word by word and/or character by character.
+There are many other software that can compare text word by word and/or character by character.
 
-* [GNU wdiff](http://www.gnu.org/directory/GNU/wdiff.html) (Seems to support single byte characters only.)
-* [cdif](http://srekcah.org/~utashiro/perl/scripts/cdif) by Kazumasa UTASHIRO (Supports several Japanese encodings.)
-* [ediff](http://www.xemacs.org/Documentation/packages/html/ediff.html) for Emacsen
-* [diff-detail](http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail) for xyzzy, by Hiroshi OHKUBO
-* [Manuediff](http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html) (Outputs difference in Manued format.)
-* [YASDiff](http://nnri.dip.jp/~yf/cgi-bin/yaswiki2.cgi?name=YASDiff&parentid=0) (Yet Another Scheme powered diff) by Y. Fujisawa
-* [WinMerge](http://winmerge.org/) (GUI diff tool for Windows)
+* CLI:
+  - [wdiff](https://www.gnu.org/software/wdiff/) (requires spaces between words)
+  - cdif / [sdif-tools](https://github.com/kaz-utashiro/sdif-tools)
+* GUI:
+  - [WinMerge](https://winmerge.org/) (Windows)
+* Editor extensions:
+  - [ediff](https://www.gnu.org/software/emacs/manual/html_mono/ediff.html) (Emacs)
+  - [diff-detail](http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail) ([xyzzy](https://github.com/xyzzy-022/xyzzy))
