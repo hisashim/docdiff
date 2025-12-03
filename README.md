@@ -1,6 +1,6 @@
 # DocDiff
 
-* English | [Japanese](readme_ja.md)
+* English | [Japanese](README_ja.md)
 
 (C) 2000 Hisashi MORITA
 
