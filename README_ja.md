@@ -4,13 +4,6 @@
 
 (C) 2000 Hisashi MORITA
 
-## Todo
-
-* Incorporate ignore space patch.
-* Better auto-recognition of encodings and eols.
-* Make CSS and tty escape sequence customizable in config files.
-* Better multilingualization using Ruby 1.9 feature.
-
 ## 簡単な説明
 
 2つのテキストファイルを単語ごと、文字ごと、あるいは行ごとに比較する
