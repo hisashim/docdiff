@@ -49,66 +49,6 @@ DocDiffは2つのテキストファイルを比較してその違いを表示し
 
 次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII（およびISO-8859-*などのシングルバイトエンコーディング）, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
 
-## 必要なソフトウェア
-
-* 実行時に必要なソフトウェア:
-  - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
-* 開発時に必要なソフトウェア:
-  - Make ([GNU Make](https://www.gnu.org/software/make/))
-  - [Git](https://git-scm.com/)
-  - [md2html](https://github.com/mity/md4c)（ドキュメント生成用）
-  - [Rake](https://ruby.github.io/rake/)（オプショナル）
-  - sed, gzip, tar, etc.
-
-## インストール方法
-
-注意: 正しくインストールするためには適切なファイルアクセス権限が必要です（管理者権限が必要な場合があります）。
-
-1. `docdiff/`ディレクトリとその内容をrubyのライブラリを格納するディレクトリに配置して、Rubyインタプリタがdocdiffライブラリをロードできるようにする。
-
-   ```
-   # cp -r docdiff /usr/lib/ruby/1.9.1
-   ```
-
-2. `docdiff.rb`をコマンドを格納するディレクトリに配置する。
-
-   ```
-   # cp docdiff.rb /usr/bin/
-   ```
-
-3. (オプション) ここで必要に応じてファイル名を`docdiff`のように変更してもよい。
-
-   ```
-   # mv /usr/bin/docdiff.rb /usr/bin/docdiff
-   ```
-
-4. (オプション) docdiffは、`chardiff`や`worddiff`という名前で起動されると、それぞれ比較粒度が`char`や`word`に設定された状態で動作する。
-
-   ```
-   # ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
-   # ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
-   ```
-
-5. 適切なパーミッションを設定する。
-
-   ```
-   # chmod +x /usr/bin/docdiff.rb
-   ```
-
-6. (オプション) もしサイトの全ユーザに適用される設定ファイルが必要なら、`docdiff.conf.example`を`/etc/docdiff/docdiff.conf`として配置し、編集する。
-
-   ```
-   # cp docdiff.conf.example /etc/docdiff.conf
-   # $EDITOR /etc/docdiff.conf
-   ```
-
-7. (オプション) もしユーザごとの設定ファイルが必要なら、`docdiff.conf.example`を`~/etc/docdiff/docdiff.conf`として配置し、編集する。
-
-   ```
-   % cp docdiff.conf.example ~/etc/docdiff.conf
-   % $EDITOR ~/etc/docdiff.conf
-   ```
-
 ## 使い方
 
 ### 概要
@@ -139,6 +79,67 @@ Rubyを作ったのは私です。私はRuby Hackerです。
 <span class="add" style="background: deepskyblue; font-weight: bolder; border: thin outset;"><ins>Rubyを作ったのは私です。</ins></span>私は<span class="del" style="background: hotpink; border: thin inset;"><del>Just Another </del></span>Ruby <span class="before-change" style="background: yellow; border: thin inset;"><del>Porter</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>Hacker</ins></span>です。
 %
 </pre>
+
+## 必要なソフトウェア
+
+* 実行時に必要なソフトウェア:
+  - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
+* 開発時に必要なソフトウェア:
+  - Make ([GNU Make](https://www.gnu.org/software/make/))
+  - [Git](https://git-scm.com/)
+  - [md2html](https://github.com/mity/md4c)（ドキュメント生成用）
+  - [Rake](https://ruby.github.io/rake/)（オプショナル）
+  - sed, gzip, tar, etc.
+
+## インストール方法
+
+いくつかのOSでは、DocDiffがパッケージとして提供されていることがあります。そのような場合は、それらのパッケージを使ってインストールするのが早道でしょう。
+
+### Debianパッケージ
+
+サイト単位でのインストール:
+
+```
+$ sudo apt update
+$ sudo apt install docdiff
+```
+
+### Gemパッケージ
+
+Rubyに詳しいならば、gemパッケージとしてDocDiffをインストールしたいと思うかもしれません。
+
+ユーザ単位でのインストール（[RubyGems.org](https://rubygems.org/)から）:
+
+```
+$ gem install docdiff
+```
+
+ユーザ単位でのインストール（手元でのビルドから）:
+
+```
+$ rake build
+$ gem install pkg/docdiff-X.Y.Z.gem
+```
+
+（注意：Gemとしてインストールしたアプリケーションを起動するには、`PATH`環境変数を適切に設定する必要があります。[rbenv](https://github.com/rbenv/rbenv)などのRuby環境管理ツールを使うと便利かもしれません。）
+
+### Makeを使ってソースからインストールする
+
+やむをえずMakeを使ってソースからDocDiffをインストールするときは、事前によくテストしてください。
+
+`tmp`ディレクトリへのテストインストール:
+
+```
+$ mkdir tmp
+$ make install DESTDIR=tmp PREFIX=/local
+$ tree tmp || la -lR tmp
+```
+
+ユーザ単位でのインストールの例（ファイルを上書きしたりディレクトリ構造を汚くしたりしかねないので、おすすめしませんが）:
+
+```
+$ make install DESTDIR=~ PREFIX=/local
+```
 
 ## 設定
 

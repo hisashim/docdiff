@@ -49,66 +49,6 @@ DocDiff compares two text files and shows the difference.  It can compare files 
 
 It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
 
-## Requirements
-
-* Runtime requirements:
-  - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
-* Development requirements:
-  - Make ([GNU Make](https://www.gnu.org/software/make/))
-  - [Git](https://git-scm.com/)
-  - [md2html](https://github.com/mity/md4c) (for generating documents)
-  - [Rake](https://ruby.github.io/rake/) (optional)
-  - sed, gzip, tar, etc.
-
-## Installation
-
-Note that you need appropriate permission for proper installation (you may have to have a root/administrator privilege).
-
-1. Place `docdiff/` directory and its contents to ruby library directory, so that ruby interpreter can load them.
-
-   ```
-   # cp -r docdiff /usr/lib/ruby/1.9.1
-   ```
-
-2. Place `docdiff.rb` in command binary directory.
-
-   ```
-   # cp docdiff.rb /usr/bin/
-   ```
-
-3. (Optional) You may want to rename it to `docdiff`.
-
-   ```
-   # mv /usr/bin/docdiff.rb /usr/bin/docdiff
-   ```
-
-4. (Optional) When invoked as `chardiff` or `worddiff`, docdiff runs with resolution set to `char` or `word`, respectively.
-
-   ```
-   # ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
-   # ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
-   ```
-
-5. Set appropriate permission.
-
-   ```
-   # chmod +x /usr/bin/docdiff.rb
-   ```
-
-6. (Optional) If you want site-wide configuration file, place `docdiff.conf.example` as `/etc/docdiff/docdiff.conf` and edit it.
-
-   ```
-   # cp docdiff.conf.example /etc/docdiff.conf
-   # $EDITOR /etc/docdiff.conf
-   ```
-
-7. (Optional) If you want per-user configuration file, place `docdiff.conf.example` as `~/etc/docdiff/docdiff.conf` and edit it.
-
-   ```
-   % cp docdiff.conf.example ~/etc/docdiff.conf
-   % $EDITOR ~/etc/docdiff.conf
-   ```
-
 ## Usage
 
 ### Synopsis
@@ -139,6 +79,67 @@ Hello, my name is <span class="before-change" style="background: yellow; border:
 <span class="add" style="background: deepskyblue; font-weight: bolder; border: thin outset;"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span>I am <span class="before-change" style="background: yellow; border: thin inset;"><del>just another </del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>a </ins></span>Ruby <span class="before-change" style="background: yellow; border: thin inset;"><del>porter.</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>hacker.</ins></span>
 %
 </pre>
+
+## Requirements
+
+* Runtime requirements:
+  - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
+* Development requirements:
+  - Make ([GNU Make](https://www.gnu.org/software/make/))
+  - [Git](https://git-scm.com/)
+  - [md2html](https://github.com/mity/md4c) (for generating documents)
+  - [Rake](https://ruby.github.io/rake/) (optional)
+  - sed, gzip, tar, etc.
+
+## Installation
+
+Several operating environments have a packaged version of DocDiff available. If this applies to you, installing DocDiff via these packages is probably the easiest option.
+
+### Debian Package
+
+Site-wide installation:
+
+```
+$ sudo apt update
+$ sudo apt install docdiff
+```
+
+### Gem Package
+
+If you are familiar with the Ruby programming language, you may prefer to install DocDiff as a gem package.
+
+User-wide installation from [RubyGems.org](https://rubygems.org/):
+
+```
+$ gem install docdiff
+```
+
+User-wide installation from local build:
+
+```
+$ rake build
+$ gem install pkg/docdiff-X.Y.Z.gem
+```
+
+(Note that you have to set the `PATH` environment variable correctly to run applications that are installed as gems. Environment management tools for Ruby such as [rbenv](https://github.com/rbenv/rbenv) may come in handy.)
+
+### Installation from Source Using Make
+
+If you really have to install DocDiff from source using Make, test it carefully before proceeding.
+
+Test installation in `tmp` directory:
+
+```
+$ mkdir tmp
+$ make install DESTDIR=tmp PREFIX=/local
+$ tree tmp || la -lR tmp
+```
+
+User-wide installation example (not recommended though, as this may overwrite files and mess up your directory structure):
+
+```
+$ make install DESTDIR=~ PREFIX=/local
+```
 
 ## Configuration
 
