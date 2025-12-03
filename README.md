@@ -162,9 +162,9 @@ Every value is treated as string, unless it seems like a number.  In such case, 
 
 ## Troubleshooting and Tips
 
-### wrong argument type nil (expected Module) (TypeError)
+### Wrong argument type nil (expected Module) (TypeError)
 
-Sometimes DocDiff fails to auto-recognize encoding and/or end-of-line character.  You may get an error like this.
+Sometimes DocDiff fails to auto-recognize encoding and/or end-of-line characters. You may get an error like this.
 
 ```
 charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeError)
@@ -172,51 +172,41 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
 
 In such a case, try explicitly specifying encoding and end-of-line character (e.g. `docdiff --utf8 --crlf`).
 
-### Inappropriate Insertion / Deletion
+### Inappropriate Insertions and Deletions
 
-When comparing space-separated texts (such as English or program source code), the word next to the end of line is sometimes unnecessarily deleted and inserted.  This is due to the limitation of DocDiff's word splitter.  It splits strings into words like the following.
+When comparing space-separated text (such as English or program source code), the word next to the end of line may be sometimes unnecessarily deleted and inserted. This is due to the limitation of DocDiff's word splitter. It splits strings into words like the following.
 
-text 1:
+* Text 1:
+  ```
+  foo bar
+  ```
+  (`"foo bar"  => ["foo ", "bar"]`)
 
-```
-foo bar
-```
+* Text 2:
+  ```
+  foo
+  bar
+  ```
+  (`"foo\nbar" => ["foo", "\n", "bar"]`)
 
-(`"foo bar"  => ["foo ", "bar"]`)
-
-text 2:
-
-```
-foo
-bar
-```
-
-(`"foo\nbar" => ["foo", "\n", "bar"]`)
-
-comparison result:
-
-<pre>
-<del>foo </del><ins>foo</ins><ins>
-</ins>bar
-</pre>
-
-(`"<del>foo </del><ins>foo</ins><ins>\n</ins>bar"`)
+* Comparison result:
+  <pre>
+  <del>foo </del><ins>foo</ins><ins>
+  </ins>bar
+  </pre>
+  (`"<del>foo </del><ins>foo</ins><ins>\n</ins>bar"`)
 
 Foo is (unnecessarily) deleted and inserted at the same time.
 
-I would like to fix this sometime, but it's not easy.  If you split single space as single element (i.e. `["foo", " ", "bar"]`), the word order of the comparison result will be less natural.  Suggestions are welcome.
+I would like to fix this sometime, but it's not easy. If you split single space as single element (i.e. `["foo", " ", "bar"]`), the word order of the comparison result will be less natural. Suggestions are welcome.
 
 ### Using DocDiff with Version Control Systems
 
 If you want to use DocDiff as an external diff program from VCSs, the following may work.
 
-* Subversion
+* Git:
   ```
-  % svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"
-  ```
-* Git
-  ```
-  % GIT_EXTERNAL_DIFF=~/bin/gitdocdiff.sh git diff
+  $ GIT_EXTERNAL_DIFF=~/bin/gitdocdiff.sh git diff
   ```
   `~/bin/gitdocdiff.sh`:
   ```
@@ -224,42 +214,52 @@ If you want to use DocDiff as an external diff program from VCSs, the following 
   docdiff --ascii --lf --tty --digest $2 $5
   ```
 
-With zsh, you can use DocDiff or other utility to compare arbitrary sources.  In the following example, we compare specific revision of foo.html in a repository with one on a website.
-
-* CVS:
-  ```
-  % docdiff =(cvs -Q update -p -r 1.3 foo.html) =(curl --silent http://www.example.org/foo.html)
-  ```
 * Subversion:
   ```
-  % docdiff =(svn cat -r3 http://svn.example.org/repos/foo.html) =(curl --silent http://www.example.org/foo.html)
+  $ svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"
   ```
 
-### Comparing Non-plain Text Files Such As HTML or Microsoft Word Documents
+(Sometimes just `git diff --word-diff-regex="\w"` suffices though.)
 
-You can compare files other than plain text, such as HTML and Microsoft Word documents, if you use appropriate converter.
+With zsh, you can use DocDiff or other utility to compare arbitrary sources. In the following example, we compare specific revision of foo.html in a repository with one on a website.
 
-Comparing the content of two HTML documents (without tags):
+* Git:
+  ```
+  $ docdiff --tty --digest =(git show abc1234:foo.html) =(git show def4567:foo.html)
+  ```
 
-```
-% docdiff =(w3m -dump -cols 10000 foo.html) =(w3m -dump -cols 10000 http://www.example.org/foo.html)
-```
+* Subversion:
+  ```
+  $ docdiff =(svn cat -r3 http://svn.example.org/repos/foo.html) =(curl --silent http://www.example.org/foo.html)
+  ```
 
-Comparing the content of two Microsoft Word documents:
+### Comparing Non-plain Text Document Files
 
-```
-% docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)
-```
+You may be able to compare document files other than plain text, if you use appropriate converters.
 
-### Workaround for Latin-* (ISO-8859-*) encodings: Use ASCII
+* Comparing the text in two PDF documents:
+  ```
+  $ docdiff =(pdftotext foo.pdf -) =(pdftotext bar.pdf -)
+  ```
 
-If you want to compare Latin-* (ISO-8859-*) texts, try using ASCII as their encoding.  When ASCII is specified, DocDiff assumes single-byte characters.
+* Comparing the text in two HTML documents (without tags):
+  ```
+  $ docdiff =(w3m -dump -cols 10000 foo.html) =(w3m -dump -cols 10000 http://www.example.org/foo.html)
+  ```
 
-Comparing Latin-1 texts:
+* Comparing the text in two Microsoft Word documents:
+  ```
+  $ docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)
+  ```
 
-```
-% docdiff --encoding=ASCII latin-1-old.txt latin-1-new.txt
-```
+### Workaround for Latin-* (ISO-8859-*) Encodings: Use ASCII
+
+If you want to compare Latin-* (ISO-8859-*) text files, try using `ASCII` as their encoding. When `ASCII` is specified, DocDiff assumes single-byte characters.
+
+* Comparing Latin-1 text:
+  ```
+  $ docdiff --encoding=ASCII latin-1-old.txt latin-1-new.txt
+  ```
 
 ## License
 

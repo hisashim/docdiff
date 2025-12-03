@@ -162,7 +162,7 @@ key2 = value
 
 ## 問題解決とヒント
 
-### wrong argument type nil (expected Module) (TypeError)
+### Wrong argument type nil (expected Module) (TypeError)
 
 DocDiffがたまにエンコーディングや行末文字の自動判定に失敗して、次のようなエラーを出力することがあります。
 
@@ -176,31 +176,25 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
 
 スペースで区切られたテキスト（英文やプログラムのソースコードなど）を比較しているときに、行末にある単語が、特に必要もないのにいったん削除されてからまた挿入されることがあります。これはDocDiffの単語分割機能に制限があるせいで起きます。テキストは次のように単語に分割されます。
 
-text 1:
+* Text 1:
+  ```
+  foo bar
+  ```
+  (`"foo bar"  => ["foo ", "bar"]`)
 
-```
-foo bar
-```
+* Text 2:
+  ```
+  foo
+  bar
+  ```
+  (`"foo\nbar" => ["foo", "\n", "bar"]`)
 
-(`"foo bar"  => ["foo ", "bar"]`)
-
-text 2:
-
-```
-foo
-bar
-```
-
-(`"foo\nbar" => ["foo", "\n", "bar"]`)
-
-比較した結果:
-
-<pre>
-<del>foo </del><ins>foo</ins><ins>
-</ins>bar
-</pre>
-
-(`"<del>foo </del><ins>foo</ins><ins>\n</ins>bar"`)
+* 比較した結果:
+  <pre>
+  <del>foo </del><ins>foo</ins><ins>
+  </ins>bar
+  </pre>
+  (`"<del>foo </del><ins>foo</ins><ins>\n</ins>bar"`)
 
 Fooは（必要もないのに）削除されると同時に挿入されています。
 
@@ -210,55 +204,62 @@ Fooは（必要もないのに）削除されると同時に挿入されてい�
 
 DocDiffをVCSの外部diffプログラムとして使いたければ、次のようにするとよいでしょう。
 
-* Subversion
+* Git:
   ```
-  % svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"
-  ```
-* Git
-  ```
-  % GIT_EXTERNAL_DIFF=~/bin/gitdocdiff.sh git diff
+  $ GIT_EXTERNAL_DIFF=~/bin/gitdocdiff.sh git diff
   ```
   `~/bin/gitdocdiff.sh`:
   ```
   #!/bin/sh
   docdiff --ascii --lf --tty --digest $2 $5
   ```
-zshを使えば、いろいろな場所にある文書をDocDiffや他のユーティリティで自由に比較できます。次の例ではリポジトリ内の特定のリビジョンのfoo.htmlとウェブサイト上のfoo.htmlとを比較しています。
 
-* CVS:
-  ```
-  % docdiff =(cvs -Q update -p -r 1.3 foo.html) =(curl --silent http://www.example.org/foo.html)
-  ```
 * Subversion:
   ```
-  % docdiff =(svn cat -r3 http://svn.example.org/repos/foo.html) =(curl --silent http://www.example.org/foo.html)
+  $ svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"
   ```
 
-### HTMLやWord文書などのプレーンテキストではないファイルを比較する
+（場合によっては`git diff --word-diff-regex="\w"`で十分なこともありますが。）
 
-適切な変換ツールを使えば、HTMLやMicrosoft Word文書など、プレーンテキスト以外のファイルも比較できます。
+zshを使えば、いろいろな場所にある文書をDocDiffや他のユーティリティで自由に比較できます。次の例ではリポジトリ内の特定のリビジョンのfoo.htmlとウェブサイト上のfoo.htmlとを比較しています。
 
-HTML文書の内容（タグを除く）を比較:
+* Git:
+  ```
+  $ docdiff =(git show abc1234:foo.html) =(curl --silent http://www.example.org/foo.html)
+  ```
 
-```
-% docdiff =(w3m -dump -cols 10000 foo.html) =(w3m -dump -cols 10000 http://www.example.org/foo.html)
-```
+* Subversion:
+  ```
+  $ docdiff =(svn cat -r3 http://svn.example.org/repos/foo.html) =(curl --silent http://www.example.org/foo.html)
+  ```
 
-Microsoft Word文書の内容を比較:
+### プレーンテキストではない文書ファイルを比較する
 
-```
-% docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)
-```
+適切な変換ツールを使えば、プレーンテキスト以外のファイルも比較できる場合があります。
+
+* PDF文書中のテキストを比較する:
+  ```
+  $ docdiff =(pdftotext foo.pdf -) =(pdftotext bar.pdf -)
+  ```
+
+* HTML文書中のテキスト（タグを除く）を比較する:
+  ```
+  $ docdiff =(w3m -dump -cols 10000 foo.html) =(w3m -dump -cols 10000 http://www.example.org/foo.html)
+  ```
+
+* Microsoft Word文書中のテキストを比較する:
+  ```
+  $ docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)
+  ```
 
 ### Latin-* (ISO-8859-*) のための回避策: ASCIIを指定する
 
-文字コードがLatin-* (ISO-8859-*) のテキストを扱うときは、文字コードにASCIIを指定してみてください。ASCIIが指定されると、DocDiffは対象をシングルバイト文字のテキストとして扱います。
+文字コードがLatin-* (ISO-8859-*) のテキストを扱うときは、文字コードに`ASCII`を指定してみてください。`ASCII`が指定されると、DocDiffは対象をシングルバイト文字のテキストとして扱います。
 
-Latin-1テキストを比較:
-
-```
-% docdiff --encoding=ASCII latin-1-old.txt latin-1-new.txt
-```
+* Latin-1テキストを比較する:
+  ```
+  $ docdiff --encoding=ASCII latin-1-old.txt latin-1-new.txt
+  ```
 
 ## ライセンス
 
