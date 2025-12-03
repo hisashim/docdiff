@@ -49,11 +49,16 @@ DocDiff compares two text files and shows the difference.  It can compare files 
 
 It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS, CR, LF, and CRLF.
 
-## Requirement
+## Requirements
 
-* [Ruby](http://www.ruby-lang.org)
-
-  (Note that you may need additional ruby library such as iconv, if your OS's Ruby package does not include those.)
+* Runtime requirements:
+  - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
+* Development requirements:
+  - Make ([GNU Make](https://www.gnu.org/software/make/))
+  - [Git](https://git-scm.com/)
+  - [md2html](https://github.com/mity/md4c) (for generating documents)
+  - [Rake](https://ruby.github.io/rake/) (optional)
+  - sed, gzip, tar, etc.
 
 ## Installation
 

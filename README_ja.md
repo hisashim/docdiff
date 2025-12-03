@@ -49,11 +49,16 @@ DocDiffは2つのテキストファイルを比較してその違いを表示し
 
 次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII（およびISO-8859-*などのシングルバイトエンコーディング）, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
 
-## 必要なもの
+## 必要なソフトウェア
 
-* [Ruby](http://www.ruby-lang.org)
-
-  （注意: あなたが使っているOS向けのRubyパッケージがiconvなどのライブラリを含んでいない場合は、別途それらを手に入れる必要があるかもしれません。）
+* 実行時に必要なソフトウェア:
+  - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
+* 開発時に必要なソフトウェア:
+  - Make ([GNU Make](https://www.gnu.org/software/make/))
+  - [Git](https://git-scm.com/)
+  - [md2html](https://github.com/mity/md4c)（ドキュメント生成用）
+  - [Rake](https://ruby.github.io/rake/)（オプショナル）
+  - sed, gzip, tar, etc.
 
 ## インストール方法
 
