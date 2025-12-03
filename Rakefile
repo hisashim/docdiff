@@ -3,18 +3,10 @@ require 'rake/testtask'
 require 'bundler/gem_tasks'
 
 RUBY    = ENV['RUBY'] ||= 'ruby'
-DOCS   = FileList['ChangeLog', 'readme.en.html', 'readme.ja.html',
-                  'index.en.html', 'index.ja.html']
-DOCSRC = FileList['readme.html', 'index.html', 'img', 'sample']
+MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
+DOCS   = FileList['doc/README.md', 'doc/README_ja.md', 'doc/README.html', 'doc/README_ja.html', 'doc/news.html']
+DOCSRC = FileList['README.md', 'README_ja.md', 'doc/news.md', 'doc/img', 'doc/example']
 TESTS  = FileList['test/*_test.rb']
-TESTLOGS = Dir.glob('test/*_test.rb').map{|f|
-  File.basename(f).ext('log')
-}
-
-WWWUSER     = ENV['WWWUSER']     ||= 'hisashim,docdiff'
-WWWSITE     = ENV['WWWSITE']     ||= 'web.sourceforge.net'
-WWWSITEPATH = ENV['WWWSITEPATH'] ||= 'htdocs/'
-WWWDRYRUN   = ENV['WWWDRYRUN']   ||= '--dry-run'
 
 Rake::TestTask.new do |t|
   t.test_files = TESTS
@@ -26,27 +18,21 @@ task :default => :test
 desc "generate documents"
 task :docs => DOCS
 
-file 'ChangeLog' do |t|
-  sh "devutil/changelog.sh > #{t.name}"
+rule '.html' => '.md' do |t|
+  title =  File.read(t.source, encoding: "UTF-8").scan(/^# (.*)$/).first.first
+  sh <<~EOS
+    #{MD2HTML} --html-title='#{title}' #{t.source} \
+    | sed 's/\\(href\\|src\\)="doc\\/\\([^"]*\\)"/\\1="\\2"/g' \
+    | sed 's/href="\\([^"]*\\).md"/href="\\1.html"/g' > #{t.name}
+  EOS
 end
 
-rule(/.*\.(?:en|ja)\.html/ => proc{|tn| tn.gsub(/\.(?:en|ja)/, '')}) do |t|
-  sh "#{RUBY} -E UTF-8 langfilter.rb" +
-    " --#{t.name.gsub(/.*?\.(en|ja)\.html/){$1}}" +
-    " #{t.prerequisites.first} > #{t.name}"
+file 'doc/README.md' => 'README.md' do |t|
+  cp t.source, t.name
 end
 
-desc "force to rsync web contents"
-task :wwwupload do |t|
-  sh "rake www WWWDRYRUN="
+file 'doc/README_ja.md' => 'README_ja.md' do |t|
+  cp t.source, t.name
 end
 
-desc "rsync web contents"
-task :www => DOCSRC + DOCS do |t|
-  sh "rsync #{WWWDRYRUN} -auv -e ssh --delete" +
-    " --exclude='.svn' --exclude='.git'" +
-    t.prerequisites.join(' ') +
-    " #{WWWUSER}@#{WWWSITE}:#{WWWSITEPATH}"
-end
-
-CLEAN.include(DOCS, TESTLOGS)
+CLEAN.include(DOCS)
