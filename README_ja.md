@@ -68,13 +68,13 @@ $ docdiff old.txt new.txt > diff.html
 ### 例
 
 <pre>
-$ cat 01.ja.eucjp.lf
+$ cat 01_ja_eucjp_lf.txt
 こんにちは、私の名前はわたなべです。
 私はJust Another Ruby Porterです。
-$ cat 02.ja.eucjp.lf
+$ cat 02_ja_eucjp_lf.txt
 こんばんは、私の名前はまつもとです。
 Rubyを作ったのは私です。私はRuby Hackerです。
-$ docdiff --tty 01.ja.eucjp.lf 02.ja.eucjp.lf
+$ docdiff --tty 01_ja_eucjp_lf.txt 02_ja_eucjp_lf.txt
 <span class="before-change" style="background: yellow; border: thin inset;"><del>こんにちは</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>こんばんは</ins></span>、私の<span class="before-change" style="background: yellow; border: thin inset;"><del>名前はわたなべです</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>名前はまつもとです</ins></span>。
 <span class="add" style="background: deepskyblue; font-weight: bolder; border: thin outset;"><ins>Rubyを作ったのは私です。</ins></span>私は<span class="del" style="background: hotpink; border: thin inset;"><del>Just Another </del></span>Ruby <span class="before-change" style="background: yellow; border: thin inset;"><del>Porter</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>Hacker</ins></span>です。
 $
