@@ -1,15 +1,8 @@
 # DocDiff
 
-* [English](readme.md) | Japanese
+* [English](README.md) | Japanese
 
 (C) 2000 Hisashi MORITA
-
-## Todo
-
-* Incorporate ignore space patch.
-* Better auto-recognition of encodings and eols.
-* Make CSS and tty escape sequence customizable in config files.
-* Better multilingualization using Ruby 1.9 feature.
 
 ## 簡単な説明
 
@@ -19,110 +12,55 @@
 
 <div style="display: grid; grid-template-columns: 1fr 1fr;">
 
-<p>HTML output in web browser<br />
-<img src="doc/img/docdiff-screenshot-format-html-firefox.png" alt="HTML output in web browser"/></p>
+<p>HTML出力<br />
+<img src="doc/img/screenshot-format-html-firefox.png" alt="HTML output"/></p>
 
-<p>HTML output in web browser (digest)<br />
-<img src="doc/img/docdiff-screenshot-format-html-digest-firefox.png" alt="HTML output in web browser (digest)" /></p>
+<p>HTML出力（ダイジェスト）<br />
+<img src="doc/img/screenshot-format-html-digest-firefox.png" alt="HTML output (digest)" /></p>
 
-<p>tty output in terminal<br />
-<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-en.png" alt="tty output in terminal" /></p>
+<p>tty出力<br />
+<img src="doc/img/screenshot-format-tty-rxvtunicode-en.png" alt="tty output" /></p>
 
-<p>tty output in terminal (comparing Japanese text)<br />
-<img src="doc/img/docdiff-screenshot-format-tty-rxvtunicode-ja.png" alt="tty output in terminal (comparing Japanese text)" /></p>
+<p>tty出力（日本語のテキストを比較）<br />
+<img src="doc/img/screenshot-format-tty-rxvtunicode-ja.png" alt="tty output (comparing Japanese text)" /></p>
 
-<p>tty output in terminal<br />
-<img src="doc/img/docdiff-screenshot-format-tty-xterm-en.png" alt="tty output in terminal" /></p>
+<p>tty出力<br />
+<img src="doc/img/screenshot-format-tty-xterm-en.png" alt="tty output" /></p>
 
-<p>tty output in terminal (comparing Japanese text)<br />
-<img src="doc/img/docdiff-screenshot-format-tty-xterm-ja.png" alt="tty output in terminal (comparing Japanese text)" /></p>
+<p>tty出力（日本語のテキストを比較）<br />
+<img src="doc/img/screenshot-format-tty-xterm-ja.png" alt="tty output (comparing Japanese text)" /></p>
 
 </div>
 
-<p>Comparing English text (codepage 437) on Windows (Cygwin)<br />
-<img src="doc/img/docdiff-screenshot-format-tty-cmdexe-en.png" alt="Comparing English text (codepage 437) on Windows (Cygwin)" /></p>
+<p>英語のテキスト（コードページ437）を比較（Windows上のCygwin環境）<br />
+<img src="doc/img/screenshot-format-tty-cmdexe-en.png" alt="Comparing English text (codepage 437) on Windows (Cygwin)" /></p>
 
-<p>Comparing Japanese text (codepage 932) on Windows (Cygwin)<br />
-<img src="doc/img/docdiff-screenshot-format-tty-cmdexe-ja.png" alt="Comparing Japanese text (codepage 932) on Windows (Cygwin)" /></p>
+<p>日本語のテキスト（コードページ937）を比較（Windows上のCygwin環境）<br />
+<img src="doc/img/screenshot-format-tty-cmdexe-ja.png" alt="Comparing Japanese text (codepage 932) on Windows (Cygwin)" /></p>
 
-<p>You can compare text files by line, word, or character (format: tty)<br/>
-<img src="doc/img/docdiff-screenshot-resolution-linewordchar-xterm.png" alt="You can compare text files by line, word, or character (format: tty)" /></p>
+<p>行ごと、単語ごと、文字ごとの比較が可能（フォーマットはtty）<br/>
+<img src="doc/img/screenshot-resolution-linewordchar-xterm.png" alt="You can compare text files by line, word, or character (format: tty)" /></p>
 
-バージョン0.3.2時点のスクリーンショットです。
+（バージョン0.3.2時点のスクリーンショットです。）
 
 ## 概要
 
-DocDiffは2つのテキストファイルを比較してその違いを表示します。単語ごと、文字ごと、そして行ごとにファイルを比較できます。結果を出力する形式は、HTML, tty（文字端末向けのエスケープシーケンス）, Manued（真鵺道という校正用のマークアップ形式）などが用意されており、ユーザ定義のタグを使うこともできます。
+DocDiffは2つのテキストファイルを比較してその違いを表示します。単語ごと、文字ごと、そして行ごとにファイルを比較できます。結果を出力する形式は、HTML、tty（文字端末向けのエスケープシーケンス）、Manued（真鵺道という校正用のマークアップ形式）などが用意されており、ユーザ定義のタグを使うこともできます。
 
-次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII（およびISO-8859-*などのシングルバイトエンコーディング）, UTF-8, EUC-JP, Shift_JIS、そしてCR, LF, CRLF.
-
-## 必要なもの
-
-* [Ruby](http://www.ruby-lang.org)
-
-  （注意: あなたが使っているOS向けのRubyパッケージがiconvなどのライブラリを含んでいない場合は、別途それらを手に入れる必要があるかもしれません。）
-
-## インストール方法
-
-注意: 正しくインストールするためには適切なファイルアクセス権限が必要です（管理者権限が必要な場合があります）。
-
-1. `docdiff/`ディレクトリとその内容をrubyのライブラリを格納するディレクトリに配置して、Rubyインタプリタがdocdiffライブラリをロードできるようにする。
-
-   ```
-   # cp -r docdiff /usr/lib/ruby/1.9.1
-   ```
-
-2. `docdiff.rb`をコマンドを格納するディレクトリに配置する。
-
-   ```
-   # cp docdiff.rb /usr/bin/
-   ```
-
-3. (オプション) ここで必要に応じてファイル名を`docdiff`のように変更してもよい。
-
-   ```
-   # mv /usr/bin/docdiff.rb /usr/bin/docdiff
-   ```
-
-4. (オプション) docdiffは、`chardiff`や`worddiff`という名前で起動されると、それぞれ比較粒度が`char`や`word`に設定された状態で動作する。
-
-   ```
-   # ln -s /usr/bin/docdiff.rb /usr/bin/chardiff.rb
-   # ln -s /usr/bin/docdiff.rb /usr/bin/worddiff.rb
-   ```
-
-5. 適切なパーミッションを設定する。
-
-   ```
-   # chmod +x /usr/bin/docdiff.rb
-   ```
-
-6. (オプション) もしサイトの全ユーザに適用される設定ファイルが必要なら、`docdiff.conf.example`を`/etc/docdiff/docdiff.conf`として配置し、編集する。
-
-   ```
-   # cp docdiff.conf.example /etc/docdiff.conf
-   # $EDITOR /etc/docdiff.conf
-   ```
-
-7. (オプション) もしユーザごとの設定ファイルが必要なら、`docdiff.conf.example`を`~/etc/docdiff/docdiff.conf`として配置し、編集する。
-
-   ```
-   % cp docdiff.conf.example ~/etc/docdiff.conf
-   % $EDITOR ~/etc/docdiff.conf
-   ```
+次のエンコーディング（文字コード）と行末コード（改行文字）をサポートしています: ASCII（およびISO-8859-*などのシングルバイトエンコーディング）、UTF-8、EUC-JP、Shift_JIS（Windows-31J）、そしてCR、LF、CRLF。
 
 ## 使い方
 
 ### 概要
 
 ```
-% docdiff [options] oldfile newfile
+$ docdiff [options] oldfile newfile
 ```
 
 e.g.
 
 ```
-% docdiff old.txt new.txt > diff.html
+$ docdiff old.txt new.txt > diff.html
 ```
 
 詳しくはヘルプメッセージを参照してください（`docdiff --help`）。
@@ -130,17 +68,78 @@ e.g.
 ### 例
 
 <pre>
-% cat sample/01.ja.eucjp.lf
+$ cat 01.ja.eucjp.lf
 こんにちは、私の名前はわたなべです。
 私はJust Another Ruby Porterです。
-% cat sample/02.ja.eucjp.lf
+$ cat 02.ja.eucjp.lf
 こんばんは、私の名前はまつもとです。
 Rubyを作ったのは私です。私はRuby Hackerです。
-% docdiff sample/01.ja.eucjp.lf sample/02.ja.eucjp.lf
+$ docdiff --tty 01.ja.eucjp.lf 02.ja.eucjp.lf
 <span class="before-change" style="background: yellow; border: thin inset;"><del>こんにちは</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>こんばんは</ins></span>、私の<span class="before-change" style="background: yellow; border: thin inset;"><del>名前はわたなべです</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>名前はまつもとです</ins></span>。
 <span class="add" style="background: deepskyblue; font-weight: bolder; border: thin outset;"><ins>Rubyを作ったのは私です。</ins></span>私は<span class="del" style="background: hotpink; border: thin inset;"><del>Just Another </del></span>Ruby <span class="before-change" style="background: yellow; border: thin inset;"><del>Porter</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>Hacker</ins></span>です。
-%
+$
 </pre>
+
+## 必要なソフトウェア
+
+* 実行時に必要なソフトウェア:
+  - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
+* 開発時に必要なソフトウェア:
+  - Make ([GNU Make](https://www.gnu.org/software/make/))
+  - [Git](https://git-scm.com/)
+  - [md2html](https://github.com/mity/md4c)（ドキュメント生成用）
+  - [Rake](https://ruby.github.io/rake/)（オプショナル）
+  - sed, gzip, tar, etc.
+
+## インストール方法
+
+いくつかのOSでは、DocDiffがパッケージとして提供されていることがあります。そのような場合は、それらのパッケージを使ってインストールするのが早道でしょう。
+
+### Debianパッケージ
+
+サイト単位でのインストール:
+
+```
+$ sudo apt update
+$ sudo apt install docdiff
+```
+
+### Gemパッケージ
+
+Rubyに詳しいならば、gemパッケージとしてDocDiffをインストールしたいと思うかもしれません。
+
+ユーザ単位でのインストール（[RubyGems.org](https://rubygems.org/)から）:
+
+```
+$ gem install docdiff
+```
+
+ユーザ単位でのインストール（手元でのビルドから）:
+
+```
+$ rake build
+$ gem install pkg/docdiff-X.Y.Z.gem
+```
+
+（注意：Gemとしてインストールしたアプリケーションを起動するには、`PATH`環境変数を適切に設定する必要があります。[rbenv](https://github.com/rbenv/rbenv)などのRuby環境管理ツールを使うと便利かもしれません。）
+
+### Makeを使ってソースからインストールする
+
+やむをえずMakeを使ってソースからDocDiffをインストールするときは、事前によくテストしてください。
+
+`tmp`ディレクトリへのテストインストール:
+
+```
+$ mkdir tmp
+$ make install DESTDIR=tmp PREFIX=/local
+$ tree tmp || la -lR tmp
+```
+
+ユーザ単位でのインストールの例（ファイルを上書きしたりディレクトリ構造を汚くしたりしかねないので、おすすめしませんが）:
+
+```
+$ make install DESTDIR=~ PREFIX=/local
+```
 
 ## 設定
 
@@ -163,7 +162,7 @@ key2 = value
 
 ## 問題解決とヒント
 
-### wrong argument type nil (expected Module) (TypeError)
+### Wrong argument type nil (expected Module) (TypeError)
 
 DocDiffがたまにエンコーディングや行末文字の自動判定に失敗して、次のようなエラーを出力することがあります。
 
@@ -177,31 +176,25 @@ charstring.rb:47:in `extend': wrong argument type nil (expected Module) (TypeErr
 
 スペースで区切られたテキスト（英文やプログラムのソースコードなど）を比較しているときに、行末にある単語が、特に必要もないのにいったん削除されてからまた挿入されることがあります。これはDocDiffの単語分割機能に制限があるせいで起きます。テキストは次のように単語に分割されます。
 
-text 1:
+* Text 1:
+  ```
+  foo bar
+  ```
+  (`"foo bar"  => ["foo ", "bar"]`)
 
-```
-foo bar
-```
+* Text 2:
+  ```
+  foo
+  bar
+  ```
+  (`"foo\nbar" => ["foo", "\n", "bar"]`)
 
-(`"foo bar"  => ["foo ", "bar"]`)
-
-text 2:
-
-```
-foo
-bar
-```
-
-(`"foo\nbar" => ["foo", "\n", "bar"]`)
-
-比較した結果:
-
-<pre>
-<del>foo </del><ins>foo</ins><ins>
-</ins>bar
-</pre>
-
-(`"<del>foo </del><ins>foo</ins><ins>\n</ins>bar"`)
+* 比較した結果:
+  <pre>
+  <del>foo </del><ins>foo</ins><ins>
+  </ins>bar
+  </pre>
+  (`"<del>foo </del><ins>foo</ins><ins>\n</ins>bar"`)
 
 Fooは（必要もないのに）削除されると同時に挿入されています。
 
@@ -211,55 +204,62 @@ Fooは（必要もないのに）削除されると同時に挿入されてい�
 
 DocDiffをVCSの外部diffプログラムとして使いたければ、次のようにするとよいでしょう。
 
-* Subversion
+* Git:
   ```
-  % svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"
-  ```
-* Git
-  ```
-  % GIT_EXTERNAL_DIFF=~/bin/gitdocdiff.sh git diff
+  $ GIT_EXTERNAL_DIFF=~/bin/gitdocdiff.sh git diff
   ```
   `~/bin/gitdocdiff.sh`:
   ```
   #!/bin/sh
   docdiff --ascii --lf --tty --digest $2 $5
   ```
-zshを使えば、いろいろな場所にある文書をDocDiffや他のユーティリティで自由に比較できます。次の例ではリポジトリ内の特定のリビジョンのfoo.htmlとウェブサイト上のfoo.htmlとを比較しています。
 
-* CVS:
-  ```
-  % docdiff =(cvs -Q update -p -r 1.3 foo.html) =(curl --silent http://www.example.org/foo.html)
-  ```
 * Subversion:
   ```
-  % docdiff =(svn cat -r3 http://svn.example.org/repos/foo.html) =(curl --silent http://www.example.org/foo.html)
+  $ svn diff --diff-cmd=docdiff --extensions "--ascii --lf --tty --digest"
   ```
 
-### HTMLやWord文書などのプレーンテキストではないファイルを比較する
+（場合によっては`git diff --word-diff-regex="\w"`で十分なこともありますが。）
 
-適切な変換ツールを使えば、HTMLやMicrosoft Word文書など、プレーンテキスト以外のファイルも比較できます。
+zshを使えば、いろいろな場所にある文書をDocDiffや他のユーティリティで自由に比較できます。次の例ではリポジトリ内の特定のリビジョンのfoo.htmlとウェブサイト上のfoo.htmlとを比較しています。
 
-HTML文書の内容（タグを除く）を比較:
+* Git:
+  ```
+  $ docdiff =(git show abc1234:foo.html) =(curl --silent http://www.example.org/foo.html)
+  ```
 
-```
-% docdiff =(w3m -dump -cols 10000 foo.html) =(w3m -dump -cols 10000 http://www.example.org/foo.html)
-```
+* Subversion:
+  ```
+  $ docdiff =(svn cat -r3 http://svn.example.org/repos/foo.html) =(curl --silent http://www.example.org/foo.html)
+  ```
 
-Microsoft Word文書の内容を比較:
+### プレーンテキストではない文書ファイルを比較する
 
-```
-% docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)
-```
+適切な変換ツールを使えば、プレーンテキスト以外のファイルも比較できる場合があります。
+
+* PDF文書中のテキストを比較する:
+  ```
+  $ docdiff =(pdftotext foo.pdf -) =(pdftotext bar.pdf -)
+  ```
+
+* HTML文書中のテキスト（タグを除く）を比較する:
+  ```
+  $ docdiff =(w3m -dump -cols 10000 foo.html) =(w3m -dump -cols 10000 http://www.example.org/foo.html)
+  ```
+
+* Microsoft Word文書中のテキストを比較する:
+  ```
+  $ docdiff =(wvWare foo.doc | w3m -T text/html -dump -cols 10000) =(wvWare bar.doc | w3m -T text/html -dump -cols 10000)
+  ```
 
 ### Latin-* (ISO-8859-*) のための回避策: ASCIIを指定する
 
-文字コードがLatin-* (ISO-8859-*) のテキストを扱うときは、文字コードにASCIIを指定してみてください。ASCIIが指定されると、DocDiffは対象をシングルバイト文字のテキストとして扱います。
+文字コードがLatin-* (ISO-8859-*) のテキストを扱うときは、文字コードに`ASCII`を指定してみてください。`ASCII`が指定されると、DocDiffは対象をシングルバイト文字のテキストとして扱います。
 
-Latin-1テキストを比較:
-
-```
-% docdiff --encoding=ASCII latin-1-old.txt latin-1-new.txt
-```
+* Latin-1テキストを比較する:
+  ```
+  $ docdiff --encoding=ASCII latin-1-old.txt latin-1-new.txt
+  ```
 
 ## ライセンス
 
@@ -295,14 +295,14 @@ OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 ```
 
-diffライブラリ（`docdiff/diff.rb`および`docdiff/diff/*`）は、もともと田中哲さんによるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布されています。詳細は次を参照してください。
+Diffライブラリ（`lib/docdiff/diff.rb`および`lib/docdiff/diff/*`）は、もともと田中哲さんによるRuby/CVSの一部分でした。Ruby/CVSは修正BSDスタイルライセンスのもとで配布されています。詳細は次を参照してください。
 
 * <http://raa.ruby-lang.org/list.rhtml?name=ruby-cvs>
 * <http://cvs.m17n.org/~akr/ruby-cvs/>
 
 ## クレジット
 
-* Hisashi MORITA (primary author)
+* Hisashi MORITA (author)
 
 ## 謝辞
 
@@ -329,20 +329,21 @@ diffライブラリ（`docdiff/diff.rb`および`docdiff/diff/*`）は、もと�
 
 ### フォーマット
 
-* [HTML/XHTML](http://www.w3.org)
-* tty (Graphic rendition using VT100 / ANSI escape sequence)
-  - [VT100](http://vt100.net/docs/tp83/appendixb.html)
-  - [ANSI](http://www.tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
-* [Manued](http://www.archi.is.tohoku.ac.jp/~yamauchi/otherprojects/manued/index.shtml) (Manuscript Editing language: a proofreading method for text)
+* [HTML/XHTML](https://www.w3.org/)
+* tty (Graphic rendition using VT100 / ANSI escape sequences)
+  - [VT100](https://vt100.net/docs/tp83/appendixb.html)
+  - [ANSI](https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
+* [Manued](https://sundayresearch.eu/hitoshi/otherprojects/manued/) ([in Japanese](https://sundayresearch.eu/hitoshi/otherprojects/manued/index-j.html)) (Manuscript Editing Language: a proofreading method for text)
 
-### 同様の目的を持ったソフトウェア
+### 同様の機能を備えたソフトウェア
 
-テキストを単語単位や文字単位で比較することができるソフトウェアは、ほかにもあります。
+テキストを単語単位や文字単位で比較することができるソフトウェアは、数多く存在します。
 
-* [GNU wdiff](http://www.gnu.org/directory/GNU/wdiff.html) (Seems to support single byte characters only.)
-* [cdif](http://srekcah.org/~utashiro/perl/scripts/cdif) by Kazumasa UTASHIRO (Supports several Japanese encodings.)
-* [ediff](http://www.xemacs.org/Documentation/packages/html/ediff.html) for Emacsen
-* [diff-detail](http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail) for xyzzy, by Hiroshi OHKUBO
-* [Manuediff](http://hibiki.miyagi-ct.ac.jp/~suzuki/comp/export/manuediff.html) (Outputs difference in Manued format.)
-* [YASDiff](http://nnri.dip.jp/~yf/cgi-bin/yaswiki2.cgi?name=YASDiff&parentid=0) (Yet Another Scheme powered diff) by Y. Fujisawa
-* [WinMerge](http://winmerge.org/) (GUI diff tool for Windows)
+* CLI:
+  - [wdiff](https://www.gnu.org/software/wdiff/) (requires spaces between words)
+  - cdif / [sdif-tools](https://github.com/kaz-utashiro/sdif-tools)
+* GUI:
+  - [WinMerge](https://winmerge.org/) (Windows)
+* Editor extensions:
+  - [ediff](https://www.gnu.org/software/emacs/manual/html_mono/ediff.html) (Emacs)
+  - [diff-detail](http://ohkubo.s53.xrea.com/xyzzy/index.html#diff-detail) ([xyzzy](https://github.com/xyzzy-022/xyzzy))
