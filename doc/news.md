@@ -1,5 +1,20 @@
 # News
 
+### 0.6.3 (CCYY-MM-DD)
+
+* User-visible changes:
+  - Removed ChangeLog.
+  - Reorganized and updated documents: most documents are moved to `doc/`.
+  - `$XDG_CONFIG_HOME`-style user configuration file name (`~/.config/docdiff/docdiff.conf`) is supported and encouraged to use.
+  - Added manualpage (`doc/man/docdiff.1` will be generated from `.adoc` by `make docs`).
+  - Added shell completion scripts for Zsh and Bash.
+  - Cleaned up CLI help message a bit.
+* Developer-related changes:
+  - Removed test logging.
+  - Fixed erroneous tarball generation (`make dist`).
+  - Introduced additional development requirements: git, md2html, asciidoctor.
+  - Fixed irregular time stamps of gem members by setting `SOURCE_DATE_EPOCH`.
+
 ### 0.6.2 (2025-11-28)
 
 * User-visible changes:
