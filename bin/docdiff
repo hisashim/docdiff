@@ -94,7 +94,7 @@ ARGV.options {|o|
   o.def_option('--author', 'show author(s)'){puts DocDiff::Author; exit(0)}
 
   o.on_tail("When invoked as worddiff or chardiff, resolution will be set accordingly.",
-    "Config files: /etc/docdiff/docdiff.conf, ~/etc/docdiff/docdiff.conf")
+    "Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf (or ~/etc/docdiff/docdiff.conf)")
 
   o.parse!
 } or exit(1)
@@ -108,12 +108,20 @@ unless clo[:no_config_file] == true # process_commandline_option
   end
   #    message = docdiff.process_config_file(DocDiff::UserConfigFileName)
   case
-  when File.exist?(DocDiff::UserConfigFileName) && File.exist?(DocDiff::AltUserConfigFileName)
-    raise "#{DocDiff::UserConfigFileName} and #{DocDiff::AltUserConfigFileName} cannot be used at the same time.  Remove or rename either one."
+  when [File.exist?(DocDiff::UserConfigFileName),
+        File.exist?(DocDiff::AltUserConfigFileName),
+        File.exist?(DocDiff::XDGUserConfigFileName)].count(true) >= 2
+    raise <<~EOS
+      #{DocDiff::UserConfigFileName}, #{DocDiff::AltUserConfigFileName}, and \
+      #{DocDiff::XDGUserConfigFileName} cannot be used at the same time. \
+      Keep one and remove or rename the others.
+    EOS
   when File.exist?(DocDiff::UserConfigFileName)
     message = docdiff.process_config_file(DocDiff::UserConfigFileName)
   when File.exist?(DocDiff::AltUserConfigFileName)
     message = docdiff.process_config_file(DocDiff::AltUserConfigFileName)
+  when File.exist?(DocDiff::XDGUserConfigFileName)
+    message = docdiff.process_config_file(DocDiff::XDGUserConfigFileName)
   end
   if clo[:verbose] == true || docdiff.config[:verbose] == true
     STDERR.print message
