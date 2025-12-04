@@ -7,6 +7,7 @@ MD2HTML = ENV['MD2HTML'] ||= 'md2html --full-html'
 DOCS   = FileList['doc/README.md', 'doc/README_ja.md', 'doc/README.html', 'doc/README_ja.html', 'doc/news.html']
 DOCSRC = FileList['README.md', 'README_ja.md', 'doc/news.md', 'doc/img', 'doc/example']
 TESTS  = FileList['test/*_test.rb']
+ENV['SOURCE_DATE_EPOCH'] ||= `git show --quiet --format=%ct HEAD`
 
 Rake::TestTask.new do |t|
   t.test_files = TESTS

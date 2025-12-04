@@ -10,6 +10,7 @@ DOCS   = doc/README.md doc/README_ja.md doc/README.html doc/README_ja.html doc/n
 DOCSRC = README.md README_ja.md doc/news.md doc/img doc/example
 TESTS  = test/*_test.rb
 DIST   = $(shell git ls-files)
+SOURCE_DATE_EPOCH = $(shell git show --quiet --format=%ct HEAD)
 
 DESTDIR =
 PREFIX  = /usr/local
@@ -64,7 +65,7 @@ dist:
 
 gem: $(PRODUCT)-$(VERSION).gem
 $(PRODUCT)-$(VERSION).gem: $(PRODUCT).gemspec
-	gem build $<
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) gem build $<
 
 clean:
 	-rm -fr $(DOCS)
