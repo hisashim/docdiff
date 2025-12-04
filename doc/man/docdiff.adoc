@@ -1,0 +1,135 @@
+= docdiff(1)
+
+== NAME
+
+docdiff - character/word-oriented diff
+
+== SYNOPSIS
+
+docdiff [OPTIONS] FILE1 FILE2
+
+== DESCRIPTION
+
+Compares two text files by word, by character, or by line
+
+DocDiff compares two text files and shows the difference. It can compare files word by word, character by character, or line by line. It has several output formats such as HTML, tty, Manued, or user-defined markup.
+
+It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS (Windows-31J), CR, LF, and CRLF.
+
+== OPTIONS
+
+--resolution=RESOLUTION::
+  specify resolution (granularity)
+  line|word|char (default is word)
+
+--line::
+  set resolution to line
+
+--word::
+  set resolution to word
+
+--char::
+  set resolution to char
+
+--encoding=ENCODING::
+  specify character encoding
+  ASCII|EUC-JP|Shift_JIS|CP932|UTF-8|auto
+  (default is auto. try ASCII for single byte encodings such as ISO-8859-X)
+
+--ascii::
+  same as --encoding=ASCII
+
+--iso8859x::
+  same as --encoding=ASCII
+
+--eucjp::
+  same as --encoding=EUC-JP
+
+--sjis::
+  same as --encoding=Shift_JIS
+
+--cp932::
+  same as --encoding=CP932
+
+--utf8::
+  same as --encoding=UTF-8
+
+--eol=EOL::
+  specify end-of-line character
+  CR|LF|CRLF|auto (default is auto)
+
+--cr::
+  same as --eol=CR
+
+--lf::
+  same as --eol=LF
+
+--crlf::
+  same as --eol=CRLF
+
+--format=FORMAT::
+  specify output format
+  tty|manued|html|wdiff|stat|user
+  (default is html)
+  (user tags can be defined in config file)
+
+--tty::
+  same as --format=tty
+
+--manued::
+  same as --format=manued
+
+--html::
+  same as --format=html
+
+--wdiff::
+  same as --format=wdiff
+
+--stat::
+  same as --format=stat (not supported yet)
+
+-L, --label LABEL::
+  Use label instead of filename (not supported yet)
+
+--digest::
+  digest output, do not show all
+
+--summary::
+  same as --digest
+
+--display=DISPLAY::
+  specify presentation type (effective only with digest; experimental feature)
+  inline|multi
+  (default is inline)
+
+--cache::
+  use file cache (not supported yet)
+
+--no-config-file::
+  do not read config files
+
+--config-file=FILE::
+  specify config file to read
+
+--verbose::
+  run verbosely (not supported yet)
+
+--help::
+  show this message
+
+--version::
+  show version
+
+--license::
+  show license
+
+--author::
+  show author(s)
+
+When invoked as worddiff or chardiff, resolution will be set accordingly.
+
+Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf
+
+== AUTHOR
+
+Hisashi Morita
