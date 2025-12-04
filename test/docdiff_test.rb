@@ -190,7 +190,7 @@ class TC_DocDiff < Test::Unit::TestCase
   def test_cli()
     expected = "Hello, my name is [-Watanabe.-]{+matz.+}\n"
     cmd = "ruby -I lib bin/docdiff --wdiff" +
-      " test/fixture/01.en.ascii.lf test/fixture/02.en.ascii.lf"
+      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`.scan(/^.*?$\n/m).first
     assert_equal(expected, actual)
   end

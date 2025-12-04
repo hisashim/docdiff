@@ -68,13 +68,13 @@ See the help message for detail (`docdiff --help`).
 ### Example
 
 <pre>
-$ cat 01.en.ascii.lf
+$ cat 01_en_ascii_lf.txt
 Hello, my name is Watanabe.
 I am just another Ruby porter.
-$ cat 02.en.ascii.lf
+$ cat 02_en_ascii_lf.txt
 Hello, my name is matz.
 It's me who has created Ruby.  I am a Ruby hacker.
-$ docdiff --tty 01.en.ascii.lf 02.en.ascii.lf
+$ docdiff --tty 01_en_ascii_lf.txt 02_en_ascii_lf.txt
 Hello, my name is <span class="before-change" style="background: yellow; border: thin inset;"><del>Watanabe.</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>matz.</ins></span>
 <span class="add" style="background: deepskyblue; font-weight: bolder; border: thin outset;"><ins>It's me who has created Ruby.&nbsp;&nbsp;</ins></span>I am <span class="before-change" style="background: yellow; border: thin inset;"><del>just another </del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>a </ins></span>Ruby <span class="before-change" style="background: yellow; border: thin inset;"><del>porter.</del></span><span class="after-change" style="background: lime; font-weight: bolder; border: thin outset;"><ins>hacker.</ins></span>
 $
