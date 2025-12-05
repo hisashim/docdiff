@@ -28,18 +28,19 @@ end
 
 ARGV.options {|o|
   o.def_option('--resolution=RESOLUTION',
-    possible_resolutions = ['line', 'word', 'char'],
+    resolutions = ['line', 'word', 'char'],
     'specify resolution (granularity)',
-    possible_resolutions.join('|') + ' (default is word)'
+    "#{resolutions.join('|')} (default: word)"
     ){|s| clo[:resolution] = (s || "word")}
-  o.def_option('--line', 'set resolution to line'){clo[:resolution] = "line"}
-  o.def_option('--word', 'set resolution to word'){clo[:resolution] = "word"}
-  o.def_option('--char', 'set resolution to char'){clo[:resolution] = "char"}
+  o.def_option('--line', 'same as --resolution=line'){clo[:resolution] = "line"}
+  o.def_option('--word', 'same as --resolution=word'){clo[:resolution] = "word"}
+  o.def_option('--char', 'same as --resolution=char'){clo[:resolution] = "char"}
 
   o.def_option('--encoding=ENCODING',
-    possible_encodings = ['ASCII','EUC-JP','Shift_JIS','CP932','UTF-8','auto'],
-    'specify character encoding',
-    possible_encodings.join('|'), "(default is auto. try ASCII for single byte encodings such as ISO-8859-X)"
+    encodings = ['ASCII', 'EUC-JP', 'Shift_JIS', 'CP932', 'UTF-8', 'auto'],
+    "specify character encoding",
+    "#{encodings.join('|')} (default: auto)",
+    "(try ASCII for single byte encodings such as ISO-8859-X)"
     ){|s| clo[:encoding] = (s || "auto")}
   o.def_option('--ascii', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
   o.def_option('--iso8859x', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
@@ -49,44 +50,43 @@ ARGV.options {|o|
   o.def_option('--utf8', 'same as --encoding=UTF-8'){clo[:encoding] = "UTF-8"}
 
   o.def_option('--eol=EOL',
-    possible_eols = ['CR','LF','CRLF','auto'],
+    eols = ['CR','LF','CRLF','auto'],
     'specify end-of-line character',
-    possible_eols.join('|') + ' (default is auto)'
+    "#{eols.join('|')} (default: auto)",
     ){|s| clo[:eol] = (s || "auto")}
   o.def_option('--cr', 'same as --eol=CR'){clo[:eol] = "CR"}
   o.def_option('--lf', 'same as --eol=LF'){clo[:eol] = "LF"}
   o.def_option('--crlf', 'same as --eol=CRLF'){clo[:eol] = "CRLF"}
 
   o.def_option('--format=FORMAT',
-    possible_formats = ['tty','manued','html','wdiff','stat','user'],
+    formats = ['tty', 'manued', 'html', 'wdiff', 'stat', 'user'],
     'specify output format',
-    possible_formats.join('|'),
-    "(default is html)",
+    "#{formats.join('|')} (default: html)",
     '(user tags can be defined in config file)'
     ){|s| clo[:format] = (s || "manued")}
   o.def_option('--tty', 'same as --format=tty'){clo[:format] = "tty"}
   o.def_option('--manued', 'same as --format=manued'){clo[:format] = "manued"}
   o.def_option('--html', 'same as --format=html'){clo[:format] = "html"}
   o.def_option('--wdiff', 'same as --format=wdiff'){clo[:format] = "wdiff"}
-  o.def_option('--stat', 'same as --format=stat (not supported yet)'){clo[:format] = "stat"}
+  o.def_option('--stat', 'same as --format=stat (not implemented)'){clo[:format] = "stat"}
 
   o.def_option('--label LABEL', '-L LABEL',
-    'Use label instead of filename (not supported yet)'
+    'use label instead of file name (not implemented; exists for compatibility with diff)'
     ){|s1, s2| clo[:label1], clo[:label2] = s1, s2}
 
   o.def_option('--digest', 'digest output, do not show all'){clo[:digest] = true}
   o.def_option('--summary', 'same as --digest'){clo[:digest] = true}
   o.def_option('--display=DISPLAY',
-    possible_types = ['inline', 'multi'],
+    display_types = ['inline', 'multi'],
     'specify presentation type (effective only with digest; experimental feature)',
-    possible_types.join('|'),
-    '(default is inline)'){|s| clo[:display] ||= s.downcase}
-  o.def_option('--cache', 'use file cache (not supported yet)'){clo[:cache] = true}
+    "#{display_types.join('|')} (default: inline)",
+    ){|s| clo[:display] ||= s.downcase}
+  o.def_option('--cache', 'use file cache (not implemented)'){clo[:cache] = true}
+  o.def_option('--config-file=FILE', String,
+    'specify config file to read'){|s| clo[:config_file] = s}
   o.def_option('--no-config-file',
     'do not read config files'){clo[:no_config_file] = true}
-  o.def_option('--config-file=FILE',
-    'specify config file to read'){|s| clo[:config_file] = s}
-  o.def_option('--verbose', 'run verbosely (not supported yet)'){clo[:verbose] = true}
+  o.def_option('--verbose', 'run verbosely (not well-supported)'){clo[:verbose] = true}
 
   o.def_option('--help', 'show this message'){puts o; exit(0)}
   o.def_option('--version', 'show version'){puts DocDiff::AppVersion; exit(0)}
