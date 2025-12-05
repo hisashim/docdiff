@@ -146,8 +146,10 @@ $ make install DESTDIR=~ PREFIX=/local
 You can place configuration files at:
 
 * `/etc/docdiff/docdiff.conf` (site-wide configuration)
-* `~/etc/docdiff/docdiff.conf` (user configuration)
-  (`~/etc/docdiff/docdiff.conf` is used by default in order to keep home directory clean, preventing dotfiles and dotdirs from scattering around. Alternatively, you can use `~/.docdiff/docdiff.conf` as user configuration file name, following the traditional Unix convention.)
+
+* `~/.config/docdiff/docdiff.conf` (user configuration) (see [`$XDG_CONFIG_HOME`](https://specifications.freedesktop.org/basedir/0.8/))
+
+  (Warning: You are discouraged from using either `~/etc/docdiff/docdiff.conf` or `~/.docdiff/docdiff.conf`, though they are still effective for backward compatibility at the moment. Also note that multiple user configuration files cannot coexist at the same time.)
 
 Notation is as follows (also refer to the file `docdiff.conf.example` included in the distribution archive):
 

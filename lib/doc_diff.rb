@@ -15,6 +15,12 @@ class DocDiff
   SystemConfigFileName = File.join(File::Separator, "etc", "docdiff", "docdiff.conf")
   UserConfigFileName = File.join(ENV['HOME'], "etc", "docdiff", "docdiff.conf")
   AltUserConfigFileName = File.join(ENV['HOME'], ".docdiff", "docdiff.conf")
+  XDGUserConfigFileName =
+    if xdg_config_home = ENV['XDG_CONFIG_HOME'] && !xdg_config_home.empty?
+      File.join(ENV['HOME'], xdg_config_home, "docdiff", "docdiff.conf")
+    else
+      File.join(ENV['HOME'], ".config", "docdiff", "docdiff.conf")
+    end
 
   def initialize()
     @config = {}

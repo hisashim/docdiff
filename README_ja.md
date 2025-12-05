@@ -146,8 +146,10 @@ $ make install DESTDIR=~ PREFIX=/local
 設定ファイルは次の場所に配置すると有効になります:
 
 * `/etc/docdiff/docdiff.conf`（サイト全体の設定）
-* `~/etc/docdiff/docdiff.conf`（ユーザごとの設定）
-  （標準の設定では、ホームディレクトリにドットファイルをまき散らかさないために、`~/etc/docdiff/docdiff.conf`が使われます。または、昔ながらのUnixの慣習に従って`~/.docdiff/docdiff.conf`を使ってももちろん構いません。ただし両方同時には使えません）
+
+* `~/.config/docdiff/docdiff.conf`（ユーザごとの設定）（[`$XDG_CONFIG_HOME`](https://specifications.freedesktop.org/basedir/0.8/)参照）
+
+  （警告：`~/etc/docdiff/docdiff.conf`や`~/.docdiff/docdiff.conf`は、互換性のために今のところは有効なままですが、使うことは推奨されません。また、同時に存在できるユーザ設定ファイルは一つだけです。）
 
 設定ファイルの記法は次のとおりです（`docdiff.conf.example`ファイルも参照してください。配布アーカイブに含まれているはずです）:
 
