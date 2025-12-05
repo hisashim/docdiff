@@ -1,0 +1,139 @@
+= docdiff(1)
+
+== NAME
+
+docdiff - character/word-oriented diff
+
+== SYNOPSIS
+
+*docdiff* [_OPTIONS_] _FILE1_ _FILE2_
+
+== DESCRIPTION
+
+Compares two text files by word, by character, or by line
+
+DocDiff compares two text files and shows the difference. It can compare files word by word, character by character, or line by line. It has several output formats such as HTML, tty, Manued, or user-defined markup.
+
+It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS (Windows-31J), CR, LF, and CRLF.
+
+== OPTIONS
+
+*--resolution*=RESOLUTION::
+  specify resolution (granularity)
+  _line_|_word_|_char_ (default is _word_)
+
+*--line*::
+  set resolution to _line_
+
+*--word*::
+  set resolution to _word_
+
+*--char*::
+  set resolution to _char_
+
+*--encoding*=ENCODING::
+  specify character encoding
+  _ASCII_|_EUC-JP_|_Shift_JIS_|_CP932_|_UTF-8_|_auto_
+  (default is _auto_. try _ASCII_ for single byte encodings such as ISO-8859-X)
+
+*--ascii*::
+  same as *--encoding*=_ASCII_
+
+*--iso8859x*::
+  same as *--encoding*=_ASCII_
+
+*--eucjp*::
+  same as *--encoding*=_EUC-JP_
+
+*--sjis*::
+  same as *--encoding*=_Shift_JIS_
+
+*--cp932*::
+  same as *--encoding*=_CP932_
+
+*--utf8*::
+  same as *--encoding*=_UTF-8_
+
+*--eol*=EOL::
+  specify end-of-line character
+  _CR_|_LF_|_CRLF_|_auto_ (default is _auto_)
+
+*--cr*::
+  same as *--eol*=_CR_
+
+*--lf*::
+  same as *--eol*=_LF_
+
+*--crlf*::
+  same as *--eol*=_CRLF_
+
+*--format*=FORMAT::
+  specify output format
+  _tty_|_manued_|_html_|_wdiff_|_stat_|_user_
+  (default is _html_)
+  (user tags can be defined in config file)
+
+*--tty*::
+  same as *--format*=_tty_
+
+*--manued*::
+  same as *--format*=_manued_
+
+*--html*::
+  same as *--format*=_html_
+
+*--wdiff*::
+  same as *--format*=_wdiff_
+
+*--stat*::
+  same as *--format*=_stat_ (not supported yet)
+
+*-L*, *--label* LABEL::
+  Use label instead of filename (not supported yet)
+
+*--digest*::
+  digest output, do not show all
+
+*--summary*::
+  same as *--digest*
+
+*--display*=DISPLAY::
+  specify presentation type (effective only with digest; experimental feature)
+  _inline_|_multi_
+  (default is _inline_)
+
+*--cache*::
+  use file cache (not supported yet)
+
+*--no-config-file*::
+  do not read config files
+
+*--config-file*=FILE::
+  specify config file to read
+
+*--verbose*::
+  run verbosely (not supported yet)
+
+*--help*::
+  show this message
+
+*--version*::
+  show version
+
+*--license*::
+  show license
+
+*--author*::
+  show author(s)
+
+When invoked as *worddiff* or *chardiff*, resolution will be set accordingly.
+
+Config files: _/etc/docdiff/docdiff.conf_, _~/.config/docdiff/docdiff.conf_
+
+== SEE ALSO
+
+_/path/to/README.html_.
+
+== AUTHOR
+
+Hisashi Morita

@@ -4,8 +4,8 @@ RUBY = ruby
 TAR_XVCS = tar --exclude=.svn --exclude=.git
 MD2HTML = md2html --full-html
 
-DOCS   = doc/README.md doc/README_ja.md doc/README.html doc/README_ja.html doc/news.html
-DOCSRC = README.md README_ja.md doc/news.md doc/img doc/example
+DOCS   = doc/README.md doc/README_ja.md doc/README.html doc/README_ja.html doc/news.html doc/man/$(PRODUCT).1
+DOCSRC = README.md README_ja.md doc/news.md doc/img doc/example doc/man/$(PRODUCT).adoc
 TESTS  = test/*_test.rb
 DIST   = $(shell git ls-files)
 SOURCE_DATE_EPOCH = $(shell git show --quiet --format=%ct HEAD)
@@ -28,6 +28,13 @@ docs:	$(DOCS)
 
 doc/%.md: %.md
 	cp $^ $@
+
+%.1: %.adoc
+	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) asciidoctor --backend=manpage --out-file=$@ $<
+
+doc/man/$(PRODUCT).1: doc/man/$(PRODUCT).adoc
+	sed 's|/path/to/README.html|$(PREFIX)/share/doc/$(PRODUCT)/README.html|g' $< \
+	| SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) asciidoctor --backend=manpage --out-file=$@ -
 
 install: $(DIST) $(DOCS)
 	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
