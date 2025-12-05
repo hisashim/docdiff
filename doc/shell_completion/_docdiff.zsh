@@ -33,7 +33,7 @@ _docdiff() {
         '--display=[specify presentation type (effective only with digest)]:type:(inline multi)'
         '--cache[use file cache (not supported yet)]'
         '--no-config-file[do not read config files]'
-        '--config-file=FILE[specify config file to read]'
+        '--config-file=[specify config file to read]:config_file:_files'
         '--verbose[run verbosely (not supported yet)]'
         '(- *)--help[show this message]'
         '(- *)--version[show version]'
