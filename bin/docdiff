@@ -134,7 +134,7 @@ unless clo[:config_file].nil?
     raise "#{clo[:config_file]} does not exist."
   end
   if clo[:verbose] == true || docdiff.config[:verbose] == true
-    STDERR.pring message
+    STDERR.print message
   end
 end
 docdiff.config.update(clo)
