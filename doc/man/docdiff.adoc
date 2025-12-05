@@ -6,7 +6,7 @@ docdiff - character/word-oriented diff
 
 == SYNOPSIS
 
-docdiff [OPTIONS] FILE1 FILE2
+*docdiff* [_OPTIONS_] _FILE1_ _FILE2_
 
 == DESCRIPTION
 
@@ -18,121 +18,121 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 == OPTIONS
 
---resolution=RESOLUTION::
+*--resolution*=RESOLUTION::
   specify resolution (granularity)
-  line|word|char (default is word)
+  _line_|_word_|_char_ (default is _word_)
 
---line::
-  set resolution to line
+*--line*::
+  set resolution to _line_
 
---word::
-  set resolution to word
+*--word*::
+  set resolution to _word_
 
---char::
-  set resolution to char
+*--char*::
+  set resolution to _char_
 
---encoding=ENCODING::
+*--encoding*=ENCODING::
   specify character encoding
-  ASCII|EUC-JP|Shift_JIS|CP932|UTF-8|auto
-  (default is auto. try ASCII for single byte encodings such as ISO-8859-X)
+  _ASCII_|_EUC-JP_|_Shift_JIS_|_CP932_|_UTF-8_|_auto_
+  (default is _auto_. try _ASCII_ for single byte encodings such as ISO-8859-X)
 
---ascii::
-  same as --encoding=ASCII
+*--ascii*::
+  same as *--encoding*=_ASCII_
 
---iso8859x::
-  same as --encoding=ASCII
+*--iso8859x*::
+  same as *--encoding*=_ASCII_
 
---eucjp::
-  same as --encoding=EUC-JP
+*--eucjp*::
+  same as *--encoding*=_EUC-JP_
 
---sjis::
-  same as --encoding=Shift_JIS
+*--sjis*::
+  same as *--encoding*=_Shift_JIS_
 
---cp932::
-  same as --encoding=CP932
+*--cp932*::
+  same as *--encoding*=_CP932_
 
---utf8::
-  same as --encoding=UTF-8
+*--utf8*::
+  same as *--encoding*=_UTF-8_
 
---eol=EOL::
+*--eol*=EOL::
   specify end-of-line character
-  CR|LF|CRLF|auto (default is auto)
+  _CR_|_LF_|_CRLF_|_auto_ (default is _auto_)
 
---cr::
-  same as --eol=CR
+*--cr*::
+  same as *--eol*=_CR_
 
---lf::
-  same as --eol=LF
+*--lf*::
+  same as *--eol*=_LF_
 
---crlf::
-  same as --eol=CRLF
+*--crlf*::
+  same as *--eol*=_CRLF_
 
---format=FORMAT::
+*--format*=FORMAT::
   specify output format
-  tty|manued|html|wdiff|stat|user
-  (default is html)
+  _tty_|_manued_|_html_|_wdiff_|_stat_|_user_
+  (default is _html_)
   (user tags can be defined in config file)
 
---tty::
-  same as --format=tty
+*--tty*::
+  same as *--format*=_tty_
 
---manued::
-  same as --format=manued
+*--manued*::
+  same as *--format*=_manued_
 
---html::
-  same as --format=html
+*--html*::
+  same as *--format*=_html_
 
---wdiff::
-  same as --format=wdiff
+*--wdiff*::
+  same as *--format*=_wdiff_
 
---stat::
-  same as --format=stat (not supported yet)
+*--stat*::
+  same as *--format*=_stat_ (not supported yet)
 
--L, --label LABEL::
+*-L*, *--label* LABEL::
   Use label instead of filename (not supported yet)
 
---digest::
+*--digest*::
   digest output, do not show all
 
---summary::
-  same as --digest
+*--summary*::
+  same as *--digest*
 
---display=DISPLAY::
+*--display*=DISPLAY::
   specify presentation type (effective only with digest; experimental feature)
-  inline|multi
-  (default is inline)
+  _inline_|_multi_
+  (default is _inline_)
 
---cache::
+*--cache*::
   use file cache (not supported yet)
 
---no-config-file::
+*--no-config-file*::
   do not read config files
 
---config-file=FILE::
+*--config-file*=FILE::
   specify config file to read
 
---verbose::
+*--verbose*::
   run verbosely (not supported yet)
 
---help::
+*--help*::
   show this message
 
---version::
+*--version*::
   show version
 
---license::
+*--license*::
   show license
 
---author::
+*--author*::
   show author(s)
 
-When invoked as worddiff or chardiff, resolution will be set accordingly.
+When invoked as *worddiff* or *chardiff*, resolution will be set accordingly.
 
-Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf
+Config files: _/etc/docdiff/docdiff.conf_, _~/.config/docdiff/docdiff.conf_
 
 == SEE ALSO
 
-/path/to/README.html.
+_/path/to/README.html_.
 
 == AUTHOR
 
