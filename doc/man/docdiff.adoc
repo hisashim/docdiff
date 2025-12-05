@@ -20,21 +20,21 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 *--resolution*=RESOLUTION::
   specify resolution (granularity)
-  _line_|_word_|_char_ (default is _word_)
+  _line_|_word_|_char_ (default: _word_)
 
 *--line*::
-  set resolution to _line_
+  same as --resolution=_line_
 
 *--word*::
-  set resolution to _word_
+  same as --resolution=_word_
 
 *--char*::
-  set resolution to _char_
+  same as --resolution=_char_
 
 *--encoding*=ENCODING::
   specify character encoding
-  _ASCII_|_EUC-JP_|_Shift_JIS_|_CP932_|_UTF-8_|_auto_
-  (default is _auto_. try _ASCII_ for single byte encodings such as ISO-8859-X)
+  _ASCII_|_EUC-JP_|_Shift_JIS_|_CP932_|_UTF-8_|_auto_ (default: _auto_)
+  (try _ASCII_ for single byte encodings such as ISO-8859-X)
 
 *--ascii*::
   same as *--encoding*=_ASCII_
@@ -56,7 +56,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 *--eol*=EOL::
   specify end-of-line character
-  _CR_|_LF_|_CRLF_|_auto_ (default is _auto_)
+  _CR_|_LF_|_CRLF_|_auto_ (default: _auto_)
 
 *--cr*::
   same as *--eol*=_CR_
@@ -69,8 +69,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 *--format*=FORMAT::
   specify output format
-  _tty_|_manued_|_html_|_wdiff_|_stat_|_user_
-  (default is _html_)
+  _tty_|_manued_|_html_|_wdiff_|_stat_|_user_ (default: _html_)
   (user tags can be defined in config file)
 
 *--tty*::
@@ -86,10 +85,10 @@ It supports several encodings and end-of-line characters, including ASCII (and o
   same as *--format*=_wdiff_
 
 *--stat*::
-  same as *--format*=_stat_ (not supported yet)
+  same as *--format*=_stat_ (not implemented)
 
 *-L*, *--label* LABEL::
-  Use label instead of filename (not supported yet)
+  use label instead of file name (not implemented; exists for compatibility with diff)
 
 *--digest*::
   digest output, do not show all
@@ -99,20 +98,19 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 *--display*=DISPLAY::
   specify presentation type (effective only with digest; experimental feature)
-  _inline_|_multi_
-  (default is _inline_)
+  _inline_|_multi_ (default: _inline_)
 
 *--cache*::
-  use file cache (not supported yet)
-
-*--no-config-file*::
-  do not read config files
+  use file cache (not implemented)
 
 *--config-file*=FILE::
   specify config file to read
 
+*--no-config-file*::
+  do not read config files
+
 *--verbose*::
-  run verbosely (not supported yet)
+  run verbosely (not well-supported)
 
 *--help*::
   show this message
