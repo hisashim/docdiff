@@ -130,6 +130,10 @@ When invoked as worddiff or chardiff, resolution will be set accordingly.
 
 Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf
 
+== SEE ALSO
+
+/path/to/README.html.
+
 == AUTHOR
 
 Hisashi Morita

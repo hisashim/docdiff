@@ -32,6 +32,10 @@ doc/%.md: %.md
 %.1: %.adoc
 	SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) asciidoctor --backend=manpage --out-file=$@ $<
 
+doc/man/$(PRODUCT).1: doc/man/$(PRODUCT).adoc
+	sed 's|/path/to/README.html|$(PREFIX)/share/doc/$(PRODUCT)/README.html|g' $< \
+	| SOURCE_DATE_EPOCH=$(SOURCE_DATE_EPOCH) asciidoctor --backend=manpage --out-file=$@ -
+
 install: $(DIST) $(DOCS)
 	@if [ ! -d $(DESTDIR)$(PREFIX)/bin ]; then \
 	  mkdir -p $(DESTDIR)$(PREFIX)/bin; \
