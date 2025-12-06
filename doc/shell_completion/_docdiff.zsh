@@ -12,6 +12,7 @@ _docdiff() {
         '--char[same as --resolution=char]'
         '--encoding=[specify character encoding]:encoding:(ASCII EUC-JP Shift_JIS CP932 UTF-8 auto)'
         '--ascii[same as --encoding=ASCII]'
+        '--iso8859[same as --encoding=ASCII]'
         '--iso8859x[same as --encoding=ASCII]'
         '--eucjp[same as --encoding=EUC-JP]'
         '--sjis[same as --encoding=Shift_JIS]'

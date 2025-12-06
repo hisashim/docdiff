@@ -9,7 +9,7 @@ _docdiff_completions()
     --resolution \
     --line --word --char \
     --encoding \
-    --ascii --iso8859x --eucjp --sjis --cp932 --utf8 \
+    --ascii --iso8859 --iso8859x --eucjp --sjis --cp932 --utf8 \
     --eol \
     --cr --lf --crlf \
     --format \

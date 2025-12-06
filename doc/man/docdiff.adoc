@@ -39,6 +39,9 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 *--ascii*::
   same as *--encoding*=_ASCII_
 
+*--iso8859*::
+  same as *--encoding*=_ASCII_
+
 *--iso8859x*::
   same as *--encoding*=_ASCII_
 
