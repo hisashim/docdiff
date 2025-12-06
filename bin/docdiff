@@ -14,6 +14,7 @@ default_config = {
   :format        => "html",
   :cache         => true,
   :digest        => false,
+  :pager         => nil,
   :verbose       => false
 }
 
@@ -82,6 +83,10 @@ ARGV.options {|o|
     "#{display_types.join('|')} (default: inline)",
     ){|s| clo[:display] ||= s.downcase}
   o.def_option('--cache', 'use file cache (not implemented)'){clo[:cache] = true}
+  o.def_option('--pager=PAGER', String,
+    'specify pager (if available, $DOCDIFF_PAGER or $PAGER is used by default)'
+    ){|s| clo[:pager] = s}
+  o.def_option('--no-pager', 'do not use pager'){clo[:pager] = false}
   o.def_option('--config-file=FILE', String,
     'specify config file to read'){|s| clo[:config_file] = s}
   o.def_option('--no-config-file',
@@ -138,6 +143,17 @@ unless clo[:config_file].nil?
   end
 end
 docdiff.config.update(clo)
+
+docdiff.config[:pager] =
+  if (pager = docdiff.config[:pager]).is_a?(String) && !pager.empty?
+    pager
+  elsif (pager = docdiff.config[:pager]) == false
+    pager
+  elsif (pager = ENV['DOCDIFF_PAGER']) && !pager.empty?
+    pager
+  elsif (pager = ENV['PAGER']) && !pager.empty?
+    pager
+  end
 
 # config stuff done
 
@@ -196,4 +212,4 @@ output = docdiff.run(doc1, doc2,
     :format     => docdiff.config[:format],
     :digest     => docdiff.config[:digest],
     :display    => docdiff.config[:display]})
-print output
+docdiff.print_or_write_to_pager(output, docdiff.config[:pager])

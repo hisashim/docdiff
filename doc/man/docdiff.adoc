@@ -103,6 +103,12 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 *--cache*::
   use file cache (not implemented)
 
+*--pager*=PAGER::
+  specify pager (if available, $_DOCDIFF_PAGER_ or $_PAGER_ is used by default)
+
+*--no-pager*::
+  do not use pager
+
 *--config-file*=FILE::
   specify config file to read
 

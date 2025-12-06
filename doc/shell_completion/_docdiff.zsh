@@ -32,6 +32,8 @@ _docdiff() {
         '--summary[same as --digest]'
         '--display=[specify presentation type (effective only with digest)]:type:(inline multi)'
         '--cache[use file cache (not implemented)]'
+        '--pager=[specify pager]:pager:_command_names'
+        '--no-pager[do not use pager]'
         '--config-file=[specify config file to read]:config_file:_files'
         '--no-config-file[do not read config files]'
         '--verbose[run verbosely (not well-supported)]'

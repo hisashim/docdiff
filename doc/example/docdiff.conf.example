@@ -7,6 +7,7 @@
 # format = html
 # digest = off
 # cache = off   # not implemented yet
+# pager = less --raw-control-chars
 # verbose = no  # not implemented yet
 #
 ## user-defined tags (not well-supported yet)
