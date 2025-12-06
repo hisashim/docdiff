@@ -18,8 +18,8 @@ _docdiff_completions()
     --digest --summary \
     --display \
     --cache \
-    --no-config-file \
     --config-file \
+    --no-config-file \
     --verbose \
     --help \
     --version \
