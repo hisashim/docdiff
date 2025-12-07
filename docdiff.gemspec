@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
     DocDiff compares two text files and shows the
     difference. It can compare files word by word,
     character by character, or line by line. It has
-    several output formats such as HTML, tty, Manued,
+    several output formats such as tty, HTML, Manued,
     or user-defined markup.
   EOS
 

@@ -12,7 +12,7 @@ docdiff - character/word-oriented diff
 
 Compares two text files by word, by character, or by line
 
-DocDiff compares two text files and shows the difference. It can compare files word by word, character by character, or line by line. It has several output formats such as HTML, tty, Manued, or user-defined markup.
+DocDiff compares two text files and shows the difference. It can compare files word by word, character by character, or line by line. It has several output formats such as tty, HTML, Manued, or user-defined markup.
 
 It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS (Windows-31J), CR, LF, and CRLF.
 
@@ -72,7 +72,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 *--format*=FORMAT::
   specify output format
-  _tty_|_manued_|_html_|_wdiff_|_stat_|_user_ (default: _html_) (_stat_ is deprecated)
+  _tty_|_manued_|_html_|_wdiff_|_stat_|_user_ (default: _tty_) (_stat_ is deprecated)
   (user tags can be defined in config file)
 
 *--tty*::

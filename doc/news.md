@@ -1,5 +1,11 @@
 # News
 
+### 0.7.0 (CCYY-MM-DD)
+
+* User-visible changes:
+  - Default output format changed from html to tty. (breaking change)
+    If you prefer the old behaviour, add `format = html` to your configuration file (e.g. `~/.config/docdiff/docdiff.conf`).
+
 ### 0.6.7 (2026-02-25)
 
 * User-visible changes:

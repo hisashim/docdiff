@@ -28,7 +28,7 @@ class DocDiff
     resolution: "word",
     encoding: "auto",
     eol: "auto",
-    format: "html",
+    format: "tty",
     cache: true,
     digest: false,
     pager: nil,

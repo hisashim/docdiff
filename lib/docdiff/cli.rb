@@ -54,7 +54,7 @@ class DocDiff
             "--format=FORMAT",
             formats = ["tty", "manued", "html", "wdiff", "stat", "user"],
             "specify output format",
-            "#{formats.join("|")} (default: html) (stat is deprecated)",
+            "#{formats.join("|")} (default: tty) (stat is deprecated)",
             "(user tags can be defined in config file)",
           ) { |s| o[:format] = (s || "manued") }
           parser.on("--tty", "same as --format=tty") { o[:format] = "tty" }

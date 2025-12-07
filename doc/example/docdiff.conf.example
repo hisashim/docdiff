@@ -21,3 +21,6 @@
 # tag_change_before_end   = '</!->'
 # tag_change_after_start  = '<!+>'
 # tag_change_after_end    = '</!+>'
+#
+## set default output format to html
+# format = html
