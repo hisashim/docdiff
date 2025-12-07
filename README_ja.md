@@ -149,7 +149,7 @@ $ make install DESTDIR=~ PREFIX=/local
 
 * `~/.config/docdiff/docdiff.conf`（ユーザごとの設定）（[`$XDG_CONFIG_HOME`](https://specifications.freedesktop.org/basedir/0.8/)参照）
 
-  （警告：`~/etc/docdiff/docdiff.conf`や`~/.docdiff/docdiff.conf`は、互換性のために今のところは有効なままですが、使うことは推奨されません。また、同時に存在できるユーザ設定ファイルは一つだけです。）
+  （警告：`~/etc/docdiff/docdiff.conf`や`~/.docdiff/docdiff.conf`は、互換性のために今のところは有効なままですが、廃止される予定であり、使うことは推奨されません。また、同時に存在できるユーザ設定ファイルは一つだけです。）
 
 設定ファイルの記法は次のとおりです（`docdiff.conf.example`ファイルも参照してください。配布アーカイブに含まれているはずです）:
 

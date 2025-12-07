@@ -9,7 +9,7 @@ _docdiff_completions()
     --resolution \
     --line --word --char \
     --encoding \
-    --ascii --iso8859x --eucjp --sjis --cp932 --utf8 \
+    --ascii --iso8859 --iso8859x --eucjp --sjis --cp932 --utf8 \
     --eol \
     --cr --lf --crlf \
     --format \
@@ -48,7 +48,7 @@ _docdiff_completions()
       return 0
       ;;
     --display)
-      COMPREPLY=( $(compgen -W 'inline multi' -- "${cur}") )
+      COMPREPLY=( $(compgen -W 'inline block multi' -- "${cur}") )
       return 0
       ;;
     --config-file)

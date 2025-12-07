@@ -41,10 +41,11 @@ ARGV.options {|o|
     encodings = ['ASCII', 'EUC-JP', 'Shift_JIS', 'CP932', 'UTF-8', 'auto'],
     "specify character encoding",
     "#{encodings.join('|')} (default: auto)",
-    "(try ASCII for single byte encodings such as ISO-8859-X)"
+    "(try ASCII for single byte encodings such as ISO-8859)"
     ){|s| clo[:encoding] = (s || "auto")}
   o.def_option('--ascii', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
-  o.def_option('--iso8859x', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
+  o.def_option('--iso8859', 'same as --encoding=ASCII'){clo[:encoding] = "ASCII"}
+  o.def_option('--iso8859x', 'same as --encoding=ASCII (deprecated)'){clo[:encoding] = "ASCII"}
   o.def_option('--eucjp', 'same as --encoding=EUC-JP'){clo[:encoding] = "EUC-JP"}
   o.def_option('--sjis', 'same as --encoding=Shift_JIS'){clo[:encoding] = "Shift_JIS"}
   o.def_option('--cp932', 'same as --encoding=CP932'){clo[:encoding] = "CP932"}
@@ -62,14 +63,14 @@ ARGV.options {|o|
   o.def_option('--format=FORMAT',
     formats = ['tty', 'manued', 'html', 'wdiff', 'stat', 'user'],
     'specify output format',
-    "#{formats.join('|')} (default: html)",
+    "#{formats.join('|')} (default: html) (stat is deprecated)",
     '(user tags can be defined in config file)'
     ){|s| clo[:format] = (s || "manued")}
   o.def_option('--tty', 'same as --format=tty'){clo[:format] = "tty"}
   o.def_option('--manued', 'same as --format=manued'){clo[:format] = "manued"}
   o.def_option('--html', 'same as --format=html'){clo[:format] = "html"}
   o.def_option('--wdiff', 'same as --format=wdiff'){clo[:format] = "wdiff"}
-  o.def_option('--stat', 'same as --format=stat (not implemented)'){clo[:format] = "stat"}
+  o.def_option('--stat', 'same as --format=stat (not implemented) (deprecated)'){clo[:format] = "stat"}
 
   o.def_option('--label LABEL', '-L LABEL',
     'use label instead of file name (not implemented; exists for compatibility with diff)'
@@ -78,11 +79,11 @@ ARGV.options {|o|
   o.def_option('--digest', 'digest output, do not show all'){clo[:digest] = true}
   o.def_option('--summary', 'same as --digest'){clo[:digest] = true}
   o.def_option('--display=DISPLAY',
-    display_types = ['inline', 'multi'],
+    display_types = ['inline', 'block', 'multi'],
     'specify presentation type (effective only with digest; experimental feature)',
-    "#{display_types.join('|')} (default: inline)",
+    "#{display_types.join('|')} (default: inline) (multi is deprecated)",
     ){|s| clo[:display] ||= s.downcase}
-  o.def_option('--cache', 'use file cache (not implemented)'){clo[:cache] = true}
+  o.def_option('--cache', 'use file cache (not implemented) (deprecated)'){clo[:cache] = true}
   o.def_option('--pager=PAGER', String,
     'specify pager (if available, $DOCDIFF_PAGER or $PAGER is used by default)'
     ){|s| clo[:pager] = s}
@@ -91,15 +92,15 @@ ARGV.options {|o|
     'specify config file to read'){|s| clo[:config_file] = s}
   o.def_option('--no-config-file',
     'do not read config files'){clo[:no_config_file] = true}
-  o.def_option('--verbose', 'run verbosely (not well-supported)'){clo[:verbose] = true}
+  o.def_option('--verbose', 'run verbosely (not well-supported) (deprecated)'){clo[:verbose] = true}
 
   o.def_option('--help', 'show this message'){puts o; exit(0)}
   o.def_option('--version', 'show version'){puts DocDiff::AppVersion; exit(0)}
-  o.def_option('--license', 'show license'){puts DocDiff::License; exit(0)}
-  o.def_option('--author', 'show author(s)'){puts DocDiff::Author; exit(0)}
+  o.def_option('--license', 'show license (deprecated)'){puts DocDiff::License; exit(0)}
+  o.def_option('--author', 'show author(s) (deprecated)'){puts DocDiff::Author; exit(0)}
 
   o.on_tail("When invoked as worddiff or chardiff, resolution will be set accordingly.",
-    "Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf (or ~/etc/docdiff/docdiff.conf)")
+    "Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf (or ~/etc/docdiff/docdiff.conf (deprecated))")
 
   o.parse!
 } or exit(1)
