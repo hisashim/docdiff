@@ -149,7 +149,7 @@ You can place configuration files at:
 
 * `~/.config/docdiff/docdiff.conf` (user configuration) (see [`$XDG_CONFIG_HOME`](https://specifications.freedesktop.org/basedir/0.8/))
 
-  (Warning: You are discouraged from using either `~/etc/docdiff/docdiff.conf` or `~/.docdiff/docdiff.conf`, though they are still effective for backward compatibility at the moment. Also note that multiple user configuration files cannot coexist at the same time.)
+  (Warning: You are discouraged from using either `~/etc/docdiff/docdiff.conf` or `~/.docdiff/docdiff.conf`, both of which are deprecated though they are still effective for backward compatibility at the moment. Also note that multiple user configuration files cannot coexist at the same time.)
 
 Notation is as follows (also refer to the file `docdiff.conf.example` included in the distribution archive):
 

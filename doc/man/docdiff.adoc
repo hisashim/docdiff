@@ -43,7 +43,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
   same as *--encoding*=_ASCII_
 
 *--iso8859x*::
-  same as *--encoding*=_ASCII_
+  same as *--encoding*=_ASCII_ (deprecated)
 
 *--eucjp*::
   same as *--encoding*=_EUC-JP_
@@ -72,7 +72,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 *--format*=FORMAT::
   specify output format
-  _tty_|_manued_|_html_|_wdiff_|_stat_|_user_ (default: _html_)
+  _tty_|_manued_|_html_|_wdiff_|_stat_|_user_ (default: _html_) (_stat_ is deprecated)
   (user tags can be defined in config file)
 
 *--tty*::
@@ -88,7 +88,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
   same as *--format*=_wdiff_
 
 *--stat*::
-  same as *--format*=_stat_ (not implemented)
+  same as *--format*=_stat_ (not implemented) (deprecated)
 
 *-L*, *--label* LABEL::
   use label instead of file name (not implemented; exists for compatibility with diff)
@@ -101,10 +101,10 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 *--display*=DISPLAY::
   specify presentation type (effective only with digest; experimental feature)
-  _inline_|_block_|_multi_ (default: _inline_)
+  _inline_|_block_|_multi_ (default: _inline_) (_multi_ is deprecated)
 
 *--cache*::
-  use file cache (not implemented)
+  use file cache (not implemented) (deprecated)
 
 *--pager*=PAGER::
   specify pager (if available, $_DOCDIFF_PAGER_ or $_PAGER_ is used by default)
@@ -119,7 +119,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
   do not read config files
 
 *--verbose*::
-  run verbosely (not well-supported)
+  run verbosely (not well-supported) (deprecated)
 
 *--help*::
   show this message
@@ -128,10 +128,10 @@ It supports several encodings and end-of-line characters, including ASCII (and o
   show version
 
 *--license*::
-  show license
+  show license (deprecated)
 
 *--author*::
-  show author(s)
+  show author(s) (deprecated)
 
 When invoked as *worddiff* or *chardiff*, resolution will be set accordingly.
 
