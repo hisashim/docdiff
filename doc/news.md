@@ -6,9 +6,12 @@
   - Removed ChangeLog.
   - Reorganized and updated documents: most documents are moved to `doc/`.
   - `$XDG_CONFIG_HOME`-style user configuration file name (`~/.config/docdiff/docdiff.conf`) is supported and encouraged to use.
-  - Added manualpage (`doc/man/docdiff.1` will be generated from `.adoc` by `make docs`).
+  - Added a manual page (`doc/man/docdiff.1` will be generated from `.adoc` by `make docs`).
   - Added shell completion scripts for Zsh and Bash.
   - Cleaned up CLI help message a bit.
+  - Added pager support with `--pager=` and `--no-pager` options. `DOCDIFF_PAGER` and `PAGER` are consulted as well.
+  - Added `--iso8859` to supersede `--iso8859x`; ditto for `--display=block` and `--display=multi`.
+  - Marked to-be-deprecated features as deprecated, e.g.: `--format=stat`, `--stat`, `--cache`, `--iso8859x`, `--display=multi`, `--verbose`, `--license`, `--author`, `~/etc/docdiff/docdiff.conf`, and `~/.docdiff/docdiff.conf`.
 * Developer-related changes:
   - Removed test logging.
   - Fixed erroneous tarball generation (`make dist`).
