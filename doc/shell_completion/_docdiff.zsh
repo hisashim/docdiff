@@ -31,7 +31,7 @@ _docdiff() {
         '(--label= -L)'{--label=,-L}'[use label instead of file name (not implemented)]:label'
         '--digest[digest output, do not show all]'
         '--summary[same as --digest]'
-        '--display=[specify presentation type (effective only with digest)]:type:(inline multi)'
+        '--display=[specify presentation type (effective only with digest)]:type:(inline block multi)'
         '--cache[use file cache (not implemented)]'
         '--pager=[specify pager]:pager:_command_names'
         '--no-pager[do not use pager]'

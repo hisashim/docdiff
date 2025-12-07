@@ -48,7 +48,7 @@ _docdiff_completions()
       return 0
       ;;
     --display)
-      COMPREPLY=( $(compgen -W 'inline multi' -- "${cur}") )
+      COMPREPLY=( $(compgen -W 'inline block multi' -- "${cur}") )
       return 0
       ;;
     --config-file)

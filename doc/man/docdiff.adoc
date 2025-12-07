@@ -101,7 +101,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 
 *--display*=DISPLAY::
   specify presentation type (effective only with digest; experimental feature)
-  _inline_|_multi_ (default: _inline_)
+  _inline_|_block_|_multi_ (default: _inline_)
 
 *--cache*::
   use file cache (not implemented)

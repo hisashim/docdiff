@@ -152,7 +152,7 @@ class View
         case display
         when 'inline'
           result << (e_head.call(pos_str) + e_cxt_pre + e_chg + e_cxt_post + e_foot)
-        when 'multi'
+        when /block|multi/
           result << (e_head.call(pos_str) + e_cxt_pre + e_chgdel + e_cxt_post +
                                             e_cxt_pre + e_chgadd + e_cxt_post + e_foot)
         else raise "Unsupported display type: #{display}"
@@ -163,7 +163,7 @@ class View
         case display
         when 'inline'
           result << (e_head.call(pos_str) + e_cxt_pre + e_del + e_cxt_post + e_foot)
-        when 'multi'
+        when /block|multi/
           result << (e_head.call(pos_str) + e_cxt_pre + e_src + e_cxt_post +
                                             e_cxt_pre + e_del + e_cxt_post + e_foot)
         else raise "Unsupported display type: #{display}"
@@ -174,7 +174,7 @@ class View
         case display
         when 'inline'
           result << (e_head.call(pos_str) + e_cxt_pre + e_add + e_cxt_post + e_foot)
-        when 'multi'
+        when /block|multi/
           result << (e_head.call(pos_str) + e_cxt_pre + e_src + e_cxt_post +
                                             e_cxt_pre + e_add + e_cxt_post + e_foot)
         else raise "Unsupported display type: #{display}"
@@ -372,7 +372,7 @@ class View
     tags = manued_tags()
     # manued specific kludge: change should be [a/b] in inline, [a/][/b] in multi
     display = (overriding_opts and overriding_opts[:display]) || 'inline'
-    if display == 'multi'
+    if /block|multi/.match display
       tags.update({:end_before_change => '/]', :start_after_change => '[/'})
     end
     tags.update(overriding_opts) if overriding_opts

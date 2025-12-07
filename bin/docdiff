@@ -79,7 +79,7 @@ ARGV.options {|o|
   o.def_option('--digest', 'digest output, do not show all'){clo[:digest] = true}
   o.def_option('--summary', 'same as --digest'){clo[:digest] = true}
   o.def_option('--display=DISPLAY',
-    display_types = ['inline', 'multi'],
+    display_types = ['inline', 'block', 'multi'],
     'specify presentation type (effective only with digest; experimental feature)',
     "#{display_types.join('|')} (default: inline)",
     ){|s| clo[:display] ||= s.downcase}
