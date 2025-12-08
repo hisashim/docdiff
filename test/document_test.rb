@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-# -*- coding: euc-jp; -*-
+# -*- coding: utf-8; -*-
 
 # frozen_string_literal: false
 
@@ -223,396 +223,396 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   # test EUCJP module
   def test_eucjp_split_to_word()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ì¤ÎÊ¸»úfoo bar"))
-    expected = ["ÆüËÜ¸ì¤Î","Ê¸»ú","foo ","bar"].collect{|c| NKF.nkf("-e", c)}
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªžã®æ–‡å­—foo bar"))
+    expected = ["æ—¥æœ¬èªžã®","æ–‡å­—","foo ","bar"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_word_kanhira()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ì¤ÎÊ¸»ú"))
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-e", c)}
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªžã®æ–‡å­—"))
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_word_katahira()
-    doc = Document.new(NKF.nkf("-e", "¥«¥¿¥«¥Ê¤ÎÊ¸»ú"))
-    expected = ["¥«¥¿¥«¥Ê¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-e", c)}
+    doc = Document.new(NKF.nkf("--euc", "ã‚«ã‚¿ã‚«ãƒŠã®æ–‡å­—"))
+    expected = ["ã‚«ã‚¿ã‚«ãƒŠã®", "æ–‡å­—"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_word_kataonbiki()
-    doc = Document.new(NKF.nkf("-e", "¥ë¥Ó¡¼¿§¤ÎÀÐ"), "EUC-JP")
-    expected = ["¥ë¥Ó¡¼", "¿§¤Î", "ÀÐ"].collect{|c| NKF.nkf("-e", c)}
+    doc = Document.new(NKF.nkf("--euc", "ãƒ«ãƒ“ãƒ¼è‰²ã®çŸ³"), "EUC-JP")
+    expected = ["ãƒ«ãƒ“ãƒ¼", "è‰²ã®", "çŸ³"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_word_hiraonbiki()
-    doc = Document.new(NKF.nkf("-e", "¤ï¡¼¥ë¥Ó¡¼¤À"), "EUC-JP")
-    expected = (["¤ï¡¼", "¥ë¥Ó¡¼¤À"]).collect{|c| NKF.nkf("-e", c)}
+    doc = Document.new(NKF.nkf("--euc", "ã‚ãƒ¼ãƒ«ãƒ“ãƒ¼ã "), "EUC-JP")
+    expected = (["ã‚ãƒ¼", "ãƒ«ãƒ“ãƒ¼ã "]).map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_word_latinmix()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú"))
-    expected = ["ÆüËÜ¸ì¤È", "Latin", "¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-e", c)}
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—"))
+    expected = ["æ—¥æœ¬èªžã¨", "Latin", "ã®", "æ–‡å­—"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_eucjp_split_to_char()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ìa b"))
-    expected = ["Æü","ËÜ","¸ì","a"," ","b"].collect{|c|NKF.nkf("-e",c)}
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªža b"))
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b"].map{|c|NKF.nkf("--euc",c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_eucjp_split_to_char_with_cr()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ìa b\r"))
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\r"].collect{|c|NKF.nkf("-e",c)}
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªža b\r"))
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\r"].map{|c|NKF.nkf("--euc",c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_eucjp_split_to_char_with_lf()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ìa b\n"))
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\n"].collect{|c|NKF.nkf("-e",c)}
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªža b\n"))
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\n"].map{|c|NKF.nkf("--euc",c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_eucjp_split_to_char_with_crlf()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n"))
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\r\n"].collect{|c|NKF.nkf("-e",c)}
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n"))
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\r\n"].map{|c|NKF.nkf("--euc",c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_eucjp_count_char()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n"))
     expected = 7
     assert_equal(expected, doc.count_char)
   end
   def test_eucjp_count_latin_graph_char()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_graph_char)
   end
   def test_eucjp_count_ja_graph_char()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n"))
     expected = 3
     assert_equal(expected, doc.count_ja_graph_char)
   end
   def test_eucjp_count_graph_char()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n"))
     expected = 5
     assert_equal(expected, doc.count_graph_char)
   end
   def test_eucjp_count_latin_blank_char()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªž\ta b\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_blank_char)
   end
   def test_eucjp_count_ja_blank_char()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¡¡¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬ã€€èªž\ta b\r\n"))
     expected = 1
     assert_equal(expected, doc.count_ja_blank_char)
   end
   def test_eucjp_count_blank_char()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¡¡¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬ã€€èªž\ta b\r\n"))
     expected = 3
     assert_equal(expected, doc.count_blank_char)
   end
   def test_eucjp_count_word()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, doc.count_word)
   end
   def test_eucjp_count_ja_word()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 3
     assert_equal(expected, doc.count_ja_word)
   end
   def test_eucjp_count_latin_valid_word()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_valid_word)
   end
   def test_eucjp_count_ja_valid_word()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 2
     assert_equal(expected, doc.count_ja_valid_word)
   end
   def test_eucjp_count_valid_word()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 4
     assert_equal(expected, doc.count_valid_word)
   end
   def test_eucjp_count_line()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 6
     assert_equal(expected, doc.count_line)
   end
   def test_eucjp_count_graph_line()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 3
     assert_equal(expected, doc.count_graph_line)
   end
   def test_eucjp_count_empty_line()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 1
     assert_equal(expected, doc.count_empty_line)
   end
   def test_eucjp_count_blank_line()
-    doc = Document.new(NKF.nkf("-e", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--euc", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 2
     assert_equal(expected, doc.count_blank_line)
   end
 
   # test SJIS module
   def test_sjis_split_to_word()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ì¤ÎÊ¸»úfoo bar"))
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú", "foo ", "bar"].collect{|c|NKF.nkf("-s",c)}
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªžã®æ–‡å­—foo bar"))
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—", "foo ", "bar"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_sjisplit_s_to_word_kanhira()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ì¤ÎÊ¸»ú"))
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-s", c)}
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªžã®æ–‡å­—"))
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_sjis_split_to_word_katahira()
-    doc = Document.new(NKF.nkf("-s", "¥«¥¿¥«¥Ê¤ÎÊ¸»ú"))
-    expected = ["¥«¥¿¥«¥Ê¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-s", c)}
+    doc = Document.new(NKF.nkf("--sjis", "ã‚«ã‚¿ã‚«ãƒŠã®æ–‡å­—"))
+    expected = ["ã‚«ã‚¿ã‚«ãƒŠã®", "æ–‡å­—"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_sjis_split_to_word_kataonbiki()
-    doc = Document.new(NKF.nkf("-s", "¥ë¥Ó¡¼¤Î»ØÎØ"))
-    expected = ["¥ë¥Ó¡¼¤Î", "»ØÎØ"].collect{|c| NKF.nkf("-s", c)}
+    doc = Document.new(NKF.nkf("--sjis", "ãƒ«ãƒ“ãƒ¼ã®æŒ‡è¼ª"))
+    expected = ["ãƒ«ãƒ“ãƒ¼ã®", "æŒ‡è¼ª"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_sjis_split_to_word_hiraonbiki()
-    doc = Document.new(NKF.nkf("-s", "¤ï¡¼¥ë¥Ó¡¼¤À"))
-    expected = ["¤ï¡¼", "¥ë¥Ó¡¼¤À"].collect{|c| NKF.nkf("-s", c)}
+    doc = Document.new(NKF.nkf("--sjis", "ã‚ãƒ¼ãƒ«ãƒ“ãƒ¼ã "))
+    expected = ["ã‚ãƒ¼", "ãƒ«ãƒ“ãƒ¼ã "].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_sjis_split_to_word_latinmix()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú"))
-    expected = ["ÆüËÜ¸ì¤È","Latin","¤Î","Ê¸»ú"].collect{|c| NKF.nkf("-s", c)}
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—"))
+    expected = ["æ—¥æœ¬èªžã¨","Latin","ã®","æ–‡å­—"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_sjis_split_to_char()
-    doc = Document.new(NKF.nkf("-s", "É½·×»»a b"))
-    expected = ["É½","·×","»»","a"," ","b"].collect{|c|NKF.nkf("-s",c)}
+    doc = Document.new(NKF.nkf("--sjis", "è¡¨è¨ˆç®—a b"))
+    expected = ["è¡¨","è¨ˆ","ç®—","a"," ","b"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_sjis_split_to_char_with_cr()
-    doc = Document.new(NKF.nkf("-s", "É½·×»»a b\r"))
-    expected = ["É½","·×","»»","a"," ","b","\r"].collect{|c|NKF.nkf("-s",c)}
+    doc = Document.new(NKF.nkf("--sjis", "è¡¨è¨ˆç®—a b\r"))
+    expected = ["è¡¨","è¨ˆ","ç®—","a"," ","b","\r"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_sjis_split_to_char_with_lf()
-    doc = Document.new(NKF.nkf("-s", "É½·×»»a b\n"))
-    expected = ["É½","·×","»»","a"," ","b","\n"].collect{|c|NKF.nkf("-s",c)}
+    doc = Document.new(NKF.nkf("--sjis", "è¡¨è¨ˆç®—a b\n"))
+    expected = ["è¡¨","è¨ˆ","ç®—","a"," ","b","\n"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_sjis_split_to_char_with_crlf()
-    doc = Document.new(NKF.nkf("-s", "É½·×»»a b\r\n"))
-    expected = ["É½","·×","»»","a"," ","b","\r\n"].collect{|c|NKF.nkf("-s",c)}
+    doc = Document.new(NKF.nkf("--sjis", "è¡¨è¨ˆç®—a b\r\n"))
+    expected = ["è¡¨","è¨ˆ","ç®—","a"," ","b","\r\n"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_sjis_count_char()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ìa b\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªža b\r\n"))
     expected = 7
     assert_equal(expected, doc.count_char)
   end
   def test_sjis_count_latin_graph_char()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ìa b\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªža b\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_graph_char)
   end
   def test_sjis_count_ja_graph_char()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ìa b\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªža b\r\n"))
     expected = 3
     assert_equal(expected, doc.count_ja_graph_char)
   end
   def test_sjis_count_graph_char()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ìa b\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªža b\r\n"))
     expected = 5
     assert_equal(expected, doc.count_graph_char)
   end
   def test_sjis_count_latin_blank_char()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªž\ta b\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_blank_char)
   end
   def test_sjis_count_ja_blank_char()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¡¡¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªž\ta b\r\n"))
     expected = 1
     assert_equal(expected, doc.count_ja_blank_char)
   end
   def test_sjis_count_blank_char()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¡¡¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªž\ta b\r\n"))
     expected = 3
     assert_equal(expected, doc.count_blank_char)
   end
   def test_sjis_count_word()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, doc.count_word)
   end
   def test_sjis_count_ja_word()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 3
     assert_equal(expected, doc.count_ja_word)
   end
   def test_sjis_count_latin_valid_word()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_valid_word)
   end
   def test_sjis_count_ja_valid_word()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 2
     assert_equal(expected, doc.count_ja_valid_word)
   end
   def test_sjis_count_valid_word()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 4
     assert_equal(expected, doc.count_valid_word)
   end
   def test_sjis_count_line()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 6
     assert_equal(expected, doc.count_line)
   end
   def test_sjis_count_graph_line()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 3
     assert_equal(expected, doc.count_graph_line)
   end
   def test_sjis_count_empty_line()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 1
     assert_equal(expected, doc.count_empty_line)
   end
   def test_sjis_count_blank_line()
-    doc = Document.new(NKF.nkf("-s", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--sjis", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 2
     assert_equal(expected, doc.count_blank_line)
   end
 
   # test UTF8 module
   def test_utf8_split_to_word()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ì¤ÎÊ¸»úfoo bar"))
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú", "foo ", "bar"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªžã®æ–‡å­—foo bar"))
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—", "foo ", "bar"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_kanhira()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ì¤ÎÊ¸»ú"))
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªžã®æ–‡å­—"))
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_katahira()
-    doc = Document.new(NKF.nkf("-E -w", "¥«¥¿¥«¥Ê¤ÎÊ¸»ú"))
-    expected = ["¥«¥¿¥«¥Ê¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "ã‚«ã‚¿ã‚«ãƒŠã®æ–‡å­—"))
+    expected = ["ã‚«ã‚¿ã‚«ãƒŠã®", "æ–‡å­—"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_kataonbiki()
-    doc = Document.new(NKF.nkf("-E -w", "¥ë¥Ó¡¼¤Î»ØÎØ"))
-    expected = ["¥ë¥Ó¡¼¤Î", "»ØÎØ"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "ãƒ«ãƒ“ãƒ¼ã®æŒ‡è¼ª"))
+    expected = ["ãƒ«ãƒ“ãƒ¼ã®", "æŒ‡è¼ª"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_hiraonbiki()
-    doc = Document.new(NKF.nkf("-E -w", "¤ï¡¼¥ë¥Ó¡¼¤À"))
-    expected = ["¤ï¡¼", "¥ë¥Ó¡¼¤À"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "ã‚ãƒ¼ãƒ«ãƒ“ãƒ¼ã "))
+    expected = ["ã‚ãƒ¼", "ãƒ«ãƒ“ãƒ¼ã "].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_word_latinmix()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú"))
-    expected = ["ÆüËÜ¸ì¤È", "Latin", "¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—"))
+    expected = ["æ—¥æœ¬èªžã¨", "Latin", "ã®", "æ–‡å­—"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_word)
   end
   def test_utf8_split_to_char()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ìa b"), "UTF-8")
-    expected = ["Æü", "ËÜ", "¸ì", "a", " ", "b"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªža b"), "UTF-8")
+    expected = ["æ—¥", "æœ¬", "èªž", "a", " ", "b"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_cr()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r"), "UTF-8")
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\r"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r"), "UTF-8")
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\r"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_lf()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ìa b\n"), "UTF-8")
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\n"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªža b\n"), "UTF-8")
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\n"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_split_to_char_with_crlf()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n"), "UTF-8")
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\r\n"].collect{|c| NKF.nkf("-E -w", c)}
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n"), "UTF-8")
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\r\n"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, doc.split_to_char)
   end
   def test_utf8_count_char()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n"), "UTF-8")
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n"), "UTF-8")
     expected = 7
     assert_equal(expected, doc.count_char)
   end
   def test_utf8_count_latin_graph_char()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n"), "UTF-8")
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n"), "UTF-8")
     expected = 2
     assert_equal(expected, doc.count_latin_graph_char)
   end
   def test_utf8_count_ja_graph_char()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n"), "UTF-8")
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n"), "UTF-8")
     expected = 3
     assert_equal(expected, doc.count_ja_graph_char)
   end
   def test_utf8_count_graph_char()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n"), "UTF-8")
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n"), "UTF-8")
     expected = 5
     assert_equal(expected, doc.count_graph_char)
   end
   def test_utf8_count_latin_blank_char()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªž\ta b\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_blank_char)
   end
   def test_utf8_count_ja_blank_char()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¡¡¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªž\ta b\r\n"))
     expected = 1
     assert_equal(expected, doc.count_ja_blank_char)
   end
   def test_utf8_count_blank_char()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¡¡¸ì\ta b\r\n"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªž\ta b\r\n"))
     expected = 3
     assert_equal(expected, doc.count_blank_char)
   end
   def test_utf8_count_word()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, doc.count_word)
   end
   def test_utf8_count_ja_word()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 3
     assert_equal(expected, doc.count_ja_word)
   end
   def test_utf8_count_latin_valid_word()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 2
     assert_equal(expected, doc.count_latin_valid_word)
   end
   def test_utf8_count_ja_valid_word()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 2
     assert_equal(expected, doc.count_ja_valid_word)
   end
   def test_utf8_count_valid_word()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n"))
     expected = 4
     assert_equal(expected, doc.count_valid_word)
   end
   def test_utf8_count_line()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 6
     assert_equal(expected, doc.count_line)
   end
   def test_utf8_count_graph_line()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 3
     assert_equal(expected, doc.count_graph_line)
   end
   def test_utf8_count_empty_line()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 1
     assert_equal(expected, doc.count_empty_line)
   end
   def test_utf8_count_blank_line()
-    doc = Document.new(NKF.nkf("-E -w", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar"))
+    doc = Document.new(NKF.nkf("--utf8", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar"))
     expected = 2
     assert_equal(expected, doc.count_blank_line)
   end
