@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-# -*- coding: euc-jp; -*-
+# -*- coding: utf-8; -*-
 
 # frozen_string_literal: false
 
@@ -90,12 +90,12 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     assert_equal(expected, str.eol_char)
   end
   def test_eol_char_none_eucjp()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b").extend CharString
     expected = nil
     assert_equal(expected, str.eol_char)
   end
   def test_eol_char_none_sjis()
-    str = NKF.nkf("-s", "ÆüËÜ¸ìa b").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªža b").extend CharString
     expected = nil
     assert_equal(expected, str.eol_char)
   end
@@ -325,176 +325,176 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test EUCJP module
   def test_eucjp_split_to_word()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì¤ÎÊ¸»úfoo bar").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªžã®æ–‡å­—foo bar").extend CharString
     str.encoding = "EUC-JP"
-    expected = ["ÆüËÜ¸ì¤Î","Ê¸»ú","foo ","bar"].collect{|c| NKF.nkf("-e", c)}
+    expected = ["æ—¥æœ¬èªžã®","æ–‡å­—","foo ","bar"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_kanhira()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªžã®æ–‡å­—").extend CharString
     str.encoding = "EUC-JP"
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-e", c)}
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_katahira()
-    str = NKF.nkf("-e", "¥«¥¿¥«¥Ê¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--euc", "ã‚«ã‚¿ã‚«ãƒŠã®æ–‡å­—").extend CharString
     str.encoding = "EUC-JP"
-    expected = ["¥«¥¿¥«¥Ê¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-e", c)}
+    expected = ["ã‚«ã‚¿ã‚«ãƒŠã®", "æ–‡å­—"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_kataonbiki()
-    str = NKF.nkf("-e", "¥ë¥Ó¡¼¿§¤ÎÀÐ").extend CharString
+    str = NKF.nkf("--euc", "ãƒ«ãƒ“ãƒ¼è‰²ã®çŸ³").extend CharString
     str.encoding = "EUC-JP" #<= needed to pass the test
-    expected = ["¥ë¥Ó¡¼", "¿§¤Î", "ÀÐ"].collect{|c| NKF.nkf("-e", c)}
+    expected = ["ãƒ«ãƒ“ãƒ¼", "è‰²ã®", "çŸ³"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_hiraonbiki()
-    str = NKF.nkf("-e", "¤ï¡¼¥ë¥Ó¡¼¤À").extend CharString
+    str = NKF.nkf("--euc", "ã‚ãƒ¼ãƒ«ãƒ“ãƒ¼ã ").extend CharString
     str.encoding = "EUC-JP" #<= needed to pass the test
-    expected = ["¤ï¡¼", "¥ë¥Ó¡¼¤À"].collect{|c| NKF.nkf("-e", c)}
+    expected = ["ã‚ãƒ¼", "ãƒ«ãƒ“ãƒ¼ã "].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_word_latinmix()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—").extend CharString
     str.encoding = "EUC-JP"
-    expected = ["ÆüËÜ¸ì¤È", "Latin", "¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-e", c)}
+    expected = ["æ—¥æœ¬èªžã¨", "Latin", "ã®", "æ–‡å­—"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_eucjp_split_to_char()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "LF" #<= needed to pass the test
-    expected = ["Æü","ËÜ","¸ì","a"," ","b"].collect{|c|NKF.nkf("-e",c)}
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b"].map{|c|NKF.nkf("--euc",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_eucjp_split_to_char_with_cr()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b\r").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b\r").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CR"
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\r"].collect{|c|NKF.nkf("-e",c)}
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\r"].map{|c|NKF.nkf("--euc",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_eucjp_split_to_char_with_lf()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "LF"
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\n"].collect{|c|NKF.nkf("-e",c)}
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\n"].map{|c|NKF.nkf("--euc",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_eucjp_split_to_char_with_crlf()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\r\n"].collect{|c|NKF.nkf("-e",c)}
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\r\n"].map{|c|NKF.nkf("--euc",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_eucjp_count_char()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 7
     assert_equal(expected, str.count_char)
   end
   def test_eucjp_count_latin_graph_char()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_eucjp_count_ja_graph_char()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_graph_char)
   end
   def test_eucjp_count_graph_char()
-    str = NKF.nkf("-e", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 5
     assert_equal(expected, str.count_graph_char)
   end
   def test_eucjp_count_latin_blank_char()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªž\ta b\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_eucjp_count_ja_blank_char()
-    str = NKF.nkf("-e", "ÆüËÜ¡¡¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬ã€€èªž\ta b\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_ja_blank_char)
   end
   def test_eucjp_count_blank_char()
-    str = NKF.nkf("-e", "ÆüËÜ¡¡¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬ã€€èªž\ta b\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_char)
   end
   def test_eucjp_count_word()
-    str = NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, str.count_word)
   end
   def test_eucjp_count_ja_word()
-    str = NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_word)
   end
   def test_eucjp_count_latin_valid_word()
-    str = NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_eucjp_count_ja_valid_word()
-    str = NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_ja_valid_word)
   end
   def test_eucjp_count_valid_word()
-    str = NKF.nkf("-e", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 4
     assert_equal(expected, str.count_valid_word)
   end
   def test_eucjp_count_line()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_line)
   end
   def test_eucjp_count_graph_line()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_graph_line)
   end
   def test_eucjp_count_empty_line()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_eucjp_count_blank_line()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
@@ -503,176 +503,176 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test SJIS module
   def test_sjis_split_to_word()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì¤ÎÊ¸»úfoo bar").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªžã®æ–‡å­—foo bar").extend CharString
     str.encoding = "Shift_JIS"
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú", "foo ", "bar"].collect{|c|NKF.nkf("-s",c)}
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—", "foo ", "bar"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjisplit_s_to_word_kanhira()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªžã®æ–‡å­—").extend CharString
     str.encoding = "Shift_JIS"
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-s", c)}
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_word_katahira()
-    str = NKF.nkf("-s", "¥«¥¿¥«¥Ê¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--sjis", "ã‚«ã‚¿ã‚«ãƒŠã®æ–‡å­—").extend CharString
     str.encoding = "Shift_JIS"
-    expected = ["¥«¥¿¥«¥Ê¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-s", c)}
+    expected = ["ã‚«ã‚¿ã‚«ãƒŠã®", "æ–‡å­—"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_word_kataonbiki()
-    str = NKF.nkf("-s", "¥ë¥Ó¡¼¤Î»ØÎØ").extend CharString
+    str = NKF.nkf("--sjis", "ãƒ«ãƒ“ãƒ¼ã®æŒ‡è¼ª").extend CharString
     str.encoding = "Shift_JIS"
-    expected = ["¥ë¥Ó¡¼¤Î", "»ØÎØ"].collect{|c| NKF.nkf("-s", c)}
+    expected = ["ãƒ«ãƒ“ãƒ¼ã®", "æŒ‡è¼ª"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_word_hiraonbiki()
-    str = NKF.nkf("-s", "¤ï¡¼¥ë¥Ó¡¼¤À").extend CharString
+    str = NKF.nkf("--sjis", "ã‚ãƒ¼ãƒ«ãƒ“ãƒ¼ã ").extend CharString
     str.encoding = "Shift_JIS"
-    expected = ["¤ï¡¼", "¥ë¥Ó¡¼¤À"].collect{|c| NKF.nkf("-s", c)}
+    expected = ["ã‚ãƒ¼", "ãƒ«ãƒ“ãƒ¼ã "].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_word_latinmix()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—").extend CharString
     str.encoding = "Shift_JIS"
-    expected = ["ÆüËÜ¸ì¤È","Latin","¤Î","Ê¸»ú"].collect{|c| NKF.nkf("-s", c)}
+    expected = ["æ—¥æœ¬èªžã¨","Latin","ã®","æ–‡å­—"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_sjis_split_to_char()
-    str = NKF.nkf("-s", "É½·×»»a b").extend CharString
+    str = NKF.nkf("--sjis", "è¡¨è¨ˆç®—a b").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "LF" #<= needed to pass the test
-    expected = ["É½","·×","»»","a"," ","b"].collect{|c|NKF.nkf("-s",c)}
+    expected = ["è¡¨","è¨ˆ","ç®—","a"," ","b"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_sjis_split_to_char_with_cr()
-    str = NKF.nkf("-s", "É½·×»»a b\r").extend CharString
+    str = NKF.nkf("--sjis", "è¡¨è¨ˆç®—a b\r").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CR"
-    expected = ["É½","·×","»»","a"," ","b","\r"].collect{|c|NKF.nkf("-s",c)}
+    expected = ["è¡¨","è¨ˆ","ç®—","a"," ","b","\r"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_sjis_split_to_char_with_lf()
-    str = NKF.nkf("-s", "É½·×»»a b\n").extend CharString
+    str = NKF.nkf("--sjis", "è¡¨è¨ˆç®—a b\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "LF"
-    expected = ["É½","·×","»»","a"," ","b","\n"].collect{|c|NKF.nkf("-s",c)}
+    expected = ["è¡¨","è¨ˆ","ç®—","a"," ","b","\n"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_sjis_split_to_char_with_crlf()
-    str = NKF.nkf("-s", "É½·×»»a b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "è¡¨è¨ˆç®—a b\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
-    expected = ["É½","·×","»»","a"," ","b","\r\n"].collect{|c|NKF.nkf("-s",c)}
+    expected = ["è¡¨","è¨ˆ","ç®—","a"," ","b","\r\n"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_sjis_count_char()
-    str = NKF.nkf("-s", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 7
     assert_equal(expected, str.count_char)
   end
   def test_sjis_count_latin_graph_char()
-    str = NKF.nkf("-s", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_sjis_count_ja_graph_char()
-    str = NKF.nkf("-s", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_graph_char)
   end
   def test_sjis_count_graph_char()
-    str = NKF.nkf("-s", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 5
     assert_equal(expected, str.count_graph_char)
   end
   def test_sjis_count_latin_blank_char()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªž\ta b\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_sjis_count_ja_blank_char()
-    str = NKF.nkf("-s", "ÆüËÜ¡¡¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªž\ta b\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_ja_blank_char)
   end
   def test_sjis_count_blank_char()
-    str = NKF.nkf("-s", "ÆüËÜ¡¡¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªž\ta b\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_char)
   end
   def test_sjis_count_word()
-    str = NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, str.count_word)
   end
   def test_sjis_count_ja_word()
-    str = NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_word)
   end
   def test_sjis_count_latin_valid_word()
-    str = NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_sjis_count_ja_valid_word()
-    str = NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_ja_valid_word)
   end
   def test_sjis_count_valid_word()
-    str = NKF.nkf("-s", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 4
     assert_equal(expected, str.count_valid_word)
   end
   def test_sjis_count_line()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_line)
   end
   def test_sjis_count_graph_line()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_graph_line)
   end
   def test_sjis_count_empty_line()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_sjis_count_blank_line()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
@@ -681,176 +681,176 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test UTF8 module
   def test_utf8_split_to_word()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì¤ÎÊ¸»úfoo bar").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªžã®æ–‡å­—foo bar").extend CharString
     str.encoding = "UTF-8"
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú", "foo ", "bar"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—", "foo ", "bar"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_kanhira()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªžã®æ–‡å­—").extend CharString
     str.encoding = "UTF-8"
-    expected = ["ÆüËÜ¸ì¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["æ—¥æœ¬èªžã®", "æ–‡å­—"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_katahira()
-    str = NKF.nkf("-E -w", "¥«¥¿¥«¥Ê¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--utf8", "ã‚«ã‚¿ã‚«ãƒŠã®æ–‡å­—").extend CharString
     str.encoding = "UTF-8"
-    expected = ["¥«¥¿¥«¥Ê¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["ã‚«ã‚¿ã‚«ãƒŠã®", "æ–‡å­—"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_kataonbiki()
-    str = NKF.nkf("-E -w", "¥ë¥Ó¡¼¤Î»ØÎØ").extend CharString
+    str = NKF.nkf("--utf8", "ãƒ«ãƒ“ãƒ¼ã®æŒ‡è¼ª").extend CharString
     str.encoding = "UTF-8"
-    expected = ["¥ë¥Ó¡¼¤Î", "»ØÎØ"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["ãƒ«ãƒ“ãƒ¼ã®", "æŒ‡è¼ª"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_hiraonbiki()
-    str = NKF.nkf("-E -w", "¤ï¡¼¥ë¥Ó¡¼¤À").extend CharString
+    str = NKF.nkf("--utf8", "ã‚ãƒ¼ãƒ«ãƒ“ãƒ¼ã ").extend CharString
     str.encoding = "UTF-8"
-    expected = ["¤ï¡¼", "¥ë¥Ó¡¼¤À"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["ã‚ãƒ¼", "ãƒ«ãƒ“ãƒ¼ã "].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_word_latinmix()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—").extend CharString
     str.encoding = "UTF-8"
-    expected = ["ÆüËÜ¸ì¤È", "Latin", "¤Î", "Ê¸»ú"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["æ—¥æœ¬èªžã¨", "Latin", "ã®", "æ–‡å­—"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
   def test_utf8_split_to_char()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ìa b").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªža b").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"        #<= needed to pass the test
-    expected = ["Æü", "ËÜ", "¸ì", "a", " ", "b"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["æ—¥", "æœ¬", "èªž", "a", " ", "b"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_cr()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CR"
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\r"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\r"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_lf()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ìa b\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªža b\n").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\n"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\n"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_split_to_char_with_crlf()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "UTF-8"#<= needed to pass the test
     str.eol = "CRLF"
-    expected = ["Æü","ËÜ","¸ì","a"," ","b","\r\n"].collect{|c| NKF.nkf("-E -w", c)}
+    expected = ["æ—¥","æœ¬","èªž","a"," ","b","\r\n"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_char)
   end
   def test_utf8_count_char()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 7
     assert_equal(expected, str.count_char)
   end
   def test_utf8_count_latin_graph_char()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_graph_char)
   end
   def test_utf8_count_ja_graph_char()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_graph_char)
   end
   def test_utf8_count_graph_char()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ìa b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªža b\r\n").extend CharString
     str.encoding = "UTF-8" #<= needed to passs the test
     str.eol = "CRLF"
     expected = 5
     assert_equal(expected, str.count_graph_char)
   end
   def test_utf8_count_latin_blank_char()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªž\ta b\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_blank_char)
   end
   def test_utf8_count_ja_blank_char()
-    str = NKF.nkf("-E -w", "ÆüËÜ¡¡¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªž\ta b\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_ja_blank_char)
   end
   def test_utf8_count_blank_char()
-    str = NKF.nkf("-E -w", "ÆüËÜ¡¡¸ì\ta b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªž\ta b\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_blank_char)
   end
   def test_utf8_count_word()
-    str = NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
     assert_equal(expected, str.count_word)
   end
   def test_utf8_count_ja_word()
-    str = NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_word)
   end
   def test_utf8_count_latin_valid_word()
-    str = NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_valid_word)
   end
   def test_utf8_count_ja_valid_word()
-    str = NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_ja_valid_word)
   end
   def test_utf8_count_valid_word()
-    str = NKF.nkf("-E -w", "ÆüËÜ¡¡¸ìa b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬ã€€èªža b --\r\n").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 4
     assert_equal(expected, str.count_valid_word)
   end
   def test_utf8_count_line()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 6
     assert_equal(expected, str.count_line)
   end
   def test_utf8_count_graph_line()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_graph_line)
   end
   def test_utf8_count_empty_line()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 1
     assert_equal(expected, str.count_empty_line)
   end
   def test_utf8_count_blank_line()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì\r\n¡¡\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªž\r\nã€€\r\n \r\n\r\nfoo\r\nbar").extend CharString
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
@@ -890,52 +890,52 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 # CharString.guess_encoding mistakes JIS for ASCII sometimes, due to Iconv.
 #   def test_guess_encoding_jis_1()
-#     str = NKF.nkf("-j", "´Á»ú¤È¥«¥¿¥«¥Ê¤È¤Ò¤é¤¬¤Ê\n")
+#     str = NKF.nkf("--jis", "æ¼¢å­—ã¨ã‚«ã‚¿ã‚«ãƒŠã¨ã²ã‚‰ãŒãª\n")
 #     expected = "JIS"
 #     assert_guess_encoding(expected, str)
 #   end
 #   def test_guess_encoding_jis_2()
-#     str = NKF.nkf("-j", "´Á»ú¤È¥«¥¿¥«¥Ê¤È¤Ò¤é¤¬¤Ê¤ÈLatin¤ÎÊ¸»ú¤È¶õÇò( )¤Èµ­¹æ@\n" * 100)
+#     str = NKF.nkf("--jis", "æ¼¢å­—ã¨ã‚«ã‚¿ã‚«ãƒŠã¨ã²ã‚‰ãŒãªã¨Latinã®æ–‡å­—ã¨ç©ºç™½( )ã¨è¨˜å·@\n" * 100)
 #     expected = "JIS"
 #     assert_guess_encoding(expected, str)
 #   end
   def test_guess_encoding_eucjp_1()
-    str = NKF.nkf("-e", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú")
+    str = NKF.nkf("--euc", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—")
     expected = "EUC-JP"
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_eucjp_2()
-    str = NKF.nkf('-e', "´Á»ú¤È¥«¥¿¥«¥Ê¤È¤Ò¤é¤¬¤Ê¤ÈLatin¤ÎÊ¸»ú¤È¶õÇò( )\n" * 10)
+    str = NKF.nkf("--euc", "æ¼¢å­—ã¨ã‚«ã‚¿ã‚«ãƒŠã¨ã²ã‚‰ãŒãªã¨Latinã®æ–‡å­—ã¨ç©ºç™½( )\n" * 10)
     expected = "EUC-JP"
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_eucjp_3()
-    str = NKF.nkf('-e', "¤³¤ó¤Ð¤ó¤Ï¡¢»ä¤ÎÌ¾Á°¤Ï¤Þ¤Ä¤â¤È¤Ç¤¹¡£\nRuby¤òºî¤Ã¤¿¤Î¤Ï»ä¤Ç¤¹¡£»ä¤ÏRuby Hacker¤Ç¤¹¡£\n")
+    str = NKF.nkf("--euc", "ã“ã‚“ã°ã‚“ã¯ã€ç§ã®åå‰ã¯ã¾ã¤ã‚‚ã¨ã§ã™ã€‚\nRubyã‚’ä½œã£ãŸã®ã¯ç§ã§ã™ã€‚ç§ã¯Ruby Hackerã§ã™ã€‚\n")
     expected = "EUC-JP"
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_sjis_1()
-    str = NKF.nkf("-s", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú")
+    str = NKF.nkf("--sjis", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—")
     expected = "Shift_JIS"
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_sjis_2()
-    str = NKF.nkf('-s', "´Á»ú¤È\n¥«¥¿¥«¥Ê¤È\n¤Ò¤é¤¬¤Ê¤È\nLatin")
+    str = NKF.nkf("--sjis", "æ¼¢å­—ã¨\nã‚«ã‚¿ã‚«ãƒŠã¨\nã²ã‚‰ãŒãªã¨\nLatin")
     expected = "Shift_JIS"
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_cp932_1()
-    str = NKF.nkf('--oc=CP932', "\\u2460") # CIRCLED DIGIT ONE
+    str = NKF.nkf("--oc=CP932", "\\u2460") # CIRCLED DIGIT ONE
     expected = "Windows-31J" # CP932 == Windows-31J in Ruby 1.9+
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_utf8_1()
-    str = NKF.nkf("-E -w", "ÆüËÜ¸ì¤ÈLatin¤ÎÊ¸»ú")
+    str = NKF.nkf("--utf8", "æ—¥æœ¬èªžã¨Latinã®æ–‡å­—")
     expected = "UTF-8"
     assert_guess_encoding(expected, str)
   end
   def test_guess_encoding_utf8_2()
-    str = NKF.nkf("-E -w", "¤¤¤í¤Ï\n¤Ë¤Û¤Ø¤È\n")
+    str = NKF.nkf("--utf8", "ã„ã‚ã¯\nã«ã»ã¸ã¨\n")
     expected = "UTF-8"
     assert_guess_encoding(expected, str)
   end

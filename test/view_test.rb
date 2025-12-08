@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-# -*- coding: euc-jp; -*-
+# -*- coding: utf-8; -*-
 require 'test/unit'
 require 'docdiff/view'
 require 'docdiff/difference'
@@ -165,36 +165,42 @@ class TC_DocDiff_View < Test::Unit::TestCase
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_tty(nil, false))
   end
   def test_to_tty_del_add_ja()
-    array1 = ['§¢', '§§', '§¶']
-    array2 = ['§§', '§¶', '§¶']
-    expected =   ["\033[7;4;31m§¢\033[0m",
-                  "§§",
-                  "\033[7;1;34m§¶\033[0m",
-                  "§¶"]
-    assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_tty(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-                                         array2.collect{|i|NKF.nkf("-s",i)}),
+    array1 = ['„ÅÇ', '„ÅÑ', '„ÅÜ']
+    array2 = ['„ÅÑ', '„ÅÜ', '„ÅÜ']
+    expected =   ["\033[7;4;31m„ÅÇ\033[0m",
+                  "„ÅÑ",
+                  "\033[7;1;34m„ÅÜ\033[0m",
+                  "„ÅÜ"]
+    assert_equal(expected.map{|i|NKF.nkf("--euc",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--euc",i)},
+                                         array2.map{|i|NKF.nkf("--euc",i)}),
+                          "EUC-JP", nil).to_tty(nil, false))
+    assert_equal(expected.map{|i|NKF.nkf("--sjis",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--sjis",i)},
+                                         array2.map{|i|NKF.nkf("--sjis",i)}),
                           "Shift_JIS", nil).to_tty(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
-                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
+    assert_equal(expected.map{|i|NKF.nkf("--utf8", i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--utf8", i)},
+                                         array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_tty(nil, false))
   end
   def test_to_tty_change_ja()
-    array1 = ['§¢', '§§', '§¶']
-    array2 = ['§¢', '¥¡', '§¶']
-    expected =   ["§¢",
-                  "\033[7;4;33m§§\033[0m\033[7;1;32m¥¡\033[0m",
-                  "§¶"]
-    assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_tty(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-                                         array2.collect{|i|NKF.nkf("-s",i)}),
+    array1 = ['„ÅÇ', '„ÅÑ', '„ÅÜ']
+    array2 = ['„ÅÇ', 'Êº¢', '„ÅÜ']
+    expected =   ["„ÅÇ",
+                  "\033[7;4;33m„ÅÑ\033[0m\033[7;1;32mÊº¢\033[0m",
+                  "„ÅÜ"]
+    assert_equal(expected.map{|i|NKF.nkf("--euc",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--euc",i)},
+                                         array2.map{|i|NKF.nkf("--euc",i)}),
+                          "EUC-JP", nil).to_tty(nil, false))
+    assert_equal(expected.map{|i|NKF.nkf("--sjis",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--sjis",i)},
+                                         array2.map{|i|NKF.nkf("--sjis",i)}),
                           "Shift_JIS", nil).to_tty(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
-                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
+    assert_equal(expected.map{|i|NKF.nkf("--utf8", i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--utf8", i)},
+                                         array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_tty(nil, false))
   end
   def test_to_tty_digest()
@@ -285,36 +291,42 @@ class TC_DocDiff_View < Test::Unit::TestCase
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_html(nil, false))
   end
   def test_to_html_del_add_ja()
-    array1 = ['§¢', '§§', '§¶']
-    array2 = ['§§', '§¶', '§¶']
-    expected =   ['<span class="del"><del>§¢</del></span>',
-                  '<span class="common">§§</span>',
-                  '<span class="add"><ins>§¶</ins></span>',
-                  '<span class="common">§¶</span>']
-    assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_html(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-                                         array2.collect{|i|NKF.nkf("-s",i)}),
+    array1 = ['„ÅÇ', '„ÅÑ', '„ÅÜ']
+    array2 = ['„ÅÑ', '„ÅÜ', '„ÅÜ']
+    expected =   ['<span class="del"><del>„ÅÇ</del></span>',
+                  '<span class="common">„ÅÑ</span>',
+                  '<span class="add"><ins>„ÅÜ</ins></span>',
+                  '<span class="common">„ÅÜ</span>']
+    assert_equal(expected.map{|i|NKF.nkf("--euc",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--euc",i)},
+                                         array2.map{|i|NKF.nkf("--euc",i)}),
+                          "EUC-JP", nil).to_html(nil, false))
+    assert_equal(expected.map{|i|NKF.nkf("--sjis",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--sjis",i)},
+                                         array2.map{|i|NKF.nkf("--sjis",i)}),
                           "Shift_JIS", nil).to_html(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
-                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
+    assert_equal(expected.map{|i|NKF.nkf("--utf8", i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--utf8", i)},
+                                         array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_html(nil, false))
   end
   def test_to_html_change_ja()
-    array1 = ['§¢', '§§', '§¶']
-    array2 = ['§¢', '¥¡', '§¶']
-    expected =   ['<span class="common">§¢</span>',
-                  '<span class="before-change"><del>§§</del></span><span class="after-change"><ins>¥¡</ins></span>',
-                  '<span class="common">§¶</span>']
-    assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_html(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-                                         array2.collect{|i|NKF.nkf("-s",i)}),
+    array1 = ['„ÅÇ', '„ÅÑ', '„ÅÜ']
+    array2 = ['„ÅÇ', 'Êº¢', '„ÅÜ']
+    expected =   ['<span class="common">„ÅÇ</span>',
+                  '<span class="before-change"><del>„ÅÑ</del></span><span class="after-change"><ins>Êº¢</ins></span>',
+                  '<span class="common">„ÅÜ</span>']
+    assert_equal(expected.map{|i|NKF.nkf("--euc",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--euc",i)},
+                                         array2.map{|i|NKF.nkf("--euc",i)}),
+                          "EUC-JP", nil).to_html(nil, false))
+    assert_equal(expected.map{|i|NKF.nkf("--sjis",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--sjis",i)},
+                                         array2.map{|i|NKF.nkf("--sjis",i)}),
                           "Shift_JIS", nil).to_html(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
-                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
+    assert_equal(expected.map{|i|NKF.nkf("--utf8", i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--utf8", i)},
+                                         array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_html(nil, false))
   end
 
@@ -338,36 +350,42 @@ class TC_DocDiff_View < Test::Unit::TestCase
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_manued(nil, false))
   end
   def test_to_manued_del_add_ja()
-    array1 = ['§¢', '§§', '§¶']
-    array2 = ['§§', '§¶', '§¶']
-    expected =   ['[§¢/]',
-                  '§§',
-                  '[/§¶]',
-                  '§¶']
-    assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_manued(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-                                         array2.collect{|i|NKF.nkf("-s",i)}),
+    array1 = ['„ÅÇ', '„ÅÑ', '„ÅÜ']
+    array2 = ['„ÅÑ', '„ÅÜ', '„ÅÜ']
+    expected =   ['[„ÅÇ/]',
+                  '„ÅÑ',
+                  '[/„ÅÜ]',
+                  '„ÅÜ']
+    assert_equal(expected.map{|i|NKF.nkf("--euc",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--euc",i)},
+                                         array2.map{|i|NKF.nkf("--euc",i)}),
+                          "EUC-JP", nil).to_manued(nil, false))
+    assert_equal(expected.map{|i|NKF.nkf("--sjis",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--sjis",i)},
+                                         array2.map{|i|NKF.nkf("--sjis",i)}),
                           "Shift_JIS", nil).to_manued(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
-                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
+    assert_equal(expected.map{|i|NKF.nkf("--utf8", i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--utf8", i)},
+                                         array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_manued(nil, false))
   end
   def test_to_manued_change_ja()
-    array1 = ['§¢', '§§', '§¶']
-    array2 = ['§¢', '¥¡', '§¶']
-    expected =   ['§¢',
-                  '[§§/¥¡]',
-                  '§¶']
-    assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_manued(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-                                         array2.collect{|i|NKF.nkf("-s",i)}),
+    array1 = ['„ÅÇ', '„ÅÑ', '„ÅÜ']
+    array2 = ['„ÅÇ', 'Êº¢', '„ÅÜ']
+    expected =   ['„ÅÇ',
+                  '[„ÅÑ/Êº¢]',
+                  '„ÅÜ']
+    assert_equal(expected.map{|i|NKF.nkf("--euc",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--euc",i)},
+                                         array2.map{|i|NKF.nkf("--euc",i)}),
+                          "EUC-JP", nil).to_manued(nil, false))
+    assert_equal(expected.map{|i|NKF.nkf("--sjis",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--sjis",i)},
+                                         array2.map{|i|NKF.nkf("--sjis",i)}),
                           "Shift_JIS", nil).to_manued(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
-                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
+    assert_equal(expected.map{|i|NKF.nkf("--utf8", i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--utf8", i)},
+                                         array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_manued(nil, false))
   end
   def test_to_manued_escaping_ascii()
@@ -416,36 +434,42 @@ class TC_DocDiff_View < Test::Unit::TestCase
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_wdiff(nil, false))
   end
   def test_to_wdiff_del_add_ja()
-    array1 = ['§¢', '§§', '§¶']
-    array2 = ['§§', '§¶', '§¶']
-    expected =   ['[-§¢-]',
-                  '§§',
-                  '{+§¶+}',
-                  '§¶']
-    assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_wdiff(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-                                         array2.collect{|i|NKF.nkf("-s",i)}),
+    array1 = ['„ÅÇ', '„ÅÑ', '„ÅÜ']
+    array2 = ['„ÅÑ', '„ÅÜ', '„ÅÜ']
+    expected =   ['[-„ÅÇ-]',
+                  '„ÅÑ',
+                  '{+„ÅÜ+}',
+                  '„ÅÜ']
+    assert_equal(expected.map{|i|NKF.nkf("--euc",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--euc",i)},
+                                         array2.map{|i|NKF.nkf("--euc",i)}),
+                          "EUC-JP", nil).to_wdiff(nil, false))
+    assert_equal(expected.map{|i|NKF.nkf("--sjis",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--sjis",i)},
+                                         array2.map{|i|NKF.nkf("--sjis",i)}),
                           "Shift_JIS", nil).to_wdiff(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
-                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
+    assert_equal(expected.map{|i|NKF.nkf("--utf8", i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--utf8", i)},
+                                         array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_wdiff(nil, false))
   end
   def test_to_wdiff_change_ja()
-    array1 = ['§¢', '§§', '§¶']
-    array2 = ['§¢', '¥¡', '§¶']
-    expected =   ['§¢',
-                  '[-§§-]{+¥¡+}',
-                  '§¶']
-    assert_equal(expected, View.new(Difference.new(array1, array2), "EUC-JP", nil).to_wdiff(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-s",i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-s",i)},
-                                         array2.collect{|i|NKF.nkf("-s",i)}),
+    array1 = ['„ÅÇ', '„ÅÑ', '„ÅÜ']
+    array2 = ['„ÅÇ', 'Êº¢', '„ÅÜ']
+    expected =   ['„ÅÇ',
+                  '[-„ÅÑ-]{+Êº¢+}',
+                  '„ÅÜ']
+    assert_equal(expected.map{|i|NKF.nkf("--euc",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--euc",i)},
+                                         array2.map{|i|NKF.nkf("--euc",i)}),
+                          "EUC-JP", nil).to_wdiff(nil, false))
+    assert_equal(expected.map{|i|NKF.nkf("--sjis",i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--sjis",i)},
+                                         array2.map{|i|NKF.nkf("--sjis",i)}),
                           "Shift_JIS", nil).to_wdiff(nil, false))
-    assert_equal(expected.collect{|i|NKF.nkf("-E -w", i)},
-                 View.new(Difference.new(array1.collect{|i|NKF.nkf("-E -w", i)},
-                                         array2.collect{|i|NKF.nkf("-E -w", i)}),
+    assert_equal(expected.map{|i|NKF.nkf("--utf8", i)},
+                 View.new(Difference.new(array1.map{|i|NKF.nkf("--utf8", i)},
+                                         array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_wdiff(nil, false))
   end
   def test_to_wdiff_digest()
