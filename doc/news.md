@@ -17,6 +17,7 @@
   - Fixed erroneous tarball generation (`make dist`).
   - Introduced additional development requirements: git, md2html, asciidoctor.
   - Fixed irregular time stamps of gem members by setting `SOURCE_DATE_EPOCH`.
+  - Converted EUC-JP code files to UTF-8.
 
 ### 0.6.2 (2025-11-28)
 
