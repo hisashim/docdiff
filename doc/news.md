@@ -9,14 +9,14 @@
   - Added a manual page (`doc/man/docdiff.1` will be generated from `.adoc` by `make docs`).
   - Added shell completion scripts for Zsh and Bash.
   - Cleaned up CLI help message a bit.
-  - Added pager support with `--pager=` and `--no-pager` options. `DOCDIFF_PAGER` is consulted as well.
+  - Added pager support with `--pager=` and `--no-pager` options. `$DOCDIFF_PAGER` is consulted as well.
   - Added `--iso8859` to supersede `--iso8859x`; ditto for `--display=block` and `--display=multi`.
   - Marked to-be-deprecated features as deprecated, e.g.: `--format=stat`, `--stat`, `--cache`, `--iso8859x`, `--display=multi`, `--verbose`, `--license`, `--author`, `~/etc/docdiff/docdiff.conf`, and `~/.docdiff/docdiff.conf`.
 * Developer-related changes:
   - Removed test logging.
   - Fixed erroneous tarball generation (`make dist`).
   - Introduced additional development requirements: git, md2html, asciidoctor.
-  - Fixed irregular time stamps of gem members by setting `SOURCE_DATE_EPOCH`.
+  - Fixed irregular time stamps of gem members by setting `$SOURCE_DATE_EPOCH`.
   - Converted EUC-JP code files to UTF-8.
 
 ### 0.6.2 (2025-11-28)
