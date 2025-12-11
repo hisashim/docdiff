@@ -85,7 +85,7 @@ ARGV.options {|o|
     ){|s| clo[:display] ||= s.downcase}
   o.def_option('--cache', 'use file cache (not implemented) (deprecated)'){clo[:cache] = true}
   o.def_option('--pager=PAGER', String,
-    'specify pager (if available, $DOCDIFF_PAGER or $PAGER is used by default)'
+    'specify pager (if available, $DOCDIFF_PAGER is used by default)'
     ){|s| clo[:pager] = s}
   o.def_option('--no-pager', 'do not use pager'){clo[:pager] = false}
   o.def_option('--config-file=FILE', String,
@@ -151,8 +151,6 @@ docdiff.config[:pager] =
   elsif (pager = docdiff.config[:pager]) == false
     pager
   elsif (pager = ENV['DOCDIFF_PAGER']) && !pager.empty?
-    pager
-  elsif (pager = ENV['PAGER']) && !pager.empty?
     pager
   end
 
