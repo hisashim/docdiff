@@ -86,7 +86,7 @@ class DocDiff
           parser.on(
             "--pager=PAGER",
             String,
-            "specify pager (if available, $DOCDIFF_PAGER is used by default)",
+            "specify pager (if available, $DOCDIFF_PAGER or $PAGER is used by default)",
           ) { |s| o[:pager] = s }
           parser.on("--no-pager", "do not use pager") { o[:pager] = false }
           parser.on("--config-file=FILE", String, "specify config file to read") { |s| o[:config_file] = s }
@@ -245,6 +245,8 @@ class DocDiff
 
         config_from_env_vars = {}
         if (pager = ENV["DOCDIFF_PAGER"]) && !pager.empty?
+          config_from_env_vars[:pager] = pager
+        elsif (pager = ENV["PAGER"]) && !pager.empty?
           config_from_env_vars[:pager] = pager
         end
 

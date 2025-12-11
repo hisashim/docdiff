@@ -5,6 +5,7 @@
 * User-visible changes:
   - Default output format changed from html to tty. (breaking change)
     If you prefer the old behaviour, add `format = html` to your configuration file (e.g. `~/.config/docdiff/docdiff.conf`).
+  - Enabled automatic pager activation via `$PAGER`. (breaking change)
 
 ### 0.6.7 (2026-02-25)
 
