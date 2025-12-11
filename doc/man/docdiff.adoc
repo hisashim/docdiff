@@ -107,7 +107,7 @@ It supports several encodings and end-of-line characters, including ASCII (and o
   use file cache (not implemented) (deprecated)
 
 *--pager*=PAGER::
-  specify pager (if available, $_DOCDIFF_PAGER_ or $_PAGER_ is used by default)
+  specify pager (if available, $_DOCDIFF_PAGER_ is used by default)
 
 *--no-pager*::
   do not use pager
