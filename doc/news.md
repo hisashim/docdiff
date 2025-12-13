@@ -1,6 +1,6 @@
 # News
 
-### 0.6.3 (CCYY-MM-DD)
+### 0.6.3 (2025-12-13)
 
 * User-visible changes:
   - Removed ChangeLog.
