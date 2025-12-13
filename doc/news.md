@@ -1,6 +1,6 @@
 # News
 
-### 0.6.3 (2025-12-13)
+### 0.6.4 (2025-12-13)
 
 * User-visible changes:
   - Removed ChangeLog.
@@ -18,6 +18,10 @@
   - Introduced additional development requirements: git, md2html, asciidoctor.
   - Fixed irregular time stamps of gem members by setting `$SOURCE_DATE_EPOCH`.
   - Converted EUC-JP code files to UTF-8.
+
+### 0.6.3 (2025-12-13)
+
+This version was revoked due to a mistake in the release procedure.
 
 ### 0.6.2 (2025-11-28)
 
