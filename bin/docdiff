@@ -95,7 +95,7 @@ ARGV.options {|o|
   o.def_option('--verbose', 'run verbosely (not well-supported) (deprecated)'){clo[:verbose] = true}
 
   o.def_option('--help', 'show this message'){puts o; exit(0)}
-  o.def_option('--version', 'show version'){puts DocDiff::AppVersion; exit(0)}
+  o.def_option('--version', 'show version'){puts Docdiff::VERSION; exit(0)}
   o.def_option('--license', 'show license (deprecated)'){puts DocDiff::License; exit(0)}
   o.def_option('--author', 'show author(s) (deprecated)'){puts DocDiff::Author; exit(0)}
 
