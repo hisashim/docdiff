@@ -31,32 +31,41 @@ clo = clo.merge(DocDiff.parse_options!(ARGV))
 
 docdiff = DocDiff.new()
 docdiff.config.update(default_config)
-unless clo[:no_config_file] == true # process_commandline_option
-  message = docdiff.process_config_file(DocDiff::SystemConfigFileName)
-  if clo[:verbose] == true || docdiff.config[:verbose] == true
-    STDERR.print message
+
+unless clo[:no_config_file]
+  possible_system_config_file_names = [
+    DocDiff::SystemConfigFileName,
+  ]
+  possible_system_config_file_names.each do |fn|
+    config, message = DocDiff.read_config_from_file(fn)
+    STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
+    if config
+      docdiff.config.merge!(config)
+    end
   end
-  #    message = docdiff.process_config_file(DocDiff::UserConfigFileName)
-  case
-  when [File.exist?(DocDiff::UserConfigFileName),
-        File.exist?(DocDiff::AltUserConfigFileName),
-        File.exist?(DocDiff::XDGUserConfigFileName)].count(true) >= 2
-    raise <<~EOS
-      #{DocDiff::UserConfigFileName}, #{DocDiff::AltUserConfigFileName}, and \
-      #{DocDiff::XDGUserConfigFileName} cannot be used at the same time. \
-      Keep one and remove or rename the others.
+
+  possible_user_config_file_names = [
+    DocDiff::UserConfigFileName,
+    DocDiff::AltUserConfigFileName,
+    DocDiff::XDGUserConfigFileName,
+  ]
+  existing_file_names = possible_user_config_file_names.map{|fn| File.exist? fn}
+  if existing_file_names.count(true) >= 2
+     raise <<~EOS
+      Only one user config file can be used at the same time. \
+      Keep one and remove or rename the others: #{existing_file_names.inspect}
     EOS
-  when File.exist?(DocDiff::UserConfigFileName)
-    message = docdiff.process_config_file(DocDiff::UserConfigFileName)
-  when File.exist?(DocDiff::AltUserConfigFileName)
-    message = docdiff.process_config_file(DocDiff::AltUserConfigFileName)
-  when File.exist?(DocDiff::XDGUserConfigFileName)
-    message = docdiff.process_config_file(DocDiff::XDGUserConfigFileName)
   end
-  if clo[:verbose] == true || docdiff.config[:verbose] == true
-    STDERR.print message
+
+  possible_user_config_file_names.each do |fn|
+    config, message = DocDiff.read_config_from_file(fn)
+    STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
+    if config
+      docdiff.config.merge!(config)
+    end
   end
 end
+
 unless clo[:config_file].nil?
   if File.exist?(clo[:config_file])
     message = docdiff.process_config_file(clo[:config_file])
@@ -67,6 +76,7 @@ unless clo[:config_file].nil?
     STDERR.print message
   end
 end
+
 docdiff.config.update(clo)
 
 docdiff.config[:pager] =

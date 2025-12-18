@@ -140,6 +140,22 @@ class DocDiff
     result
   end
 
+  def DocDiff.read_config_from_file(filename)
+    content = nil
+    begin
+      File.open(filename, "r"){|f| content = f.read}
+    rescue Errno::ENOENT
+      message = "config file not found, skipping: #{filename.inspect}"
+    ensure
+      if content
+        config = DocDiff.parse_config_file_content(content)
+      else
+        message = "config file empty: #{filename.inspect}"
+      end
+    end
+    [config, message]
+  end
+
   def compare_by_line(doc1, doc2)
     Difference.new(doc1.split_to_line, doc2.split_to_line)
   end
@@ -252,20 +268,6 @@ class DocDiff
       end
     end
     result.join
-  end
-
-  def process_config_file(filename)
-    file_content = nil
-    begin
-      File.open(filename, "r"){|f| file_content = f.read}
-    rescue Errno::ENOENT
-      message = "config file not found so not read."
-    ensure
-      if file_content != nil
-        self.config.update(DocDiff.parse_config_file_content(file_content))
-      end
-    end
-    message
   end
 
   def print_or_write_to_pager(content, pager)
