@@ -81,7 +81,7 @@ class DocDiff
       parser.on(
         '--label LABEL', '-L LABEL',
         'use label instead of file name (not implemented; exists for compatibility with diff)'
-      ){|s1, s2| o[:label1], o[:label2] = s1, s2}
+      ){|s| o[:label] ||= []; o[:label] << s}
 
       parser.on('--digest', 'digest output, do not show all'){o[:digest] = true}
       parser.on('--summary', 'same as --digest'){o[:digest] = true}
