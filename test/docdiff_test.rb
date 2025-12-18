@@ -117,6 +117,38 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "manued", :digest => false}))
   end
 
+  def test_parse_options!()
+    args = [
+      "--resolution=line",
+      "--char",
+      "--encoding=ASCII",
+      "--eucjp",
+      "--eol=CR",
+      "--crlf",
+      "--format=manued",
+      "--wdiff",
+      "--digest",
+      "--display=block",
+      "--pager='less --raw-control-chars'",
+      "--no-config-file",
+      "--config-file=./docdiff.conf",
+      "file1",
+      "file2",
+    ]
+    expected = {
+      :resolution => "char",
+      :encoding => "EUC-JP",
+      :eol => "CRLF",
+      :format => "wdiff",
+      :digest => true,
+      :display => "block",
+      :pager => "'less --raw-control-chars'",
+      :no_config_file => true,
+      :config_file => "./docdiff.conf",
+    }
+    assert_equal(expected, DocDiff.parse_options!(args, base_options: {}))
+  end
+
   def test_parse_config_file_content()
     content = ["# comment line\n",
                " # comment line with leading space\n",
