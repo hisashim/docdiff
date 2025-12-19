@@ -3,7 +3,6 @@
 # Copyright (C) 2002-2011 Hisashi MORITA
 # Requirements: Ruby (>= 2.0)
 require 'docdiff'
-require 'optparse'
 
 # do_config_stuff
 
@@ -27,7 +26,7 @@ when "worddiff" then; clo[:resolution] = "word"
 when "chardiff" then; clo[:resolution] = "char"
 end
 
-clo = clo.merge(DocDiff.parse_options!(ARGV))
+clo = clo.merge(DocDiff::CLI.parse_options!(ARGV))
 
 docdiff = DocDiff.new()
 docdiff.config.update(default_config)
@@ -37,7 +36,7 @@ unless clo[:no_config_file]
     DocDiff::SystemConfigFileName,
   ]
   possible_system_config_file_names.each do |fn|
-    config, message = DocDiff.read_config_from_file(fn)
+    config, message = DocDiff::CLI.read_config_from_file(fn)
     STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
     if config
       docdiff.config.merge!(config)
@@ -58,7 +57,7 @@ unless clo[:no_config_file]
   end
 
   possible_user_config_file_names.each do |fn|
-    config, message = DocDiff.read_config_from_file(fn)
+    config, message = DocDiff::CLI.read_config_from_file(fn)
     STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
     if config
       docdiff.config.merge!(config)
