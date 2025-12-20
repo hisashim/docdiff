@@ -140,12 +140,4 @@ class DocDiff
     end
     result.join
   end
-
-  def print_or_write_to_pager(content, pager)
-    if STDOUT.tty? && pager.is_a?(String) && !pager.empty?
-      IO.popen(pager, "w"){|f| f.print content}
-    else
-      print content
-    end
-  end
 end  # class DocDiff

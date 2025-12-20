@@ -131,5 +131,158 @@ class DocDiff
       end
       [config, message]
     end
+
+    def self.print_or_write_to_pager(content, pager)
+      if STDOUT.tty? && pager.is_a?(String) && !pager.empty?
+        IO.popen(pager, "w"){|f| f.print content}
+      else
+        print content
+      end
+    end
+
+    def self.run
+      # do_config_stuff
+
+      default_config = {
+        :resolution    => "word",
+        :encoding      => "auto",
+        :eol           => "auto",
+        :format        => "html",
+        :cache         => true,
+        :digest        => false,
+        :pager         => nil,
+        :verbose       => false
+      }
+
+      clo = command_line_options = {}
+
+      # if invoked as "worddiff" or "chardiff",
+      # appropriate resolution is set respectively.
+      case File.basename($0, ".*")
+      when "worddiff" then; clo[:resolution] = "word"
+      when "chardiff" then; clo[:resolution] = "char"
+      end
+
+      clo = clo.merge(DocDiff::CLI.parse_options!(ARGV))
+
+      docdiff = DocDiff.new()
+      docdiff.config.update(default_config)
+
+      unless clo[:no_config_file]
+        possible_system_config_file_names = [
+          DocDiff::SystemConfigFileName,
+        ]
+        possible_system_config_file_names.each do |fn|
+          config, message = DocDiff::CLI.read_config_from_file(fn)
+          STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
+          if config
+            docdiff.config.merge!(config)
+          end
+        end
+
+        possible_user_config_file_names = [
+          DocDiff::UserConfigFileName,
+          DocDiff::AltUserConfigFileName,
+          DocDiff::XDGUserConfigFileName,
+        ]
+        existing_file_names = possible_user_config_file_names.map{|fn| File.exist? fn}
+        if existing_file_names.count(true) >= 2
+          raise <<~EOS
+            Only one user config file can be used at the same time. \
+            Keep one and remove or rename the others: #{existing_file_names.inspect}
+          EOS
+        end
+
+        possible_user_config_file_names.each do |fn|
+          config, message = DocDiff::CLI.read_config_from_file(fn)
+          STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
+          if config
+            docdiff.config.merge!(config)
+          end
+        end
+      end
+
+      unless clo[:config_file].nil?
+        if File.exist?(clo[:config_file])
+          message = docdiff.process_config_file(clo[:config_file])
+        else
+          raise "#{clo[:config_file]} does not exist."
+        end
+        if clo[:verbose] == true || docdiff.config[:verbose] == true
+          STDERR.print message
+        end
+      end
+
+      docdiff.config.update(clo)
+
+      docdiff.config[:pager] =
+        if (pager = docdiff.config[:pager]).is_a?(String) && !pager.empty?
+          pager
+        elsif (pager = docdiff.config[:pager]) == false
+          pager
+        elsif (pager = ENV['DOCDIFF_PAGER']) && !pager.empty?
+          pager
+        end
+
+      # config stuff done
+
+      # process the documents
+
+      file1_content = nil
+      file2_content = nil
+      raise "Try `#{File.basename($0)} --help' for more information." if ARGV[0].nil?
+      raise "Specify at least 2 target files." unless ARGV[0] && ARGV[1]
+      ARGV[0] = "/dev/stdin" if ARGV[0] == "-"
+      ARGV[1] = "/dev/stdin" if ARGV[1] == "-"
+      raise "No such file: #{ARGV[0]}." unless FileTest.exist?(ARGV[0])
+      raise "No such file: #{ARGV[1]}." unless FileTest.exist?(ARGV[1])
+      raise "#{ARGV[0]} is not readable." unless FileTest.readable?(ARGV[0])
+      raise "#{ARGV[1]} is not readable." unless FileTest.readable?(ARGV[1])
+      File.open(ARGV[0], "r"){|f| file1_content = f.read}
+      File.open(ARGV[1], "r"){|f| file2_content = f.read}
+
+      doc1 = nil
+      doc2 = nil
+
+      encoding1 = docdiff.config[:encoding]
+      encoding2 = docdiff.config[:encoding]
+      eol1 = docdiff.config[:eol]
+      eol2 = docdiff.config[:eol]
+
+      if docdiff.config[:encoding] == "auto"
+        encoding1 = DocDiff::CharString.guess_encoding(file1_content)
+        encoding2 = DocDiff::CharString.guess_encoding(file2_content)
+        case
+        when (encoding1 == "UNKNOWN" or encoding2 == "UNKNOWN")
+          raise "Document encoding unknown (#{encoding1}, #{encoding2})."
+        when encoding1 != encoding2
+          raise "Document encoding mismatch (#{encoding1}, #{encoding2})."
+        end
+      end
+
+      if docdiff.config[:eol] == "auto"
+        eol1 = DocDiff::CharString.guess_eol(file1_content)
+        eol2 = DocDiff::CharString.guess_eol(file2_content)
+        case
+        when (eol1.nil? or eol2.nil?)
+          raise "Document eol is nil (#{eol1.inspect}, #{eol2.inspect}).  The document might be empty."
+        when (eol1 == 'UNKNOWN' or eol2 == 'UNKNOWN')
+          raise "Document eol unknown (#{eol1.inspect}, #{eol2.inspect})."
+        when (eol1 != eol2)
+          raise "Document eol mismatch (#{eol1}, #{eol2})."
+        end
+      end
+
+      doc1 = DocDiff::Document.new(file1_content, encoding1, eol1)
+      doc2 = DocDiff::Document.new(file2_content, encoding2, eol2)
+
+      output = docdiff.run(doc1, doc2,
+        {:resolution => docdiff.config[:resolution],
+         :format     => docdiff.config[:format],
+         :digest     => docdiff.config[:digest],
+         :display    => docdiff.config[:display]})
+
+      print_or_write_to_pager(output, docdiff.config[:pager])
+    end
   end
 end
