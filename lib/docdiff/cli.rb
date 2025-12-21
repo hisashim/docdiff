@@ -213,12 +213,9 @@ class DocDiff
         end
       end
 
-      unless clo[:config_file].nil?
-        if File.exist?(clo[:config_file])
-          message = docdiff.process_config_file(clo[:config_file])
-        else
-          raise "#{clo[:config_file]} does not exist."
-        end
+      if clo[:config_file]
+        config, message = DocDiff::CLI.read_config_from_file(clo[:config_file])
+        docdiff.config.merge!(config)
         if clo[:verbose] == true || docdiff.config[:verbose] == true
           STDERR.print message
         end

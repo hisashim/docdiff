@@ -298,4 +298,16 @@ class TC_CLI < Test::Unit::TestCase
     actual = `#{cmd}`.force_encoding("UTF-8")
     assert_equal(expected, actual)
   end
+
+  def test_cli_config_file_format_wdiff()
+    config_file_name = File.join(File.dirname(__FILE__), "fixture/format_wdiff.conf")
+    expected = <<~EOS
+      Hello, my name is [-Watanabe.-]{+matz.+}
+      {+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}
+    EOS
+    cmd = "ruby -I lib bin/docdiff --config-file=#{config_file_name}" +
+      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    actual = `#{cmd}`
+    assert_equal(expected, actual)
+  end
 end
