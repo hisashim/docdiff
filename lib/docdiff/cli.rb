@@ -120,9 +120,18 @@ class DocDiff
       content = nil
       begin
         File.open(filename, "r"){|f| content = f.read}
-      rescue Errno::ENOENT
-        message = "config file not found, skipping: #{filename.inspect}"
+      rescue => exception
+        raise exception
       ensure
+        message =
+          case exception
+          in Errno::ENOENT
+            "config file not found: #{filename.inspect}"
+          in Errno::EACCES
+            "permission denied for reading: #{filename.inspect}"
+          else
+            "something unexpected happened: #{filename.inspect}"
+          end
         if content
           config = parse_config_file_content(content)
         else
@@ -185,15 +194,17 @@ class DocDiff
           DocDiff::AltUserConfigFileName,
           DocDiff::XDGUserConfigFileName,
         ]
-        existing_file_names = possible_user_config_file_names.map{|fn| File.exist? fn}
-        if existing_file_names.count(true) >= 2
+        existing_user_config_file_names =
+          possible_user_config_file_names.select{|fn| File.exist? fn}
+        if existing_user_config_file_names.size >= 2
           raise <<~EOS
             Only one user config file can be used at the same time. \
-            Keep one and remove or rename the others: #{existing_file_names.inspect}
+            Keep one and remove or rename the others: \
+            #{existing_user_config_file_names.inspect}
           EOS
         end
 
-        possible_user_config_file_names.each do |fn|
+        existing_user_config_file_names.each do |fn|
           config, message = DocDiff::CLI.read_config_from_file(fn)
           STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
           if config

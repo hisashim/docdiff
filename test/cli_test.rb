@@ -63,6 +63,12 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, config)
   end
 
+  def test_read_config_from_file_raises_exception()
+    assert_raise(Errno::ENOENT) do
+      config, message = DocDiff::CLI.read_config_from_file("no/such/file")
+    end
+  end
+
   def test_cli_resolution_line()
     expected = <<~EOS.chomp
       [-Hello, my name is Watanabe.
