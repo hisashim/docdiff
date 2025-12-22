@@ -150,91 +150,76 @@ class DocDiff
     end
 
     def self.run
-      # do_config_stuff
+      command_line_config = parse_options!(ARGV)
 
-      default_config = {
-        :resolution    => "word",
-        :encoding      => "auto",
-        :eol           => "auto",
-        :format        => "html",
-        :cache         => true,
-        :digest        => false,
-        :pager         => nil,
-        :verbose       => false
-      }
-
-      clo = command_line_options = {}
-
-      # if invoked as "worddiff" or "chardiff",
-      # appropriate resolution is set respectively.
-      case File.basename($0, ".*")
-      when "worddiff" then; clo[:resolution] = "word"
-      when "chardiff" then; clo[:resolution] = "char"
-      end
-
-      clo = clo.merge(DocDiff::CLI.parse_options!(ARGV))
-
-      docdiff = DocDiff.new()
-      docdiff.config.update(default_config)
-
-      unless clo[:no_config_file]
-        possible_system_config_file_names = [
-          DocDiff::SystemConfigFileName,
-        ]
-        possible_system_config_file_names.each do |fn|
-          config, message = DocDiff::CLI.read_config_from_file(fn)
-          STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
-          if config
-            docdiff.config.merge!(config)
+      system_config =
+        unless command_line_config[:no_config_file]
+          possible_system_config_file_names = [
+            DocDiff::SystemConfigFileName,
+          ]
+          existing_system_config_file_names =
+            possible_system_config_file_names.select{|fn| File.exist? fn}
+          if existing_system_config_file_names.size >= 2
+            raise <<~EOS
+              More than one system config file found, using the first one: \
+              #{existing_system_config_file_names.inspect}
+            EOS
           end
+          filename = existing_system_config_file_names.first
+          config, message = read_config_from_file(filename)
+          STDERR.print message if command_line_config[:verbose]
+          config
         end
 
-        possible_user_config_file_names = [
-          DocDiff::UserConfigFileName,
-          DocDiff::AltUserConfigFileName,
-          DocDiff::XDGUserConfigFileName,
-        ]
-        existing_user_config_file_names =
-          possible_user_config_file_names.select{|fn| File.exist? fn}
-        if existing_user_config_file_names.size >= 2
-          raise <<~EOS
-            Only one user config file can be used at the same time. \
-            Keep one and remove or rename the others: \
-            #{existing_user_config_file_names.inspect}
-          EOS
-        end
-
-        existing_user_config_file_names.each do |fn|
-          config, message = DocDiff::CLI.read_config_from_file(fn)
-          STDERR.print message if (clo[:verbose] || docdiff.config[:verbose])
-          if config
-            docdiff.config.merge!(config)
+      user_config =
+        unless command_line_config[:no_config_file]
+          possible_user_config_file_names = [
+            DocDiff::UserConfigFileName,
+            DocDiff::AltUserConfigFileName,
+            DocDiff::XDGUserConfigFileName,
+          ]
+          existing_user_config_file_names =
+            possible_user_config_file_names.select{|fn| File.exist? fn}
+          if existing_user_config_file_names.size >= 2
+            raise <<~EOS
+              Only one user config file can be used at the same time. \
+              Keep one and remove or rename the others: \
+              #{existing_user_config_file_names.inspect}
+            EOS
           end
+          filename = existing_user_config_file_names.first
+          config, message = read_config_from_file(filename)
+          STDERR.print message if command_line_config[:verbose]
+          config
         end
+
+      config_from_specified_file =
+        if filename = command_line_config[:config_file]
+          config, message = read_config_from_file(filename)
+          STDERR.print message if command_line_config[:verbose] == true
+          config
+        end
+
+      config_from_program_name =
+        case File.basename($PROGRAM_NAME, ".*")
+        when "worddiff" then {:resolution => "word"}
+        when "chardiff" then {:resolution => "char"}
+        end
+
+      config_from_env_vars = {}
+      if (pager = ENV['DOCDIFF_PAGER']) && !pager.empty?
+        config_from_env_vars[:pager] = pager
       end
 
-      if clo[:config_file]
-        config, message = DocDiff::CLI.read_config_from_file(clo[:config_file])
-        docdiff.config.merge!(config)
-        if clo[:verbose] == true || docdiff.config[:verbose] == true
-          STDERR.print message
-        end
-      end
+      config_in_effect = DocDiff::DEFAULT_CONFIG.dup
+      config_in_effect.merge!(config_from_program_name) if config_from_program_name
+      config_in_effect.merge!(system_config) if system_config
+      config_in_effect.merge!(user_config) if user_config
+      config_in_effect.merge!(config_from_env_vars) if config_from_env_vars
+      config_in_effect.merge!(config_from_specified_file) if config_from_specified_file
+      config_in_effect.merge!(command_line_config) if command_line_config
 
-      docdiff.config.update(clo)
-
-      docdiff.config[:pager] =
-        if (pager = docdiff.config[:pager]).is_a?(String) && !pager.empty?
-          pager
-        elsif (pager = docdiff.config[:pager]) == false
-          pager
-        elsif (pager = ENV['DOCDIFF_PAGER']) && !pager.empty?
-          pager
-        end
-
-      # config stuff done
-
-      # process the documents
+      docdiff = DocDiff.new(config: config_in_effect)
 
       file1_content = nil
       file2_content = nil

@@ -21,9 +21,19 @@ class DocDiff
     else
       File.join(ENV['HOME'], ".config", "docdiff", "docdiff.conf")
     end
+  DEFAULT_CONFIG = {
+    :resolution    => "word",
+    :encoding      => "auto",
+    :eol           => "auto",
+    :format        => "html",
+    :cache         => true,
+    :digest        => false,
+    :pager         => nil,
+    :verbose       => false
+  }
 
-  def initialize()
-    @config = {}
+  def initialize(config: {})
+    @config = config
   end
   attr_accessor :config
 
