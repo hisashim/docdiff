@@ -169,16 +169,15 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  # # FIXME: this test case fails as CRLf do not appear in the output
-  # def test_cli_eol_crlf()
-  #   expected =
-  #     "Hello, my name is [-Watanabe.-]{+matz.+}\r\n" +
-  #     "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r\n"
-  #   cmd = "ruby -I lib bin/docdiff --eol=CRLF --format=wdiff" +
-  #     " test/fixture/01_en_ascii_crlf.txt test/fixture/02_en_ascii_crlf.txt"
-  #   actual = `#{cmd}`
-  #   assert_equal(expected, actual)
-  # end
+  def test_cli_eol_crlf()
+    expected =
+      "Hello, my name is [-Watanabe.-]{+matz.+}\r\n" +
+      "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r\n"
+    cmd = "ruby -I lib bin/docdiff --eol=CRLF --format=wdiff" +
+      " test/fixture/01_en_ascii_crlf.txt test/fixture/02_en_ascii_crlf.txt"
+    actual = `#{cmd}`
+    assert_equal(expected, actual)
+  end
 
   def test_cli_format_html()
     expected = <<~EOS

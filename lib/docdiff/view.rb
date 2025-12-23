@@ -47,10 +47,22 @@ class View
   end
 
   def escape_inside(str, tags)
-    str.gsub(tags[:inside_escape_pat]){|m| tags[:inside_escape_dic][m]}
+    str.gsub(tags[:inside_escape_pat]){|m|
+      if replacement = tags[:inside_escape_dic][m]
+        replacement
+      else
+        m
+      end
+    }
   end
   def escape_outside(str, tags)
-    str.gsub(tags[:outside_escape_pat]){|m| tags[:outside_escape_dic][m]}
+    str.gsub(tags[:outside_escape_pat]){|m|
+      if replacement = tags[:outside_escape_dic][m]
+        replacement
+      else
+        m
+      end
+    }
   end
 
   def apply_style(tags, headfoot = true)
@@ -212,7 +224,7 @@ class View
     []
   end
   TTYEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
-  TTYEscapePat = /(\r\n|#{TTYEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+  TTYEscapePat = /(#{TTYEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def tty_tags()
     {:outside_escape_dic  => TTYEscapeDic,
      :outside_escape_pat  => TTYEscapePat,
@@ -277,7 +289,7 @@ class View
   end
   HTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', '  '=>'&nbsp;&nbsp;',
                    "\r\n" => "<br />\r\n", "\r" => "<br />\r", "\n" => "<br />\n"}
-  HTMLEscapePat = /(\r\n|#{HTMLEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+  HTMLEscapePat = /(#{HTMLEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def html_tags()
     {:outside_escape_dic  => HTMLEscapeDic,
      :outside_escape_pat  => HTMLEscapePat,
@@ -387,7 +399,7 @@ class View
     []
   end
   WDIFFEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
-  WDIFFEscapePat = /(\r\n|#{WDIFFEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+  WDIFFEscapePat = /(#{WDIFFEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def wdiff_tags()
     {:outside_escape_dic  => WDIFFEscapeDic,
      :outside_escape_pat  => WDIFFEscapePat,
@@ -431,7 +443,7 @@ class View
   def user_header(); []; end
   def user_footer(); []; end
   UserEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
-  UserEscapePat = /(\r\n|#{UserEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+  UserEscapePat = /(#{UserEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
   def user_tags()
     {:outside_escape_dic  => UserEscapeDic,
      :outside_escape_pat  => UserEscapePat,
