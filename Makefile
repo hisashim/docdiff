@@ -14,12 +14,12 @@ DESTDIR =
 PREFIX  = /usr/local
 datadir = $(DESTDIR)$(PREFIX)/share
 
-all:	$(DOCS)
+all: test
 
 test: $(TESTS)
 	$(RUBY) -I./lib -e 'ARGV.map{|a| require_relative "#{a}"}' $^
 
-docs:	$(DOCS)
+docs: $(DOCS)
 
 %.html: %.md
 	$(MD2HTML) --html-title="$(shell grep '^# .*' $< | head -n 1 | sed 's/^# //')" $< \
@@ -65,8 +65,9 @@ uninstall:
 	-rm -fr $(DESTDIR)/etc/$(PRODUCT)
 	-rm -fr $(datadir)/doc/$(PRODUCT)
 
-dist:
-	git archive --prefix="$(PRODUCT)-$(VERSION)/" --format=tar HEAD --output="$(PRODUCT)-$(VERSION).tar.gz"
+dist: $(PRODUCT)-$(VERSION).tar.gz
+$(PRODUCT)-$(VERSION).tar.gz:
+	git archive --prefix="$(PRODUCT)-$(VERSION)/" --format=tar HEAD --output="$@"
 
 gem: $(PRODUCT)-$(VERSION).gem
 $(PRODUCT)-$(VERSION).gem: $(PRODUCT).gemspec
@@ -74,9 +75,7 @@ $(PRODUCT)-$(VERSION).gem: $(PRODUCT).gemspec
 
 clean:
 	-rm -fr $(DOCS)
-
-distclean: clean
 	-rm -fr $(PRODUCT)-$(VERSION).tar.gz
 	-rm -fr $(PRODUCT)-$(VERSION).gem
 
-.PHONY:	all test docs install uninstall dist gem clean distclean
+.PHONY: all test docs install uninstall dist gem clean
