@@ -85,6 +85,7 @@ $
 * 実行時に必要なソフトウェア:
   - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
 * 開発時に必要なソフトウェア:
+  - [Test::Unit](https://test-unit.github.io/)
   - Make ([GNU Make](https://www.gnu.org/software/make/))
   - [Git](https://git-scm.com/)
   - [md2html](https://github.com/mity/md4c)（ドキュメント生成用）

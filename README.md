@@ -85,6 +85,7 @@ $
 * Runtime requirements:
   - [Ruby](https://www.ruby-lang.org/) (>= 3.0)
 * Development requirements:
+  - [Test::Unit](https://test-unit.github.io/)
   - Make ([GNU Make](https://www.gnu.org/software/make/))
   - [Git](https://git-scm.com/)
   - [md2html](https://github.com/mity/md4c) (for generating documents)
