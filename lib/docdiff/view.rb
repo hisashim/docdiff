@@ -395,7 +395,7 @@ class DocDiff
       tags = manued_tags
       # manued specific kludge: change should be [a/b] in inline, [a/][/b] in multi
       display = (overriding_opts and overriding_opts[:display]) || 'inline'
-      if /block|multi/.match display
+      if /block|multi/.match(display)
         tags.update({:end_before_change => '/]', :start_after_change => '[/'})
       end
       tags.update(overriding_opts) if overriding_opts

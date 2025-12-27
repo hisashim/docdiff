@@ -13,7 +13,7 @@ class DocDiff
   class Document
     def initialize(str, enc = nil, e = nil)
       @body = str
-      @body.extend CharString
+      @body.extend(CharString)
       if enc
         @body.encoding = enc
       elsif !@body.encoding

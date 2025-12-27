@@ -111,15 +111,15 @@ class DocDiff
         lines.collect!{|line| line.strip}
         lines.delete_if{|line| line == ""}
         lines.each{|line|
-          raise 'line does not include " = ".' unless /[\s]+=[\s]+/.match line
+          raise 'line does not include " = ".' unless /[\s]+=[\s]+/.match(line)
           name_src, value_src = line.split(/[\s]+=[\s]+/)
-          raise "Invalid name: #{name_src.inspect}" if (/\s/.match name_src)
+          raise "Invalid name: #{name_src.inspect}" if (/\s/.match(name_src))
           raise "Invalid value: #{value_src.inspect}" unless value_src.kind_of?(String)
           name  = name_src.intern
           value = value_src
-          value = true if ['on','yes','true'].include? value_src.downcase
-          value = false if ['off','no','false'].include? value_src.downcase
-          value = value_src.to_i if /^[0-9]+$/.match value_src
+          value = true if ['on','yes','true'].include?(value_src.downcase)
+          value = false if ['off','no','false'].include?(value_src.downcase)
+          value = value_src.to_i if /^[0-9]+$/.match(value_src)
           result[name] = value
         }
         result
@@ -152,9 +152,9 @@ class DocDiff
 
       def print_or_write_to_pager(content, pager)
         if STDOUT.tty? && pager.is_a?(String) && !pager.empty?
-          IO.popen(pager, "w"){|f| f.print content}
+          IO.popen(pager, "w"){|f| f.print(content)}
         else
-          print content
+          print(content)
         end
       end
 
@@ -167,7 +167,7 @@ class DocDiff
               DocDiff::SystemConfigFileName,
             ]
             existing_system_config_file_names =
-              possible_system_config_file_names.select{|fn| File.exist? fn}
+              possible_system_config_file_names.select{|fn| File.exist?(fn)}
             if existing_system_config_file_names.size >= 2
               raise <<~EOS
               More than one system config file found, using the first one: \
@@ -176,7 +176,7 @@ class DocDiff
             end
             filename = existing_system_config_file_names.first
             config, message = read_config_from_file(filename)
-            STDERR.print message if command_line_config[:verbose]
+            STDERR.print(message) if command_line_config[:verbose]
             config
           end
 
@@ -188,7 +188,7 @@ class DocDiff
               DocDiff::XDGUserConfigFileName,
             ]
             existing_user_config_file_names =
-              possible_user_config_file_names.select{|fn| File.exist? fn}
+              possible_user_config_file_names.select{|fn| File.exist?(fn)}
             if existing_user_config_file_names.size >= 2
               raise <<~EOS
               Only one user config file can be used at the same time. \
@@ -198,14 +198,14 @@ class DocDiff
             end
             filename = existing_user_config_file_names.first
             config, message = read_config_from_file(filename)
-            STDERR.print message if command_line_config[:verbose]
+            STDERR.print(message) if command_line_config[:verbose]
             config
           end
 
         config_from_specified_file =
           if filename = command_line_config[:config_file]
             config, message = read_config_from_file(filename)
-            STDERR.print message if command_line_config[:verbose] == true
+            STDERR.print(message) if command_line_config[:verbose] == true
             config
           end
 

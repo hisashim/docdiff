@@ -16,28 +16,28 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test encoding module registration
   def test_encoding_ascii
-    str = "foo".extend CharString
+    str = "foo".extend(CharString)
     str.encoding = "US-ASCII"
     expected = CharString::ASCII
     assert_equal(expected, CharString::Encodings[str.encoding])
   end
 
   def test_encoding_eucjp
-    str = "foo".extend CharString
+    str = "foo".extend(CharString)
     str.encoding = "EUC-JP"
     expected = CharString::EUC_JP
     assert_equal(expected, CharString::Encodings[str.encoding])
   end
 
   def test_encoding_sjis
-    str = "foo".extend CharString
+    str = "foo".extend(CharString)
     str.encoding = "Shift_JIS"
     expected = CharString::Shift_JIS
     assert_equal(expected, CharString::Encodings[str.encoding])
   end
 
   def test_encoding_utf8
-    str = "foo".extend CharString
+    str = "foo".extend(CharString)
     str.encoding = "UTF-8"
     expected = CharString::UTF8
     assert_equal(expected, CharString::Encodings[str.encoding])
@@ -45,21 +45,21 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test eol module registration
   def test_eol_cr
-    str = "foo".extend CharString
+    str = "foo".extend(CharString)
     str.eol = "CR"
     expected = CharString::CR
     assert_equal(expected, CharString::EOLChars[str.eol])
   end
 
   def test_eol_lf
-    str = "foo".extend CharString
+    str = "foo".extend(CharString)
     str.eol = "LF"
     expected = CharString::LF
     assert_equal(expected, CharString::EOLChars[str.eol])
   end
 
   def test_eol_crlf
-    str = "foo".extend CharString
+    str = "foo".extend(CharString)
     str.eol = "CRLF"
     expected = CharString::CRLF
     assert_equal(expected, CharString::EOLChars[str.eol])
@@ -67,53 +67,53 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test eol eol_char method
   def test_eol_char_cr
-    str = "foo\rbar\r".extend CharString
+    str = "foo\rbar\r".extend(CharString)
     str.eol = "CR"
     expected = "\r"
     assert_equal(expected, str.eol_char)
   end
 
   def test_eol_char_lf
-    str = "foo\nbar\n".extend CharString
+    str = "foo\nbar\n".extend(CharString)
     str.eol = "LF"
     expected = "\n"
     assert_equal(expected, str.eol_char)
   end
 
   def test_eol_char_crlf
-    str = "foo\r\nbar\r\n".extend CharString
+    str = "foo\r\nbar\r\n".extend(CharString)
     str.eol = "CRLF"
     expected = "\r\n"
     assert_equal(expected, str.eol_char)
   end
 
   def test_eol_char_none
-    str = "foobar".extend CharString
+    str = "foobar".extend(CharString)
     expected = nil
     assert_equal(expected, str.eol_char)
   end
 
   def test_eol_char_none_for_0length_string
-    str = "".extend CharString
+    str = "".extend(CharString)
     expected = nil
     assert_equal(expected, str.eol_char)
   end
 
   def test_eol_char_none_eucjp
-    str = NKF.nkf("--euc", "日本語a b").extend CharString
+    str = NKF.nkf("--euc", "日本語a b").extend(CharString)
     expected = nil
     assert_equal(expected, str.eol_char)
   end
 
   def test_eol_char_none_sjis
-    str = NKF.nkf("--sjis", "日本語a b").extend CharString
+    str = NKF.nkf("--sjis", "日本語a b").extend(CharString)
     expected = nil
     assert_equal(expected, str.eol_char)
   end
 
   # test eol split_to_line() method
   def test_cr_split_to_line
-    str = "foo\rbar\r".extend CharString
+    str = "foo\rbar\r".extend(CharString)
     encoding, eol = "US-ASCII", "CR"
     str.encoding, str.eol = encoding, eol
     expected = ["foo\r", "bar\r"]
@@ -121,7 +121,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_cr_split_to_line_chomped_lastline
-    str = "foo\rbar".extend CharString
+    str = "foo\rbar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["foo\r", "bar"]
@@ -129,7 +129,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_cr_split_to_line_empty_line
-    str = "foo\r\rbar\r".extend CharString
+    str = "foo\r\rbar\r".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["foo\r", "\r", "bar\r"]
@@ -137,7 +137,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_lf_split_to_line
-    str = "foo\nbar\n".extend CharString
+    str = "foo\nbar\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "bar\n"]
@@ -145,7 +145,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_lf_split_to_line_chomped_lastline
-    str = "foo\nbar".extend CharString
+    str = "foo\nbar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "bar"]
@@ -153,7 +153,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_lf_split_to_line_empty_line
-    str = "foo\n\nbar\n".extend CharString
+    str = "foo\n\nbar\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "\n", "bar\n"]
@@ -161,7 +161,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_crlf_split_to_line
-    str = "foo\r\nbar\r\n".extend CharString
+    str = "foo\r\nbar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "bar\r\n"]
@@ -169,7 +169,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_crlf_split_to_line_chomped_lastline
-    str = "foo\r\nbar".extend CharString
+    str = "foo\r\nbar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "bar"]
@@ -177,7 +177,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_crlf_split_to_line_empty_line
-    str = "foo\r\n\r\nbar\r\n".extend CharString
+    str = "foo\r\n\r\nbar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "\r\n", "bar\r\n"]
@@ -186,42 +186,42 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test ASCII module
   def test_ascii_split_to_word
-    str = "foo bar".extend CharString
+    str = "foo bar".extend(CharString)
     str.encoding = "US-ASCII"
     expected = ["foo ", "bar"]
     assert_equal(expected, str.split_to_word)
   end
 
   def test_ascii_split_to_word_withsymbol
-    str = "foo (bar) baz-baz".extend CharString
+    str = "foo (bar) baz-baz".extend(CharString)
     str.encoding = "US-ASCII"
     expected = ["foo ", "(bar) ", "baz-baz"]
     assert_equal(expected, str.split_to_word)
   end
 
   def test_ascii_split_to_word_withquote
-    str = "foo's 'foo' \"bar\" 'baz.'".extend CharString
+    str = "foo's 'foo' \"bar\" 'baz.'".extend(CharString)
     str.encoding = "US-ASCII"
     expected = ["foo's ", "'foo' ", "\"bar\" ", "'baz.'"]
     assert_equal(expected, str.split_to_word)
   end
 
   def test_ascii_split_to_word_withlongspace
-    str = " foo  bar".extend CharString
+    str = " foo  bar".extend(CharString)
     str.encoding = "US-ASCII"
     expected = [" ", "foo ", " ", "bar"]
     assert_equal(expected, str.split_to_word)
   end
 
   def test_ascii_split_to_word_withdash
-    str = "foo -- bar, baz - quux".extend CharString
+    str = "foo -- bar, baz - quux".extend(CharString)
     str.encoding = "US-ASCII"
     expected = ["foo ", "-- ", "bar, ", "baz ", "- ", "quux"]
     assert_equal(expected, str.split_to_word)
   end
 
   def test_ascii_split_to_char
-    str = "foo bar".extend CharString
+    str = "foo bar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["f","o","o"," ","b","a","r"]
@@ -229,7 +229,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_split_to_char_with_eol_cr
-    str = "foo bar\r".extend CharString
+    str = "foo bar\r".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["f","o","o"," ","b","a","r","\r"]
@@ -237,7 +237,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_split_to_char_with_eol_lf
-    str = "foo bar\n".extend CharString
+    str = "foo bar\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["f","o","o"," ","b","a","r","\n"]
@@ -245,7 +245,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_split_to_char_with_eol_crlf
-    str = "foo bar\r\n".extend CharString
+    str = "foo bar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["f","o","o"," ","b","a","r","\r\n"]
@@ -253,7 +253,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_split_to_byte
-    str = "foo bar\r\n".extend CharString
+    str = "foo bar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["f","o","o"," ","b","a","r","\r","\n"]
@@ -261,7 +261,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_byte
-    str = "foo bar\r\n".extend CharString
+    str = "foo bar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 9
@@ -269,7 +269,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_char
-    str = "foo bar\r\nbaz quux\r\n".extend CharString
+    str = "foo bar\r\nbaz quux\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 17
@@ -277,7 +277,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_latin_graph_char
-    str = "foo bar\r\nbaz quux\r\n".extend CharString
+    str = "foo bar\r\nbaz quux\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 13
@@ -285,7 +285,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_graph_char
-    str = "foo bar\r\nbaz quux\r\n".extend CharString
+    str = "foo bar\r\nbaz quux\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 13
@@ -293,7 +293,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_latin_blank_char
-    str = "foo bar\r\nbaz\tquux\r\n".extend CharString
+    str = "foo bar\r\nbaz\tquux\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 2
@@ -301,7 +301,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_blank_char
-    str = "foo bar\r\nbaz\tquux\r\n".extend CharString
+    str = "foo bar\r\nbaz\tquux\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 2
@@ -309,7 +309,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_word
-    str = "foo bar   \r\nbaz quux\r\n".extend CharString
+    str = "foo bar   \r\nbaz quux\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 6
@@ -317,7 +317,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_latin_word
-    str = "foo bar   \r\nbaz quux\r\n".extend CharString
+    str = "foo bar   \r\nbaz quux\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 5  # "  " is also counted as a word
@@ -325,7 +325,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_latin_valid_word
-    str = "1 foo   \r\n%%% ()\r\n".extend CharString
+    str = "1 foo   \r\n%%% ()\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 2
@@ -333,7 +333,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_line
-    str = "foo\r\nbar".extend CharString
+    str = "foo\r\nbar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 2
@@ -341,7 +341,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_graph_line
-    str = "foo\r\n ".extend CharString
+    str = "foo\r\n ".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 1
@@ -349,7 +349,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_empty_line
-    str = "foo\r\n \r\n\t\r\n\r\n".extend CharString
+    str = "foo\r\n \r\n\t\r\n\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 1
@@ -357,7 +357,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_ascii_count_blank_line
-    str = "\r\n \r\n\t\r\n ".extend CharString
+    str = "\r\n \r\n\t\r\n ".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = 3
@@ -366,49 +366,49 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test EUCJP module
   def test_eucjp_split_to_word
-    str = NKF.nkf("--euc", "日本語の文字foo bar").extend CharString
+    str = NKF.nkf("--euc", "日本語の文字foo bar").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["日本語の","文字","foo ","bar"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_kanhira
-    str = NKF.nkf("--euc", "日本語の文字").extend CharString
+    str = NKF.nkf("--euc", "日本語の文字").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["日本語の", "文字"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_katahira
-    str = NKF.nkf("--euc", "カタカナの文字").extend CharString
+    str = NKF.nkf("--euc", "カタカナの文字").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["カタカナの", "文字"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_kataonbiki
-    str = NKF.nkf("--euc", "ルビー色の石").extend CharString
+    str = NKF.nkf("--euc", "ルビー色の石").extend(CharString)
     str.encoding = "EUC-JP" #<= needed to pass the test
     expected = ["ルビー", "色の", "石"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_hiraonbiki
-    str = NKF.nkf("--euc", "わールビーだ").extend CharString
+    str = NKF.nkf("--euc", "わールビーだ").extend(CharString)
     str.encoding = "EUC-JP" #<= needed to pass the test
     expected = ["わー", "ルビーだ"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_latinmix
-    str = NKF.nkf("--euc", "日本語とLatinの文字").extend CharString
+    str = NKF.nkf("--euc", "日本語とLatinの文字").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["日本語と", "Latin", "の", "文字"].map{|c| NKF.nkf("--euc", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_char
-    str = NKF.nkf("--euc", "日本語a b").extend CharString
+    str = NKF.nkf("--euc", "日本語a b").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "LF" #<= needed to pass the test
     expected = ["日","本","語","a"," ","b"].map{|c|NKF.nkf("--euc",c)}
@@ -416,7 +416,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_split_to_char_with_cr
-    str = NKF.nkf("--euc", "日本語a b\r").extend CharString
+    str = NKF.nkf("--euc", "日本語a b\r").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CR"
     expected = ["日","本","語","a"," ","b","\r"].map{|c|NKF.nkf("--euc",c)}
@@ -424,7 +424,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_split_to_char_with_lf
-    str = NKF.nkf("--euc", "日本語a b\n").extend CharString
+    str = NKF.nkf("--euc", "日本語a b\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "LF"
     expected = ["日","本","語","a"," ","b","\n"].map{|c|NKF.nkf("--euc",c)}
@@ -432,7 +432,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_split_to_char_with_crlf
-    str = NKF.nkf("--euc", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本語a b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = ["日","本","語","a"," ","b","\r\n"].map{|c|NKF.nkf("--euc",c)}
@@ -440,7 +440,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_char
-    str = NKF.nkf("--euc", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本語a b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 7
@@ -448,7 +448,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_latin_graph_char
-    str = NKF.nkf("--euc", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本語a b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
@@ -456,7 +456,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_ja_graph_char
-    str = NKF.nkf("--euc", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本語a b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 3
@@ -464,7 +464,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_graph_char
-    str = NKF.nkf("--euc", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本語a b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 5
@@ -472,7 +472,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_latin_blank_char
-    str = NKF.nkf("--euc", "日本語\ta b\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本語\ta b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
@@ -480,7 +480,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_ja_blank_char
-    str = NKF.nkf("--euc", "日本　語\ta b\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本　語\ta b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 1
@@ -488,7 +488,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_blank_char
-    str = NKF.nkf("--euc", "日本　語\ta b\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本　語\ta b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 3
@@ -496,7 +496,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_word
-    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
@@ -504,7 +504,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_ja_word
-    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 3
@@ -512,7 +512,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_latin_valid_word
-    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
@@ -520,7 +520,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_ja_valid_word
-    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
@@ -528,7 +528,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_valid_word
-    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--euc", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 4
@@ -536,7 +536,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_line
-    str = NKF.nkf("--euc", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--euc", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 6
@@ -544,7 +544,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_graph_line
-    str = NKF.nkf("--euc", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--euc", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 3
@@ -552,7 +552,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_empty_line
-    str = NKF.nkf("--euc", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--euc", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 1
@@ -560,7 +560,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_eucjp_count_blank_line
-    str = NKF.nkf("--euc", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--euc", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = 2
@@ -569,49 +569,49 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test SJIS module
   def test_sjis_split_to_word
-    str = NKF.nkf("--sjis", "日本語の文字foo bar").extend CharString
+    str = NKF.nkf("--sjis", "日本語の文字foo bar").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["日本語の", "文字", "foo ", "bar"].map{|c|NKF.nkf("--sjis",c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjisplit_s_to_word_kanhira
-    str = NKF.nkf("--sjis", "日本語の文字").extend CharString
+    str = NKF.nkf("--sjis", "日本語の文字").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["日本語の", "文字"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_word_katahira
-    str = NKF.nkf("--sjis", "カタカナの文字").extend CharString
+    str = NKF.nkf("--sjis", "カタカナの文字").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["カタカナの", "文字"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_word_kataonbiki
-    str = NKF.nkf("--sjis", "ルビーの指輪").extend CharString
+    str = NKF.nkf("--sjis", "ルビーの指輪").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["ルビーの", "指輪"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_word_hiraonbiki
-    str = NKF.nkf("--sjis", "わールビーだ").extend CharString
+    str = NKF.nkf("--sjis", "わールビーだ").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["わー", "ルビーだ"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_word_latinmix
-    str = NKF.nkf("--sjis", "日本語とLatinの文字").extend CharString
+    str = NKF.nkf("--sjis", "日本語とLatinの文字").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["日本語と","Latin","の","文字"].map{|c| NKF.nkf("--sjis", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_char
-    str = NKF.nkf("--sjis", "表計算a b").extend CharString
+    str = NKF.nkf("--sjis", "表計算a b").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "LF" #<= needed to pass the test
     expected = ["表","計","算","a"," ","b"].map{|c|NKF.nkf("--sjis",c)}
@@ -619,7 +619,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_split_to_char_with_cr
-    str = NKF.nkf("--sjis", "表計算a b\r").extend CharString
+    str = NKF.nkf("--sjis", "表計算a b\r").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CR"
     expected = ["表","計","算","a"," ","b","\r"].map{|c|NKF.nkf("--sjis",c)}
@@ -627,7 +627,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_split_to_char_with_lf
-    str = NKF.nkf("--sjis", "表計算a b\n").extend CharString
+    str = NKF.nkf("--sjis", "表計算a b\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "LF"
     expected = ["表","計","算","a"," ","b","\n"].map{|c|NKF.nkf("--sjis",c)}
@@ -635,7 +635,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_split_to_char_with_crlf
-    str = NKF.nkf("--sjis", "表計算a b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "表計算a b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = ["表","計","算","a"," ","b","\r\n"].map{|c|NKF.nkf("--sjis",c)}
@@ -643,7 +643,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_char
-    str = NKF.nkf("--sjis", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本語a b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 7
@@ -651,7 +651,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_latin_graph_char
-    str = NKF.nkf("--sjis", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本語a b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
@@ -659,7 +659,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_ja_graph_char
-    str = NKF.nkf("--sjis", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本語a b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 3
@@ -667,7 +667,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_graph_char
-    str = NKF.nkf("--sjis", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本語a b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 5
@@ -675,7 +675,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_latin_blank_char
-    str = NKF.nkf("--sjis", "日本語\ta b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本語\ta b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
@@ -683,7 +683,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_ja_blank_char
-    str = NKF.nkf("--sjis", "日本　語\ta b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本　語\ta b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 1
@@ -691,7 +691,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_blank_char
-    str = NKF.nkf("--sjis", "日本　語\ta b\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本　語\ta b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 3
@@ -699,7 +699,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_word
-    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
@@ -707,7 +707,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_ja_word
-    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 3
@@ -715,7 +715,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_latin_valid_word
-    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
@@ -723,7 +723,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_ja_valid_word
-    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
@@ -731,7 +731,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_valid_word
-    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--sjis", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 4
@@ -739,7 +739,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_line
-    str = NKF.nkf("--sjis", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--sjis", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 6
@@ -747,7 +747,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_graph_line
-    str = NKF.nkf("--sjis", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--sjis", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 3
@@ -755,7 +755,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_empty_line
-    str = NKF.nkf("--sjis", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--sjis", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 1
@@ -763,7 +763,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_sjis_count_blank_line
-    str = NKF.nkf("--sjis", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--sjis", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = 2
@@ -772,49 +772,49 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   # test UTF8 module
   def test_utf8_split_to_word
-    str = NKF.nkf("--utf8", "日本語の文字foo bar").extend CharString
+    str = NKF.nkf("--utf8", "日本語の文字foo bar").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["日本語の", "文字", "foo ", "bar"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_kanhira
-    str = NKF.nkf("--utf8", "日本語の文字").extend CharString
+    str = NKF.nkf("--utf8", "日本語の文字").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["日本語の", "文字"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_katahira
-    str = NKF.nkf("--utf8", "カタカナの文字").extend CharString
+    str = NKF.nkf("--utf8", "カタカナの文字").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["カタカナの", "文字"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_kataonbiki
-    str = NKF.nkf("--utf8", "ルビーの指輪").extend CharString
+    str = NKF.nkf("--utf8", "ルビーの指輪").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["ルビーの", "指輪"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_hiraonbiki
-    str = NKF.nkf("--utf8", "わールビーだ").extend CharString
+    str = NKF.nkf("--utf8", "わールビーだ").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["わー", "ルビーだ"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_latinmix
-    str = NKF.nkf("--utf8", "日本語とLatinの文字").extend CharString
+    str = NKF.nkf("--utf8", "日本語とLatinの文字").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["日本語と", "Latin", "の", "文字"].map{|c| NKF.nkf("--utf8", c)}
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_char
-    str = NKF.nkf("--utf8", "日本語a b").extend CharString
+    str = NKF.nkf("--utf8", "日本語a b").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"        #<= needed to pass the test
     expected = ["日", "本", "語", "a", " ", "b"].map{|c| NKF.nkf("--utf8", c)}
@@ -822,7 +822,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_split_to_char_with_cr
-    str = NKF.nkf("--utf8", "日本語a b\r").extend CharString
+    str = NKF.nkf("--utf8", "日本語a b\r").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CR"
     expected = ["日","本","語","a"," ","b","\r"].map{|c| NKF.nkf("--utf8", c)}
@@ -830,7 +830,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_split_to_char_with_lf
-    str = NKF.nkf("--utf8", "日本語a b\n").extend CharString
+    str = NKF.nkf("--utf8", "日本語a b\n").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"
     expected = ["日","本","語","a"," ","b","\n"].map{|c| NKF.nkf("--utf8", c)}
@@ -838,7 +838,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_split_to_char_with_crlf
-    str = NKF.nkf("--utf8", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
     str.encoding = "UTF-8"#<= needed to pass the test
     str.eol = "CRLF"
     expected = ["日","本","語","a"," ","b","\r\n"].map{|c| NKF.nkf("--utf8", c)}
@@ -846,7 +846,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_char
-    str = NKF.nkf("--utf8", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 7
@@ -854,7 +854,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_latin_graph_char
-    str = NKF.nkf("--utf8", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 2
@@ -862,7 +862,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_ja_graph_char
-    str = NKF.nkf("--utf8", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CRLF"
     expected = 3
@@ -870,7 +870,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_graph_char
-    str = NKF.nkf("--utf8", "日本語a b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
     str.encoding = "UTF-8" #<= needed to passs the test
     str.eol = "CRLF"
     expected = 5
@@ -878,7 +878,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_latin_blank_char
-    str = NKF.nkf("--utf8", "日本語\ta b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本語\ta b\r\n").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
@@ -886,7 +886,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_ja_blank_char
-    str = NKF.nkf("--utf8", "日本　語\ta b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本　語\ta b\r\n").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 1
@@ -894,7 +894,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_blank_char
-    str = NKF.nkf("--utf8", "日本　語\ta b\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本　語\ta b\r\n").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
@@ -902,7 +902,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_word
-    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 7 # "--" and "\r\n" are counted as word here (though not "valid")
@@ -910,7 +910,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_ja_word
-    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
@@ -918,7 +918,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_latin_valid_word
-    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
@@ -926,7 +926,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_ja_valid_word
-    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
@@ -934,7 +934,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_valid_word
-    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend CharString
+    str = NKF.nkf("--utf8", "日本　語a b --\r\n").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 4
@@ -942,7 +942,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_line
-    str = NKF.nkf("--utf8", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--utf8", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 6
@@ -950,7 +950,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_graph_line
-    str = NKF.nkf("--utf8", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--utf8", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 3
@@ -958,7 +958,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_empty_line
-    str = NKF.nkf("--utf8", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--utf8", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 1
@@ -966,7 +966,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_utf8_count_blank_line
-    str = NKF.nkf("--utf8", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend CharString
+    str = NKF.nkf("--utf8", "日本語\r\n　\r\n \r\n\r\nfoo\r\nbar").extend(CharString)
     str.encoding = "UTF-8"
     str.eol = "CRLF"
     expected = 2
@@ -1110,19 +1110,19 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def test_guess_eol_cr2
-    str = "foo\rbar\rbaz\r".extend CharString
+    str = "foo\rbar\rbaz\r".extend(CharString)
     expected = "CR"
     assert_equal(expected, CharString.guess_eol(str))
   end
 
   def test_guess_eol_lf2
-    str = "foo\nbar\nbaz\n".extend CharString
+    str = "foo\nbar\nbaz\n".extend(CharString)
     expected = "LF"
     assert_equal(expected, CharString.guess_eol(str))
   end
 
   def test_guess_eol_crlf2
-    str = "foo\r\nbar\r\nbaz\r\n".extend CharString
+    str = "foo\r\nbar\r\nbaz\r\n".extend(CharString)
     expected = "CRLF"
     assert_equal(expected, CharString.guess_eol(str))
   end

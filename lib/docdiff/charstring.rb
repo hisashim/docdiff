@@ -28,7 +28,7 @@ class DocDiff
 
     def eol=(e)
       @eol = e
-      extend EOLChars[@eol]
+      extend(EOLChars[@eol])
     end
 
     def eol_char
@@ -123,7 +123,7 @@ class DocDiff
 
     def count_empty_line
       split_to_line.collect{|line|
-        line if /^(?:#{eol_char})|^$/m.match line
+        line if /^(?:#{eol_char})|^$/m.match(line)
       }.compact.size
     end
 
@@ -195,28 +195,28 @@ class DocDiff
     def count_latin_word
       split_to_word.collect{|word|
         word if Regexp.new("[#{Encodings['UTF-8']::PRINT}]",
-                           Regexp::MULTILINE).match word.encode('UTF-8')
+                           Regexp::MULTILINE).match(word.encode('UTF-8'))
       }.compact.size
     end
 
     def count_ja_word
       split_to_word.collect{|word|
         word if Regexp.new("[#{Encodings['UTF-8']::JA_PRINT}]",
-                           Regexp::MULTILINE).match word.encode('UTF-8')
+                           Regexp::MULTILINE).match(word.encode('UTF-8'))
       }.compact.size
     end
 
     def count_latin_valid_word
       split_to_word.collect{|word|
         word if Regexp.new("[#{Encodings['UTF-8']::ALNUM}]",
-                           Regexp::MULTILINE).match word.encode('UTF-8')
+                           Regexp::MULTILINE).match(word.encode('UTF-8'))
       }.compact.size
     end
 
     def count_ja_valid_word
       split_to_word.collect{|word|
         word if Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]",
-                           Regexp::MULTILINE).match word.encode('UTF-8')
+                           Regexp::MULTILINE).match(word.encode('UTF-8'))
       }.compact.size
     end
 
@@ -238,7 +238,7 @@ class DocDiff
                Encodings['UTF-8']::JA_GRAPH).chars.uniq.join
       re_graph = Regexp.new("[#{Regexp.quote(graph)}]", Regexp::MULTILINE)
       split_to_line.collect{|line|
-        line if re_graph.match line.encode('UTF-8')
+        line if re_graph.match(line.encode('UTF-8'))
       }.compact.size
     end
 
@@ -246,7 +246,7 @@ class DocDiff
       split_to_line.collect{|line|
         line if Regexp.new("^[#{Encodings['UTF-8']::BLANK}" +
                            "#{Encodings['UTF-8']::JA_BLANK}]+(?:#{eol_char})?",
-                           Regexp::MULTILINE).match line.encode('UTF-8')
+                           Regexp::MULTILINE).match(line.encode('UTF-8'))
       }.compact.size
     end
 
