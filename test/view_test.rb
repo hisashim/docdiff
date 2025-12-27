@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8; -*-
-require 'test/unit'
-require 'docdiff/view'
-require 'docdiff/difference'
-require 'nkf'
+require "test/unit"
+require "docdiff/view"
+require "docdiff/difference"
+require "nkf"
 
 class TC_DocDiff_View < Test::Unit::TestCase
   View = DocDiff::View
@@ -147,8 +147,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_tty_del_add_ascii
-    array1 = ['a', 'b', 'c']
-    array2 = ['b', 'c', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["b", "c", "c"]
     expected = [
       "\033[7;4;31ma\033[0m",
       "b",
@@ -160,8 +160,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_tty_change_ascii
-    array1 = ['a', 'b', 'c']
-    array2 = ['a', 'x', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["a", "x", "c"]
     expected = [
       "a",
       "\033[7;4;33mb\033[0m\033[7;1;32mx\033[0m",
@@ -172,8 +172,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_tty_del_add_ja
-    array1 = ['あ', 'い', 'う']
-    array2 = ['い', 'う', 'う']
+    array1 = ["\u3042", "\u3044", "\u3046"]
+    array2 = ["\u3044", "\u3046", "\u3046"]
     expected = [
       "\033[7;4;31mあ\033[0m",
       "い",
@@ -204,8 +204,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_tty_change_ja
-    array1 = ['あ', 'い', 'う']
-    array2 = ['あ', '漢', 'う']
+    array1 = ["\u3042", "\u3044", "\u3046"]
+    array2 = ["\u3042", "\u6F22", "\u3046"]
     expected = [
       "あ",
       "\033[7;4;33mい\033[0m\033[7;1;32m漢\033[0m",
@@ -261,32 +261,32 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_html_cr_ascii
-    array1 = ['a', "\r"]
-    array2 = ['a', "\r"]
+    array1 = ["a", "\r"]
+    array2 = ["a", "\r"]
     expected = ["<span class=\"common\">a<br />\r</span>"]
     view = Difference.new(array1, array2).to_view("US-ASCII", "CR")
     assert_equal(expected, view.to_html(nil, false))
   end
 
   def test_to_html_lf_ascii
-    array1 = ['a', "\n"]
-    array2 = ['a', "\n"]
+    array1 = ["a", "\n"]
+    array2 = ["a", "\n"]
     expected = ["<span class=\"common\">a<br />\n</span>"]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
     assert_equal(expected, view.to_html(nil, false))
   end
 
   def test_to_html_crlf_ascii
-    array1 = ['a', "\r\n"]
-    array2 = ['a', "\r\n"]
+    array1 = ["a", "\r\n"]
+    array2 = ["a", "\r\n"]
     expected = ["<span class=\"common\">a<br />\r\n</span>"]
     view = Difference.new(array1, array2).to_view("US-ASCII", "CRLF")
     assert_equal(expected, view.to_html(nil, false))
   end
 
   def test_to_html_escaping_ascii
-    array1 = ['<>&   ']
-    array2 = ['<>&   ']
+    array1 = ["<>&   "]
+    array2 = ["<>&   "]
     expected = ["<span class=\"common\">&lt;&gt;&amp;&nbsp;&nbsp; </span>"]
     view = Difference.new(array1, array2).to_view("US-ASCII", nil)
     assert_equal(expected, view.to_html(nil, false))
@@ -321,8 +321,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_html_del_add_ascii
-    array1 = ['a', 'b', 'c']
-    array2 = ['b', 'c', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["b", "c", "c"]
     expected = [
       '<span class="del"><del>a</del></span>',
       '<span class="common">b</span>',
@@ -334,8 +334,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_html_change_ascii
-    array1 = ['a', 'b', 'c']
-    array2 = ['a', 'x', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["a", "x", "c"]
     expected = [
       '<span class="common">a</span>',
       '<span class="before-change"><del>b</del></span><span class="after-change"><ins>x</ins></span>',
@@ -346,8 +346,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_html_del_add_ja
-    array1 = ['あ', 'い', 'う']
-    array2 = ['い', 'う', 'う']
+    array1 = ["\u3042", "\u3044", "\u3046"]
+    array2 = ["\u3044", "\u3046", "\u3046"]
     expected = [
       '<span class="del"><del>あ</del></span>',
       '<span class="common">い</span>',
@@ -378,8 +378,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_html_change_ja
-    array1 = ['あ', 'い', 'う']
-    array2 = ['あ', '漢', 'う']
+    array1 = ["\u3042", "\u3044", "\u3046"]
+    array2 = ["\u3042", "\u6F22", "\u3046"]
     expected = [
       '<span class="common">あ</span>',
       '<span class="before-change"><del>い</del></span><span class="after-change"><ins>漢</ins></span>',
@@ -409,25 +409,25 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_manued_del_add_ascii
-    array1 = ['a', 'b', 'c']
-    array2 = ['b', 'c', 'c']
-    expected = ['[a/]', 'b', '[/c]', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["b", "c", "c"]
+    expected = ["[a/]", "b", "[/c]", "c"]
     view = Difference.new(array1, array2).to_view("US-ASCII", nil)
     assert_equal(expected, view.to_manued(nil, false))
   end
 
   def test_to_manued_change_ascii
-    array1 = ['a', 'b', 'c']
-    array2 = ['a', 'x', 'c']
-    expected = ['a', '[b/x]', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["a", "x", "c"]
+    expected = ["a", "[b/x]", "c"]
     view = Difference.new(array1, array2).to_view("US-ASCII", nil)
     assert_equal(expected, view.to_manued(nil, false))
   end
 
   def test_to_manued_del_add_ja
-    array1 = ['あ', 'い', 'う']
-    array2 = ['い', 'う', 'う']
-    expected = ['[あ/]', 'い', '[/う]', 'う']
+    array1 = ["\u3042", "\u3044", "\u3046"]
+    array2 = ["\u3044", "\u3046", "\u3046"]
+    expected = ["[\u3042/]", "\u3044", "[/\u3046]", "\u3046"]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
@@ -452,9 +452,9 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_manued_change_ja
-    array1 = ['あ', 'い', 'う']
-    array2 = ['あ', '漢', 'う']
-    expected = ['あ', '[い/漢]', 'う']
+    array1 = ["\u3042", "\u3044", "\u3046"]
+    array2 = ["\u3042", "\u6F22", "\u3046"]
+    expected = ["\u3042", "[\u3044/\u6F22]", "\u3046"]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
@@ -479,8 +479,8 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_manued_escaping_ascii
-    array1 = ['a', '[/;]~', 'b', '[/;]~']
-    array2 = ['a', '[/;]~', 'b']
+    array1 = ["a", "[/;]~", "b", "[/;]~"]
+    array2 = ["a", "[/;]~", "b"]
     expected = ["a~[/;]~~b", "[~[~/~;~]~~/]"]
     view = Difference.new(array1, array2).to_view("US-ASCII", nil)
     assert_equal(expected, view.to_manued(nil, false))
@@ -513,25 +513,25 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_wdiff_del_add_ascii
-    array1 = ['a', 'b', 'c']
-    array2 = ['b', 'c', 'c']
-    expected = ['[-a-]', 'b', '{+c+}', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["b", "c", "c"]
+    expected = ["[-a-]", "b", "{+c+}", "c"]
     view = Difference.new(array1, array2).to_view("US-ASCII", nil)
     assert_equal(expected, view.to_wdiff(nil, false))
   end
 
   def test_to_wdiff_change_ascii
-    array1 = ['a', 'b', 'c']
-    array2 = ['a', 'x', 'c']
-    expected = ['a', '[-b-]{+x+}', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["a", "x", "c"]
+    expected = ["a", "[-b-]{+x+}", "c"]
     view = Difference.new(array1, array2).to_view("US-ASCII", nil)
     assert_equal(expected, view.to_wdiff(nil, false))
   end
 
   def test_to_wdiff_del_add_ja
-    array1 = ['あ', 'い', 'う']
-    array2 = ['い', 'う', 'う']
-    expected = ['[-あ-]', 'い', '{+う+}', 'う']
+    array1 = ["\u3042", "\u3044", "\u3046"]
+    array2 = ["\u3044", "\u3046", "\u3046"]
+    expected = ["[-\u3042-]", "\u3044", "{+\u3046+}", "\u3046"]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
@@ -556,9 +556,9 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_wdiff_change_ja
-    array1 = ['あ', 'い', 'う']
-    array2 = ['あ', '漢', 'う']
-    expected = ['あ', '[-い-]{+漢+}', 'う']
+    array1 = ["\u3042", "\u3044", "\u3046"]
+    array2 = ["\u3042", "\u6F22", "\u3046"]
+    expected = ["\u3042", "[-\u3044-]{+\u6F22+}", "\u3046"]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
@@ -609,49 +609,49 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_to_user_del_add_en
-    array1 = ['a', 'b', 'c']
-    array2 = ['b', 'c', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["b", "c", "c"]
     user_tags = {
-      :start_common        => '<=>',
-      :end_common          => '</=>',
-      :start_del           => '<->',
-      :end_del             => '</->',
-      :start_add           => '<+>',
-      :end_add             => '</+>',
-      :start_before_change => '<!->',
-      :end_before_change   => '</!->',
-      :start_after_change  => '<!+>',
-      :end_after_change    => '</!+>',
+      :start_common        => "<=>",
+      :end_common          => "</=>",
+      :start_del           => "<->",
+      :end_del             => "</->",
+      :start_add           => "<+>",
+      :end_add             => "</+>",
+      :start_before_change => "<!->",
+      :end_before_change   => "</!->",
+      :start_after_change  => "<!+>",
+      :end_after_change    => "</!+>",
     }
     expected = [
-      '<->a</->',
-      '<=>b</=>',
-      '<+>c</+>',
-      '<=>c</=>',
+      "<->a</->",
+      "<=>b</=>",
+      "<+>c</+>",
+      "<=>c</=>",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", nil)
     assert_equal(expected, view.to_user(user_tags, false))
   end
 
   def test_to_user_change_en
-    array1 = ['a', 'b', 'c']
-    array2 = ['a', 'x', 'c']
+    array1 = ["a", "b", "c"]
+    array2 = ["a", "x", "c"]
     user_tags = {
-      :start_common        => '<=>',
-      :end_common          => '</=>',
-      :start_del           => '<->',
-      :end_del             => '</->',
-      :start_add           => '<+>',
-      :end_add             => '</+>',
-      :start_before_change => '<!->',
-      :end_before_change   => '</!->',
-      :start_after_change  => '<!+>',
-      :end_after_change    => '</!+>',
+      :start_common        => "<=>",
+      :end_common          => "</=>",
+      :start_del           => "<->",
+      :end_del             => "</->",
+      :start_add           => "<+>",
+      :end_add             => "</+>",
+      :start_before_change => "<!->",
+      :end_before_change   => "</!->",
+      :start_after_change  => "<!+>",
+      :end_after_change    => "</!+>",
     }
     expected = [
-      '<=>a</=>',
-      '<!->b</!-><!+>x</!+>',
-      '<=>c</=>',
+      "<=>a</=>",
+      "<!->b</!-><!+>x</!+>",
+      "<=>c</=>",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", nil)
     assert_equal(expected, view.to_user(user_tags, false))
@@ -661,16 +661,16 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     user_tags = {
-      :start_common        => '<=>',
-      :end_common          => '</=>',
-      :start_del           => '<->',
-      :end_del             => '</->',
-      :start_add           => '<+>',
-      :end_add             => '</+>',
-      :start_before_change => '<!->',
-      :end_before_change   => '</!->',
-      :start_after_change  => '<!+>',
-      :end_after_change    => '</!+>',
+      :start_common        => "<=>",
+      :end_common          => "</=>",
+      :start_del           => "<->",
+      :end_del             => "</->",
+      :start_add           => "<+>",
+      :end_add             => "</+>",
+      :start_before_change => "<!->",
+      :end_before_change   => "</!->",
+      :start_after_change  => "<!+>",
+      :end_after_change    => "</!+>",
     }
     expected = [
       "1-2,(1) <->a\nb</->cd\n",
@@ -685,17 +685,17 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     user_tags = {
-      :start_common        => '<=>',
-      :end_common          => '</=>',
-      :start_del           => '<->',
-      :end_del             => '</->',
-      :start_add           => '<+>',
-      :end_add             => '</+>',
-      :start_before_change => '<!->',
-      :end_before_change   => '</!->',
-      :start_after_change  => '<!+>',
-      :end_after_change    => '</!+>',
-      :display             => 'block',
+      :start_common        => "<=>",
+      :end_common          => "</=>",
+      :start_del           => "<->",
+      :end_del             => "</->",
+      :start_add           => "<+>",
+      :end_add             => "</+>",
+      :start_before_change => "<!->",
+      :end_before_change   => "</!->",
+      :start_after_change  => "<!+>",
+      :end_after_change    => "</!+>",
+      :display             => "block",
     }
     expected = [
       "1-2,(1) a\nbcd<->a\nb</->cd\n",

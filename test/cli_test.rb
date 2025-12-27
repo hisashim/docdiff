@@ -1,9 +1,9 @@
 #!/usr/bin/ruby
 # -*- coding: utf-8; -*-
 
-require 'test/unit'
-require 'nkf'
-require 'docdiff/cli'
+require "test/unit"
+require "nkf"
+require "docdiff/cli"
 
 class TC_CLI < Test::Unit::TestCase
   def test_parse_options!

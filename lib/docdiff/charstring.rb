@@ -74,18 +74,18 @@ class DocDiff
         # 'NONE'(1-line), or nil
         return nil if string == nil  #=> nil (argument missing)
         bin_string = string.dup.force_encoding("ASCII-8BIT")
-        eol_counts = {'CR'   => bin_string.scan(/(\r)(?!\n)/o).size,
-                      'LF'   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
-                      'CRLF' => bin_string.scan(/(\r\n)/o).size}
+        eol_counts = {"CR"   => bin_string.scan(/(\r)(?!\n)/o).size,
+                      "LF"   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
+                      "CRLF" => bin_string.scan(/(\r\n)/o).size}
         eol_counts.delete_if { |_eol, count| count == 0 }  # Remove missing EOL
         eols = eol_counts.keys
         eol_variety = eols.size  # numbers of flavors found
         if eol_variety == 1          # Only one type of EOL found
           return eols[0]         #=> 'CR', 'LF', or 'CRLF'
         elsif eol_variety == 0       # No EOL found
-          return 'NONE'              #=> 'NONE' (might be 1-line file)
+          return "NONE"              #=> 'NONE' (might be 1-line file)
         else                         # Multiple types of EOL found
-          return 'UNKNOWN'           #=> 'UNKNOWN' (might be binary data)
+          return "UNKNOWN"           #=> 'UNKNOWN' (might be binary data)
         end
       end
     end
@@ -151,56 +151,56 @@ class DocDiff
     def split_to_char
       if eol_char # sometimes string has no end-of-line char
         re = Regexp.new("(?:#{eol_char})|(?:.)", Regexp::MULTILINE)
-        encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
+        encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
       else        # it seems that no EOL module was extended...
         re = Regexp.new("(?:.)", Regexp::MULTILINE)
-        encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
+        encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
       end
     end
 
     def count_latin_graph_char
-      re = Regexp.new("[#{Encodings['UTF-8']::GRAPH}]", Regexp::MULTILINE)
-      encode('UTF-8').scan(re).size
+      re = Regexp.new("[#{Encodings["UTF-8"]::GRAPH}]", Regexp::MULTILINE)
+      encode("UTF-8").scan(re).size
     end
 
     def count_ja_graph_char
-      re = Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]", Regexp::MULTILINE)
-      encode('UTF-8').scan(re).size
+      re = Regexp.new("[#{Encodings["UTF-8"]::JA_GRAPH}]", Regexp::MULTILINE)
+      encode("UTF-8").scan(re).size
     end
 
     def count_latin_blank_char
-      re = Regexp.new("[#{Encodings['UTF-8']::BLANK}]", Regexp::MULTILINE)
-      encode('UTF-8').scan(re).size
+      re = Regexp.new("[#{Encodings["UTF-8"]::BLANK}]", Regexp::MULTILINE)
+      encode("UTF-8").scan(re).size
     end
 
     def count_ja_blank_char
-      re = Regexp.new("[#{Encodings['UTF-8']::JA_BLANK}]", Regexp::MULTILINE)
-      encode('UTF-8').scan(re).size
+      re = Regexp.new("[#{Encodings["UTF-8"]::JA_BLANK}]", Regexp::MULTILINE)
+      encode("UTF-8").scan(re).size
     end
 
     def split_to_word
-      re = Regexp.new(Encodings['UTF-8']::WORD_REGEXP_SRC, Regexp::MULTILINE)
-      encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
+      re = Regexp.new(Encodings["UTF-8"]::WORD_REGEXP_SRC, Regexp::MULTILINE)
+      encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
     end
 
     def count_latin_word
-      re = Regexp.new("[#{Encodings['UTF-8']::PRINT}]", Regexp::MULTILINE)
-      split_to_word.count { |word| re.match(word.encode('UTF-8')) }
+      re = Regexp.new("[#{Encodings["UTF-8"]::PRINT}]", Regexp::MULTILINE)
+      split_to_word.count { |word| re.match(word.encode("UTF-8")) }
     end
 
     def count_ja_word
-      re = Regexp.new("[#{Encodings['UTF-8']::JA_PRINT}]", Regexp::MULTILINE)
-      split_to_word.count { |word| re.match(word.encode('UTF-8')) }
+      re = Regexp.new("[#{Encodings["UTF-8"]::JA_PRINT}]", Regexp::MULTILINE)
+      split_to_word.count { |word| re.match(word.encode("UTF-8")) }
     end
 
     def count_latin_valid_word
-      re = Regexp.new("[#{Encodings['UTF-8']::ALNUM}]", Regexp::MULTILINE)
-      split_to_word.count { |word| re.match(word.encode('UTF-8')) }
+      re = Regexp.new("[#{Encodings["UTF-8"]::ALNUM}]", Regexp::MULTILINE)
+      split_to_word.count { |word| re.match(word.encode("UTF-8")) }
     end
 
     def count_ja_valid_word
-      re = Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]", Regexp::MULTILINE)
-      split_to_word.count { |word| re.match(word.encode('UTF-8')) }
+      re = Regexp.new("[#{Encodings["UTF-8"]::JA_GRAPH}]", Regexp::MULTILINE)
+      split_to_word.count { |word| re.match(word.encode("UTF-8")) }
     end
 
     def split_to_line
@@ -209,37 +209,37 @@ class DocDiff
       EOS
       if defined? eol_char
         re = Regexp.new(".*?#{eol_char}|.+", Regexp::MULTILINE)
-        encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
+        encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
       else
         re = Regexp.new(".+", Regexp::MULTILINE)
-        encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
+        encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
       end
     end
 
     def count_graph_line
-      graph = (Encodings['UTF-8']::GRAPH + Encodings['UTF-8']::JA_GRAPH).chars.uniq.join
+      graph = (Encodings["UTF-8"]::GRAPH + Encodings["UTF-8"]::JA_GRAPH).chars.uniq.join
       re = Regexp.new("[#{Regexp.quote(graph)}]", Regexp::MULTILINE)
-      split_to_line.count { |line| re.match(line.encode('UTF-8')) }
+      split_to_line.count { |line| re.match(line.encode("UTF-8")) }
     end
 
     def count_blank_line
-      blank = (Encodings['UTF-8']::BLANK + Encodings['UTF-8']::JA_BLANK).chars.uniq.join
+      blank = (Encodings["UTF-8"]::BLANK + Encodings["UTF-8"]::JA_BLANK).chars.uniq.join
       re = Regexp.new("^[#{blank}]+(?:#{eol_char})?", Regexp::MULTILINE)
-      split_to_line.count { |line| re.match(line.encode('UTF-8')) }
+      split_to_line.count { |line| re.match(line.encode("UTF-8")) }
     end
 
     # load encoding modules
-    require 'docdiff/encoding/en_ascii'
-    require 'docdiff/encoding/ja_eucjp'
-    require 'docdiff/encoding/ja_sjis'
-    require 'docdiff/encoding/ja_utf8'
+    require "docdiff/encoding/en_ascii"
+    require "docdiff/encoding/ja_eucjp"
+    require "docdiff/encoding/ja_sjis"
+    require "docdiff/encoding/ja_utf8"
     alias_method :to_bytes, :split_to_byte
     alias_method :to_chars, :split_to_char
     alias_method :to_words, :split_to_word
     alias_method :to_lines, :split_to_line
 
     module CR
-      EOL = 'CR'
+      EOL = "CR"
 
       def eol_char
         "\r"
@@ -249,7 +249,7 @@ class DocDiff
     end
 
     module LF
-      EOL = 'LF'
+      EOL = "LF"
 
       def eol_char
         "\n"
@@ -259,7 +259,7 @@ class DocDiff
     end
 
     module CRLF
-      EOL = 'CRLF'
+      EOL = "CRLF"
 
       def eol_char
         "\r\n"
@@ -269,7 +269,7 @@ class DocDiff
     end
 
     module NoEOL
-      EOL = 'NONE'
+      EOL = "NONE"
 
       def eol_char
         nil

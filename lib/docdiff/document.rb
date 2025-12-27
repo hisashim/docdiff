@@ -1,7 +1,7 @@
 # Document class, a part of DocDiff
 # 2004-01-14.. Hisashi MORITA
 
-require 'docdiff/charstring'
+require "docdiff/charstring"
 
 class EncodingDetectionFailure < Exception
 end

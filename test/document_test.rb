@@ -3,9 +3,9 @@
 
 # frozen_string_literal: false
 
-require 'test/unit'
-require 'docdiff/document'
-require 'nkf'
+require "test/unit"
+require "docdiff/document"
+require "nkf"
 
 class TC_DocDiff_Document < Test::Unit::TestCase
   Document = DocDiff::Document
@@ -17,29 +17,29 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   def test_encoding
     doc = Document.new("Foo bar.\nBaz quux.")
-    doc.encoding = 'US-ASCII'
-    doc.eol = 'LF'
-    expected = 'US-ASCII'
+    doc.encoding = "US-ASCII"
+    doc.eol = "LF"
+    expected = "US-ASCII"
     assert_equal(expected, doc.encoding)
   end
 
   def test_encoding_auto
     doc = Document.new("Foo bar.\nBaz quux.".encode("US-ASCII"))
-    expected = 'US-ASCII'
+    expected = "US-ASCII"
     assert_equal(expected, doc.encoding)
   end
 
   def test_eol
     doc = Document.new("Foo bar.\nBaz quux.")
-    doc.encoding = 'US-ASCII'
-    doc.eol = 'LF'
-    expected = 'LF'
+    doc.encoding = "US-ASCII"
+    doc.eol = "LF"
+    expected = "LF"
     assert_equal(expected, doc.eol)
   end
 
   def test_eol_auto_lf
     doc = Document.new("Foo bar.\nBaz quux.")
-    expected = 'LF'
+    expected = "LF"
     assert_equal(expected, doc.eol)
   end
 

@@ -2,7 +2,7 @@
 # 2003-03-24 .. 
 # Hisashi MORITA
 
-require 'docdiff/diff'
+require "docdiff/diff"
 
 class DocDiff
   class Difference < Array

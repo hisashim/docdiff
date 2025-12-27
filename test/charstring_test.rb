@@ -3,9 +3,9 @@
 
 # frozen_string_literal: false
 
-require 'test/unit'
-require 'docdiff/charstring'
-require 'nkf'
+require "test/unit"
+require "docdiff/charstring"
+require "nkf"
 
 class TC_DocDiff_CharString < Test::Unit::TestCase
   CharString = DocDiff::CharString

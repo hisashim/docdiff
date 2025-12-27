@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-require 'test/unit'
+require "test/unit"
 require "docdiff/diff"
 
 class TC_DocDiff_Diff < Test::Unit::TestCase

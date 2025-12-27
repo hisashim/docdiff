@@ -1,10 +1,10 @@
 # DocDiff: word/character-oriented text comparison utility
 # Copyright (C) 2002-2011 Hisashi MORITA
 # Requirements: Ruby (>= 2.0)
-require 'docdiff/difference'
-require 'docdiff/document'
-require 'docdiff/view'
-require 'docdiff/cli'
+require "docdiff/difference"
+require "docdiff/document"
+require "docdiff/view"
+require "docdiff/cli"
 
 class DocDiff
   Author = "Copyright (C) 2002-2011 Hisashi MORITA.\n" +
@@ -12,13 +12,13 @@ class DocDiff
   License = "This software is licensed under so-called modified BSD license.\n" +
             "See the document for detail.\n"
   SystemConfigFileName = File.join(File::Separator, "etc", "docdiff", "docdiff.conf")
-  UserConfigFileName = File.join(ENV['HOME'], "etc", "docdiff", "docdiff.conf")
-  AltUserConfigFileName = File.join(ENV['HOME'], ".docdiff", "docdiff.conf")
+  UserConfigFileName = File.join(ENV["HOME"], "etc", "docdiff", "docdiff.conf")
+  AltUserConfigFileName = File.join(ENV["HOME"], ".docdiff", "docdiff.conf")
   XDGUserConfigFileName =
-    if xdg_config_home = ENV['XDG_CONFIG_HOME'] && !xdg_config_home.empty?
-      File.join(ENV['HOME'], xdg_config_home, "docdiff", "docdiff.conf")
+    if xdg_config_home = ENV["XDG_CONFIG_HOME"] && !xdg_config_home.empty?
+      File.join(ENV["HOME"], xdg_config_home, "docdiff", "docdiff.conf")
     else
-      File.join(ENV['HOME'], ".config", "docdiff", "docdiff.conf")
+      File.join(ENV["HOME"], ".config", "docdiff", "docdiff.conf")
     end
   DEFAULT_CONFIG = {
     :resolution    => "word",
@@ -107,16 +107,16 @@ class DocDiff
       raise "Unsupported resolution: #{option[:resolution].inspect}"
     end
     view = View.new(difference, doc1.encoding, doc1.eol)
-    user_tags = {:start_common        => (@config[:tag_common_start] ||= ''),
-                 :end_common          => (@config[:tag_common_end] ||= ''),
-                 :start_del           => (@config[:tag_del_start] ||= ''),
-                 :end_del             => (@config[:tag_del_end] ||= ''),
-                 :start_add           => (@config[:tag_add_start] ||= ''),
-                 :end_add             => (@config[:tag_add_end] ||= ''),
-                 :start_before_change => (@config[:tag_change_before_start] ||= ''),
-                 :end_before_change   => (@config[:tag_change_before_end] ||= ''),
-                 :start_after_change  => (@config[:tag_change_after_start] ||= ''),
-                 :end_after_change    => (@config[:tag_change_after_end] ||= '')}
+    user_tags = {:start_common        => (@config[:tag_common_start] ||= ""),
+                 :end_common          => (@config[:tag_common_end] ||= ""),
+                 :start_del           => (@config[:tag_del_start] ||= ""),
+                 :end_del             => (@config[:tag_del_end] ||= ""),
+                 :start_add           => (@config[:tag_add_start] ||= ""),
+                 :end_add             => (@config[:tag_add_end] ||= ""),
+                 :start_before_change => (@config[:tag_change_before_start] ||= ""),
+                 :end_before_change   => (@config[:tag_change_before_end] ||= ""),
+                 :start_after_change  => (@config[:tag_change_after_start] ||= ""),
+                 :end_after_change    => (@config[:tag_change_after_end] ||= "")}
     case option[:digest]
     when true
       case option[:format]
