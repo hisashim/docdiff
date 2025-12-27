@@ -54,7 +54,7 @@ class DocDiff
         Difference.new(before_change.split_to_word, after_change.split_to_word).each do |word|
           words << word
         end
-      else  # :common_elt_elt, :del_elt, or :add_elt
+      else # :common_elt_elt, :del_elt, or :add_elt
         words << line
       end
     end
@@ -148,4 +148,4 @@ class DocDiff
     end
     result.join
   end
-end  # class DocDiff
+end # class DocDiff

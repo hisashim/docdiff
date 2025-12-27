@@ -115,7 +115,7 @@ class DocDiff
                   "\x82\xe0\x82\xe1\x82\xe2\x82\xe3\x82\xe4" \
                   "\x82\xe5\x82\xe6\x82\xe7\x82\xe8\x82\xe9" \
                   "\x82\xea\x82\xeb\x82\xec\x82\xed\x82\xee" \
-                  "\x82\xef\x82\xf0\x82\xf1"  # [\x82\xf1-\x82\xf1]
+                  "\x82\xef\x82\xf0\x82\xf1" # [\x82\xf1-\x82\xf1]
       HIRA_EX =   HIRA +
                   "\x81\x5b" \
                   "\x81\x52\x81\x53" # add onbiki and kanagaeshi(hira)
@@ -136,7 +136,7 @@ class DocDiff
                   "\x83\x87\x83\x88\x83\x89\x83\x8a\x83\x8b" \
                   "\x83\x8c\x83\x8d\x83\x8e\x83\x8f\x83\x90" \
                   "\x83\x91\x83\x92\x83\x93\x83\x94\x83\x95" \
-                  "\x83\x96"  # [\x83\x40-\x83\x7e\x83\x80-\x83\x96]
+                  "\x83\x96" # [\x83\x40-\x83\x7e\x83\x80-\x83\x96]
       # Note that \x83\x7f is excluded.
       KATA_EX =   KATA +
                   "\x81\x5b" \
@@ -210,7 +210,7 @@ class DocDiff
                   "\xe9\x9f-\xe9\xfc" \
                   "\xea\x40-\xea\x9e" \
                   "\xea\x9f-\xea\xa4"
-      KANJI_EX =  KANJI + "\x81\x58"  # + noma
+      KANJI_EX =  KANJI + "\x81\x58" # + noma
       JA_GRAPH =  JA_ALNUM + JA_PUNCT + HIRA + KATA + KANJI
       JA_PRINT =  JA_GRAPH + JA_BLANK
 
@@ -228,6 +228,6 @@ class DocDiff
                          "|(?:.+?)"].join
 
       CharString.register_encoding(self)
-    end  # module SJIS
-  end  # module CharString
-end  # class DocDiff
+    end # module SJIS
+  end # module CharString
+end # class DocDiff

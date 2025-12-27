@@ -88,5 +88,5 @@ class DocDiff
       end
       return elms
     end
-  end  # class Difference
-end  # class DocDiff
+  end # class Difference
+end # class DocDiff

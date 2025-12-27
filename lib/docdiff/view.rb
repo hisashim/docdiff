@@ -136,12 +136,12 @@ class DocDiff
           tgt = (entry[2] || []).join
         end
         cxt_pre = if i == 0
-                    ""  # no pre context for the first entry
+                    "" # no pre context for the first entry
                   else
                     (@difference[i-1][1] || []).join.scan(cxt_pre_pat).join
                   end
         cxt_post = if (i + 1) == @difference.size
-                     ""  # no post context for the last entry
+                     "" # no post context for the last entry
                    else
                      (@difference[i+1][1] || []).join.scan(cxt_post_pat).join
                    end
@@ -289,7 +289,7 @@ class DocDiff
        :end_after_change    => "\033[0m"}
     end
 
-    def to_tty(overriding_opts = nil, headfoot = true)  # color escape sequence
+    def to_tty(overriding_opts = nil, headfoot = true) # color escape sequence
       tags = tty_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
@@ -419,13 +419,13 @@ class DocDiff
       }
     end
 
-    def to_manued(overriding_opts = nil, headfoot = true)  # [ / ; ]
+    def to_manued(overriding_opts = nil, headfoot = true) # [ / ; ]
       tags = manued_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
 
-    def to_manued_digest(overriding_opts = nil, headfoot = true)  # [ / ; ]
+    def to_manued_digest(overriding_opts = nil, headfoot = true) # [ / ; ]
       tags = manued_tags
       # manued specific kludge: change should be [a/b] in inline, [a/][/b] in multi
       display = (overriding_opts and overriding_opts[:display]) || "inline"
@@ -542,4 +542,4 @@ class DocDiff
     def to_debug
     end
   end
-end  # class DocDiff
+end # class DocDiff

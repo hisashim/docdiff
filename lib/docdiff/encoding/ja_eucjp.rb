@@ -125,7 +125,7 @@ class DocDiff
                   "\xa4\xe2\xa4\xe3\xa4\xe4\xa4\xe5\xa4\xe6" \
                   "\xa4\xe7\xa4\xe8\xa4\xe9\xa4\xea\xa4\xeb" \
                   "\xa4\xec\xa4\xed\xa4\xee\xa4\xef\xa4\xf0" \
-                  "\xa4\xf1\xa4\xf2\xa4\xf3"  # [\xa4\xa1-\xa4\xf3]
+                  "\xa4\xf1\xa4\xf2\xa4\xf3" # [\xa4\xa1-\xa4\xf3]
       HIRA_EX =   HIRA +
                   "\xa1\xbc" \
                   "\xa1\xb3\xa1\xb4" # add onbiki and kanagaeshi(hira)
@@ -146,7 +146,7 @@ class DocDiff
                   "\xa5\xe7\xa5\xe8\xa5\xe9\xa5\xea\xa5\xeb" \
                   "\xa5\xec\xa5\xed\xa5\xee\xa5\xef\xa5\xf0" \
                   "\xa5\xf1\xa5\xf2\xa5\xf3\xa5\xf4\xa5\xf5" \
-                  "\xa5\xf6"  # [\xa5\xa1-\xa5\xf6]
+                  "\xa5\xf6" # [\xa5\xa1-\xa5\xf6]
       KATA_EX =   KATA +
                   "\xa1\xbc" \
                   "\xa1\xb5\xa1\xb6" # add onbiki and kanagaeshi(kata)
@@ -237,6 +237,6 @@ class DocDiff
                          "|(?:.+?)"].join
 
       CharString.register_encoding(self)
-    end  # module EUCJP
-  end  # module CharString
-end  # class DocDiff
+    end # module EUCJP
+  end # module CharString
+end # class DocDiff

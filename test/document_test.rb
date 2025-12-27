@@ -223,7 +223,7 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   def test_ascii_count_latin_word
     doc = Document.new("foo bar   \r\nbaz quux\r\n")
-    expected = 5  # "  " is also counted as a word
+    expected = 5 # "  " is also counted as a word
     assert_equal(expected, doc.count_latin_word)
   end
 

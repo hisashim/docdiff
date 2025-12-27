@@ -320,7 +320,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = "foo bar   \r\nbaz quux\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
-    expected = 5  # "  " is also counted as a word
+    expected = 5 # "  " is also counted as a word
     assert_equal(expected, str.count_latin_word)
   end
 
@@ -816,7 +816,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   def test_utf8_split_to_char
     str = NKF.nkf("--utf8", "日本語a b").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
-    str.eol = "LF"        #<= needed to pass the test
+    str.eol = "LF" #<= needed to pass the test
     expected = ["日", "本", "語", "a", " ", "b"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
   end

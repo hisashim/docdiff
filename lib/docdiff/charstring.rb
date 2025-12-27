@@ -6,7 +6,7 @@
 class DocDiff
   module CharString
     Encodings = {}
-    EOLChars = {}  # End-of-line characters, such as CR, LF, CRLF.
+    EOLChars = {} # End-of-line characters, such as CR, LF, CRLF.
 
     def initialize(string)
 =begin unnecessary
@@ -43,7 +43,7 @@ class DocDiff
 
     def debug
       case
-      when @encoding  == nil
+      when @encoding == nil
         raise "@encoding is nil."
       when Encodings[@encoding] == nil
         raise "Encodings[@encoding(=#{@encoding})] is nil."
@@ -73,17 +73,17 @@ class DocDiff
       def guess_eol(string)
         # returns 'CR', 'LF', 'CRLF', 'UNKNOWN'(binary),
         # 'NONE'(1-line), or nil
-        return nil if string == nil  #=> nil (argument missing)
+        return nil if string == nil #=> nil (argument missing)
 
         bin_string = string.dup.force_encoding("ASCII-8BIT")
         eol_counts = {"CR"   => bin_string.scan(/(\r)(?!\n)/o).size,
                       "LF"   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
                       "CRLF" => bin_string.scan(/(\r\n)/o).size}
-        eol_counts.delete_if { |_eol, count| count == 0 }  # Remove missing EOL
+        eol_counts.delete_if { |_eol, count| count == 0 } # Remove missing EOL
         eols = eol_counts.keys
-        eol_variety = eols.size  # numbers of flavors found
-        if eol_variety == 1          # Only one type of EOL found
-          return eols[0]         #=> 'CR', 'LF', or 'CRLF'
+        eol_variety = eols.size # numbers of flavors found
+        if eol_variety == 1 # Only one type of EOL found
+          return eols[0] #=> 'CR', 'LF', or 'CRLF'
         elsif eol_variety == 0       # No EOL found
           return "NONE"              #=> 'NONE' (might be 1-line file)
         else                         # Multiple types of EOL found
@@ -136,7 +136,7 @@ class DocDiff
       force_encoding(cs) if self
     end
 
-    class  << self
+    class << self
       def guess_encoding(string)
         if string
           string.encoding.to_s
@@ -280,8 +280,8 @@ class DocDiff
 
       CharString.register_eol(self)
     end
-  end  # module CharString
-end  # class DocDiff
+  end # module CharString
+end # class DocDiff
 
 # class String
 #   include CharString

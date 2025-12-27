@@ -14,7 +14,7 @@ class TC_DocDiff_Diff < Test::Unit::TestCase
     a2 = [:a, :x, :c]
     expected = [[:common_elt_elt, [:a], [:a]],
                 [:del_elt,        [:b], nil],
-                [:add_elt,         nil, [:x]],
+                [:add_elt, nil, [:x]],
                 [:common_elt_elt, [:c], [:c]]]
     actual              = []
     actual_speculative  = []
