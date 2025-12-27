@@ -108,15 +108,18 @@ class DocDiff
       def parse_config_file_content(content)
         result = {}
         return result if content.size <= 0
+
         lines = content.dup.split(/\r\n|\r|\n/).compact
         lines.collect! { |line| line.sub(/#.*$/, "") }
         lines.collect!(&:strip)
         lines.delete_if { |line| line == "" }
         lines.each do |line|
           raise 'line does not include " = ".' unless /[\s]+=[\s]+/.match(line)
+
           name_src, value_src = line.split(/[\s]+=[\s]+/)
           raise "Invalid name: #{name_src.inspect}" if (/\s/.match(name_src))
           raise "Invalid value: #{value_src.inspect}" unless value_src.kind_of?(String)
+
           name  = name_src.intern
           value = value_src
           value = true if ["on","yes","true"].include?(value_src.downcase)
@@ -172,10 +175,11 @@ class DocDiff
               possible_system_config_file_names.select { |fn| File.exist?(fn) }
             if existing_system_config_file_names.size >= 2
               raise <<~EOS
-              More than one system config file found, using the first one: \
-              #{existing_system_config_file_names.inspect}
-            EOS
+                More than one system config file found, using the first one: \
+                #{existing_system_config_file_names.inspect}
+              EOS
             end
+
             filename = existing_system_config_file_names.first
             config, message = read_config_from_file(filename)
             STDERR.print(message) if command_line_config[:verbose]
@@ -193,11 +197,12 @@ class DocDiff
               possible_user_config_file_names.select { |fn| File.exist?(fn) }
             if existing_user_config_file_names.size >= 2
               raise <<~EOS
-              Only one user config file can be used at the same time. \
-              Keep one and remove or rename the others: \
-              #{existing_user_config_file_names.inspect}
-            EOS
+                Only one user config file can be used at the same time. \
+                Keep one and remove or rename the others: \
+                #{existing_user_config_file_names.inspect}
+              EOS
             end
+
             filename = existing_user_config_file_names.first
             config, message = read_config_from_file(filename)
             STDERR.print(message) if command_line_config[:verbose]
@@ -236,12 +241,14 @@ class DocDiff
         file2_content = nil
         raise "Try `#{File.basename($0)} --help' for more information." if ARGV[0].nil?
         raise "Specify at least 2 target files." unless ARGV[0] && ARGV[1]
+
         ARGV[0] = "/dev/stdin" if ARGV[0] == "-"
         ARGV[1] = "/dev/stdin" if ARGV[1] == "-"
         raise "No such file: #{ARGV[0]}." unless FileTest.exist?(ARGV[0])
         raise "No such file: #{ARGV[1]}." unless FileTest.exist?(ARGV[1])
         raise "#{ARGV[0]} is not readable." unless FileTest.readable?(ARGV[0])
         raise "#{ARGV[1]} is not readable." unless FileTest.readable?(ARGV[1])
+
         File.open(ARGV[0], "r") { |f| file1_content = f.read }
         File.open(ARGV[1], "r") { |f| file2_content = f.read }
 

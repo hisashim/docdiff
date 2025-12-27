@@ -95,6 +95,7 @@ class DocDiff
     raise "option is nil" if option.nil?
     raise "option[:resolution] is nil" if option[:resolution].nil?
     raise "option[:format] is nil" if option[:format].nil?
+
     case
     when doc1.class == Document && doc2.class == Document # OK
     when doc1.encoding != nil && doc2.encoding != nil     # OK

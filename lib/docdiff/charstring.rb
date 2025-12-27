@@ -56,6 +56,7 @@ class DocDiff
       else
         # should I do some alert?
       end
+
       ["id: #{self.id}, class: #{self.class}, self: #{self}, ",
        "module: #{Encodings[@encoding]}, #{EOLChars[@eol]}"].join
     end
@@ -73,6 +74,7 @@ class DocDiff
         # returns 'CR', 'LF', 'CRLF', 'UNKNOWN'(binary),
         # 'NONE'(1-line), or nil
         return nil if string == nil  #=> nil (argument missing)
+
         bin_string = string.dup.force_encoding("ASCII-8BIT")
         eol_counts = {"CR"   => bin_string.scan(/(\r)(?!\n)/o).size,
                       "LF"   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
@@ -207,6 +209,7 @@ class DocDiff
       raise <<~EOS.chomp unless EOLChars[eol]
         EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed.
       EOS
+
       if defined? eol_char
         re = Regexp.new(".*?#{eol_char}|.+", Regexp::MULTILINE)
         encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
