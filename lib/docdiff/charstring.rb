@@ -143,8 +143,6 @@ class DocDiff
       def guess_encoding(string)
         if string
           string.encoding.to_s
-        else
-          nil
         end
       end
     end
@@ -154,13 +152,13 @@ class DocDiff
     end
 
     def split_to_char
-      if eol_char # sometimes string has no end-of-line char
-        re = Regexp.new("(?:#{eol_char})|(?:.)", Regexp::MULTILINE)
-        encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
-      else        # it seems that no EOL module was extended...
-        re = Regexp.new("(?:.)", Regexp::MULTILINE)
-        encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
-      end
+      re =
+        if eol_char # sometimes string has no end-of-line char
+          Regexp.new("(?:#{eol_char})|(?:.)", Regexp::MULTILINE)
+        else        # it seems that no EOL module was extended...
+          Regexp.new("(?:.)", Regexp::MULTILINE)
+        end
+      encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
     end
 
     def count_latin_graph_char
@@ -213,13 +211,13 @@ class DocDiff
         EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed.
       EOS
 
-      if defined? eol_char
-        re = Regexp.new(".*?#{eol_char}|.+", Regexp::MULTILINE)
-        encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
-      else
-        re = Regexp.new(".+", Regexp::MULTILINE)
-        encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
-      end
+      re =
+        if defined? eol_char
+          Regexp.new(".*?#{eol_char}|.+", Regexp::MULTILINE)
+        else
+          Regexp.new(".+", Regexp::MULTILINE)
+        end
+      encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
     end
 
     def count_graph_line
