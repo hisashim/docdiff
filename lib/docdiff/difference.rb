@@ -22,7 +22,7 @@ class DocDiff
       diff.ses.each{|block|  # Diff::EditScript does not have each_with_index()
         @raw_list << block
       }
-      combine_del_add_to_change!()
+      combine_del_add_to_change!
     end
 
     def combine_del_add_to_change!

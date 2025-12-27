@@ -243,8 +243,8 @@ class DocDiff
        :end_prefix          => '',
        :start_postfix       => '',
        :end_postfix         => "#{@eol_char||''}",
-       :header              => tty_header(),
-       :footer              => tty_footer(),
+       :header              => tty_header,
+       :footer              => tty_footer,
        :start_common        => '',
        :end_common          => '',
        :start_del           => "\033[7;4;31m",  # Inverted, Underlined, Red
@@ -258,7 +258,7 @@ class DocDiff
     end
 
     def to_tty(overriding_opts = nil, headfoot = true)  # color escape sequence
-      tags = tty_tags()
+      tags = tty_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
@@ -311,8 +311,8 @@ class DocDiff
        :end_prefix          => '',
        :start_postfix       => '',
        :end_postfix         => '</p>',
-       :header              => html_header(),
-       :footer              => html_footer(),
+       :header              => html_header,
+       :footer              => html_footer,
        :start_common        => '<span class="common">',
        :end_common          => '</span>',
        :start_del           => '<span class="del"><del>',
@@ -326,13 +326,13 @@ class DocDiff
     end
 
     def to_html(overriding_opts = nil, headfoot = true)
-      tags = html_tags()
+      tags = html_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
 
     def to_html_digest(overriding_opts = nil, headfoot = true)
-      tags = html_tags()
+      tags = html_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style_digest(tags, headfoot)
     end
@@ -370,8 +370,8 @@ class DocDiff
        :end_prefix          => '',
        :start_postfix       => '',
        :end_postfix         => "#{@eol_char||''}",
-       :header              => manued_header(),
-       :footer              => manued_footer(),
+       :header              => manued_header,
+       :footer              => manued_footer,
        :start_common        => '',
        :end_common          => '',
        :start_del           => '[',
@@ -386,13 +386,13 @@ class DocDiff
     end
 
     def to_manued(overriding_opts = nil, headfoot = true)  # [ / ; ]
-      tags = manued_tags()
+      tags = manued_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
 
     def to_manued_digest(overriding_opts = nil, headfoot = true)  # [ / ; ]
-      tags = manued_tags()
+      tags = manued_tags
       # manued specific kludge: change should be [a/b] in inline, [a/][/b] in multi
       display = (overriding_opts and overriding_opts[:display]) || 'inline'
       if /block|multi/.match display
@@ -427,8 +427,8 @@ class DocDiff
        :end_prefix          => '',
        :start_postfix       => '',
        :end_postfix         => "#{@eol_char||''}",
-       :header              => wdiff_header(),
-       :footer              => wdiff_footer(),
+       :header              => wdiff_header,
+       :footer              => wdiff_footer,
        :start_common        => '',
        :end_common          => '',
        :start_del           => '[-',
@@ -442,13 +442,13 @@ class DocDiff
     end
 
     def to_wdiff(overriding_opts = nil, headfoot = true)
-      tags = wdiff_tags()
+      tags = wdiff_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags)
     end
 
     def to_wdiff_digest(overriding_opts = nil, headfoot = true)
-      tags = wdiff_tags()
+      tags = wdiff_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style_digest(tags, headfoot)
     end
@@ -479,8 +479,8 @@ class DocDiff
        :end_prefix          => '',
        :start_postfix       => '',
        :end_postfix         => '',
-       :header              => user_header(),
-       :footer              => user_footer(),
+       :header              => user_header,
+       :footer              => user_footer,
        :start_common        => '',
        :end_common          => '',
        :start_del           => '',
@@ -494,13 +494,13 @@ class DocDiff
     end
 
     def to_user(overriding_opts = nil, headfoot = true)
-      tags = user_tags()
+      tags = user_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
 
     def to_user_digest(overriding_opts = nil, headfoot = true)
-      tags = user_tags()
+      tags = user_tags
       tags.update(overriding_opts) if overriding_opts
       apply_style_digest(tags, headfoot)
     end

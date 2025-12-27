@@ -94,27 +94,27 @@ class DocDiff
     # thus some of the following methods are not 'linguistically correct'.
 
     def count_byte
-      split_to_byte().size
+      split_to_byte.size
     end
 
     def count_char  # eol = 1 char
-      split_to_char().size
+      split_to_char.size
     end
 
     def count_graph_char
-      count_latin_graph_char() + count_ja_graph_char()
+      count_latin_graph_char + count_ja_graph_char
     end
 
     def count_blank_char
-      count_latin_blank_char() + count_ja_blank_char()
+      count_latin_blank_char + count_ja_blank_char
     end
 
     def count_word
-      split_to_word().size
+      split_to_word.size
     end
 
     def count_valid_word
-      count_latin_valid_word() + count_ja_valid_word()
+      count_latin_valid_word + count_ja_valid_word
     end
 
     def count_line  # this is common to all encodings.
