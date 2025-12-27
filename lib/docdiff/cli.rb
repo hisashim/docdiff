@@ -263,10 +263,9 @@ class DocDiff
         if docdiff.config[:encoding] == "auto"
           encoding1 = DocDiff::CharString.guess_encoding(file1_content)
           encoding2 = DocDiff::CharString.guess_encoding(file2_content)
-          case
-          when (encoding1 == "UNKNOWN" or encoding2 == "UNKNOWN")
+          if (encoding1 == "UNKNOWN" or encoding2 == "UNKNOWN")
             raise "Document encoding unknown (#{encoding1}, #{encoding2})."
-          when encoding1 != encoding2
+          elsif encoding1 != encoding2
             raise "Document encoding mismatch (#{encoding1}, #{encoding2})."
           end
         end
@@ -274,12 +273,11 @@ class DocDiff
         if docdiff.config[:eol] == "auto"
           eol1 = DocDiff::CharString.guess_eol(file1_content)
           eol2 = DocDiff::CharString.guess_eol(file2_content)
-          case
-          when (eol1.nil? or eol2.nil?)
+          if (eol1.nil? or eol2.nil?)
             raise "Document eol is nil (#{eol1.inspect}, #{eol2.inspect}).  The document might be empty."
-          when (eol1 == "UNKNOWN" or eol2 == "UNKNOWN")
+          elsif (eol1 == "UNKNOWN" or eol2 == "UNKNOWN")
             raise "Document eol unknown (#{eol1.inspect}, #{eol2.inspect})."
-          when (eol1 != eol2)
+          elsif (eol1 != eol2)
             raise "Document eol mismatch (#{eol1}, #{eol2})."
           end
         end

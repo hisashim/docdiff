@@ -42,16 +42,15 @@ class DocDiff
     end
 
     def debug
-      case
-      when @encoding == nil
+      if @encoding == nil
         raise "@encoding is nil."
-      when Encodings[@encoding] == nil
+      elsif Encodings[@encoding] == nil
         raise "Encodings[@encoding(=#{@encoding})] is nil."
-      when Encodings[@encoding].class != Module
+      elsif Encodings[@encoding].class != Module
         raise "Encodings[@encoding].class(=#{Encodings[@encoding].class}) is not a module."
-      when @eol == nil
+      elsif @eol == nil
         raise "@eol is nil."
-      when EOLChars[@eol] == nil
+      elsif EOLChars[@eol] == nil
         raise "EOLChars[@eol(=#{@eol})] is nil."
       else
         # should I do some alert?

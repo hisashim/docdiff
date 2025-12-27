@@ -78,18 +78,21 @@ class JIS0208
   attr_reader :char_db
   attr_reader :characters
 
-  def char(ku, ten, codeset)
-    case codeset
-    when /^[Ee]/ then cs = :e
-    when /^[Ss]/ then cs = :s
-    when /^[Jj]/ then cs = :j
-    when /^[Uu].*16$/ then cs = :u16
-    when /^[Uu].*8$/ then cs = :u8
-    else
-      raise "invalid codeset name (#{codeset})\n"
-    end
+  def char(ku, ten, codeset_name)
+    codeset =
+      case codeset_name
+      when /^[Ee]/ then :e
+      when /^[Ss]/ then :s
+      when /^[Jj]/ then :j
+      when /^[Uu].*16$/ then :u16
+      when /^[Uu].*8$/ then :u8
+      else
+        raise "invalid codeset name (#{codeset_name})"
+      end
 
-    characters[ku][ten][cs].unpack("C*").map { |byte| format("\\x%x", byte) }.join
+    characters[ku][ten][codeset].unpack("C*").map do |byte|
+      format("\\x%x", byte)
+    end.join
   end
 
   def euc_ja_alnum
