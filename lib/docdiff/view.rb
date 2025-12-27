@@ -113,15 +113,15 @@ class DocDiff
     def apply_style_digest(tags, headfoot = true)
       cxt_pre_pat =
         if RUBY_VERSION >= "2.3.1"
-          Regexp.new(".{0,"+"#{CONTEXT_PRE_LENGTH}"+'}\Z', Regexp::MULTILINE)
+          Regexp.new(".{0,#{CONTEXT_PRE_LENGTH}}\\Z", Regexp::MULTILINE)
         else
-          Regexp.new(".{0,"+"#{CONTEXT_PRE_LENGTH}"+'}\Z', Regexp::MULTILINE, encname_for_regexp(@encoding))
+          Regexp.new(".{0,#{CONTEXT_PRE_LENGTH}}\\Z", Regexp::MULTILINE, encname_for_regexp(@encoding))
         end
       cxt_post_pat =
         if RUBY_VERSION >= "2.3.1"
-          Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+"}", Regexp::MULTILINE)
+          Regexp.new("\\A.{0,#{CONTEXT_POST_LENGTH}}", Regexp::MULTILINE)
         else
-          Regexp.new('\A.{0,'+"#{CONTEXT_POST_LENGTH}"+"}", Regexp::MULTILINE, encname_for_regexp(@encoding))
+          Regexp.new("\\A.{0,#{CONTEXT_POST_LENGTH}}", Regexp::MULTILINE, encname_for_regexp(@encoding))
         end
       display = (tags and tags[:display]) || "inline"
       result = []
@@ -165,10 +165,21 @@ class DocDiff
         pos_str = ""
         case operation = entry.first
         when :common_elt_elt
-        # skipping common part
+          # skipping common part
         when :change_elt
-          pos_str = "#{d1l}" + "#{if span1 > 1 then "-"+(d1l + span1 - 1).to_s; end}" +
-                    ",#{d2l}" + "#{if span2 > 1 then "-"+(d2l + span2 - 1).to_s; end}"
+          range1 =
+            if span1 > 1
+              "#{d1l}-#{d1l + span1 - 1}"
+            else
+              d1l.to_s
+            end
+          range2 =
+            if span2 > 1
+              "#{d2l}-#{d2l + span2 - 1}"
+            else
+              d2l.to_s
+            end
+          pos_str = "#{range1},#{range2}"
           case display
           when "inline"
             result << (e_head.call(pos_str) + e_cxt_pre + e_chg + e_cxt_post + e_foot)
@@ -178,8 +189,15 @@ class DocDiff
           else raise "Unsupported display type: #{display}"
           end
         when :del_elt
-          pos_str = "#{d1l}" + "#{if span1 > 1 then "-"+(d1l + span1 - 1).to_s; end}" +
-                    ",(#{d2l})"
+          range1 =
+            if span1 > 1
+              "#{d1l}-#{d1l + span1 - 1}"
+            else
+              d1l.to_s
+            end
+          range2 =
+            "(#{d2l})"
+          pos_str = "#{range1},#{range2}"
           case display
           when "inline"
             result << (e_head.call(pos_str) + e_cxt_pre + e_del + e_cxt_post + e_foot)
@@ -189,8 +207,15 @@ class DocDiff
           else raise "Unsupported display type: #{display}"
           end
         when :add_elt
-          pos_str = "(#{d1l})" +
-                    ",#{d2l}" + "#{if span2 > 1 then "-"+(d2l + span2 - 1).to_s; end}"
+          range1 =
+            "(#{d1l})"
+          range2 =
+            if span2 > 1
+              "#{d2l}-#{d2l + span2 - 1}"
+            else
+              d2l.to_s
+            end
+          pos_str = "#{range1},#{range2}"
           case display
           when "inline"
             result << (e_head.call(pos_str) + e_cxt_pre + e_add + e_cxt_post + e_foot)
@@ -245,11 +270,11 @@ class DocDiff
        :start_entry         => "",
        :end_entry           => "----",
        :start_position      => "",
-       :end_position        => "#{@eol_char||""}",
+       :end_position        => (@eol_char||"").to_s,
        :start_prefix        => "",
        :end_prefix          => "",
        :start_postfix       => "",
-       :end_postfix         => "#{@eol_char||""}",
+       :end_postfix         => (@eol_char||"").to_s,
        :header              => tty_header,
        :footer              => tty_footer,
        :start_common        => "",
@@ -372,11 +397,11 @@ class DocDiff
        :start_entry         => "",
        :end_entry           => "----",
        :start_position      => "",
-       :end_position        => "#{@eol_char||""}",
+       :end_position        => (@eol_char||"").to_s,
        :start_prefix        => "",
        :end_prefix          => "",
        :start_postfix       => "",
-       :end_postfix         => "#{@eol_char||""}",
+       :end_postfix         => (@eol_char||"").to_s,
        :header              => manued_header,
        :footer              => manued_footer,
        :start_common        => "",
@@ -429,11 +454,11 @@ class DocDiff
        :start_entry         => "",
        :end_entry           => "----",
        :start_position      => "",
-       :end_position        => "#{@eol_char||""}",
+       :end_position        => (@eol_char||"").to_s,
        :start_prefix        => "",
        :end_prefix          => "",
        :start_postfix       => "",
-       :end_postfix         => "#{@eol_char||""}",
+       :end_postfix         => (@eol_char||"").to_s,
        :header              => wdiff_header,
        :footer              => wdiff_footer,
        :start_common        => "",
