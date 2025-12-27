@@ -52,7 +52,7 @@ class TC_CLI < Test::Unit::TestCase
                "\n",
                "",
                nil].join
-    expected = {:foo1=>true, :foo2=>"bar baz", :foo3=>123, :foo4=>false}
+    expected = {:foo1 => true, :foo2 => "bar baz", :foo3 => 123, :foo4 => false}
     assert_equal(expected, DocDiff::CLI.parse_config_file_content(content))
   end
 

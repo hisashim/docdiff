@@ -36,7 +36,7 @@ class DocDiff
       @difference = difference
       @encoding = encoding
       @eol = eol
-      @eol_char = {"CR"=>"\r", "LF"=>"\n", "CRLF"=>"\r\n"}[@eol]
+      @eol_char = {"CR" => "\r", "LF" => "\n", "CRLF" => "\r\n"}[@eol]
 #     if CharString::EOLChars[@eol]
 #       @eol_char = CharString::EOLChars[@eol].eol_char
 #     else
@@ -100,7 +100,7 @@ class DocDiff
       if headfoot == true
         result = tags[:header] + result + tags[:footer]
       end
-      result.delete_if { |elem| elem=="" }
+      result.delete_if { |elem| elem == "" }
     end
 
     def encname_for_regexp(encname)
@@ -138,12 +138,12 @@ class DocDiff
         cxt_pre = if i == 0
                     "" # no pre context for the first entry
                   else
-                    (@difference[i-1][1] || []).join.scan(cxt_pre_pat).join
+                    (@difference[i - 1][1] || []).join.scan(cxt_pre_pat).join
                   end
         cxt_post = if (i + 1) == @difference.size
                      "" # no post context for the last entry
                    else
-                     (@difference[i+1][1] || []).join.scan(cxt_post_pat).join
+                     (@difference[i + 1][1] || []).join.scan(cxt_post_pat).join
                    end
         # elements for an entry
         e_head     = Proc.new do |pos_str|
@@ -158,7 +158,7 @@ class DocDiff
         e_del      = tags[:start_del]           + escape_outside(src, tags) + tags[:end_del]
         e_add      = tags[:start_add]           + escape_outside(tgt, tags) + tags[:end_add]
         e_cxt_post = tags[:start_postfix]       + escape_outside(cxt_post, tags) + tags[:end_postfix]
-        e_foot     = tags[:end_entry] + (@eol_char||"")
+        e_foot     = tags[:end_entry] + (@eol_char || "")
 
         span1 = source_lines_involved = src.scan_lines(@eol).size
         span2 = target_lines_involved = tgt.scan_lines(@eol).size
@@ -265,16 +265,16 @@ class DocDiff
        :outside_escape_pat  => TTYEscapePat,
        :inside_escape_dic   => TTYEscapeDic,
        :inside_escape_pat   => TTYEscapePat,
-       :start_digest_body   => "----#{@eol_char||""}",
+       :start_digest_body   => "----#{@eol_char || ""}",
        :end_digest_body     => "",
        :start_entry         => "",
        :end_entry           => "----",
        :start_position      => "",
-       :end_position        => (@eol_char||"").to_s,
+       :end_position        => (@eol_char || "").to_s,
        :start_prefix        => "",
        :end_prefix          => "",
        :start_postfix       => "",
-       :end_postfix         => (@eol_char||"").to_s,
+       :end_postfix         => (@eol_char || "").to_s,
        :header              => tty_header,
        :footer              => tty_footer,
        :start_common        => "",
@@ -304,30 +304,30 @@ class DocDiff
     # HTML (XHTML)
     def html_header
       [
-        "<?xml version=\"1.0\" encoding=\"#{@encoding||""}\"?>#{@eol_char||""}",
-        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"#{@eol_char||""}",
-        "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">#{@eol_char||""}",
-        "<html><head>#{@eol_char||""}",
-        "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=#{@encoding||""}\" />#{@eol_char||""}",
-        "<title>Difference</title>#{@eol_char||""}",
-        "<style type=\"text/css\">#{@eol_char||""}" \
-        " body {font-family: monospace;}#{@eol_char||""}" \
-        " span.del {background: hotpink; border: thin inset;}#{@eol_char||""}" \
-        " span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}#{@eol_char||""}" \
-        " span.before-change {background: yellow; border: thin inset;}#{@eol_char||""}" \
-        " span.after-change {background: lime; font-weight: bolder; border: thin outset;}#{@eol_char||""}" \
-        " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0.5em; padding-bottom: 0em;}#{@eol_char||""}" \
-        " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0.5em;}#{@eol_char||""}" \
-        " li.entry {border-top: thin solid gray;}#{@eol_char||""}" \
-        "</style>#{@eol_char||""}",
-        "</head><body><div>#{@eol_char||""}",
+        "<?xml version=\"1.0\" encoding=\"#{@encoding || ""}\"?>#{@eol_char || ""}",
+        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"#{@eol_char || ""}",
+        "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">#{@eol_char || ""}",
+        "<html><head>#{@eol_char || ""}",
+        "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=#{@encoding || ""}\" />#{@eol_char || ""}",
+        "<title>Difference</title>#{@eol_char || ""}",
+        "<style type=\"text/css\">#{@eol_char || ""}" \
+        " body {font-family: monospace;}#{@eol_char || ""}" \
+        " span.del {background: hotpink; border: thin inset;}#{@eol_char || ""}" \
+        " span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}#{@eol_char || ""}" \
+        " span.before-change {background: yellow; border: thin inset;}#{@eol_char || ""}" \
+        " span.after-change {background: lime; font-weight: bolder; border: thin outset;}#{@eol_char || ""}" \
+        " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0.5em; padding-bottom: 0em;}#{@eol_char || ""}" \
+        " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0.5em;}#{@eol_char || ""}" \
+        " li.entry {border-top: thin solid gray;}#{@eol_char || ""}" \
+        "</style>#{@eol_char || ""}",
+        "</head><body><div>#{@eol_char || ""}",
       ]
     end
 
     def html_footer
-      [(@eol_char||"") + "</div></body></html>" + (@eol_char||"")]
+      [(@eol_char || "") + "</div></body></html>" + (@eol_char || "")]
     end
-    HTMLEscapeDic = {"<"=>"&lt;", ">"=>"&gt;", "&"=>"&amp;", "  "=>"&nbsp;&nbsp;",
+    HTMLEscapeDic = {"<" => "&lt;", ">" => "&gt;", "&" => "&amp;", "  " => "&nbsp;&nbsp;",
                      "\r\n" => "<br />\r\n", "\r" => "<br />\r", "\n" => "<br />\n"}
     HTMLEscapePat = /(#{HTMLEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
     def html_tags
@@ -373,37 +373,37 @@ class DocDiff
 
     # Manued
     def manued_header
-      ["defparentheses [ ]"        + (@eol_char||"\n"),
-       "defdelete      /"          + (@eol_char||"\n"),
-       "defswap        |"          + (@eol_char||"\n"),
-       "defcomment     ;"          + (@eol_char||"\n"),
-       "defescape      ~"          + (@eol_char||"\n"),
-       "deforder       newer-last" + (@eol_char||"\n"),
-       "defversion     0.9.5"      + (@eol_char||"\n")]
+      ["defparentheses [ ]"        + (@eol_char || "\n"),
+       "defdelete      /"          + (@eol_char || "\n"),
+       "defswap        |"          + (@eol_char || "\n"),
+       "defcomment     ;"          + (@eol_char || "\n"),
+       "defescape      ~"          + (@eol_char || "\n"),
+       "deforder       newer-last" + (@eol_char || "\n"),
+       "defversion     0.9.5"      + (@eol_char || "\n")]
     end
 
     def manued_footer
       []
     end
-    ManuedInsideEscapeDic = {"~"=>"~~", "/"=>"~/", "["=>"~[", "]"=>"~]", ";"=>"~;"}
+    ManuedInsideEscapeDic = {"~" => "~~", "/" => "~/", "[" => "~[", "]" => "~]", ";" => "~;"}
     ManuedInsideEscapePat = /(#{ManuedInsideEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
-    ManuedOutsideEscapeDic = {"~"=>"~~", "["=>"~["}
+    ManuedOutsideEscapeDic = {"~" => "~~", "[" => "~["}
     ManuedOutsideEscapePat = /(#{ManuedOutsideEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
     def manued_tags
       {:inside_escape_dic   => ManuedInsideEscapeDic,
        :inside_escape_pat   => ManuedInsideEscapePat,
        :outside_escape_dic  => ManuedOutsideEscapeDic,
        :outside_escape_pat  => ManuedOutsideEscapePat,
-       :start_digest_body   => "----#{@eol_char||""}",
+       :start_digest_body   => "----#{@eol_char || ""}",
        :end_digest_body     => "",
        :start_entry         => "",
        :end_entry           => "----",
        :start_position      => "",
-       :end_position        => (@eol_char||"").to_s,
+       :end_position        => (@eol_char || "").to_s,
        :start_prefix        => "",
        :end_prefix          => "",
        :start_postfix       => "",
-       :end_postfix         => (@eol_char||"").to_s,
+       :end_postfix         => (@eol_char || "").to_s,
        :header              => manued_header,
        :footer              => manued_footer,
        :start_common        => "",
@@ -451,16 +451,16 @@ class DocDiff
        :outside_escape_pat  => WDIFFEscapePat,
        :inside_escape_dic   => WDIFFEscapeDic,
        :inside_escape_pat   => WDIFFEscapePat,
-       :start_digest_body   => "----#{@eol_char||""}",
+       :start_digest_body   => "----#{@eol_char || ""}",
        :end_digest_body     => "",
        :start_entry         => "",
        :end_entry           => "----",
        :start_position      => "",
-       :end_position        => (@eol_char||"").to_s,
+       :end_position        => (@eol_char || "").to_s,
        :start_prefix        => "",
        :end_prefix          => "",
        :start_postfix       => "",
-       :end_postfix         => (@eol_char||"").to_s,
+       :end_postfix         => (@eol_char || "").to_s,
        :header              => wdiff_header,
        :footer              => wdiff_footer,
        :start_common        => "",
