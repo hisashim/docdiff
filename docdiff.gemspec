@@ -9,12 +9,14 @@ Gem::Specification.new do |s|
   s.authors     = ["Hisashi Morita"]
   s.email       = ["hisashim@icloud.com"]
   s.homepage    = "https://github.com/hisashim/docdiff"
-  s.summary     = %q{Word-by-word diff}
-  s.description = %q{DocDiff compares two text files and shows the
-                     difference. It can compare files word by word,
-                     character by character, or line by line. It has
-                     several output formats such as HTML, tty, Manued,
-                     or user-defined markup.}
+  s.summary     = "Word-by-word diff"
+  s.description = <<~EOS.chomp
+    DocDiff compares two text files and shows the
+    difference. It can compare files word by word,
+    character by character, or line by line. It has
+    several output formats such as HTML, tty, Manued,
+    or user-defined markup.
+  EOS
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
