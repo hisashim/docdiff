@@ -77,7 +77,7 @@ class DocDiff
         eol_counts = {'CR'   => bin_string.scan(/(\r)(?!\n)/o).size,
                       'LF'   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
                       'CRLF' => bin_string.scan(/(\r\n)/o).size}
-        eol_counts.delete_if { |eol, count| count == 0 }  # Remove missing EOL
+        eol_counts.delete_if { |_eol, count| count == 0 }  # Remove missing EOL
         eols = eol_counts.keys
         eol_variety = eols.size  # numbers of flavors found
         if eol_variety == 1          # Only one type of EOL found
