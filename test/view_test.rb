@@ -19,12 +19,14 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = str.scan_lines("CR")
     assert_equal(expected, actual)
   end
+
   def test_scan_lines_lf()
     str = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA"
     expected =   ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\rA"]
     actual = str.scan_lines("LF")
     assert_equal(expected, actual)
   end
+
   def test_scan_lines_crlf()
     str = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA"
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\rA"]
@@ -40,6 +42,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "CR").source_lines
     assert_equal(expected, actual)
   end
+
   def test_source_lines_cr2()
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
     array2 = ["b", "c", "c"]
@@ -48,6 +51,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "CR").source_lines
     assert_equal(expected, actual)
   end
+
   def test_source_lines_lf()
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
     array2 = ["b", "c", "c"]
@@ -56,6 +60,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "LF").source_lines
     assert_equal(expected, actual)
   end
+
   def test_source_lines_lf2()
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
     array2 = ["b", "c", "c"]
@@ -64,6 +69,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "LF").source_lines
     assert_equal(expected, actual)
   end
+
   def test_source_lines_crlf()
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
     array2 = ["b", "c", "c"]
@@ -72,6 +78,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "CRLF").source_lines
     assert_equal(expected, actual)
   end
+
   def test_source_lines_crlf2()
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
     array2 = ["b", "c", "c"]
@@ -80,6 +87,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "CRLF").source_lines
     assert_equal(expected, actual)
   end
+
   def test_source_lines_noeol()
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]
@@ -88,6 +96,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", nil).source_lines
     assert_equal(expected, actual)
   end
+
   def test_target_lines_cr()
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
@@ -96,6 +105,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "CR").target_lines
     assert_equal(expected, actual)
   end
+
   def test_target_lines_cr2()
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
@@ -104,6 +114,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "CR").target_lines
     assert_equal(expected, actual)
   end
+
   def test_target_lines_lf()
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
@@ -112,6 +123,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "LF").target_lines
     assert_equal(expected, actual)
   end
+
   def test_target_lines_lf2()
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
@@ -120,6 +132,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "LF").target_lines
     assert_equal(expected, actual)
   end
+
   def test_target_lines_crlf()
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
@@ -128,6 +141,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "CRLF").target_lines
     assert_equal(expected, actual)
   end
+
   def test_target_lines_crlf2()
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
@@ -136,6 +150,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     actual = View.new(difference, "US-ASCII", "CRLF").target_lines
     assert_equal(expected, actual)
   end
+
   def test_target_lines_noeol()
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]
@@ -155,6 +170,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   "c"]
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_tty(nil, false))
   end
+
   def test_to_tty_change_ascii()
     array1 = ['a', 'b', 'c']
     array2 = ['a', 'x', 'c']
@@ -164,6 +180,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   "c"]
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_tty(nil, false))
   end
+
   def test_to_tty_del_add_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['い', 'う', 'う']
@@ -184,6 +201,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                                          array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_tty(nil, false))
   end
+
   def test_to_tty_change_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['あ', '漢', 'う']
@@ -203,6 +221,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                                          array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_tty(nil, false))
   end
+
   def test_to_tty_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -212,6 +231,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   "3,3\ne\n\033[7;4;33mf\033[0m\033[7;1;32mF\033[0m\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "US-ASCII", "LF").to_tty_digest(nil, false))
   end
+
   def test_to_tty_digest_block()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -229,6 +249,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     expected =   ["<span class=\"common\">a<br />\r</span>"]
     assert_equal(expected, View.new(difference, "US-ASCII", "CR").to_html(nil, false))
   end
+
   def test_to_html_lf_ascii()
     array1 = ['a', "\n"]
     array2 = ['a', "\n"]
@@ -236,6 +257,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     expected =   ["<span class=\"common\">a<br />\n</span>"]
     assert_equal(expected, View.new(difference, "US-ASCII", "LF").to_html(nil, false))
   end
+
   def test_to_html_crlf_ascii()
     array1 = ['a', "\r\n"]
     array2 = ['a', "\r\n"]
@@ -243,6 +265,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     expected =   ["<span class=\"common\">a<br />\r\n</span>"]
     assert_equal(expected, View.new(difference, "US-ASCII", "CRLF").to_html(nil, false))
   end
+
   def test_to_html_escaping_ascii()
     array1 = ['<>&   ']
     array2 = ['<>&   ']
@@ -250,6 +273,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     expected =   ["<span class=\"common\">&lt;&gt;&amp;&nbsp;&nbsp; </span>"]
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_html(nil, false))
   end
+
   def test_to_html_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -260,6 +284,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   "</ul>"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "US-ASCII", "LF").to_html_digest(nil,false))
   end
+
   def test_to_html_digest_block()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -281,6 +306,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   '<span class="common">c</span>']
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_html(nil, false))
   end
+
   def test_to_html_change_ascii()
     array1 = ['a', 'b', 'c']
     array2 = ['a', 'x', 'c']
@@ -290,6 +316,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   '<span class="common">c</span>']
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_html(nil, false))
   end
+
   def test_to_html_del_add_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['い', 'う', 'う']
@@ -310,6 +337,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                                          array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_html(nil, false))
   end
+
   def test_to_html_change_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['あ', '漢', 'う']
@@ -340,6 +368,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   'c']
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_manued(nil, false))
   end
+
   def test_to_manued_change_ascii()
     array1 = ['a', 'b', 'c']
     array2 = ['a', 'x', 'c']
@@ -349,6 +378,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   'c']
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_manued(nil, false))
   end
+
   def test_to_manued_del_add_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['い', 'う', 'う']
@@ -369,6 +399,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                                          array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_manued(nil, false))
   end
+
   def test_to_manued_change_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['あ', '漢', 'う']
@@ -388,6 +419,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                                          array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_manued(nil, false))
   end
+
   def test_to_manued_escaping_ascii()
     array1 = ['a', '[/;]~', 'b', '[/;]~']
     array2 = ['a', '[/;]~', 'b']
@@ -395,6 +427,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
     expected =   ["a~[/;]~~b", "[~[~/~;~]~~/]"]
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_manued(nil, false))
   end
+
   def test_to_manued_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -404,6 +437,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   "3,3\ne\n[f/F]\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "US-ASCII", "LF").to_manued_digest(nil,false))
   end
+
   def test_to_manued_digest_block()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -424,6 +458,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   'c']
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_wdiff(nil, false))
   end
+
   def test_to_wdiff_change_ascii()
     array1 = ['a', 'b', 'c']
     array2 = ['a', 'x', 'c']
@@ -433,6 +468,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   'c']
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_wdiff(nil, false))
   end
+
   def test_to_wdiff_del_add_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['い', 'う', 'う']
@@ -453,6 +489,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                                          array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_wdiff(nil, false))
   end
+
   def test_to_wdiff_change_ja()
     array1 = ['あ', 'い', 'う']
     array2 = ['あ', '漢', 'う']
@@ -472,6 +509,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                                          array2.map{|i|NKF.nkf("--utf8", i)}),
                           "UTF-8", nil).to_wdiff(nil, false))
   end
+
   def test_to_wdiff_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -481,6 +519,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                 "3,3\ne\n[-f-]{+F+}\n\n----\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "US-ASCII", "LF").to_wdiff_digest(nil,false))
   end
+
   def test_to_wdiff_digest_block()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -511,6 +550,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   '<=>c</=>']
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_user(user_tags, false))
   end
+
   def test_to_user_change_en()
     array1 = ['a', 'b', 'c']
     array2 = ['a', 'x', 'c']
@@ -530,6 +570,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                   '<=>c</=>']
     assert_equal(expected, View.new(difference, "US-ASCII", nil).to_user(user_tags, false))
   end
+
   def test_to_user_digest()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
@@ -548,6 +589,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
                 "3,3 e\n<!->f</!-><!+>F</!+>\n\n"]
     assert_equal(expected, View.new(Difference.new(array1, array2), "US-ASCII", "LF").to_user_digest(user_tags, false))
   end
+
   def test_to_user_digest_block()
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]

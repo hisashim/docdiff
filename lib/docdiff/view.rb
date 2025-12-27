@@ -10,6 +10,7 @@ class String
     else raise "#{eol} is not supported.\n"
     end
   end
+
   def scan_eols(eol)
     case eol
     when nil then    []
@@ -54,6 +55,7 @@ class DocDiff
         end
       }
     end
+
     def escape_outside(str, tags)
       str.gsub(tags[:outside_escape_pat]){|m|
         if replacement = tags[:outside_escape_dic][m]
@@ -208,6 +210,7 @@ class DocDiff
       end
       @source_lines
     end
+
     def target_lines()
       if @target_lines == nil
         @target_lines = @difference.collect{|entry| entry[2]}.join.scan_lines(@eol)
@@ -219,6 +222,7 @@ class DocDiff
     def tty_header()
       []
     end
+
     def tty_footer()
       []
     end
@@ -252,11 +256,13 @@ class DocDiff
        :start_after_change  => "\033[7;1;32m",  # Inverted, Bold, Green
        :end_after_change    => "\033[0m"}
     end
+
     def to_tty(overriding_opts = nil, headfoot = true)  # color escape sequence
       tags = tty_tags()
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
+
     def to_tty_digest(overriding_opts = nil, headfoot = true)
       tags = tty_tags
       tags.update(overriding_opts) if overriding_opts
@@ -283,6 +289,7 @@ class DocDiff
        "</style>#{@eol_char||''}",
        "</head><body><div>#{@eol_char||''}"]
     end
+
     def html_footer()
       [(@eol_char||"") + '</div></body></html>' + (@eol_char||"")]
     end
@@ -317,11 +324,13 @@ class DocDiff
        :start_after_change  => '<span class="after-change"><ins>',
        :end_after_change    => '</ins></span>'}
     end
+
     def to_html(overriding_opts = nil, headfoot = true)
       tags = html_tags()
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
+
     def to_html_digest(overriding_opts = nil, headfoot = true)
       tags = html_tags()
       tags.update(overriding_opts) if overriding_opts
@@ -338,6 +347,7 @@ class DocDiff
        "deforder       newer-last" + (@eol_char||"\n"),
        "defversion     0.9.5"      + (@eol_char||"\n")]
     end
+
     def manued_footer()
       []
     end
@@ -374,11 +384,13 @@ class DocDiff
        :end_after_change    => ']'
       }
     end
+
     def to_manued(overriding_opts = nil, headfoot = true)  # [ / ; ]
       tags = manued_tags()
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
+
     def to_manued_digest(overriding_opts = nil, headfoot = true)  # [ / ; ]
       tags = manued_tags()
       # manued specific kludge: change should be [a/b] in inline, [a/][/b] in multi
@@ -394,6 +406,7 @@ class DocDiff
     def wdiff_header()
       []
     end
+
     def wdiff_footer()
       []
     end
@@ -427,11 +440,13 @@ class DocDiff
        :start_after_change  => '{+',
        :end_after_change    => '+}'}
     end
+
     def to_wdiff(overriding_opts = nil, headfoot = true)
       tags = wdiff_tags()
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags)
     end
+
     def to_wdiff_digest(overriding_opts = nil, headfoot = true)
       tags = wdiff_tags()
       tags.update(overriding_opts) if overriding_opts
@@ -471,11 +486,13 @@ class DocDiff
        :start_after_change  => '',
        :end_after_change    => ''}
     end
+
     def to_user(overriding_opts = nil, headfoot = true)
       tags = user_tags()
       tags.update(overriding_opts) if overriding_opts
       apply_style(tags, headfoot)
     end
+
     def to_user_digest(overriding_opts = nil, headfoot = true)
       tags = user_tags()
       tags.update(overriding_opts) if overriding_opts

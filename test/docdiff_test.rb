@@ -22,6 +22,7 @@ class TC_DocDiff < Test::Unit::TestCase
                 [:common_elt_elt, ['Baz quux.'], ['Baz quux.']]]
     assert_equal(expected, docdiff.compare_by_line(doc1, doc2))
   end
+
   def test_compare_by_line_word()
     doc1 = Document.new("a b c d\ne f", 'US-ASCII', 'LF')
     doc2 = Document.new("a x c d\ne f", 'US-ASCII', 'LF')
@@ -33,6 +34,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected,
                  docdiff.compare_by_line_word(doc1, doc2))
   end
+
   def test_compare_by_line_word_char()
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
@@ -88,6 +90,7 @@ class TC_DocDiff < Test::Unit::TestCase
                "[foo bar\n/foo beer\n]baz"
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "manued", :digest => false}))
   end
+
   def test_run_word_manued()
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
@@ -102,6 +105,7 @@ class TC_DocDiff < Test::Unit::TestCase
                "foo [bar/beer]\nbaz"
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "manued", :digest => false}))
   end
+
   def test_run_char_manued()
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
@@ -135,6 +139,7 @@ class TC_DocDiff < Test::Unit::TestCase
     expected = "<!->foo bar\n</!-><!+>foo beer\n</!+><=>baz</=>"
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "user", :digest => false}))
   end
+
   def test_run_word_user()
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
@@ -153,6 +158,7 @@ class TC_DocDiff < Test::Unit::TestCase
     expected = "<=>foo </=><!->bar</!-><!+>beer</!+><=>\n</=><=>baz</=>"
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "user", :digest => false}))
   end
+
   def test_run_char_user()
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')

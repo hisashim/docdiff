@@ -26,7 +26,6 @@ class DocDiff
     end
 
     def combine_del_add_to_change!()
-
       @raw_list.each_with_index{|block, i|
         case block.first
         when :common_elt_elt
