@@ -80,7 +80,7 @@ class TC_DocDiff < Test::Unit::TestCase
       </ins></span><span class="common">baz</span>
       </div></body></html>
     EOS
-    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "html", :digest => false}))
+    assert_equal(expected, docdiff.run(doc1, doc2, { resolution: "line", format: "html", digest: false }))
   end
 
   def test_run_line_manued
@@ -99,7 +99,7 @@ class TC_DocDiff < Test::Unit::TestCase
       /foo beer
       ]baz
     EOS
-    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "manued", :digest => false}))
+    assert_equal(expected, docdiff.run(doc1, doc2, { resolution: "line", format: "manued", digest: false }))
   end
 
   def test_run_word_manued
@@ -117,7 +117,7 @@ class TC_DocDiff < Test::Unit::TestCase
       foo [bar/beer]
       baz
     EOS
-    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "manued", :digest => false}))
+    assert_equal(expected, docdiff.run(doc1, doc2, { resolution: "word", format: "manued", digest: false }))
   end
 
   def test_run_char_manued
@@ -135,64 +135,70 @@ class TC_DocDiff < Test::Unit::TestCase
       foo b[a/ee]r
       baz
     EOS
-    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "manued", :digest => false}))
+    assert_equal(expected, docdiff.run(doc1, doc2, { resolution: "char", format: "manued", digest: false }))
   end
 
   def test_run_line_user
     doc1 = Document.new("foo bar\nbaz", "US-ASCII", "LF")
     doc2 = Document.new("foo beer\nbaz", "US-ASCII", "LF")
-    config = {:tag_common_start          => "<=>",
-              :tag_common_end            => "</=>",
-              :tag_del_start             => "<->",
-              :tag_del_end               => "</->",
-              :tag_add_start             => "<+>",
-              :tag_add_end               => "</+>",
-              :tag_change_before_start   => "<!->",
-              :tag_change_before_end     => "</!->",
-              :tag_change_after_start    => "<!+>",
-              :tag_change_after_end      => "</!+>"}
+    config = {
+      tag_common_start:        "<=>",
+      tag_common_end:          "</=>",
+      tag_del_start:           "<->",
+      tag_del_end:             "</->",
+      tag_add_start:           "<+>",
+      tag_add_end:             "</+>",
+      tag_change_before_start: "<!->",
+      tag_change_before_end:   "</!->",
+      tag_change_after_start:  "<!+>",
+      tag_change_after_end:    "</!+>",
+    }
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<!->foo bar\n</!-><!+>foo beer\n</!+><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "user", :digest => false}))
+    assert_equal(expected, docdiff.run(doc1, doc2, { resolution: "line", format: "user", digest: false }))
   end
 
   def test_run_word_user
     doc1 = Document.new("foo bar\nbaz", "US-ASCII", "LF")
     doc2 = Document.new("foo beer\nbaz", "US-ASCII", "LF")
-    config = {:tag_common_start          => "<=>",
-              :tag_common_end            => "</=>",
-              :tag_del_start             => "<->",
-              :tag_del_end               => "</->",
-              :tag_add_start             => "<+>",
-              :tag_add_end               => "</+>",
-              :tag_change_before_start   => "<!->",
-              :tag_change_before_end     => "</!->",
-              :tag_change_after_start    => "<!+>",
-              :tag_change_after_end      => "</!+>"}
+    config = {
+      tag_common_start:        "<=>",
+      tag_common_end:          "</=>",
+      tag_del_start:           "<->",
+      tag_del_end:             "</->",
+      tag_add_start:           "<+>",
+      tag_add_end:             "</+>",
+      tag_change_before_start: "<!->",
+      tag_change_before_end:   "</!->",
+      tag_change_after_start:  "<!+>",
+      tag_change_after_end:    "</!+>",
+    }
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<=>foo </=><!->bar</!-><!+>beer</!+><=>\n</=><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "user", :digest => false}))
+    assert_equal(expected, docdiff.run(doc1, doc2, { resolution: "word", format: "user", digest: false }))
   end
 
   def test_run_char_user
     doc1 = Document.new("foo bar\nbaz", "US-ASCII", "LF")
     doc2 = Document.new("foo beer\nbaz", "US-ASCII", "LF")
-    config = {:tag_common_start          => "<=>",
-              :tag_common_end            => "</=>",
-              :tag_del_start             => "<->",
-              :tag_del_end               => "</->",
-              :tag_add_start             => "<+>",
-              :tag_add_end               => "</+>",
-              :tag_change_before_start   => "<!->",
-              :tag_change_before_end     => "</!->",
-              :tag_change_after_start    => "<!+>",
-              :tag_change_after_end      => "</!+>"}
+    config = {
+      tag_common_start:        "<=>",
+      tag_common_end:          "</=>",
+      tag_del_start:           "<->",
+      tag_del_end:             "</->",
+      tag_add_start:           "<+>",
+      tag_add_end:             "</+>",
+      tag_change_before_start: "<!->",
+      tag_change_before_end:   "</!->",
+      tag_change_after_start:  "<!+>",
+      tag_change_after_end:    "</!+>",
+    }
     docdiff = DocDiff.new
     docdiff.config.update(config)
     expected = "<=>foo </=><=>b</=><!->a</!-><!+>ee</!+><=>r</=><=>\n</=><=>baz</=>"
-    assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "user", :digest => false}))
+    assert_equal(expected, docdiff.run(doc1, doc2, { resolution: "char", format: "user", digest: false }))
   end
 
   def teardown

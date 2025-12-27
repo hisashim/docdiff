@@ -25,14 +25,14 @@ class DocDiff
       File.join(ENV["HOME"], ".config", "docdiff", "docdiff.conf")
     end
   DEFAULT_CONFIG = {
-    :resolution    => "word",
-    :encoding      => "auto",
-    :eol           => "auto",
-    :format        => "html",
-    :cache         => true,
-    :digest        => false,
-    :pager         => nil,
-    :verbose       => false
+    resolution: "word",
+    encoding: "auto",
+    eol: "auto",
+    format: "html",
+    cache: true,
+    digest: false,
+    pager: nil,
+    verbose: false,
   }
 
   def initialize(config: {})
@@ -112,16 +112,18 @@ class DocDiff
       raise "Unsupported resolution: #{option[:resolution].inspect}"
     end
     view = View.new(difference, doc1.encoding, doc1.eol)
-    user_tags = {:start_common        => (@config[:tag_common_start] ||= ""),
-                 :end_common          => (@config[:tag_common_end] ||= ""),
-                 :start_del           => (@config[:tag_del_start] ||= ""),
-                 :end_del             => (@config[:tag_del_end] ||= ""),
-                 :start_add           => (@config[:tag_add_start] ||= ""),
-                 :end_add             => (@config[:tag_add_end] ||= ""),
-                 :start_before_change => (@config[:tag_change_before_start] ||= ""),
-                 :end_before_change   => (@config[:tag_change_before_end] ||= ""),
-                 :start_after_change  => (@config[:tag_change_after_start] ||= ""),
-                 :end_after_change    => (@config[:tag_change_after_end] ||= "")}
+    user_tags = {
+      start_common:        (@config[:tag_common_start] ||= ""),
+      end_common:          (@config[:tag_common_end] ||= ""),
+      start_del:           (@config[:tag_del_start] ||= ""),
+      end_del:             (@config[:tag_del_end] ||= ""),
+      start_add:           (@config[:tag_add_start] ||= ""),
+      end_add:             (@config[:tag_add_end] ||= ""),
+      start_before_change: (@config[:tag_change_before_start] ||= ""),
+      end_before_change:   (@config[:tag_change_before_end] ||= ""),
+      start_after_change:  (@config[:tag_change_after_start] ||= ""),
+      end_after_change:    (@config[:tag_change_after_end] ||= ""),
+    }
     case option[:digest]
     when true
       case option[:format]

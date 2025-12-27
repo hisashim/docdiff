@@ -258,7 +258,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
       "3,3\ne\n\033[7;4;33mf\033[0m\n\ne\n\033[7;1;32mF\033[0m\n\n----\n",
     ]
     view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
-    assert_equal(expected, view.to_tty_digest({display: "block"}, false))
+    assert_equal(expected, view.to_tty_digest({ display: "block" }, false))
   end
 
   def test_to_html_cr_ascii
@@ -318,7 +318,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
       "</ul>",
     ]
     view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
-    assert_equal(expected, view.to_html_digest({display: "block"}, false))
+    assert_equal(expected, view.to_html_digest({ display: "block" }, false))
   end
 
   def test_to_html_del_add_ascii
@@ -510,7 +510,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
       "3,3\ne\n[f/]\n\ne\n[/F]\n\n----\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
-    assert_equal(expected, view.to_manued_digest({display: "block"}, false))
+    assert_equal(expected, view.to_manued_digest({ display: "block" }, false))
   end
 
   def test_to_wdiff_del_add_ascii
@@ -606,23 +606,23 @@ class TC_DocDiff_View < Test::Unit::TestCase
       "3,3\ne\n[-f-]\n\ne\n{+F+}\n\n----\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
-    assert_equal(expected, view.to_wdiff_digest({display: "block"}, false))
+    assert_equal(expected, view.to_wdiff_digest({ display: "block" }, false))
   end
 
   def test_to_user_del_add_en
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]
     user_tags = {
-      :start_common        => "<=>",
-      :end_common          => "</=>",
-      :start_del           => "<->",
-      :end_del             => "</->",
-      :start_add           => "<+>",
-      :end_add             => "</+>",
-      :start_before_change => "<!->",
-      :end_before_change   => "</!->",
-      :start_after_change  => "<!+>",
-      :end_after_change    => "</!+>",
+      start_common:        "<=>",
+      end_common:          "</=>",
+      start_del:           "<->",
+      end_del:             "</->",
+      start_add:           "<+>",
+      end_add:             "</+>",
+      start_before_change: "<!->",
+      end_before_change:   "</!->",
+      start_after_change:  "<!+>",
+      end_after_change:    "</!+>",
     }
     expected = [
       "<->a</->",
@@ -638,16 +638,16 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array1 = ["a", "b", "c"]
     array2 = ["a", "x", "c"]
     user_tags = {
-      :start_common        => "<=>",
-      :end_common          => "</=>",
-      :start_del           => "<->",
-      :end_del             => "</->",
-      :start_add           => "<+>",
-      :end_add             => "</+>",
-      :start_before_change => "<!->",
-      :end_before_change   => "</!->",
-      :start_after_change  => "<!+>",
-      :end_after_change    => "</!+>",
+      start_common:        "<=>",
+      end_common:          "</=>",
+      start_del:           "<->",
+      end_del:             "</->",
+      start_add:           "<+>",
+      end_add:             "</+>",
+      start_before_change: "<!->",
+      end_before_change:   "</!->",
+      start_after_change:  "<!+>",
+      end_after_change:    "</!+>",
     }
     expected = [
       "<=>a</=>",
@@ -662,16 +662,16 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     user_tags = {
-      :start_common        => "<=>",
-      :end_common          => "</=>",
-      :start_del           => "<->",
-      :end_del             => "</->",
-      :start_add           => "<+>",
-      :end_add             => "</+>",
-      :start_before_change => "<!->",
-      :end_before_change   => "</!->",
-      :start_after_change  => "<!+>",
-      :end_after_change    => "</!+>",
+      start_common:        "<=>",
+      end_common:          "</=>",
+      start_del:           "<->",
+      end_del:             "</->",
+      start_add:           "<+>",
+      end_add:             "</+>",
+      start_before_change: "<!->",
+      end_before_change:   "</!->",
+      start_after_change:  "<!+>",
+      end_after_change:    "</!+>",
     }
     expected = [
       "1-2,(1) <->a\nb</->cd\n",
@@ -686,17 +686,17 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     user_tags = {
-      :start_common        => "<=>",
-      :end_common          => "</=>",
-      :start_del           => "<->",
-      :end_del             => "</->",
-      :start_add           => "<+>",
-      :end_add             => "</+>",
-      :start_before_change => "<!->",
-      :end_before_change   => "</!->",
-      :start_after_change  => "<!+>",
-      :end_after_change    => "</!+>",
-      :display             => "block",
+      start_common:        "<=>",
+      end_common:          "</=>",
+      start_del:           "<->",
+      end_del:             "</->",
+      start_add:           "<+>",
+      end_add:             "</+>",
+      start_before_change: "<!->",
+      end_before_change:   "</!->",
+      start_after_change:  "<!+>",
+      end_after_change:    "</!+>",
+      display:             "block",
     }
     expected = [
       "1-2,(1) a\nbcd<->a\nb</->cd\n",

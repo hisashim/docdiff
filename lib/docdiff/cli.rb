@@ -218,8 +218,8 @@ class DocDiff
 
         config_from_program_name =
           case File.basename($PROGRAM_NAME, ".*")
-          when "worddiff" then {:resolution => "word"}
-          when "chardiff" then {:resolution => "char"}
+          when "worddiff" then { resolution: "word" }
+          when "chardiff" then { resolution: "char" }
           end
 
         config_from_env_vars = {}

@@ -27,16 +27,16 @@ class TC_CLI < Test::Unit::TestCase
       "file2",
     ]
     expected = {
-      :resolution => "char",
-      :encoding => "EUC-JP",
-      :eol => "CRLF",
-      :format => "wdiff",
-      :digest => true,
-      :label => ["old", "new"],
-      :display => "block",
-      :pager => "'less --raw-control-chars'",
-      :no_config_file => true,
-      :config_file => "./docdiff.conf",
+      resolution:     "char",
+      encoding:       "EUC-JP",
+      eol:            "CRLF",
+      format:         "wdiff",
+      digest:         true,
+      label:          ["old", "new"],
+      display:        "block",
+      pager:          "'less --raw-control-chars'",
+      no_config_file: true,
+      config_file:    "./docdiff.conf",
     }
     assert_equal(expected, DocDiff::CLI.parse_options!(args, base_options: {}))
   end
@@ -54,13 +54,13 @@ class TC_CLI < Test::Unit::TestCase
       "",
       nil,
     ].join
-    expected = {:foo1 => true, :foo2 => "bar baz", :foo3 => 123, :foo4 => false}
+    expected = { foo1: true, foo2: "bar baz", foo3: 123, foo4: false }
     assert_equal(expected, DocDiff::CLI.parse_config_file_content(content))
   end
 
   def test_read_config_from_file
     filename = File.join(File.dirname(__FILE__), "fixture/simple.conf")
-    expected = {:foo1 => true, :foo2 => "bar baz", :foo3 => 123, :foo4 => false}
+    expected = { foo1: true, foo2: "bar baz", foo3: 123, foo4: false }
     config, _message = DocDiff::CLI.read_config_from_file(filename)
     assert_equal(expected, config)
   end

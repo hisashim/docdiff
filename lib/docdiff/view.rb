@@ -36,7 +36,7 @@ class DocDiff
       @difference = difference
       @encoding = encoding
       @eol = eol
-      @eol_char = {"CR" => "\r", "LF" => "\n", "CRLF" => "\r\n"}[@eol]
+      @eol_char = { "CR" => "\r", "LF" => "\n", "CRLF" => "\r\n" }[@eol]
 #     if CharString::EOLChars[@eol]
 #       @eol_char = CharString::EOLChars[@eol].eol_char
 #     else
@@ -270,35 +270,37 @@ class DocDiff
     def tty_footer
       []
     end
-    TTYEscapeDic = {"ThisRandomString" => "ThisRandomString"}
+    TTYEscapeDic = { "ThisRandomString" => "ThisRandomString" }
     TTYEscapePat = /(#{TTYEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
     def tty_tags
-      {:outside_escape_dic  => TTYEscapeDic,
-       :outside_escape_pat  => TTYEscapePat,
-       :inside_escape_dic   => TTYEscapeDic,
-       :inside_escape_pat   => TTYEscapePat,
-       :start_digest_body   => "----#{@eol_char || ""}",
-       :end_digest_body     => "",
-       :start_entry         => "",
-       :end_entry           => "----",
-       :start_position      => "",
-       :end_position        => (@eol_char || "").to_s,
-       :start_prefix        => "",
-       :end_prefix          => "",
-       :start_postfix       => "",
-       :end_postfix         => (@eol_char || "").to_s,
-       :header              => tty_header,
-       :footer              => tty_footer,
-       :start_common        => "",
-       :end_common          => "",
-       :start_del           => "\033[7;4;31m",  # Inverted, Underlined, Red
-       :end_del             => "\033[0m",
-       :start_add           => "\033[7;1;34m",  # Inverted, Bold, Blue
-       :end_add             => "\033[0m",
-       :start_before_change => "\033[7;4;33m",  # Inverted, Underlined, Yellow
-       :end_before_change   => "\033[0m",
-       :start_after_change  => "\033[7;1;32m",  # Inverted, Bold, Green
-       :end_after_change    => "\033[0m"}
+      {
+        outside_escape_dic:  TTYEscapeDic,
+        outside_escape_pat:  TTYEscapePat,
+        inside_escape_dic:   TTYEscapeDic,
+        inside_escape_pat:   TTYEscapePat,
+        start_digest_body:   "----#{@eol_char || ""}",
+        end_digest_body:     "",
+        start_entry:         "",
+        end_entry:           "----",
+        start_position:      "",
+        end_position:        (@eol_char || "").to_s,
+        start_prefix:        "",
+        end_prefix:          "",
+        start_postfix:       "",
+        end_postfix:         (@eol_char || "").to_s,
+        header:              tty_header,
+        footer:              tty_footer,
+        start_common:        "",
+        end_common:          "",
+        start_del:           "\033[7;4;31m", # Inverted, Underlined, Red
+        end_del:             "\033[0m",
+        start_add:           "\033[7;1;34m", # Inverted, Bold, Blue
+        end_add:             "\033[0m",
+        start_before_change: "\033[7;4;33m", # Inverted, Underlined, Yellow
+        end_before_change:   "\033[0m",
+        start_after_change:  "\033[7;1;32m", # Inverted, Bold, Green
+        end_after_change:    "\033[0m",
+      }
     end
 
     def to_tty(overriding_opts = nil, headfoot = true) # color escape sequence
@@ -339,36 +341,45 @@ class DocDiff
     def html_footer
       [(@eol_char || "") + "</div></body></html>" + (@eol_char || "")]
     end
-    HTMLEscapeDic = {"<" => "&lt;", ">" => "&gt;", "&" => "&amp;", "  " => "&nbsp;&nbsp;",
-                     "\r\n" => "<br />\r\n", "\r" => "<br />\r", "\n" => "<br />\n"}
+    HTMLEscapeDic = {
+      "<"    => "&lt;",
+      ">"    => "&gt;",
+      "&"    => "&amp;",
+      "  "   => "&nbsp;&nbsp;",
+      "\r\n" => "<br />\r\n",
+      "\r"   => "<br />\r",
+      "\n"   => "<br />\n",
+    }
     HTMLEscapePat = /(#{HTMLEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
     def html_tags
-      {:outside_escape_dic  => HTMLEscapeDic,
-       :outside_escape_pat  => HTMLEscapePat,
-       :inside_escape_dic   => HTMLEscapeDic,
-       :inside_escape_pat   => HTMLEscapePat,
-       :start_digest_body   => "<ul>",
-       :end_digest_body     => "</ul>",
-       :start_entry         => '<li class="entry">',
-       :end_entry           => "</blockquote></li>",
-       :start_position      => '<p class="position">',
-       :end_position        => '</p><blockquote class="body">',
-       :start_prefix        => '<p class="body">',
-       :end_prefix          => "",
-       :start_postfix       => "",
-       :end_postfix         => "</p>",
-       :header              => html_header,
-       :footer              => html_footer,
-       :start_common        => '<span class="common">',
-       :end_common          => "</span>",
-       :start_del           => '<span class="del"><del>',
-       :end_del             => "</del></span>",
-       :start_add           => '<span class="add"><ins>',
-       :end_add             => "</ins></span>",
-       :start_before_change => '<span class="before-change"><del>',
-       :end_before_change   => "</del></span>",
-       :start_after_change  => '<span class="after-change"><ins>',
-       :end_after_change    => "</ins></span>"}
+      {
+        outside_escape_dic:  HTMLEscapeDic,
+        outside_escape_pat:  HTMLEscapePat,
+        inside_escape_dic:   HTMLEscapeDic,
+        inside_escape_pat:   HTMLEscapePat,
+        start_digest_body:   "<ul>",
+        end_digest_body:     "</ul>",
+        start_entry:         '<li class="entry">',
+        end_entry:           "</blockquote></li>",
+        start_position:      '<p class="position">',
+        end_position:        '</p><blockquote class="body">',
+        start_prefix:        '<p class="body">',
+        end_prefix:          "",
+        start_postfix:       "",
+        end_postfix:         "</p>",
+        header:              html_header,
+        footer:              html_footer,
+        start_common:        '<span class="common">',
+        end_common:          "</span>",
+        start_del:           '<span class="del"><del>',
+        end_del:             "</del></span>",
+        start_add:           '<span class="add"><ins>',
+        end_add:             "</ins></span>",
+        start_before_change: '<span class="before-change"><del>',
+        end_before_change:   "</del></span>",
+        start_after_change:  '<span class="after-change"><ins>',
+        end_after_change:    "</ins></span>",
+      }
     end
 
     def to_html(overriding_opts = nil, headfoot = true)
@@ -399,37 +410,38 @@ class DocDiff
     def manued_footer
       []
     end
-    ManuedInsideEscapeDic = {"~" => "~~", "/" => "~/", "[" => "~[", "]" => "~]", ";" => "~;"}
+    ManuedInsideEscapeDic = { "~" => "~~", "/" => "~/", "[" => "~[", "]" => "~]", ";" => "~;" }
     ManuedInsideEscapePat = /(#{ManuedInsideEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
-    ManuedOutsideEscapeDic = {"~" => "~~", "[" => "~["}
+    ManuedOutsideEscapeDic = { "~" => "~~", "[" => "~[" }
     ManuedOutsideEscapePat = /(#{ManuedOutsideEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
     def manued_tags
-      {:inside_escape_dic   => ManuedInsideEscapeDic,
-       :inside_escape_pat   => ManuedInsideEscapePat,
-       :outside_escape_dic  => ManuedOutsideEscapeDic,
-       :outside_escape_pat  => ManuedOutsideEscapePat,
-       :start_digest_body   => "----#{@eol_char || ""}",
-       :end_digest_body     => "",
-       :start_entry         => "",
-       :end_entry           => "----",
-       :start_position      => "",
-       :end_position        => (@eol_char || "").to_s,
-       :start_prefix        => "",
-       :end_prefix          => "",
-       :start_postfix       => "",
-       :end_postfix         => (@eol_char || "").to_s,
-       :header              => manued_header,
-       :footer              => manued_footer,
-       :start_common        => "",
-       :end_common          => "",
-       :start_del           => "[",
-       :end_del             => "/]",
-       :start_add           => "[/",
-       :end_add             => "]",
-       :start_before_change => "[",
-       :end_before_change   => "/",
-       :start_after_change  => "",
-       :end_after_change    => "]"
+      {
+        inside_escape_dic:   ManuedInsideEscapeDic,
+        inside_escape_pat:   ManuedInsideEscapePat,
+        outside_escape_dic:  ManuedOutsideEscapeDic,
+        outside_escape_pat:  ManuedOutsideEscapePat,
+        start_digest_body:   "----#{@eol_char || ""}",
+        end_digest_body:     "",
+        start_entry:         "",
+        end_entry:           "----",
+        start_position:      "",
+        end_position:        (@eol_char || "").to_s,
+        start_prefix:        "",
+        end_prefix:          "",
+        start_postfix:       "",
+        end_postfix:         (@eol_char || "").to_s,
+        header:              manued_header,
+        footer:              manued_footer,
+        start_common:        "",
+        end_common:          "",
+        start_del:           "[",
+        end_del:             "/]",
+        start_add:           "[/",
+        end_add:             "]",
+        start_before_change: "[",
+        end_before_change:   "/",
+        start_after_change:  "",
+        end_after_change:    "]",
       }
     end
 
@@ -444,7 +456,7 @@ class DocDiff
       # manued specific kludge: change should be [a/b] in inline, [a/][/b] in multi
       display = (overriding_opts and overriding_opts[:display]) || "inline"
       if /block|multi/.match(display)
-        tags.update({:end_before_change => "/]", :start_after_change => "[/"})
+        tags.update({ end_before_change: "/]", start_after_change: "[/" })
       end
       tags.update(overriding_opts) if overriding_opts
       apply_style_digest(tags, headfoot)
@@ -458,35 +470,37 @@ class DocDiff
     def wdiff_footer
       []
     end
-    WDIFFEscapeDic = {"ThisRandomString" => "ThisRandomString"}
+    WDIFFEscapeDic = { "ThisRandomString" => "ThisRandomString" }
     WDIFFEscapePat = /(#{WDIFFEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
     def wdiff_tags
-      {:outside_escape_dic  => WDIFFEscapeDic,
-       :outside_escape_pat  => WDIFFEscapePat,
-       :inside_escape_dic   => WDIFFEscapeDic,
-       :inside_escape_pat   => WDIFFEscapePat,
-       :start_digest_body   => "----#{@eol_char || ""}",
-       :end_digest_body     => "",
-       :start_entry         => "",
-       :end_entry           => "----",
-       :start_position      => "",
-       :end_position        => (@eol_char || "").to_s,
-       :start_prefix        => "",
-       :end_prefix          => "",
-       :start_postfix       => "",
-       :end_postfix         => (@eol_char || "").to_s,
-       :header              => wdiff_header,
-       :footer              => wdiff_footer,
-       :start_common        => "",
-       :end_common          => "",
-       :start_del           => "[-",
-       :end_del             => "-]",
-       :start_add           => "{+",
-       :end_add             => "+}",
-       :start_before_change => "[-",
-       :end_before_change   => "-]",
-       :start_after_change  => "{+",
-       :end_after_change    => "+}"}
+      {
+        outside_escape_dic:  WDIFFEscapeDic,
+        outside_escape_pat:  WDIFFEscapePat,
+        inside_escape_dic:   WDIFFEscapeDic,
+        inside_escape_pat:   WDIFFEscapePat,
+        start_digest_body:   "----#{@eol_char || ""}",
+        end_digest_body:     "",
+        start_entry:         "",
+        end_entry:           "----",
+        start_position:      "",
+        end_position:        (@eol_char || "").to_s,
+        start_prefix:        "",
+        end_prefix:          "",
+        start_postfix:       "",
+        end_postfix:         (@eol_char || "").to_s,
+        header:              wdiff_header,
+        footer:              wdiff_footer,
+        start_common:        "",
+        end_common:          "",
+        start_del:           "[-",
+        end_del:             "-]",
+        start_add:           "{+",
+        end_add:             "+}",
+        start_before_change: "[-",
+        end_before_change:   "-]",
+        start_after_change:  "{+",
+        end_after_change:    "+}",
+      }
     end
 
     def to_wdiff(overriding_opts = nil, headfoot = true)
@@ -510,35 +524,37 @@ class DocDiff
       []
     end
 
-    UserEscapeDic = {"ThisRandomString" => "ThisRandomString"}
+    UserEscapeDic = { "ThisRandomString" => "ThisRandomString" }
     UserEscapePat = /(#{UserEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
     def user_tags
-      {:outside_escape_dic  => UserEscapeDic,
-       :outside_escape_pat  => UserEscapePat,
-       :inside_escape_dic   => UserEscapeDic,
-       :inside_escape_pat   => UserEscapePat,
-       :start_digest_body   => "",
-       :end_digest_body     => "",
-       :start_entry         => "",
-       :end_entry           => "",
-       :start_position      => "",
-       :end_position        => " ",
-       :start_prefix        => "",
-       :end_prefix          => "",
-       :start_postfix       => "",
-       :end_postfix         => "",
-       :header              => user_header,
-       :footer              => user_footer,
-       :start_common        => "",
-       :end_common          => "",
-       :start_del           => "",
-       :end_del             => "",
-       :start_add           => "",
-       :end_add             => "",
-       :start_before_change => "",
-       :end_before_change   => "",
-       :start_after_change  => "",
-       :end_after_change    => ""}
+      {
+        outside_escape_dic:  UserEscapeDic,
+        outside_escape_pat:  UserEscapePat,
+        inside_escape_dic:   UserEscapeDic,
+        inside_escape_pat:   UserEscapePat,
+        start_digest_body:   "",
+        end_digest_body:     "",
+        start_entry:         "",
+        end_entry:           "",
+        start_position:      "",
+        end_position:        " ",
+        start_prefix:        "",
+        end_prefix:          "",
+        start_postfix:       "",
+        end_postfix:         "",
+        header:              user_header,
+        footer:              user_footer,
+        start_common:        "",
+        end_common:          "",
+        start_del:           "",
+        end_del:             "",
+        start_add:           "",
+        end_add:             "",
+        start_before_change: "",
+        end_before_change:   "",
+        start_after_change:  "",
+        end_after_change:    "",
+      }
     end
 
     def to_user(overriding_opts = nil, headfoot = true)
