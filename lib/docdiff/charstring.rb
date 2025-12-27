@@ -60,31 +60,33 @@ class DocDiff
        "module: #{Encodings[@encoding]}, #{EOLChars[@eol]}"].join
     end
 
-    def CharString.register_encoding(mod)
-      Encodings[mod::Encoding] = mod
-    end
+    class << self
+      def register_encoding(mod)
+        Encodings[mod::Encoding] = mod
+      end
 
-    def CharString.register_eol(mod)
-      EOLChars[mod::EOL] = mod
-    end
+      def register_eol(mod)
+        EOLChars[mod::EOL] = mod
+      end
 
-    def CharString.guess_eol(string)
-      # returns 'CR', 'LF', 'CRLF', 'UNKNOWN'(binary),
-      # 'NONE'(1-line), or nil
-      return nil if string == nil  #=> nil (argument missing)
-      bin_string = string.dup.force_encoding("ASCII-8BIT")
-      eol_counts = {'CR'   => bin_string.scan(/(\r)(?!\n)/o).size,
-                    'LF'   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
-                    'CRLF' => bin_string.scan(/(\r\n)/o).size}
-      eol_counts.delete_if{|eol, count| count == 0}  # Remove missing EOL
-      eols = eol_counts.keys
-      eol_variety = eols.size  # numbers of flavors found
-      if eol_variety == 1          # Only one type of EOL found
-        return eols[0]         #=> 'CR', 'LF', or 'CRLF'
-      elsif eol_variety == 0       # No EOL found
-        return 'NONE'              #=> 'NONE' (might be 1-line file)
-      else                         # Multiple types of EOL found
-        return 'UNKNOWN'           #=> 'UNKNOWN' (might be binary data)
+      def guess_eol(string)
+        # returns 'CR', 'LF', 'CRLF', 'UNKNOWN'(binary),
+        # 'NONE'(1-line), or nil
+        return nil if string == nil  #=> nil (argument missing)
+        bin_string = string.dup.force_encoding("ASCII-8BIT")
+        eol_counts = {'CR'   => bin_string.scan(/(\r)(?!\n)/o).size,
+                      'LF'   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
+                      'CRLF' => bin_string.scan(/(\r\n)/o).size}
+        eol_counts.delete_if{|eol, count| count == 0}  # Remove missing EOL
+        eols = eol_counts.keys
+        eol_variety = eols.size  # numbers of flavors found
+        if eol_variety == 1          # Only one type of EOL found
+          return eols[0]         #=> 'CR', 'LF', or 'CRLF'
+        elsif eol_variety == 0       # No EOL found
+          return 'NONE'              #=> 'NONE' (might be 1-line file)
+        else                         # Multiple types of EOL found
+          return 'UNKNOWN'           #=> 'UNKNOWN' (might be binary data)
+        end
       end
     end
 
@@ -134,11 +136,13 @@ class DocDiff
       force_encoding(cs) if self
     end
 
-    def CharString.guess_encoding(string)
-      if string
-        string.encoding.to_s
-      else
-        nil
+    class  << self
+      def guess_encoding(string)
+        if string
+          string.encoding.to_s
+        else
+          nil
+        end
       end
     end
 
