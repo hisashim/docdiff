@@ -19,14 +19,14 @@ class DocDiff
       end
       diff = Diff.new(array1, array2)
       @raw_list = []
-      diff.ses.each{|block|  # Diff::EditScript does not have each_with_index()
+      diff.ses.each do |block| # Diff::EditScript does not have each_with_index
         @raw_list << block
-      }
+      end
       combine_del_add_to_change!
     end
 
     def combine_del_add_to_change!
-      @raw_list.each_with_index{|block, i|
+      @raw_list.each_with_index do |block, i|
         case block.first
         when :common_elt_elt
           if i == 0                       # first block
@@ -60,31 +60,31 @@ class DocDiff
         else
           raise "the first element of the block #{i} is invalid: (#{block.first})\n"
         end
-      }
+      end
     end
     attr_accessor :raw_list
 
     def former_only
       elms = self.dup.delete_if{|e| e[0] == :add_elt}
-      elms.collect!{|e|
+      elms.collect! do |e|
         if e[0] == :change_elt
           [e[0], e[1], nil]
         else
           e
         end
-      }
+      end
       return elms
     end
 
     def latter_only
       elms = self.dup.delete_if{|e| e[0] == :del_elt}
-      elms.collect!{|e|
+      elms.collect! do |e|
         if e[0] == :change_elt
           [e[0], nil, e[2]]
         else
           e
         end
-      }
+      end
       return elms
     end
   end  # class Difference

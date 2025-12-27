@@ -53,28 +53,28 @@ class DocDiff
     end
 
     def escape_inside(str, tags)
-      str.gsub(tags[:inside_escape_pat]){|m|
+      str.gsub(tags[:inside_escape_pat]) do |m|
         if replacement = tags[:inside_escape_dic][m]
           replacement
         else
           m
         end
-      }
+      end
     end
 
     def escape_outside(str, tags)
-      str.gsub(tags[:outside_escape_pat]){|m|
+      str.gsub(tags[:outside_escape_pat]) do |m|
         if replacement = tags[:outside_escape_dic][m]
           replacement
         else
           m
         end
-      }
+      end
     end
 
     def apply_style(tags, headfoot = true)
       result = []
-      @difference.each{|block|
+      @difference.each do |block|
         operation = block.first
         if block_given?
           src = yield((block[1] || []).join)
@@ -96,7 +96,7 @@ class DocDiff
         else
           raise "invalid attribute: #{block.first}\n"
         end
-      }
+      end
       if headfoot == true
         result = tags[:header] + result + tags[:footer]
       end
@@ -127,7 +127,7 @@ class DocDiff
       result = []
       d1l = doc1_line_number = 1
       d2l = doc2_line_number = 1
-      @difference.each_with_index{|entry, i|
+      @difference.each_with_index do |entry, i|
         if block_given?
           src = yield((entry[1] || []).join)
           tgt = yield((entry[1] || []).join)
@@ -146,8 +146,8 @@ class DocDiff
                      (@difference[i+1][1] || []).join.scan(cxt_post_pat).join
                    end
         # elements for an entry
-        e_head     = Proc.new {|pos_str|
-          tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]}
+        e_head     = Proc.new do |pos_str|
+          tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position] end
         e_cxt_pre  = tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
         e_src      = escape_inside(src, tags)
         e_chg      = tags[:start_before_change] + escape_inside(src, tags)  + tags[:end_before_change] +
@@ -203,7 +203,7 @@ class DocDiff
         end
         d1l += src.scan_eols(@eol).size
         d2l += tgt.scan_eols(@eol).size
-      }
+      end
       result.unshift(tags[:start_digest_body])
       result.push(tags[:end_digest_body])
       result = tags[:header] + result + tags[:footer] if headfoot == true

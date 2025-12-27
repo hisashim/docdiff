@@ -43,17 +43,17 @@ class DocDiff
   def compare_by_line_word(doc1, doc2)
     lines = compare_by_line(doc1, doc2)
     words = Difference.new
-    lines.each{|line|
+    lines.each do |line|
       if line.first == :change_elt
         before_change = Document.new(line[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
+        Difference.new(before_change.split_to_word, after_change.split_to_word).each do |word|
           words << word
-        }
+        end
       else  # :common_elt_elt, :del_elt, or :add_elt
         words << line
       end
-    }
+    end
     words
   end
 
@@ -61,29 +61,29 @@ class DocDiff
   def compare_by_line_word_char(doc1, doc2)
     lines = compare_by_line(doc1, doc2)
     lines_and_words = Difference.new
-    lines.each{|line|
+    lines.each do |line|
       if line.first == :change_elt
         before_change = Document.new(line[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
+        Difference.new(before_change.split_to_word, after_change.split_to_word).each do |word|
           lines_and_words << word
-        }
+        end
       else  # :common_elt_elt, :del_elt, or :add_elt
         lines_and_words << line
       end
-    }
+    end
     lines_words_and_chars = Difference.new
-    lines_and_words.each{|line_or_word|
+    lines_and_words.each do |line_or_word|
       if line_or_word.first == :change_elt
         before_change = Document.new(line_or_word[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line_or_word[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_char, after_change.split_to_char).each{|char|
+        Difference.new(before_change.split_to_char, after_change.split_to_char).each do |char|
           lines_words_and_chars << char
-        }
+        end
       else  # :common_elt_elt, :del_elt, or :add_elt
         lines_words_and_chars << line_or_word
       end
-    }
+    end
     lines_words_and_chars
   end
 

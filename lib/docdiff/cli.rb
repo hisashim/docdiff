@@ -112,7 +112,7 @@ class DocDiff
         lines.collect!{|line| line.sub(/#.*$/, '')}
         lines.collect!(&:strip)
         lines.delete_if{|line| line == ""}
-        lines.each{|line|
+        lines.each do |line|
           raise 'line does not include " = ".' unless /[\s]+=[\s]+/.match(line)
           name_src, value_src = line.split(/[\s]+=[\s]+/)
           raise "Invalid name: #{name_src.inspect}" if (/\s/.match(name_src))
@@ -123,7 +123,7 @@ class DocDiff
           value = false if ['off','no','false'].include?(value_src.downcase)
           value = value_src.to_i if /^[0-9]+$/.match(value_src)
           result[name] = value
-        }
+        end
         result
       end
 

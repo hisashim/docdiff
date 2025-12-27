@@ -122,9 +122,7 @@ class DocDiff
     end
 
     def count_empty_line
-      split_to_line.collect{|line|
-        line if /^(?:#{eol_char})|^$/m.match(line)
-      }.compact.size
+      split_to_line.count { |line| /^(?:#{eol_char})|^$/m.match(line) }
     end
 
     # for Ruby-1.9
