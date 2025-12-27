@@ -251,12 +251,12 @@ class TC_DocDiff_View < Test::Unit::TestCase
   def test_to_tty_digest_block
     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"]
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
-    expected =
-      ["----\n",
-       "1-2,(1)\na\nbcd\n\033[7;4;31ma\nb\033[0mcd\n----\n",
-       "(2),1-2\ncde\n\ncd\033[7;1;34mX\nY\033[0me\n\n----\n",
-       "3,3\ne\n\033[7;4;33mf\033[0m\n\ne\n\033[7;1;32mF\033[0m\n\n----\n",
-      ]
+    expected = [
+      "----\n",
+      "1-2,(1)\na\nbcd\n\033[7;4;31ma\nb\033[0mcd\n----\n",
+      "(2),1-2\ncde\n\ncd\033[7;1;34mX\nY\033[0me\n\n----\n",
+      "3,3\ne\n\033[7;4;33mf\033[0m\n\ne\n\033[7;1;32mF\033[0m\n\n----\n",
+    ]
     view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_tty_digest({display: "block"}, false))
   end
@@ -722,14 +722,14 @@ class TC_DocDiff_View < Test::Unit::TestCase
     assert_equal(expected, view.difference_whole)
   end
 
-#   def test_difference_digest()
-#     array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"] # a \n  b  c  d           e \n  f \n
-#     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"] #          c  d  X \n  Y  e \n  F \n
-#     expected = [
-# # something
-#                ]
-#     assert_equal(expected, View.new(Difference.new(array1, array2), "US-ASCII", "LF").difference_digest)
-#   end
+  # def test_difference_digest()
+  #   array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"] # a \n  b  c  d           e \n  f \n
+  #   array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"] #          c  d  X \n  Y  e \n  F \n
+  #   expected = [
+  #     # something
+  #   ]
+  #   assert_equal(expected, View.new(Difference.new(array1, array2), "US-ASCII", "LF").difference_digest)
+  # end
 
   def teardown
     #

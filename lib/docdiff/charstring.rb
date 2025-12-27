@@ -57,8 +57,10 @@ class DocDiff
         # should I do some alert?
       end
 
-      ["id: #{self.id}, class: #{self.class}, self: #{self}, ",
-       "module: #{Encodings[@encoding]}, #{EOLChars[@eol]}"].join
+      [
+        "id: #{self.id}, class: #{self.class}, self: #{self}, ",
+        "module: #{Encodings[@encoding]}, #{EOLChars[@eol]}",
+      ].join
     end
 
     class << self

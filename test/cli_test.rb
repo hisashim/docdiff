@@ -42,16 +42,18 @@ class TC_CLI < Test::Unit::TestCase
   end
 
   def test_parse_config_file_content
-    content = ["# comment line\n",
-               " # comment line with leading space\n",
-               "foo1 = bar\n",
-               "foo2 = bar baz \n",
-               " foo3  =  123 # comment\n",
-               "foo4 = no    \n",
-               "foo1 = tRue\n",
-               "\n",
-               "",
-               nil].join
+    content = [
+      "# comment line\n",
+      " # comment line with leading space\n",
+      "foo1 = bar\n",
+      "foo2 = bar baz \n",
+      " foo3  =  123 # comment\n",
+      "foo4 = no    \n",
+      "foo1 = tRue\n",
+      "\n",
+      "",
+      nil,
+    ].join
     expected = {:foo1 => true, :foo2 => "bar baz", :foo3 => 123, :foo4 => false}
     assert_equal(expected, DocDiff::CLI.parse_config_file_content(content))
   end

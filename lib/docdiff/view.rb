@@ -385,13 +385,15 @@ class DocDiff
 
     # Manued
     def manued_header
-      ["defparentheses [ ]"        + (@eol_char || "\n"),
-       "defdelete      /"          + (@eol_char || "\n"),
-       "defswap        |"          + (@eol_char || "\n"),
-       "defcomment     ;"          + (@eol_char || "\n"),
-       "defescape      ~"          + (@eol_char || "\n"),
-       "deforder       newer-last" + (@eol_char || "\n"),
-       "defversion     0.9.5"      + (@eol_char || "\n")]
+      [
+        "defparentheses [ ]"        + (@eol_char || "\n"),
+        "defdelete      /"          + (@eol_char || "\n"),
+        "defswap        |"          + (@eol_char || "\n"),
+        "defcomment     ;"          + (@eol_char || "\n"),
+        "defescape      ~"          + (@eol_char || "\n"),
+        "deforder       newer-last" + (@eol_char || "\n"),
+        "defversion     0.9.5"      + (@eol_char || "\n"),
+      ]
     end
 
     def manued_footer
