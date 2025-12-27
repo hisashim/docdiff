@@ -623,5 +623,4 @@ class TC_DocDiff_Document < Test::Unit::TestCase
   def teardown()
     #
   end
-
 end

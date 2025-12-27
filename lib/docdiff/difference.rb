@@ -6,7 +6,6 @@ require 'docdiff/diff'
 
 class DocDiff
   class Difference < Array
-
 #  @resolution = nil # char, word, phrase, sentence, line, paragraph..
 #  @codeset = ''
 #  @eol_char = "\n"
@@ -89,6 +88,5 @@ class DocDiff
       }
       return elms
     end
-
   end  # class Difference
 end  # class DocDiff

@@ -61,5 +61,4 @@ class TC_DocDiff_Difference < Test::Unit::TestCase
   def teardown()
     #
   end
-
 end

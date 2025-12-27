@@ -5,7 +5,6 @@
 
 class DocDiff
   module CharString
-
     Encodings = {}
     EOLChars = {}  # End-of-line characters, such as CR, LF, CRLF.
 
@@ -296,7 +295,6 @@ class DocDiff
 
       CharString.register_eol(self)
     end
-
   end  # module CharString
 end  # class DocDiff
 

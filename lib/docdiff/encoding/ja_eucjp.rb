@@ -6,7 +6,6 @@
 class DocDiff
   module CharString
     module EUC_JP
-
       Encoding = "EUC-JP"
 
       # character table based on:
@@ -238,7 +237,6 @@ class DocDiff
                          "|(?:.+?)"].join
 
       CharString.register_encoding(self)
-
     end  # module EUCJP
   end  # module CharString
 end  # class DocDiff

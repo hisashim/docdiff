@@ -592,5 +592,4 @@ class TC_DocDiff_View < Test::Unit::TestCase
   def teardown()
     #
   end
-
 end

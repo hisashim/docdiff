@@ -7,7 +7,6 @@
 class DocDiff
   module CharString
     module UTF8
-
       Encoding = "UTF-8"
 
       # character table based on:
@@ -6943,7 +6942,6 @@ class DocDiff
                          "|(?:.+?)"].join
 
       CharString.register_encoding(self)
-
     end  # module UTF8
   end  # module CharString
 end  # class DocDiff

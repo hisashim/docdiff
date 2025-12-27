@@ -7,7 +7,6 @@ require 'docdiff/view'
 require 'docdiff/cli'
 
 class DocDiff
-
   Author = "Copyright (C) 2002-2011 Hisashi MORITA.\n" +
            "diff library originates from Ruby/CVS by TANAKA Akira.\n"
   License = "This software is licensed under so-called modified BSD license.\n" +

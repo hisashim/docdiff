@@ -33,5 +33,4 @@ class TC_DocDiff_Diff < Test::Unit::TestCase
   def teardown()
     #
   end
-
 end

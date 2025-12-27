@@ -994,5 +994,4 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   def teardown()
     #
   end
-
 end

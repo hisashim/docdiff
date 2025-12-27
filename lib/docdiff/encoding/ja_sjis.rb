@@ -6,7 +6,6 @@
 class DocDiff
   module CharString
     module Shift_JIS
-
       Encoding = "Shift_JIS"
 
       # character table based on:
@@ -229,7 +228,6 @@ class DocDiff
                          "|(?:.+?)"].join
 
       CharString.register_encoding(self)
-
     end  # module SJIS
   end  # module CharString
 end  # class DocDiff

@@ -6,7 +6,6 @@
 class DocDiff
   module CharString
     module ASCII
-
       Encoding = "US-ASCII"
 
       CNTRL =     "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09" \
@@ -66,7 +65,6 @@ class DocDiff
       end
 
       CharString.register_encoding(self)
-
     end  # module ASCII
   end  # module CharString
 end  # class DocDiff

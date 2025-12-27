@@ -10,7 +10,6 @@ end
 
 class DocDiff
   class Document
-
     def initialize(str, enc = nil, e = nil)
       @body = str
       @body.extend CharString
@@ -124,6 +123,5 @@ class DocDiff
     def eol_char()
       @body.eol_char
     end
-
   end  # class Document
 end  # class DocDiff

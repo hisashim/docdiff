@@ -23,7 +23,6 @@ end
 
 class DocDiff
   class View
-
 #  EOL_CHARS_PAT = Regexp.new(/\r\n|\r(?!\n)|(?:\A|[^\r])\n/m)
 
     def initialize(difference, encoding, eol)
@@ -485,6 +484,5 @@ class DocDiff
 
     def to_debug()
     end
-
   end
 end  # class DocDiff
