@@ -100,7 +100,7 @@ class DocDiff
       if headfoot == true
         result = tags[:header] + result + tags[:footer]
       end
-      result.delete_if{|elem|elem==''}
+      result.delete_if { |elem| elem=='' }
     end
 
     def encname_for_regexp(encname)
@@ -147,7 +147,8 @@ class DocDiff
                    end
         # elements for an entry
         e_head     = Proc.new do |pos_str|
-          tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position] end
+          tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]
+        end
         e_cxt_pre  = tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
         e_src      = escape_inside(src, tags)
         e_chg      = tags[:start_before_change] + escape_inside(src, tags)  + tags[:end_before_change] +
@@ -207,19 +208,19 @@ class DocDiff
       result.unshift(tags[:start_digest_body])
       result.push(tags[:end_digest_body])
       result = tags[:header] + result + tags[:footer] if headfoot == true
-      result.delete_if{|elem| elem == ''}
+      result.delete_if { |elem| elem == '' }
     end
 
     def source_lines
       if @source_lines == nil
-        @source_lines = @difference.collect{|entry| entry[1]}.join.scan_lines(@eol)
+        @source_lines = @difference.collect { |entry| entry[1] }.join.scan_lines(@eol)
       end
       @source_lines
     end
 
     def target_lines
       if @target_lines == nil
-        @target_lines = @difference.collect{|entry| entry[2]}.join.scan_lines(@eol)
+        @target_lines = @difference.collect { |entry| entry[2] }.join.scan_lines(@eol)
       end
       @target_lines
     end
@@ -233,7 +234,7 @@ class DocDiff
       []
     end
     TTYEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
-    TTYEscapePat = /(#{TTYEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+    TTYEscapePat = /(#{TTYEscapeDic.keys.collect { |k| Regexp.quote(k) }.join('|')})/m
     def tty_tags
       {:outside_escape_dic  => TTYEscapeDic,
        :outside_escape_pat  => TTYEscapePat,
@@ -301,7 +302,7 @@ class DocDiff
     end
     HTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', '  '=>'&nbsp;&nbsp;',
                      "\r\n" => "<br />\r\n", "\r" => "<br />\r", "\n" => "<br />\n"}
-    HTMLEscapePat = /(#{HTMLEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+    HTMLEscapePat = /(#{HTMLEscapeDic.keys.collect { |k| Regexp.quote(k) }.join('|')})/m
     def html_tags
       {:outside_escape_dic  => HTMLEscapeDic,
        :outside_escape_pat  => HTMLEscapePat,
@@ -358,9 +359,9 @@ class DocDiff
       []
     end
     ManuedInsideEscapeDic = {'~'=>'~~', '/'=>'~/', '['=>'~[', ']'=>'~]', ';'=>'~;'}
-    ManuedInsideEscapePat = /(#{ManuedInsideEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+    ManuedInsideEscapePat = /(#{ManuedInsideEscapeDic.keys.collect { |k| Regexp.quote(k) }.join('|')})/m
     ManuedOutsideEscapeDic = {'~'=>'~~', '['=>'~['}
-    ManuedOutsideEscapePat = /(#{ManuedOutsideEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+    ManuedOutsideEscapePat = /(#{ManuedOutsideEscapeDic.keys.collect { |k| Regexp.quote(k) }.join('|')})/m
     def manued_tags
       {:inside_escape_dic   => ManuedInsideEscapeDic,
        :inside_escape_pat   => ManuedInsideEscapePat,
@@ -417,7 +418,7 @@ class DocDiff
       []
     end
     WDIFFEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
-    WDIFFEscapePat = /(#{WDIFFEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+    WDIFFEscapePat = /(#{WDIFFEscapeDic.keys.collect { |k| Regexp.quote(k) }.join('|')})/m
     def wdiff_tags
       {:outside_escape_dic  => WDIFFEscapeDic,
        :outside_escape_pat  => WDIFFEscapePat,
@@ -469,7 +470,7 @@ class DocDiff
     end
 
     UserEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
-    UserEscapePat = /(#{UserEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
+    UserEscapePat = /(#{UserEscapeDic.keys.collect { |k| Regexp.quote(k) }.join('|')})/m
     def user_tags
       {:outside_escape_dic  => UserEscapeDic,
        :outside_escape_pat  => UserEscapePat,

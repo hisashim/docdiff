@@ -77,7 +77,7 @@ class DocDiff
         eol_counts = {'CR'   => bin_string.scan(/(\r)(?!\n)/o).size,
                       'LF'   => bin_string.scan(/(?:\A|[^\r])(\n)/o).size,
                       'CRLF' => bin_string.scan(/(\r\n)/o).size}
-        eol_counts.delete_if{|eol, count| count == 0}  # Remove missing EOL
+        eol_counts.delete_if { |eol, count| count == 0 }  # Remove missing EOL
         eols = eol_counts.keys
         eol_variety = eols.size  # numbers of flavors found
         if eol_variety == 1          # Only one type of EOL found
@@ -151,10 +151,10 @@ class DocDiff
     def split_to_char
       if eol_char # sometimes string has no end-of-line char
         re = Regexp.new("(?:#{eol_char})|(?:.)", Regexp::MULTILINE)
-        encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
+        encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
       else        # it seems that no EOL module was extended...
         re = Regexp.new("(?:.)", Regexp::MULTILINE)
-        encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
+        encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
       end
     end
 
@@ -180,27 +180,27 @@ class DocDiff
 
     def split_to_word
       re = Regexp.new(Encodings['UTF-8']::WORD_REGEXP_SRC, Regexp::MULTILINE)
-      encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
+      encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
     end
 
     def count_latin_word
       re = Regexp.new("[#{Encodings['UTF-8']::PRINT}]", Regexp::MULTILINE)
-      split_to_word.count{|word| re.match(word.encode('UTF-8'))}
+      split_to_word.count { |word| re.match(word.encode('UTF-8')) }
     end
 
     def count_ja_word
       re = Regexp.new("[#{Encodings['UTF-8']::JA_PRINT}]", Regexp::MULTILINE)
-      split_to_word.count{|word| re.match(word.encode('UTF-8'))}
+      split_to_word.count { |word| re.match(word.encode('UTF-8')) }
     end
 
     def count_latin_valid_word
       re = Regexp.new("[#{Encodings['UTF-8']::ALNUM}]", Regexp::MULTILINE)
-      split_to_word.count{|word| re.match(word.encode('UTF-8'))}
+      split_to_word.count { |word| re.match(word.encode('UTF-8')) }
     end
 
     def count_ja_valid_word
       re = Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]", Regexp::MULTILINE)
-      split_to_word.count{|word| re.match(word.encode('UTF-8'))}
+      split_to_word.count { |word| re.match(word.encode('UTF-8')) }
     end
 
     def split_to_line
@@ -209,23 +209,23 @@ class DocDiff
       EOS
       if defined? eol_char
         re = Regexp.new(".*?#{eol_char}|.+", Regexp::MULTILINE)
-        encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
+        encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
       else
         re = Regexp.new(".+", Regexp::MULTILINE)
-        encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
+        encode('UTF-8').scan(re).map { |e| e.encode(self.encoding) }
       end
     end
 
     def count_graph_line
       graph = (Encodings['UTF-8']::GRAPH + Encodings['UTF-8']::JA_GRAPH).chars.uniq.join
       re = Regexp.new("[#{Regexp.quote(graph)}]", Regexp::MULTILINE)
-      split_to_line.count{|line| re.match(line.encode('UTF-8'))}
+      split_to_line.count { |line| re.match(line.encode('UTF-8')) }
     end
 
     def count_blank_line
       blank = (Encodings['UTF-8']::BLANK + Encodings['UTF-8']::JA_BLANK).chars.uniq.join
       re = Regexp.new("^[#{blank}]+(?:#{eol_char})?", Regexp::MULTILINE)
-      split_to_line.count{|line| re.match(line.encode('UTF-8'))}
+      split_to_line.count { |line| re.match(line.encode('UTF-8')) }
     end
 
     # load encoding modules

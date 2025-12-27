@@ -65,7 +65,7 @@ class DocDiff
     attr_accessor :raw_list
 
     def former_only
-      elms = self.dup.delete_if{|e| e[0] == :add_elt}
+      elms = self.dup.delete_if { |e| e[0] == :add_elt }
       elms.collect! do |e|
         if e[0] == :change_elt
           [e[0], e[1], nil]
@@ -77,7 +77,7 @@ class DocDiff
     end
 
     def latter_only
-      elms = self.dup.delete_if{|e| e[0] == :del_elt}
+      elms = self.dup.delete_if { |e| e[0] == :del_elt }
       elms.collect! do |e|
         if e[0] == :change_elt
           [e[0], nil, e[2]]

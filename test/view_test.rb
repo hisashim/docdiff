@@ -181,24 +181,24 @@ class TC_DocDiff_View < Test::Unit::TestCase
       "う",
     ]
     assert_equal(
-      expected.map{|i| NKF.nkf("--euc", i)},
+      expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--euc", i)},
-        array2.map{|i| NKF.nkf("--euc", i)},
+        array1.map { |i| NKF.nkf("--euc", i) },
+        array2.map { |i| NKF.nkf("--euc", i) },
       ).to_view("EUC-JP", nil).to_tty(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--sjis", i)},
+      expected.map { |i| NKF.nkf("--sjis", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--sjis", i)},
-        array2.map{|i| NKF.nkf("--sjis", i)},
+        array1.map { |i| NKF.nkf("--sjis", i) },
+        array2.map { |i| NKF.nkf("--sjis", i) },
       ).to_view("Shift_JIS", nil).to_tty(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--utf8", i)},
+      expected.map { |i| NKF.nkf("--utf8", i) },
       Difference.new(
-        array1.map{|i|NKF.nkf("--utf8", i)},
-        array2.map{|i| NKF.nkf("--utf8", i)},
+        array1.map { |i| NKF.nkf("--utf8", i) },
+        array2.map { |i| NKF.nkf("--utf8", i) },
       ).to_view("UTF-8", nil).to_tty(nil, false),
     )
   end
@@ -212,24 +212,24 @@ class TC_DocDiff_View < Test::Unit::TestCase
       "う",
     ]
     assert_equal(
-      expected.map{|i| NKF.nkf("--euc", i)},
+      expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--euc", i)},
-        array2.map{|i| NKF.nkf("--euc", i)},
+        array1.map { |i| NKF.nkf("--euc", i) },
+        array2.map { |i| NKF.nkf("--euc", i) },
       ).to_view("EUC-JP", nil).to_tty(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--sjis", i)},
+      expected.map { |i| NKF.nkf("--sjis", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--sjis", i)},
-        array2.map{|i| NKF.nkf("--sjis", i)},
+        array1.map { |i| NKF.nkf("--sjis", i) },
+        array2.map { |i| NKF.nkf("--sjis", i) },
       ).to_view("Shift_JIS", nil).to_tty(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--utf8", i)},
+      expected.map { |i| NKF.nkf("--utf8", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--utf8", i)},
-        array2.map{|i| NKF.nkf("--utf8", i)},
+        array1.map { |i| NKF.nkf("--utf8", i) },
+        array2.map { |i| NKF.nkf("--utf8", i) },
       ).to_view("UTF-8", nil).to_tty(nil, false),
     )
   end
@@ -355,24 +355,24 @@ class TC_DocDiff_View < Test::Unit::TestCase
       '<span class="common">う</span>',
     ]
     assert_equal(
-      expected.map{|i| NKF.nkf("--euc", i)},
+      expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--euc", i)},
-        array2.map{|i| NKF.nkf("--euc", i)},
+        array1.map { |i| NKF.nkf("--euc", i) },
+        array2.map { |i| NKF.nkf("--euc", i) },
       ).to_view("EUC-JP", nil).to_html(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--sjis", i)},
+      expected.map { |i| NKF.nkf("--sjis", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--sjis", i)},
-        array2.map{|i| NKF.nkf("--sjis", i)},
+        array1.map { |i| NKF.nkf("--sjis", i) },
+        array2.map { |i| NKF.nkf("--sjis", i) },
       ).to_view("Shift_JIS", nil).to_html(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--utf8", i)},
+      expected.map { |i| NKF.nkf("--utf8", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--utf8", i)},
-        array2.map{|i| NKF.nkf("--utf8", i)},
+        array1.map { |i| NKF.nkf("--utf8", i) },
+        array2.map { |i| NKF.nkf("--utf8", i) },
       ).to_view("UTF-8", nil).to_html(nil, false),
     )
   end
@@ -386,24 +386,24 @@ class TC_DocDiff_View < Test::Unit::TestCase
       '<span class="common">う</span>',
     ]
     assert_equal(
-      expected.map{|i| NKF.nkf("--euc", i)},
+      expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--euc", i)},
-        array2.map{|i| NKF.nkf("--euc", i)},
+        array1.map { |i| NKF.nkf("--euc", i) },
+        array2.map { |i| NKF.nkf("--euc", i) },
       ).to_view("EUC-JP", nil).to_html(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--sjis", i)},
+      expected.map { |i| NKF.nkf("--sjis", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--sjis", i)},
-        array2.map{|i| NKF.nkf("--sjis", i)},
+        array1.map { |i| NKF.nkf("--sjis", i) },
+        array2.map { |i| NKF.nkf("--sjis", i) },
       ).to_view("Shift_JIS", nil).to_html(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--utf8", i)},
+      expected.map { |i| NKF.nkf("--utf8", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--utf8", i)},
-        array2.map{|i| NKF.nkf("--utf8", i)},
+        array1.map { |i| NKF.nkf("--utf8", i) },
+        array2.map { |i| NKF.nkf("--utf8", i) },
       ).to_view("UTF-8", nil).to_html(nil, false),
     )
   end
@@ -429,24 +429,24 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array2 = ['い', 'う', 'う']
     expected = ['[あ/]', 'い', '[/う]', 'う']
     assert_equal(
-      expected.map{|i| NKF.nkf("--euc", i)},
+      expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--euc", i)},
-        array2.map{|i| NKF.nkf("--euc", i)},
+        array1.map { |i| NKF.nkf("--euc", i) },
+        array2.map { |i| NKF.nkf("--euc", i) },
       ).to_view("EUC-JP", nil).to_manued(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--sjis", i)},
+      expected.map { |i| NKF.nkf("--sjis", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--sjis", i)},
-        array2.map{|i| NKF.nkf("--sjis", i)},
+        array1.map { |i| NKF.nkf("--sjis", i) },
+        array2.map { |i| NKF.nkf("--sjis", i) },
       ).to_view("Shift_JIS", nil).to_manued(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--utf8", i)},
+      expected.map { |i| NKF.nkf("--utf8", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--utf8", i)},
-        array2.map{|i| NKF.nkf("--utf8", i)},
+        array1.map { |i| NKF.nkf("--utf8", i) },
+        array2.map { |i| NKF.nkf("--utf8", i) },
       ).to_view("UTF-8", nil).to_manued(nil, false),
     )
   end
@@ -456,24 +456,24 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array2 = ['あ', '漢', 'う']
     expected = ['あ', '[い/漢]', 'う']
     assert_equal(
-      expected.map{|i| NKF.nkf("--euc", i)},
+      expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--euc", i)},
-        array2.map{|i| NKF.nkf("--euc", i)},
+        array1.map { |i| NKF.nkf("--euc", i) },
+        array2.map { |i| NKF.nkf("--euc", i) },
       ).to_view("EUC-JP", nil).to_manued(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--sjis", i)},
+      expected.map { |i| NKF.nkf("--sjis", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--sjis", i)},
-        array2.map{|i| NKF.nkf("--sjis", i)},
+        array1.map { |i| NKF.nkf("--sjis", i) },
+        array2.map { |i| NKF.nkf("--sjis", i) },
       ).to_view("Shift_JIS", nil).to_manued(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--utf8", i)},
+      expected.map { |i| NKF.nkf("--utf8", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--utf8", i)},
-        array2.map{|i| NKF.nkf("--utf8", i)},
+        array1.map { |i| NKF.nkf("--utf8", i) },
+        array2.map { |i| NKF.nkf("--utf8", i) },
       ).to_view("UTF-8", nil).to_manued(nil, false),
     )
   end
@@ -533,24 +533,24 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array2 = ['い', 'う', 'う']
     expected = ['[-あ-]', 'い', '{+う+}', 'う']
     assert_equal(
-      expected.map{|i| NKF.nkf("--euc", i)},
+      expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--euc", i)},
-        array2.map{|i| NKF.nkf("--euc", i)},
+        array1.map { |i| NKF.nkf("--euc", i) },
+        array2.map { |i| NKF.nkf("--euc", i) },
       ).to_view("EUC-JP", nil).to_wdiff(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--sjis", i)},
+      expected.map { |i| NKF.nkf("--sjis", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--sjis", i)},
-        array2.map{|i| NKF.nkf("--sjis", i)},
+        array1.map { |i| NKF.nkf("--sjis", i) },
+        array2.map { |i| NKF.nkf("--sjis", i) },
       ).to_view("Shift_JIS", nil).to_wdiff(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--utf8", i)},
+      expected.map { |i| NKF.nkf("--utf8", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--utf8", i)},
-        array2.map{|i| NKF.nkf("--utf8", i)},
+        array1.map { |i| NKF.nkf("--utf8", i) },
+        array2.map { |i| NKF.nkf("--utf8", i) },
       ).to_view("UTF-8", nil).to_wdiff(nil, false),
     )
   end
@@ -560,24 +560,24 @@ class TC_DocDiff_View < Test::Unit::TestCase
     array2 = ['あ', '漢', 'う']
     expected = ['あ', '[-い-]{+漢+}', 'う']
     assert_equal(
-      expected.map{|i| NKF.nkf("--euc", i)},
+      expected.map { |i| NKF.nkf("--euc", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--euc", i)},
-        array2.map{|i| NKF.nkf("--euc", i)},
+        array1.map { |i| NKF.nkf("--euc", i) },
+        array2.map { |i| NKF.nkf("--euc", i) },
       ).to_view("EUC-JP", nil).to_wdiff(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--sjis", i)},
+      expected.map { |i| NKF.nkf("--sjis", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--sjis", i)},
-        array2.map{|i| NKF.nkf("--sjis", i)},
+        array1.map { |i| NKF.nkf("--sjis", i) },
+        array2.map { |i| NKF.nkf("--sjis", i) },
       ).to_view("Shift_JIS", nil).to_wdiff(nil, false),
     )
     assert_equal(
-      expected.map{|i| NKF.nkf("--utf8", i)},
+      expected.map { |i| NKF.nkf("--utf8", i) },
       Difference.new(
-        array1.map{|i| NKF.nkf("--utf8", i)},
-        array2.map{|i| NKF.nkf("--utf8", i)},
+        array1.map { |i| NKF.nkf("--utf8", i) },
+        array2.map { |i| NKF.nkf("--utf8", i) },
       ).to_view("UTF-8", nil).to_wdiff(nil, false),
     )
   end

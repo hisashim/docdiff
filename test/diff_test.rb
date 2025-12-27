@@ -20,10 +20,10 @@ class TC_DocDiff_Diff < Test::Unit::TestCase
     actual_speculative  = []
     actual_shortestpath = []
     actual_contours     = []
-    Diff.new(a1, a2).ses.each               {|e| actual              << e}
-    Diff.new(a1, a2).ses(:speculative ).each{|e| actual_speculative  << e}
-    Diff.new(a1, a2).ses(:shortestpath).each{|e| actual_shortestpath << e}
-    Diff.new(a1, a2).ses(:contours    ).each{|e| actual_contours     << e}
+    Diff.new(a1, a2).ses.each                { |e| actual              << e }
+    Diff.new(a1, a2).ses(:speculative ).each { |e| actual_speculative  << e }
+    Diff.new(a1, a2).ses(:shortestpath).each { |e| actual_shortestpath << e }
+    Diff.new(a1, a2).ses(:contours    ).each { |e| actual_contours     << e }
     assert_equal(expected, actual)
     assert_equal(expected, actual_speculative)
     assert_equal(expected, actual_shortestpath)

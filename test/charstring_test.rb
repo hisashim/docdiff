@@ -368,42 +368,42 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   def test_eucjp_split_to_word
     str = NKF.nkf("--euc", "日本語の文字foo bar").extend(CharString)
     str.encoding = "EUC-JP"
-    expected = ["日本語の","文字","foo ","bar"].map{|c| NKF.nkf("--euc", c)}
+    expected = ["日本語の","文字","foo ","bar"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_kanhira
     str = NKF.nkf("--euc", "日本語の文字").extend(CharString)
     str.encoding = "EUC-JP"
-    expected = ["日本語の", "文字"].map{|c| NKF.nkf("--euc", c)}
+    expected = ["日本語の", "文字"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_katahira
     str = NKF.nkf("--euc", "カタカナの文字").extend(CharString)
     str.encoding = "EUC-JP"
-    expected = ["カタカナの", "文字"].map{|c| NKF.nkf("--euc", c)}
+    expected = ["カタカナの", "文字"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_kataonbiki
     str = NKF.nkf("--euc", "ルビー色の石").extend(CharString)
     str.encoding = "EUC-JP" #<= needed to pass the test
-    expected = ["ルビー", "色の", "石"].map{|c| NKF.nkf("--euc", c)}
+    expected = ["ルビー", "色の", "石"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_hiraonbiki
     str = NKF.nkf("--euc", "わールビーだ").extend(CharString)
     str.encoding = "EUC-JP" #<= needed to pass the test
-    expected = ["わー", "ルビーだ"].map{|c| NKF.nkf("--euc", c)}
+    expected = ["わー", "ルビーだ"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_latinmix
     str = NKF.nkf("--euc", "日本語とLatinの文字").extend(CharString)
     str.encoding = "EUC-JP"
-    expected = ["日本語と", "Latin", "の", "文字"].map{|c| NKF.nkf("--euc", c)}
+    expected = ["日本語と", "Latin", "の", "文字"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_word)
   end
 
@@ -411,7 +411,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--euc", "日本語a b").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "LF" #<= needed to pass the test
-    expected = ["日","本","語","a"," ","b"].map{|c|NKF.nkf("--euc",c)}
+    expected = ["日","本","語","a"," ","b"].map { |c| NKF.nkf("--euc",c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -419,7 +419,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--euc", "日本語a b\r").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CR"
-    expected = ["日","本","語","a"," ","b","\r"].map{|c|NKF.nkf("--euc",c)}
+    expected = ["日","本","語","a"," ","b","\r"].map { |c| NKF.nkf("--euc",c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -427,7 +427,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--euc", "日本語a b\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "LF"
-    expected = ["日","本","語","a"," ","b","\n"].map{|c|NKF.nkf("--euc",c)}
+    expected = ["日","本","語","a"," ","b","\n"].map { |c| NKF.nkf("--euc",c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -435,7 +435,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--euc", "日本語a b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
-    expected = ["日","本","語","a"," ","b","\r\n"].map{|c|NKF.nkf("--euc",c)}
+    expected = ["日","本","語","a"," ","b","\r\n"].map { |c| NKF.nkf("--euc",c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -571,42 +571,42 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   def test_sjis_split_to_word
     str = NKF.nkf("--sjis", "日本語の文字foo bar").extend(CharString)
     str.encoding = "Shift_JIS"
-    expected = ["日本語の", "文字", "foo ", "bar"].map{|c|NKF.nkf("--sjis",c)}
+    expected = ["日本語の", "文字", "foo ", "bar"].map { |c| NKF.nkf("--sjis",c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjisplit_s_to_word_kanhira
     str = NKF.nkf("--sjis", "日本語の文字").extend(CharString)
     str.encoding = "Shift_JIS"
-    expected = ["日本語の", "文字"].map{|c| NKF.nkf("--sjis", c)}
+    expected = ["日本語の", "文字"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_word_katahira
     str = NKF.nkf("--sjis", "カタカナの文字").extend(CharString)
     str.encoding = "Shift_JIS"
-    expected = ["カタカナの", "文字"].map{|c| NKF.nkf("--sjis", c)}
+    expected = ["カタカナの", "文字"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_word_kataonbiki
     str = NKF.nkf("--sjis", "ルビーの指輪").extend(CharString)
     str.encoding = "Shift_JIS"
-    expected = ["ルビーの", "指輪"].map{|c| NKF.nkf("--sjis", c)}
+    expected = ["ルビーの", "指輪"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_word_hiraonbiki
     str = NKF.nkf("--sjis", "わールビーだ").extend(CharString)
     str.encoding = "Shift_JIS"
-    expected = ["わー", "ルビーだ"].map{|c| NKF.nkf("--sjis", c)}
+    expected = ["わー", "ルビーだ"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_sjis_split_to_word_latinmix
     str = NKF.nkf("--sjis", "日本語とLatinの文字").extend(CharString)
     str.encoding = "Shift_JIS"
-    expected = ["日本語と","Latin","の","文字"].map{|c| NKF.nkf("--sjis", c)}
+    expected = ["日本語と","Latin","の","文字"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, str.split_to_word)
   end
 
@@ -614,7 +614,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--sjis", "表計算a b").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "LF" #<= needed to pass the test
-    expected = ["表","計","算","a"," ","b"].map{|c|NKF.nkf("--sjis",c)}
+    expected = ["表","計","算","a"," ","b"].map { |c| NKF.nkf("--sjis",c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -622,7 +622,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--sjis", "表計算a b\r").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CR"
-    expected = ["表","計","算","a"," ","b","\r"].map{|c|NKF.nkf("--sjis",c)}
+    expected = ["表","計","算","a"," ","b","\r"].map { |c| NKF.nkf("--sjis",c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -630,7 +630,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--sjis", "表計算a b\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "LF"
-    expected = ["表","計","算","a"," ","b","\n"].map{|c|NKF.nkf("--sjis",c)}
+    expected = ["表","計","算","a"," ","b","\n"].map { |c| NKF.nkf("--sjis",c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -638,7 +638,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--sjis", "表計算a b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
-    expected = ["表","計","算","a"," ","b","\r\n"].map{|c|NKF.nkf("--sjis",c)}
+    expected = ["表","計","算","a"," ","b","\r\n"].map { |c| NKF.nkf("--sjis",c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -774,42 +774,42 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   def test_utf8_split_to_word
     str = NKF.nkf("--utf8", "日本語の文字foo bar").extend(CharString)
     str.encoding = "UTF-8"
-    expected = ["日本語の", "文字", "foo ", "bar"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["日本語の", "文字", "foo ", "bar"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_kanhira
     str = NKF.nkf("--utf8", "日本語の文字").extend(CharString)
     str.encoding = "UTF-8"
-    expected = ["日本語の", "文字"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["日本語の", "文字"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_katahira
     str = NKF.nkf("--utf8", "カタカナの文字").extend(CharString)
     str.encoding = "UTF-8"
-    expected = ["カタカナの", "文字"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["カタカナの", "文字"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_kataonbiki
     str = NKF.nkf("--utf8", "ルビーの指輪").extend(CharString)
     str.encoding = "UTF-8"
-    expected = ["ルビーの", "指輪"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["ルビーの", "指輪"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_hiraonbiki
     str = NKF.nkf("--utf8", "わールビーだ").extend(CharString)
     str.encoding = "UTF-8"
-    expected = ["わー", "ルビーだ"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["わー", "ルビーだ"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_utf8_split_to_word_latinmix
     str = NKF.nkf("--utf8", "日本語とLatinの文字").extend(CharString)
     str.encoding = "UTF-8"
-    expected = ["日本語と", "Latin", "の", "文字"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["日本語と", "Latin", "の", "文字"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_word)
   end
 
@@ -817,7 +817,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--utf8", "日本語a b").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"        #<= needed to pass the test
-    expected = ["日", "本", "語", "a", " ", "b"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["日", "本", "語", "a", " ", "b"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -825,7 +825,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--utf8", "日本語a b\r").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "CR"
-    expected = ["日","本","語","a"," ","b","\r"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["日","本","語","a"," ","b","\r"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -833,7 +833,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--utf8", "日本語a b\n").extend(CharString)
     str.encoding = "UTF-8" #<= needed to pass the test
     str.eol = "LF"
-    expected = ["日","本","語","a"," ","b","\n"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["日","本","語","a"," ","b","\n"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
   end
 
@@ -841,7 +841,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
     str.encoding = "UTF-8"#<= needed to pass the test
     str.eol = "CRLF"
-    expected = ["日","本","語","a"," ","b","\r\n"].map{|c| NKF.nkf("--utf8", c)}
+    expected = ["日","本","語","a"," ","b","\r\n"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
   end
 
