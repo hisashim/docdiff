@@ -25,7 +25,7 @@ class DocDiff
       combine_del_add_to_change!()
     end
 
-    def combine_del_add_to_change!()
+    def combine_del_add_to_change!
       @raw_list.each_with_index{|block, i|
         case block.first
         when :common_elt_elt
@@ -64,7 +64,7 @@ class DocDiff
     end
     attr_accessor :raw_list
 
-    def former_only()
+    def former_only
       elms = self.dup.delete_if{|e| e[0] == :add_elt}
       elms.collect!{|e|
         if e[0] == :change_elt
@@ -76,7 +76,7 @@ class DocDiff
       return elms
     end
 
-    def latter_only()
+    def latter_only
       elms = self.dup.delete_if{|e| e[0] == :del_elt}
       elms.collect!{|e|
         if e[0] == :change_elt

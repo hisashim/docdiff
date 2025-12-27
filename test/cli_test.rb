@@ -6,7 +6,7 @@ require 'nkf'
 require 'docdiff/cli'
 
 class TC_CLI < Test::Unit::TestCase
-  def test_parse_options!()
+  def test_parse_options!
     args = [
       "--resolution=line",
       "--char",
@@ -41,7 +41,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, DocDiff::CLI.parse_options!(args, base_options: {}))
   end
 
-  def test_parse_config_file_content()
+  def test_parse_config_file_content
     content = ["# comment line\n",
                " # comment line with leading space\n",
                "foo1 = bar\n",
@@ -56,20 +56,20 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, DocDiff::CLI.parse_config_file_content(content))
   end
 
-  def test_read_config_from_file()
+  def test_read_config_from_file
     filename = File.join(File.dirname(__FILE__), "fixture/simple.conf")
     expected = {:foo1 => true, :foo2 => "bar baz", :foo3 => 123, :foo4 => false}
     config, _message = DocDiff::CLI.read_config_from_file(filename)
     assert_equal(expected, config)
   end
 
-  def test_read_config_from_file_raises_exception()
+  def test_read_config_from_file_raises_exception
     assert_raise(Errno::ENOENT) do
       config, message = DocDiff::CLI.read_config_from_file("no/such/file")
     end
   end
 
-  def test_cli_resolution_line()
+  def test_cli_resolution_line
     expected = <<~EOS.chomp
       [-Hello, my name is Watanabe.
       I am just another Ruby porter.
@@ -83,7 +83,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_resolution_word()
+  def test_cli_resolution_word
     expected = <<~EOS
       Hello, my name is [-Watanabe.-]{+matz.+}
       {+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}
@@ -94,7 +94,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_resolution_char()
+  def test_cli_resolution_char
     expected = <<~EOS
       Hello, my name is [-W-]{+m+}at[-anabe-]{+z+}.
       {+It's me who has created Ruby.  +}I am [-just -]a[-nother-] Ruby [-port-]{+hack+}er.
@@ -105,7 +105,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_encoding_ascii()
+  def test_cli_encoding_ascii
     expected = <<~EOS
       Hello, my name is [-Watanabe.-]{+matz.+}
       {+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}
@@ -116,7 +116,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_encoding_euc_jp()
+  def test_cli_encoding_euc_jp
     expected = NKF.nkf("--ic=UTF-8 --oc=EUC-JP", <<~EOS)
       [-こんにちは-]{+こんばんは+}、私の[-名前はわたなべです-]{+名前はまつもとです+}。
       {+Rubyを作ったのは私です。+}私は[-Just Another -]Ruby [-Porter-]{+Hacker+}です。
@@ -127,7 +127,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_encoding_shift_jis()
+  def test_cli_encoding_shift_jis
     expected_utf8_cr =
       "[-こんにちは-]{+こんばんは+}、私の[-名前はわたなべです-]{+名前はまつもとです+}。\r" +
       "{+Rubyを作ったのは私です。+}私は[-Just Another -]Ruby [-Porter-]{+Hacker+}です。\r"
@@ -138,7 +138,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_encoding_utf_8()
+  def test_cli_encoding_utf_8
     expected = <<~EOS
       [-こんにちは-]{+こんばんは+}、私の[-名前はわたなべです-]{+名前はまつもとです+}。
       {+Rubyを作ったのは私です。+}私は[-Just Another -]Ruby [-Porter-]{+Hacker+}です。
@@ -149,7 +149,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_eol_cr()
+  def test_cli_eol_cr
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\r" +
       "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r"
@@ -159,7 +159,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_eol_lf()
+  def test_cli_eol_lf
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\n" +
       "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\n"
@@ -169,7 +169,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_eol_crlf()
+  def test_cli_eol_crlf
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\r\n" +
       "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r\n"
@@ -179,7 +179,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_format_html()
+  def test_cli_format_html
     expected = <<~EOS
       <span class="common">Hello, my name is </span>\
       <span class="before-change"><del>Watanabe.</del></span>\
@@ -192,7 +192,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_format_manued()
+  def test_cli_format_manued
     expected = "Hello, my name is [Watanabe./matz.]\n"
     cmd = "ruby -I lib bin/docdiff --format=manued" +
       " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
@@ -200,7 +200,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_format_tty()
+  def test_cli_format_tty
     expected = "Hello, my name is \e[7;4;33mWatanabe.\e[0m\e[7;1;32mmatz.\e[0m\n"
     cmd = "ruby -I lib bin/docdiff --format=tty" +
       " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
@@ -208,7 +208,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_format_wdiff()
+  def test_cli_format_wdiff
     expected = "Hello, my name is [-Watanabe.-]{+matz.+}\n"
     cmd = "ruby -I lib bin/docdiff --format=wdiff" +
       " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
@@ -216,7 +216,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_digest()
+  def test_cli_digest
     expected = <<~EOS
       ----
       1,1
@@ -241,7 +241,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_display_inline()
+  def test_cli_display_inline
     expected = <<~EOS
       ----
       1,1
@@ -266,7 +266,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_display_block()
+  def test_cli_display_block
     expected = <<~EOS
       ----
       1,1
@@ -298,7 +298,7 @@ class TC_CLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
-  def test_cli_config_file_format_wdiff()
+  def test_cli_config_file_format_wdiff
     config_file_name = File.join(File.dirname(__FILE__), "fixture/format_wdiff.conf")
     expected = <<~EOS
       Hello, my name is [-Watanabe.-]{+matz.+}

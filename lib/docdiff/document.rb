@@ -38,7 +38,7 @@ class DocDiff
       end
     end
 
-    def encoding()
+    def encoding
       @body.encoding
     end
 
@@ -46,7 +46,7 @@ class DocDiff
       @body.encoding = cs
     end
 
-    def eol()
+    def eol
       @body.eol
     end
 
@@ -54,95 +54,95 @@ class DocDiff
       @body.eol = eolstr
     end
 
-    def split_to_line()
+    def split_to_line
       @body.split_to_line
     end
 
-    def split_to_word()
+    def split_to_word
       @body.split_to_word
     end
 
-    def split_to_char()
+    def split_to_char
       @body.split_to_char
     end
 
-    def split_to_byte()
+    def split_to_byte
       @body.split_to_byte
     end
 
-    def count_line()
+    def count_line
       @body.count_line
     end
 
-    def count_blank_line()
+    def count_blank_line
       @body.count_blank_line
     end
 
-    def count_empty_line()
+    def count_empty_line
       @body.count_empty_line
     end
 
-    def count_graph_line()
+    def count_graph_line
       @body.count_graph_line
     end
 
-    def count_word()
+    def count_word
       @body.count_word
     end
 
-    def count_latin_word()
+    def count_latin_word
       @body.count_latin_word
     end
 
-    def count_ja_word()
+    def count_ja_word
       @body.count_ja_word
     end
 
-    def count_valid_word()
+    def count_valid_word
       @body.count_valid_word
     end
 
-    def count_latin_valid_word()
+    def count_latin_valid_word
       @body.count_latin_valid_word
     end
 
-    def count_ja_valid_word()
+    def count_ja_valid_word
       @body.count_ja_valid_word
     end
 
-    def count_char()
+    def count_char
       @body.count_char
     end
 
-    def count_blank_char()
+    def count_blank_char
       @body.count_blank_char
     end
 
-    def count_graph_char()
+    def count_graph_char
       @body.count_graph_char
     end
 
-    def count_latin_blank_char()
+    def count_latin_blank_char
       @body.count_latin_blank_char
     end
 
-    def count_latin_graph_char()
+    def count_latin_graph_char
       @body.count_latin_graph_char
     end
 
-    def count_ja_blank_char()
+    def count_ja_blank_char
       @body.count_ja_blank_char
     end
 
-    def count_ja_graph_char()
+    def count_ja_graph_char
       @body.count_ja_graph_char
     end
 
-    def count_byte()
+    def count_byte
       @body.count_byte
     end
 
-    def eol_char()
+    def eol_char
       @body.eol_char
     end
   end  # class Document

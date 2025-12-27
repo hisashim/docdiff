@@ -5,11 +5,11 @@ require 'docdiff/difference'
 class TC_DocDiff_Difference < Test::Unit::TestCase
   Difference = DocDiff::Difference
 
-  def setup()
+  def setup
     #
   end
 
-  def test_new()
+  def test_new
     array1 = [:a, :b, :c]
     array2 = [:a, :x, :c]
     expected =   [[:common_elt_elt, [:a], [:a]],
@@ -18,7 +18,7 @@ class TC_DocDiff_Difference < Test::Unit::TestCase
     assert_equal(expected, Difference.new(array1, array2))
   end
 
-  def test_raw_list()
+  def test_raw_list
     array1 = [:a, :b, :c]
     array2 = [:a, :x, :c]
     expected =   [[:common_elt_elt, [:a], [:a]],
@@ -28,7 +28,7 @@ class TC_DocDiff_Difference < Test::Unit::TestCase
     assert_equal(expected, Difference.new(array1, array2).raw_list)
   end
 
-  def test_former_only()
+  def test_former_only
     array1 = [:a, :b, :c]
     array2 = [:a, :x, :c]
     expected =   [[:common_elt_elt, [:a], [:a]],
@@ -43,7 +43,7 @@ class TC_DocDiff_Difference < Test::Unit::TestCase
     assert_equal(expected, Difference.new(array1, array2).former_only)
   end
 
-  def test_latter_only()
+  def test_latter_only
     array1 = [:a, :b, :c]
     array2 = [:a, :x, :c]
     expected =   [[:common_elt_elt, [:a], [:a]],
@@ -58,7 +58,7 @@ class TC_DocDiff_Difference < Test::Unit::TestCase
     assert_equal(expected, Difference.new(array1, array2).latter_only)
   end
 
-  def teardown()
+  def teardown
     #
   end
 end

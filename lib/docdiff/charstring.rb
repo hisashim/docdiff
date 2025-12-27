@@ -16,7 +16,7 @@ class DocDiff
       super
     end
 
-    def eol()
+    def eol
       @eol
 #     if @eol
 #       @eol
@@ -31,7 +31,7 @@ class DocDiff
       extend EOLChars[@eol]
     end
 
-    def eol_char()
+    def eol_char
       if @eol_char
         @eol_char
       else
@@ -41,7 +41,7 @@ class DocDiff
       end
     end
 
-    def debug()
+    def debug
       case
       when @encoding  == nil
         raise "@encoding is nil."
@@ -91,42 +91,42 @@ class DocDiff
     # Note that some languages (like Japanese) do not have 'word' or 'phrase',
     # thus some of the following methods are not 'linguistically correct'.
 
-    def count_byte()
+    def count_byte
       split_to_byte().size
     end
 
-    def count_char()  # eol = 1 char
+    def count_char  # eol = 1 char
       split_to_char().size
     end
 
-    def count_graph_char()
+    def count_graph_char
       count_latin_graph_char() + count_ja_graph_char()
     end
 
-    def count_blank_char()
+    def count_blank_char
       count_latin_blank_char() + count_ja_blank_char()
     end
 
-    def count_word()
+    def count_word
       split_to_word().size
     end
 
-    def count_valid_word()
+    def count_valid_word
       count_latin_valid_word() + count_ja_valid_word()
     end
 
-    def count_line()  # this is common to all encodings.
+    def count_line  # this is common to all encodings.
       split_to_line.size
     end
 
-    def count_empty_line()
+    def count_empty_line
       split_to_line.collect{|line|
         line if /^(?:#{eol_char})|^$/m.match line
       }.compact.size
     end
 
     # for Ruby-1.9
-    def encoding()
+    def encoding
       String.new(self).encoding.to_s
     end
 
@@ -142,11 +142,11 @@ class DocDiff
       end
     end
 
-    def split_to_byte()
+    def split_to_byte
       encode("ASCII-8BIT").scan(/./nm)
     end
 
-    def split_to_char()
+    def split_to_char
       if eol_char  # sometimes string has no end-of-line char
         encode('UTF-8').scan(Regexp.new("(?:#{eol_char})|(?:.)",
                                         Regexp::MULTILINE)
@@ -158,65 +158,65 @@ class DocDiff
       end
     end
 
-    def count_latin_graph_char()
+    def count_latin_graph_char
       encode('UTF-8').scan(Regexp.new("[#{Encodings['UTF-8']::GRAPH}]",
                                       Regexp::MULTILINE)
                           ).size
     end
 
-    def count_ja_graph_char()
+    def count_ja_graph_char
       encode('UTF-8').scan(Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]",
                                       Regexp::MULTILINE)
                           ).size
     end
 
-    def count_latin_blank_char()
+    def count_latin_blank_char
       encode('UTF-8').scan(Regexp.new("[#{Encodings['UTF-8']::BLANK}]",
                                       Regexp::MULTILINE)
                           ).size
     end
 
-    def count_ja_blank_char()
+    def count_ja_blank_char
       encode('UTF-8').scan(Regexp.new("[#{Encodings['UTF-8']::JA_BLANK}]",
                                       Regexp::MULTILINE)
                           ).size
     end
 
-    def split_to_word()
+    def split_to_word
       encode('UTF-8').scan(Regexp.new(Encodings['UTF-8']::WORD_REGEXP_SRC,
                                       Regexp::MULTILINE)
                           ).map{|e| e.encode(self.encoding)}
     end
 
-    def count_latin_word()
+    def count_latin_word
       split_to_word.collect{|word|
         word if Regexp.new("[#{Encodings['UTF-8']::PRINT}]",
                            Regexp::MULTILINE).match word.encode('UTF-8')
       }.compact.size
     end
 
-    def count_ja_word()
+    def count_ja_word
       split_to_word.collect{|word|
         word if Regexp.new("[#{Encodings['UTF-8']::JA_PRINT}]",
                            Regexp::MULTILINE).match word.encode('UTF-8')
       }.compact.size
     end
 
-    def count_latin_valid_word()
+    def count_latin_valid_word
       split_to_word.collect{|word|
         word if Regexp.new("[#{Encodings['UTF-8']::ALNUM}]",
                            Regexp::MULTILINE).match word.encode('UTF-8')
       }.compact.size
     end
 
-    def count_ja_valid_word()
+    def count_ja_valid_word
       split_to_word.collect{|word|
         word if Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]",
                            Regexp::MULTILINE).match word.encode('UTF-8')
       }.compact.size
     end
 
-    def split_to_line()
+    def split_to_line
       raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
       if defined? eol_char
         encode('UTF-8').scan(Regexp.new(".*?#{eol_char}|.+",
@@ -229,7 +229,7 @@ class DocDiff
       end
     end
 
-    def count_graph_line()
+    def count_graph_line
       graph = (Encodings['UTF-8']::GRAPH +
                Encodings['UTF-8']::JA_GRAPH).chars.uniq.join
       re_graph = Regexp.new("[#{Regexp.quote(graph)}]", Regexp::MULTILINE)
@@ -238,7 +238,7 @@ class DocDiff
       }.compact.size
     end
 
-    def count_blank_line()
+    def count_blank_line
       split_to_line.collect{|line|
         line if Regexp.new("^[#{Encodings['UTF-8']::BLANK}" +
                            "#{Encodings['UTF-8']::JA_BLANK}]+(?:#{eol_char})?",
@@ -259,7 +259,7 @@ class DocDiff
     module CR
       EOL = 'CR'
 
-      def eol_char()
+      def eol_char
         "\r"
       end
 
@@ -269,7 +269,7 @@ class DocDiff
     module LF
       EOL = 'LF'
 
-      def eol_char()
+      def eol_char
         "\n"
       end
 
@@ -279,7 +279,7 @@ class DocDiff
     module CRLF
       EOL = 'CRLF'
 
-      def eol_char()
+      def eol_char
         "\r\n"
       end
 
@@ -289,7 +289,7 @@ class DocDiff
     module NoEOL
       EOL = 'NONE'
 
-      def eol_char()
+      def eol_char
         nil
       end
 

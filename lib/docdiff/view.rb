@@ -38,11 +38,11 @@ class DocDiff
 #     end
     end
 
-    def difference_whole()
+    def difference_whole
       @difference
     end
 
-    def difference_digest()
+    def difference_digest
       #
     end
 
@@ -204,14 +204,14 @@ class DocDiff
       result.delete_if{|elem| elem == ''}
     end
 
-    def source_lines()
+    def source_lines
       if @source_lines == nil
         @source_lines = @difference.collect{|entry| entry[1]}.join.scan_lines(@eol)
       end
       @source_lines
     end
 
-    def target_lines()
+    def target_lines
       if @target_lines == nil
         @target_lines = @difference.collect{|entry| entry[2]}.join.scan_lines(@eol)
       end
@@ -219,16 +219,16 @@ class DocDiff
     end
 
     # tty (terminal)
-    def tty_header()
+    def tty_header
       []
     end
 
-    def tty_footer()
+    def tty_footer
       []
     end
     TTYEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
     TTYEscapePat = /(#{TTYEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
-    def tty_tags()
+    def tty_tags
       {:outside_escape_dic  => TTYEscapeDic,
        :outside_escape_pat  => TTYEscapePat,
        :inside_escape_dic   => TTYEscapeDic,
@@ -270,7 +270,7 @@ class DocDiff
     end
 
     # HTML (XHTML)
-    def html_header()
+    def html_header
       ["<?xml version=\"1.0\" encoding=\"#{@encoding||''}\"?>#{@eol_char||''}",
        "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"#{@eol_char||''}",
        "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">#{@eol_char||''}",
@@ -290,13 +290,13 @@ class DocDiff
        "</head><body><div>#{@eol_char||''}"]
     end
 
-    def html_footer()
+    def html_footer
       [(@eol_char||"") + '</div></body></html>' + (@eol_char||"")]
     end
     HTMLEscapeDic = {'<'=>'&lt;', '>'=>'&gt;', '&'=>'&amp;', '  '=>'&nbsp;&nbsp;',
                      "\r\n" => "<br />\r\n", "\r" => "<br />\r", "\n" => "<br />\n"}
     HTMLEscapePat = /(#{HTMLEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
-    def html_tags()
+    def html_tags
       {:outside_escape_dic  => HTMLEscapeDic,
        :outside_escape_pat  => HTMLEscapePat,
        :inside_escape_dic   => HTMLEscapeDic,
@@ -338,7 +338,7 @@ class DocDiff
     end
 
     # Manued
-    def manued_header()
+    def manued_header
       ["defparentheses [ ]"        + (@eol_char||"\n"),
        "defdelete      /"          + (@eol_char||"\n"),
        "defswap        |"          + (@eol_char||"\n"),
@@ -348,14 +348,14 @@ class DocDiff
        "defversion     0.9.5"      + (@eol_char||"\n")]
     end
 
-    def manued_footer()
+    def manued_footer
       []
     end
     ManuedInsideEscapeDic = {'~'=>'~~', '/'=>'~/', '['=>'~[', ']'=>'~]', ';'=>'~;'}
     ManuedInsideEscapePat = /(#{ManuedInsideEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
     ManuedOutsideEscapeDic = {'~'=>'~~', '['=>'~['}
     ManuedOutsideEscapePat = /(#{ManuedOutsideEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
-    def manued_tags()
+    def manued_tags
       {:inside_escape_dic   => ManuedInsideEscapeDic,
        :inside_escape_pat   => ManuedInsideEscapePat,
        :outside_escape_dic  => ManuedOutsideEscapeDic,
@@ -403,16 +403,16 @@ class DocDiff
     end
 
     # wdiff-like
-    def wdiff_header()
+    def wdiff_header
       []
     end
 
-    def wdiff_footer()
+    def wdiff_footer
       []
     end
     WDIFFEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
     WDIFFEscapePat = /(#{WDIFFEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
-    def wdiff_tags()
+    def wdiff_tags
       {:outside_escape_dic  => WDIFFEscapeDic,
        :outside_escape_pat  => WDIFFEscapePat,
        :inside_escape_dic   => WDIFFEscapeDic,
@@ -458,7 +458,7 @@ class DocDiff
     def user_footer(); []; end
     UserEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
     UserEscapePat = /(#{UserEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
-    def user_tags()
+    def user_tags
       {:outside_escape_dic  => UserEscapeDic,
        :outside_escape_pat  => UserEscapePat,
        :inside_escape_dic   => UserEscapeDic,
@@ -499,7 +499,7 @@ class DocDiff
       apply_style_digest(tags, headfoot)
     end
 
-    def to_debug()
+    def to_debug
     end
   end
 end  # class DocDiff

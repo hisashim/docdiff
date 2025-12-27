@@ -10,11 +10,11 @@ require 'nkf'
 class TC_DocDiff < Test::Unit::TestCase
   Document = DocDiff::Document
 
-  def setup()
+  def setup
     #
   end
 
-  def test_compare_by_line()
+  def test_compare_by_line
     doc1 = Document.new("Foo bar.\nBaz quux.", 'US-ASCII', 'LF')
     doc2 = Document.new("Foo.\nBaz quux.", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
@@ -23,7 +23,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.compare_by_line(doc1, doc2))
   end
 
-  def test_compare_by_line_word()
+  def test_compare_by_line_word
     doc1 = Document.new("a b c d\ne f", 'US-ASCII', 'LF')
     doc2 = Document.new("a x c d\ne f", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
@@ -35,7 +35,7 @@ class TC_DocDiff < Test::Unit::TestCase
                  docdiff.compare_by_line_word(doc1, doc2))
   end
 
-  def test_compare_by_line_word_char()
+  def test_compare_by_line_word_char
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
@@ -49,7 +49,7 @@ class TC_DocDiff < Test::Unit::TestCase
                  docdiff.compare_by_line_word_char(doc1, doc2))
   end
 
-  def test_run_line_html()
+  def test_run_line_html
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
@@ -76,7 +76,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "html", :digest => false}))
   end
 
-  def test_run_line_manued()
+  def test_run_line_manued
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
@@ -91,7 +91,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "manued", :digest => false}))
   end
 
-  def test_run_word_manued()
+  def test_run_word_manued
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
@@ -106,7 +106,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "manued", :digest => false}))
   end
 
-  def test_run_char_manued()
+  def test_run_char_manued
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     docdiff = DocDiff.new
@@ -121,7 +121,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "manued", :digest => false}))
   end
 
-  def test_run_line_user()
+  def test_run_line_user
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     config = {:tag_common_start          => '<=>',
@@ -140,7 +140,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "user", :digest => false}))
   end
 
-  def test_run_word_user()
+  def test_run_word_user
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     config = {:tag_common_start          => '<=>',
@@ -159,7 +159,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "user", :digest => false}))
   end
 
-  def test_run_char_user()
+  def test_run_char_user
     doc1 = Document.new("foo bar\nbaz", 'US-ASCII', 'LF')
     doc2 = Document.new("foo beer\nbaz", 'US-ASCII', 'LF')
     config = {:tag_common_start          => '<=>',
@@ -178,7 +178,7 @@ class TC_DocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "user", :digest => false}))
   end
 
-  def teardown()
+  def teardown
     #
   end
 end

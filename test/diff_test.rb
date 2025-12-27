@@ -5,11 +5,11 @@ require "docdiff/diff"
 class TC_DocDiff_Diff < Test::Unit::TestCase
   Diff = DocDiff::Diff
 
-  def setup()
+  def setup
     #
   end
 
-  def test_new_ses()
+  def test_new_ses
     a1 = [:a, :b, :c]
     a2 = [:a, :x, :c]
     expected = [[:common_elt_elt, [:a], [:a]],
@@ -30,7 +30,7 @@ class TC_DocDiff_Diff < Test::Unit::TestCase
     assert_equal(expected, actual_contours)
   end
 
-  def teardown()
+  def teardown
     #
   end
 end

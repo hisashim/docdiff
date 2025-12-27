@@ -45,22 +45,22 @@ class DocDiff
                          "|(?:.+?)"].join
 
       # override default method, as ASCII has no Japanese in it
-      def count_ja_graph_char()
+      def count_ja_graph_char
         0
       end
 
       # override default method, as ASCII has no Japanese in it
-      def count_ja_blank_char()
+      def count_ja_blank_char
         0
       end
 
       # override default method, as ASCII has no Japanese in it
-      def count_ja_word()
+      def count_ja_word
         0
       end
 
       # override default method, as ASCII has no Japanese in it
-      def count_ja_valid_word()
+      def count_ja_valid_word
         0
       end
 
