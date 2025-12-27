@@ -476,7 +476,7 @@ class DocDiff
                   "\xe3\x82\x92" \
                   "\xe3\x82\x93"
       HIRA_EX =   HIRA +
-                  "\xe3\x83\xbc" +
+                  "\xe3\x83\xbc" \
                   "\xe3\x83\xbd\xe3\x83\xbe"  # add onbiki and kanagaeshi(hira)
       KATA =      "\xe3\x82\xa1" \
                   "\xe3\x82\xa2" \
@@ -565,7 +565,7 @@ class DocDiff
                   "\xe3\x83\xb5" \
                   "\xe3\x83\xb6"
       KATA_EX = KATA +
-                "\xe3\x83\xbc" +
+                "\xe3\x83\xbc" \
                 "\xe3\x82\x9d\xe3\x82\x9e"# add onbiki and kanagaeshi(kata)
       KANJI =  "\xe4\xba\x9c" \
                "\xe5\x94\x96" \

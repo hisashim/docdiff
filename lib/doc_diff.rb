@@ -7,10 +7,14 @@ require "docdiff/view"
 require "docdiff/cli"
 
 class DocDiff
-  Author = "Copyright (C) 2002-2011 Hisashi MORITA.\n" +
-           "diff library originates from Ruby/CVS by TANAKA Akira.\n"
-  License = "This software is licensed under so-called modified BSD license.\n" +
-            "See the document for detail.\n"
+  Author = <<~EOS
+    Copyright (C) 2002-2011 Hisashi MORITA.
+    diff library originates from Ruby/CVS by TANAKA Akira.
+  EOS
+  License = <<~EOS
+    This software is licensed under so-called modified BSD license.
+    See the document for detail.
+  EOS
   SystemConfigFileName = File.join(File::Separator, "etc", "docdiff", "docdiff.conf")
   UserConfigFileName = File.join(ENV["HOME"], "etc", "docdiff", "docdiff.conf")
   AltUserConfigFileName = File.join(ENV["HOME"], ".docdiff", "docdiff.conf")

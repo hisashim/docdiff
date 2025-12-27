@@ -51,26 +51,29 @@ class TC_DocDiff < Test::Unit::TestCase
     doc1 = Document.new("foo bar\nbaz", "US-ASCII", "LF")
     doc2 = Document.new("foo beer\nbaz", "US-ASCII", "LF")
     docdiff = DocDiff.new
-    expected = '<?xml version="1.0" encoding="US-ASCII"?>' + "\n" +
-     '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"' + "\n" +
-     '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' + "\n" +
-     "<html><head>" + "\n" +
-     '<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />' + "\n" +
-     "<title>Difference</title>" + "\n" +
-     '<style type="text/css">' + "\n" +
-     " body {font-family: monospace;}" + "\n" +
-     " span.del {background: hotpink; border: thin inset;}" + "\n" +
-     " span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}" + "\n" +
-     " span.before-change {background: yellow; border: thin inset;}" + "\n" +
-     " span.after-change {background: lime; font-weight: bolder; border: thin outset;}" + "\n" +
-     " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0.5em; padding-bottom: 0em;}\n" +
-     " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0.5em;}\n" +
-     " li.entry {border-top: thin solid gray;}\n" +
-     "</style>" + "\n" +
-     "</head><body><div>" + "\n" +
-     '<span class="before-change"><del>foo bar<br />' + "\n" + "</del></span>" +
-     '<span class="after-change"><ins>foo beer<br />' + "\n" + "</ins></span>" +
-     '<span class="common">baz' + "</span>" + "\n</div></body></html>" + "\n"
+    expected = <<~EOS
+      <?xml version="1.0" encoding="US-ASCII"?>
+      <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+      <html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII" />
+      <title>Difference</title>
+      <style type="text/css">
+       body {font-family: monospace;}
+       span.del {background: hotpink; border: thin inset;}
+       span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}
+       span.before-change {background: yellow; border: thin inset;}
+       span.after-change {background: lime; font-weight: bolder; border: thin outset;}
+       li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0.5em; padding-bottom: 0em;}
+       li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0.5em;}
+       li.entry {border-top: thin solid gray;}
+      </style>
+      </head><body><div>
+      <span class="before-change"><del>foo bar<br />
+      </del></span><span class="after-change"><ins>foo beer<br />
+      </ins></span><span class="common">baz</span>
+      </div></body></html>
+    EOS
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "html", :digest => false}))
   end
 
@@ -78,14 +81,18 @@ class TC_DocDiff < Test::Unit::TestCase
     doc1 = Document.new("foo bar\nbaz", "US-ASCII", "LF")
     doc2 = Document.new("foo beer\nbaz", "US-ASCII", "LF")
     docdiff = DocDiff.new
-    expected = "defparentheses [ ]\n" +
-               "defdelete      /\n" +
-               "defswap        |\n" +
-               "defcomment     ;\n" +
-               "defescape      ~\n" +
-               "deforder       newer-last\n" +
-               "defversion     0.9.5\n" + 
-               "[foo bar\n/foo beer\n]baz"
+    expected = <<~EOS.chomp
+      defparentheses [ ]
+      defdelete      /
+      defswap        |
+      defcomment     ;
+      defescape      ~
+      deforder       newer-last
+      defversion     0.9.5
+      [foo bar
+      /foo beer
+      ]baz
+    EOS
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "line", :format => "manued", :digest => false}))
   end
 
@@ -93,14 +100,17 @@ class TC_DocDiff < Test::Unit::TestCase
     doc1 = Document.new("foo bar\nbaz", "US-ASCII", "LF")
     doc2 = Document.new("foo beer\nbaz", "US-ASCII", "LF")
     docdiff = DocDiff.new
-    expected = "defparentheses [ ]\n" +
-               "defdelete      /\n" +
-               "defswap        |\n" +
-               "defcomment     ;\n" +
-               "defescape      ~\n" +
-               "deforder       newer-last\n" +
-               "defversion     0.9.5\n" + 
-               "foo [bar/beer]\nbaz"
+    expected = <<~EOS.chomp
+      defparentheses [ ]
+      defdelete      /
+      defswap        |
+      defcomment     ;
+      defescape      ~
+      deforder       newer-last
+      defversion     0.9.5
+      foo [bar/beer]
+      baz
+    EOS
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "word", :format => "manued", :digest => false}))
   end
 
@@ -108,14 +118,17 @@ class TC_DocDiff < Test::Unit::TestCase
     doc1 = Document.new("foo bar\nbaz", "US-ASCII", "LF")
     doc2 = Document.new("foo beer\nbaz", "US-ASCII", "LF")
     docdiff = DocDiff.new
-    expected = "defparentheses [ ]\n" +
-               "defdelete      /\n" +
-               "defswap        |\n" +
-               "defcomment     ;\n" +
-               "defescape      ~\n" +
-               "deforder       newer-last\n" +
-               "defversion     0.9.5\n" + 
-               "foo b[a/ee]r\nbaz"
+    expected = <<~EOS.chomp
+      defparentheses [ ]
+      defdelete      /
+      defswap        |
+      defcomment     ;
+      defescape      ~
+      deforder       newer-last
+      defversion     0.9.5
+      foo b[a/ee]r
+      baz
+    EOS
     assert_equal(expected, docdiff.run(doc1, doc2, {:resolution => "char", :format => "manued", :digest => false}))
   end
 

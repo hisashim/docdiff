@@ -117,7 +117,7 @@ class DocDiff
                   "\x82\xea\x82\xeb\x82\xec\x82\xed\x82\xee" \
                   "\x82\xef\x82\xf0\x82\xf1"  # [\x82\xf1-\x82\xf1]
       HIRA_EX =   HIRA +
-                  "\x81\x5b" +
+                  "\x81\x5b" \
                   "\x81\x52\x81\x53" # add onbiki and kanagaeshi(hira)
       KATA =      "\x83\x40\x83\x41\x83\x42\x83\x43\x83\x44" \
                   "\x83\x45\x83\x46\x83\x47\x83\x48\x83\x49" \
@@ -139,7 +139,7 @@ class DocDiff
                   "\x83\x96"  # [\x83\x40-\x83\x7e\x83\x80-\x83\x96]
       # Note that \x83\x7f is excluded.
       KATA_EX =   KATA +
-                  "\x81\x5b" +
+                  "\x81\x5b" \
                   "\x81\x54\x81\x55" # add onbiki and kanagaeshi(kata)
       KANJI =     "\x88\x9f-\x88\xfc" \
                   "\x89\x40-\x89\x9e" \
