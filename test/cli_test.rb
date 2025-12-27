@@ -225,10 +225,10 @@ class TC_CLI < Test::Unit::TestCase
       ----
       (2),2
 
-      {+It's me who has created Ruby.  +}I am 
+      {+It's me who has created Ruby.  +}I am#{" "}
       ----
       2,2
-      I am [-just another -]{+a +}Ruby 
+      I am [-just another -]{+a +}Ruby#{" "}
       ----
       2,2
       Ruby [-porter.-]{+hacker.+}
@@ -250,10 +250,10 @@ class TC_CLI < Test::Unit::TestCase
       ----
       (2),2
 
-      {+It's me who has created Ruby.  +}I am 
+      {+It's me who has created Ruby.  +}I am#{" "}
       ----
       2,2
-      I am [-just another -]{+a +}Ruby 
+      I am [-just another -]{+a +}Ruby#{" "}
       ----
       2,2
       Ruby [-porter.-]{+hacker.+}
@@ -277,13 +277,13 @@ class TC_CLI < Test::Unit::TestCase
       ----
       (2),2
 
-      I am 
+      I am#{" "}
 
-      {+It's me who has created Ruby.  +}I am 
+      {+It's me who has created Ruby.  +}I am#{" "}
       ----
       2,2
-      I am [-just another -]Ruby 
-      I am {+a +}Ruby 
+      I am [-just another -]Ruby#{" "}
+      I am {+a +}Ruby#{" "}
       ----
       2,2
       Ruby [-porter.-]

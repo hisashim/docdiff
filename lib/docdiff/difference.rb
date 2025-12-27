@@ -1,5 +1,5 @@
 # Difference class for DocDiff
-# 2003-03-24 .. 
+# 2003-03-24 ..
 # Hisashi MORITA
 
 require "docdiff/diff"
