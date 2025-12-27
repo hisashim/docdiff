@@ -45,12 +45,9 @@ class DocDiff
     words = Difference.new
     lines.each{|line|
       if line.first == :change_elt
-        before_change = Document.new(line[1].join,
-                                     doc1.encoding, doc1.eol)
-        after_change  = Document.new(line[2].join,
-                                     doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_word,
-                       after_change.split_to_word).each{|word|
+        before_change = Document.new(line[1].join, doc1.encoding, doc1.eol)
+        after_change  = Document.new(line[2].join, doc2.encoding, doc2.eol)
+        Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
           words << word
         }
       else  # :common_elt_elt, :del_elt, or :add_elt
@@ -66,12 +63,9 @@ class DocDiff
     lines_and_words = Difference.new
     lines.each{|line|
       if line.first == :change_elt
-        before_change = Document.new(line[1].join,
-                                     doc1.encoding, doc1.eol)
-        after_change  = Document.new(line[2].join,
-                                     doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_word,
-                       after_change.split_to_word).each{|word|
+        before_change = Document.new(line[1].join, doc1.encoding, doc1.eol)
+        after_change  = Document.new(line[2].join, doc2.encoding, doc2.eol)
+        Difference.new(before_change.split_to_word, after_change.split_to_word).each{|word|
           lines_and_words << word
         }
       else  # :common_elt_elt, :del_elt, or :add_elt

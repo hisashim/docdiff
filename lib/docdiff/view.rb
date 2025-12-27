@@ -23,6 +23,12 @@ class String
 end
 
 class DocDiff
+  class Difference
+    def to_view(encoding, eol)
+      View.new(self, encoding, eol)
+    end
+  end
+
   class View
 #  EOL_CHARS_PAT = Regexp.new(/\r\n|\r(?!\n)|(?:\A|[^\r])\n/m)
 

@@ -11,7 +11,7 @@ class DocDiff
             '--resolution=RESOLUTION',
             resolutions = ['line', 'word', 'char'],
             'specify resolution (granularity)',
-            "#{resolutions.join('|')} (default: word)"
+            "#{resolutions.join('|')} (default: word)",
           ){|s| o[:resolution] = (s || "word")}
           parser.on('--line', 'same as --resolution=line'){o[:resolution] = "line"}
           parser.on('--word', 'same as --resolution=word'){o[:resolution] = "word"}
@@ -29,7 +29,7 @@ class DocDiff
             },
             "specify character encoding",
             "#{encodings.join('|')} (default: auto)",
-            "(try ASCII for single byte encodings such as ISO-8859)"
+            "(try ASCII for single byte encodings such as ISO-8859)",
           ){|s| o[:encoding] = (s || "auto")}
           parser.on('--ascii', 'same as --encoding=ASCII'){o[:encoding] = "ASCII"}
           parser.on('--iso8859', 'same as --encoding=ASCII'){o[:encoding] = "ASCII"}
@@ -55,7 +55,7 @@ class DocDiff
             formats = ['tty', 'manued', 'html', 'wdiff', 'stat', 'user'],
             'specify output format',
             "#{formats.join('|')} (default: html) (stat is deprecated)",
-            '(user tags can be defined in config file)'
+            '(user tags can be defined in config file)',
           ){|s| o[:format] = (s || "manued")}
           parser.on('--tty', 'same as --format=tty'){o[:format] = "tty"}
           parser.on('--manued', 'same as --format=manued'){o[:format] = "manued"}
@@ -64,8 +64,9 @@ class DocDiff
           parser.on('--stat', 'same as --format=stat (not implemented) (deprecated)'){o[:format] = "stat"}
 
           parser.on(
-            '--label LABEL', '-L LABEL',
-            'use label instead of file name (not implemented; exists for compatibility with diff)'
+            '--label LABEL',
+            '-L LABEL',
+            'use label instead of file name (not implemented; exists for compatibility with diff)',
           ){|s| o[:label] ||= []; o[:label] << s}
 
           parser.on('--digest', 'digest output, do not show all'){o[:digest] = true}
@@ -80,8 +81,9 @@ class DocDiff
 
           parser.on('--cache', 'use file cache (not implemented) (deprecated)'){o[:cache] = true}
           parser.on(
-            '--pager=PAGER', String,
-            'specify pager (if available, $DOCDIFF_PAGER is used by default)'
+            '--pager=PAGER',
+            String,
+            'specify pager (if available, $DOCDIFF_PAGER is used by default)',
           ){|s| o[:pager] = s}
           parser.on('--no-pager', 'do not use pager'){o[:pager] = false}
           parser.on('--config-file=FILE', String, 'specify config file to read'){|s| o[:config_file] = s}
@@ -95,7 +97,7 @@ class DocDiff
 
           parser.on_tail(
             "When invoked as worddiff or chardiff, resolution will be set accordingly.",
-            "Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf (or ~/etc/docdiff/docdiff.conf (deprecated))"
+            "Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf (or ~/etc/docdiff/docdiff.conf (deprecated))",
           )
         end
 
@@ -108,7 +110,7 @@ class DocDiff
         return result if content.size <= 0
         lines = content.dup.split(/\r\n|\r|\n/).compact
         lines.collect!{|line| line.sub(/#.*$/, '')}
-        lines.collect!{|line| line.strip}
+        lines.collect!(&:strip)
         lines.delete_if{|line| line == ""}
         lines.each{|line|
           raise 'line does not include " = ".' unless /[\s]+=[\s]+/.match(line)
@@ -278,11 +280,17 @@ class DocDiff
         doc1 = DocDiff::Document.new(file1_content, encoding1, eol1)
         doc2 = DocDiff::Document.new(file2_content, encoding2, eol2)
 
-        output = docdiff.run(doc1, doc2,
-                             {:resolution => docdiff.config[:resolution],
-                              :format     => docdiff.config[:format],
-                              :digest     => docdiff.config[:digest],
-                              :display    => docdiff.config[:display]})
+        output =
+          docdiff.run(
+            doc1,
+            doc2,
+            {
+              resolution: docdiff.config[:resolution],
+              format:     docdiff.config[:format],
+              digest:     docdiff.config[:digest],
+              display:    docdiff.config[:display],
+            },
+          )
 
         print_or_write_to_pager(output, docdiff.config[:pager])
       end

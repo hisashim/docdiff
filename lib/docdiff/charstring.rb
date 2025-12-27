@@ -151,103 +151,83 @@ class DocDiff
     end
 
     def split_to_char
-      if eol_char  # sometimes string has no end-of-line char
-        encode('UTF-8').scan(Regexp.new("(?:#{eol_char})|(?:.)",
-                                        Regexp::MULTILINE)
-                            ).map{|e| e.encode(self.encoding)}
-      else                  # it seems that no EOL module was extended...
-        encode('UTF-8').scan(Regexp.new("(?:.)",
-                                        Regexp::MULTILINE)
-                            ).map{|e| e.encode(self.encoding)}
+      if eol_char # sometimes string has no end-of-line char
+        re = Regexp.new("(?:#{eol_char})|(?:.)", Regexp::MULTILINE)
+        encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
+      else        # it seems that no EOL module was extended...
+        re = Regexp.new("(?:.)", Regexp::MULTILINE)
+        encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
       end
     end
 
     def count_latin_graph_char
-      encode('UTF-8').scan(Regexp.new("[#{Encodings['UTF-8']::GRAPH}]",
-                                      Regexp::MULTILINE)
-                          ).size
+      re = Regexp.new("[#{Encodings['UTF-8']::GRAPH}]", Regexp::MULTILINE)
+      encode('UTF-8').scan(re).size
     end
 
     def count_ja_graph_char
-      encode('UTF-8').scan(Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]",
-                                      Regexp::MULTILINE)
-                          ).size
+      re = Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]", Regexp::MULTILINE)
+      encode('UTF-8').scan(re).size
     end
 
     def count_latin_blank_char
-      encode('UTF-8').scan(Regexp.new("[#{Encodings['UTF-8']::BLANK}]",
-                                      Regexp::MULTILINE)
-                          ).size
+      re = Regexp.new("[#{Encodings['UTF-8']::BLANK}]", Regexp::MULTILINE)
+      encode('UTF-8').scan(re).size
     end
 
     def count_ja_blank_char
-      encode('UTF-8').scan(Regexp.new("[#{Encodings['UTF-8']::JA_BLANK}]",
-                                      Regexp::MULTILINE)
-                          ).size
+      re = Regexp.new("[#{Encodings['UTF-8']::JA_BLANK}]", Regexp::MULTILINE)
+      encode('UTF-8').scan(re).size
     end
 
     def split_to_word
-      encode('UTF-8').scan(Regexp.new(Encodings['UTF-8']::WORD_REGEXP_SRC,
-                                      Regexp::MULTILINE)
-                          ).map{|e| e.encode(self.encoding)}
+      re = Regexp.new(Encodings['UTF-8']::WORD_REGEXP_SRC, Regexp::MULTILINE)
+      encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
     end
 
     def count_latin_word
-      split_to_word.collect{|word|
-        word if Regexp.new("[#{Encodings['UTF-8']::PRINT}]",
-                           Regexp::MULTILINE).match(word.encode('UTF-8'))
-      }.compact.size
+      re = Regexp.new("[#{Encodings['UTF-8']::PRINT}]", Regexp::MULTILINE)
+      split_to_word.count{|word| re.match(word.encode('UTF-8'))}
     end
 
     def count_ja_word
-      split_to_word.collect{|word|
-        word if Regexp.new("[#{Encodings['UTF-8']::JA_PRINT}]",
-                           Regexp::MULTILINE).match(word.encode('UTF-8'))
-      }.compact.size
+      re = Regexp.new("[#{Encodings['UTF-8']::JA_PRINT}]", Regexp::MULTILINE)
+      split_to_word.count{|word| re.match(word.encode('UTF-8'))}
     end
 
     def count_latin_valid_word
-      split_to_word.collect{|word|
-        word if Regexp.new("[#{Encodings['UTF-8']::ALNUM}]",
-                           Regexp::MULTILINE).match(word.encode('UTF-8'))
-      }.compact.size
+      re = Regexp.new("[#{Encodings['UTF-8']::ALNUM}]", Regexp::MULTILINE)
+      split_to_word.count{|word| re.match(word.encode('UTF-8'))}
     end
 
     def count_ja_valid_word
-      split_to_word.collect{|word|
-        word if Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]",
-                           Regexp::MULTILINE).match(word.encode('UTF-8'))
-      }.compact.size
+      re = Regexp.new("[#{Encodings['UTF-8']::JA_GRAPH}]", Regexp::MULTILINE)
+      split_to_word.count{|word| re.match(word.encode('UTF-8'))}
     end
 
     def split_to_line
-      raise "EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed." unless EOLChars[eol]
+      raise <<~EOS.chomp unless EOLChars[eol]
+        EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed.
+      EOS
       if defined? eol_char
-        encode('UTF-8').scan(Regexp.new(".*?#{eol_char}|.+",
-                                        Regexp::MULTILINE)
-                            ).map{|e| e.encode(self.encoding)}
+        re = Regexp.new(".*?#{eol_char}|.+", Regexp::MULTILINE)
+        encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
       else
-        encode('UTF-8').scan(Regexp.new(".+",
-                                        Regexp::MULTILINE)
-                            ).map{|e| e.encode(self.encoding)}
+        re = Regexp.new(".+", Regexp::MULTILINE)
+        encode('UTF-8').scan(re).map{|e| e.encode(self.encoding)}
       end
     end
 
     def count_graph_line
-      graph = (Encodings['UTF-8']::GRAPH +
-               Encodings['UTF-8']::JA_GRAPH).chars.uniq.join
-      re_graph = Regexp.new("[#{Regexp.quote(graph)}]", Regexp::MULTILINE)
-      split_to_line.collect{|line|
-        line if re_graph.match(line.encode('UTF-8'))
-      }.compact.size
+      graph = (Encodings['UTF-8']::GRAPH + Encodings['UTF-8']::JA_GRAPH).chars.uniq.join
+      re = Regexp.new("[#{Regexp.quote(graph)}]", Regexp::MULTILINE)
+      split_to_line.count{|line| re.match(line.encode('UTF-8'))}
     end
 
     def count_blank_line
-      split_to_line.collect{|line|
-        line if Regexp.new("^[#{Encodings['UTF-8']::BLANK}" +
-                           "#{Encodings['UTF-8']::JA_BLANK}]+(?:#{eol_char})?",
-                           Regexp::MULTILINE).match(line.encode('UTF-8'))
-      }.compact.size
+      blank = (Encodings['UTF-8']::BLANK + Encodings['UTF-8']::JA_BLANK).chars.uniq.join
+      re = Regexp.new("^[#{blank}]+(?:#{eol_char})?", Regexp::MULTILINE)
+      split_to_line.count{|line| re.match(line.encode('UTF-8'))}
     end
 
     # load encoding modules
