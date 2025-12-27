@@ -22,7 +22,7 @@ class DocDiff
           raise EncodingDetectionFailure, "encoding not specified, and auto detection failed."
         # @body.encoding = 'ASCII' # default to ASCII <= BAD!
         else
-	  @body.encoding = guessed_encoding
+          @body.encoding = guessed_encoding
         end
       end
       if e

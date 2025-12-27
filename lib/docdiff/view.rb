@@ -135,30 +135,42 @@ class DocDiff
           src = (entry[1] || []).join
           tgt = (entry[2] || []).join
         end
-        cxt_pre = if i == 0
-                    "" # no pre context for the first entry
-                  else
-                    (@difference[i - 1][1] || []).join.scan(cxt_pre_pat).join
-                  end
-        cxt_post = if (i + 1) == @difference.size
-                     "" # no post context for the last entry
-                   else
-                     (@difference[i + 1][1] || []).join.scan(cxt_post_pat).join
-                   end
+        cxt_pre =
+          if i == 0
+            "" # no pre context for the first entry
+          else
+            (@difference[i - 1][1] || []).join.scan(cxt_pre_pat).join
+          end
+        cxt_post =
+          if (i + 1) == @difference.size
+            "" # no post context for the last entry
+          else
+            (@difference[i + 1][1] || []).join.scan(cxt_post_pat).join
+          end
         # elements for an entry
-        e_head     = Proc.new do |pos_str|
-          tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]
-        end
-        e_cxt_pre  = tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
-        e_src      = escape_inside(src, tags)
-        e_chg      = tags[:start_before_change] + escape_inside(src, tags)  + tags[:end_before_change] +
-                     tags[:start_after_change]  + escape_inside(tgt, tags)  + tags[:end_after_change]
-        e_chgdel   = tags[:start_before_change] + escape_inside(src, tags)  + tags[:end_before_change]
-        e_chgadd   = tags[:start_after_change]  + escape_inside(tgt, tags)  + tags[:end_after_change]
-        e_del      = tags[:start_del]           + escape_outside(src, tags) + tags[:end_del]
-        e_add      = tags[:start_add]           + escape_outside(tgt, tags) + tags[:end_add]
-        e_cxt_post = tags[:start_postfix]       + escape_outside(cxt_post, tags) + tags[:end_postfix]
-        e_foot     = tags[:end_entry] + (@eol_char || "")
+        e_head =
+          Proc.new do |pos_str|
+            tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]
+          end
+        e_cxt_pre =
+          tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
+        e_src =
+          escape_inside(src, tags)
+        e_chg =
+          tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change] +
+          tags[:start_after_change] + escape_inside(tgt, tags) + tags[:end_after_change]
+        e_chgdel =
+          tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change]
+        e_chgadd =
+          tags[:start_after_change] + escape_inside(tgt, tags) + tags[:end_after_change]
+        e_del =
+          tags[:start_del] + escape_outside(src, tags) + tags[:end_del]
+        e_add =
+          tags[:start_add] + escape_outside(tgt, tags) + tags[:end_add]
+        e_cxt_post =
+          tags[:start_postfix] + escape_outside(cxt_post, tags) + tags[:end_postfix]
+        e_foot =
+          tags[:end_entry] + (@eol_char || "")
 
         span1 = source_lines_involved = src.scan_lines(@eol).size
         span2 = target_lines_involved = tgt.scan_lines(@eol).size
@@ -311,15 +323,15 @@ class DocDiff
         "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=#{@encoding || ""}\" />#{@eol_char || ""}",
         "<title>Difference</title>#{@eol_char || ""}",
         "<style type=\"text/css\">#{@eol_char || ""}" \
-        " body {font-family: monospace;}#{@eol_char || ""}" \
-        " span.del {background: hotpink; border: thin inset;}#{@eol_char || ""}" \
-        " span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}#{@eol_char || ""}" \
-        " span.before-change {background: yellow; border: thin inset;}#{@eol_char || ""}" \
-        " span.after-change {background: lime; font-weight: bolder; border: thin outset;}#{@eol_char || ""}" \
-        " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0.5em; padding-bottom: 0em;}#{@eol_char || ""}" \
-        " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0.5em;}#{@eol_char || ""}" \
-        " li.entry {border-top: thin solid gray;}#{@eol_char || ""}" \
-        "</style>#{@eol_char || ""}",
+          " body {font-family: monospace;}#{@eol_char || ""}" \
+          " span.del {background: hotpink; border: thin inset;}#{@eol_char || ""}" \
+          " span.add {background: deepskyblue; font-weight: bolder; border: thin outset;}#{@eol_char || ""}" \
+          " span.before-change {background: yellow; border: thin inset;}#{@eol_char || ""}" \
+          " span.after-change {background: lime; font-weight: bolder; border: thin outset;}#{@eol_char || ""}" \
+          " li.entry .position {font-weight: bolder; margin-top: 0em; margin-bottom: 0em; padding-top: 0.5em; padding-bottom: 0em;}#{@eol_char || ""}" \
+          " li.entry .body {margin-top: 0em; margin-bottom: 0em; padding-top: 0em; padding-bottom: 0.5em;}#{@eol_char || ""}" \
+          " li.entry {border-top: thin solid gray;}#{@eol_char || ""}" \
+          "</style>#{@eol_char || ""}",
         "</head><body><div>#{@eol_char || ""}",
       ]
     end

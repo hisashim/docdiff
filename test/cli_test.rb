@@ -130,7 +130,7 @@ class TC_CLI < Test::Unit::TestCase
   def test_cli_encoding_shift_jis
     expected_utf8_cr =
       "[-こんにちは-]{+こんばんは+}、私の[-名前はわたなべです-]{+名前はまつもとです+}。\r" \
-      "{+Rubyを作ったのは私です。+}私は[-Just Another -]Ruby [-Porter-]{+Hacker+}です。\r"
+        "{+Rubyを作ったのは私です。+}私は[-Just Another -]Ruby [-Porter-]{+Hacker+}です。\r"
     expected = NKF.nkf("--ic=UTF-8 --oc=Shift_JIS", expected_utf8_cr)
     cmd = "ruby --external-encoding Shift_JIS -I lib bin/docdiff --encoding=Shift_JIS --format=wdiff" \
       " test/fixture/01_ja_sjis_cr.txt test/fixture/02_ja_sjis_cr.txt"
@@ -152,7 +152,7 @@ class TC_CLI < Test::Unit::TestCase
   def test_cli_eol_cr
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\r" \
-      "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r"
+        "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r"
     cmd = "ruby -I lib bin/docdiff --eol=CR --format=wdiff" \
       " test/fixture/01_en_ascii_cr.txt test/fixture/02_en_ascii_cr.txt"
     actual = `#{cmd}`
@@ -162,7 +162,7 @@ class TC_CLI < Test::Unit::TestCase
   def test_cli_eol_lf
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\n" \
-      "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\n"
+        "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\n"
     cmd = "ruby -I lib bin/docdiff --eol=LF --format=wdiff" \
       " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`
@@ -172,7 +172,7 @@ class TC_CLI < Test::Unit::TestCase
   def test_cli_eol_crlf
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\r\n" \
-      "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r\n"
+        "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r\n"
     cmd = "ruby -I lib bin/docdiff --eol=CRLF --format=wdiff" \
       " test/fixture/01_en_ascii_crlf.txt test/fixture/02_en_ascii_crlf.txt"
     actual = `#{cmd}`
