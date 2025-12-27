@@ -40,11 +40,11 @@ class DocDiff
           parser.on("--utf8", "same as --encoding=UTF-8") { o[:encoding] = "UTF-8" }
 
           parser.on(
-            '--eol=EOL',
-            eols = ['CR','LF','CRLF','auto'],
+            "--eol=EOL",
+            eols = ["CR", "LF", "CRLF", "auto"],
             eol_aliases = { "cr" => "CR", "lf" => "LF", "crlf" => "CRLF" },
-            'specify end-of-line character',
-            "#{eols.join('|')} (default: auto)",
+            "specify end-of-line character",
+            "#{eols.join("|")} (default: auto)",
           ) { |s| o[:eol] = (s || "auto") }
           parser.on("--cr", "same as --eol=CR") { o[:eol] = "CR" }
           parser.on("--lf", "same as --eol=LF") { o[:eol] = "LF" }
@@ -122,8 +122,8 @@ class DocDiff
 
           name  = name_src.intern
           value = value_src
-          value = true if ["on","yes","true"].include?(value_src.downcase)
-          value = false if ["off","no","false"].include?(value_src.downcase)
+          value = true if ["on", "yes", "true"].include?(value_src.downcase)
+          value = false if ["off", "no", "false"].include?(value_src.downcase)
           value = value_src.to_i if /^[0-9]+$/.match(value_src)
           result[name] = value
         end

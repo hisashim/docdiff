@@ -497,7 +497,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
       "3,3\ne\n[f/F]\n\n----\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
-    assert_equal(expected, view.to_manued_digest(nil,false))
+    assert_equal(expected, view.to_manued_digest(nil, false))
   end
 
   def test_to_manued_digest_block
@@ -593,7 +593,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
       "3,3\ne\n[-f-]{+F+}\n\n----\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
-    assert_equal(expected, view.to_wdiff_digest(nil,false))
+    assert_equal(expected, view.to_wdiff_digest(nil, false))
   end
 
   def test_to_wdiff_digest_block

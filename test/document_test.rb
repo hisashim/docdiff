@@ -151,31 +151,31 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   def test_ascii_split_to_char
     doc = Document.new("foo bar")
-    expected = ["f","o","o"," ","b","a","r"]
+    expected = ["f", "o", "o", " ", "b", "a", "r"]
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_ascii_split_to_char_with_eol_cr
     doc = Document.new("foo bar\r")
-    expected = ["f","o","o"," ","b","a","r","\r"]
+    expected = ["f", "o", "o", " ", "b", "a", "r", "\r"]
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_ascii_split_to_char_with_eol_lf
     doc = Document.new("foo bar\n")
-    expected = ["f","o","o"," ","b","a","r","\n"]
+    expected = ["f", "o", "o", " ", "b", "a", "r", "\n"]
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_ascii_split_to_char_with_eol_crlf
     doc = Document.new("foo bar\r\n")
-    expected = ["f","o","o"," ","b","a","r","\r\n"]
+    expected = ["f", "o", "o", " ", "b", "a", "r", "\r\n"]
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_ascii_split_to_byte
     doc = Document.new("foo bar\r\n")
-    expected = ["f","o","o"," ","b","a","r","\r","\n"]
+    expected = ["f", "o", "o", " ", "b", "a", "r", "\r", "\n"]
     assert_equal(expected, doc.split_to_byte)
   end
 
@@ -260,7 +260,7 @@ class TC_DocDiff_Document < Test::Unit::TestCase
   # test EUCJP module
   def test_eucjp_split_to_word
     doc = Document.new(NKF.nkf("--euc", "日本語の文字foo bar"))
-    expected = ["日本語の","文字","foo ","bar"].map { |c| NKF.nkf("--euc", c) }
+    expected = ["日本語の", "文字", "foo ", "bar"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, doc.split_to_word)
   end
 
@@ -296,25 +296,25 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   def test_eucjp_split_to_char
     doc = Document.new(NKF.nkf("--euc", "日本語a b"))
-    expected = ["日","本","語","a"," ","b"].map { |c| NKF.nkf("--euc",c) }
+    expected = ["日", "本", "語", "a", " ", "b"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_eucjp_split_to_char_with_cr
     doc = Document.new(NKF.nkf("--euc", "日本語a b\r"))
-    expected = ["日","本","語","a"," ","b","\r"].map { |c| NKF.nkf("--euc",c) }
+    expected = ["日", "本", "語", "a", " ", "b", "\r"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_eucjp_split_to_char_with_lf
     doc = Document.new(NKF.nkf("--euc", "日本語a b\n"))
-    expected = ["日","本","語","a"," ","b","\n"].map { |c| NKF.nkf("--euc",c) }
+    expected = ["日", "本", "語", "a", " ", "b", "\n"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_eucjp_split_to_char_with_crlf
     doc = Document.new(NKF.nkf("--euc", "日本語a b\r\n"))
-    expected = ["日","本","語","a"," ","b","\r\n"].map { |c| NKF.nkf("--euc",c) }
+    expected = ["日", "本", "語", "a", " ", "b", "\r\n"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
@@ -417,7 +417,7 @@ class TC_DocDiff_Document < Test::Unit::TestCase
   # test SJIS module
   def test_sjis_split_to_word
     doc = Document.new(NKF.nkf("--sjis", "日本語の文字foo bar"))
-    expected = ["日本語の", "文字", "foo ", "bar"].map { |c| NKF.nkf("--sjis",c) }
+    expected = ["日本語の", "文字", "foo ", "bar"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, doc.split_to_word)
   end
 
@@ -447,31 +447,31 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   def test_sjis_split_to_word_latinmix
     doc = Document.new(NKF.nkf("--sjis", "日本語とLatinの文字"))
-    expected = ["日本語と","Latin","の","文字"].map { |c| NKF.nkf("--sjis", c) }
+    expected = ["日本語と", "Latin", "の", "文字"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, doc.split_to_word)
   end
 
   def test_sjis_split_to_char
     doc = Document.new(NKF.nkf("--sjis", "表計算a b"))
-    expected = ["表","計","算","a"," ","b"].map { |c| NKF.nkf("--sjis",c) }
+    expected = ["表", "計", "算", "a", " ", "b"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_sjis_split_to_char_with_cr
     doc = Document.new(NKF.nkf("--sjis", "表計算a b\r"))
-    expected = ["表","計","算","a"," ","b","\r"].map { |c| NKF.nkf("--sjis",c) }
+    expected = ["表", "計", "算", "a", " ", "b", "\r"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_sjis_split_to_char_with_lf
     doc = Document.new(NKF.nkf("--sjis", "表計算a b\n"))
-    expected = ["表","計","算","a"," ","b","\n"].map { |c| NKF.nkf("--sjis",c) }
+    expected = ["表", "計", "算", "a", " ", "b", "\n"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_sjis_split_to_char_with_crlf
     doc = Document.new(NKF.nkf("--sjis", "表計算a b\r\n"))
-    expected = ["表","計","算","a"," ","b","\r\n"].map { |c| NKF.nkf("--sjis",c) }
+    expected = ["表", "計", "算", "a", " ", "b", "\r\n"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
@@ -616,19 +616,19 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   def test_utf8_split_to_char_with_cr
     doc = Document.new(NKF.nkf("--utf8", "日本語a b\r"), "UTF-8")
-    expected = ["日","本","語","a"," ","b","\r"].map { |c| NKF.nkf("--utf8", c) }
+    expected = ["日", "本", "語", "a", " ", "b", "\r"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_utf8_split_to_char_with_lf
     doc = Document.new(NKF.nkf("--utf8", "日本語a b\n"), "UTF-8")
-    expected = ["日","本","語","a"," ","b","\n"].map { |c| NKF.nkf("--utf8", c) }
+    expected = ["日", "本", "語", "a", " ", "b", "\n"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
   def test_utf8_split_to_char_with_crlf
     doc = Document.new(NKF.nkf("--utf8", "日本語a b\r\n"), "UTF-8")
-    expected = ["日","本","語","a"," ","b","\r\n"].map { |c| NKF.nkf("--utf8", c) }
+    expected = ["日", "本", "語", "a", " ", "b", "\r\n"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, doc.split_to_char)
   end
 
