@@ -454,8 +454,14 @@ class DocDiff
     end
 
     # user defined markup
-    def user_header(); []; end
-    def user_footer(); []; end
+    def user_header
+      []
+    end
+
+    def user_footer
+      []
+    end
+
     UserEscapeDic = {'ThisRandomString' => 'ThisRandomString'}
     UserEscapePat = /(#{UserEscapeDic.keys.collect{|k|Regexp.quote(k)}.join('|')})/m
     def user_tags

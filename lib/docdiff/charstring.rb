@@ -255,10 +255,10 @@ class DocDiff
     require 'docdiff/encoding/ja_eucjp'
     require 'docdiff/encoding/ja_sjis'
     require 'docdiff/encoding/ja_utf8'
-    alias to_bytes split_to_byte
-    alias to_chars split_to_char
-    alias to_words split_to_word
-    alias to_lines split_to_line
+    alias_method :to_bytes, :split_to_byte
+    alias_method :to_chars, :split_to_char
+    alias_method :to_words, :split_to_word
+    alias_method :to_lines, :split_to_line
 
     module CR
       EOL = 'CR'
