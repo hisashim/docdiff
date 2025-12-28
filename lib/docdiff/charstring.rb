@@ -56,7 +56,7 @@ class DocDiff
       end
 
       [
-        "id: #{self.id}, class: #{self.class}, self: #{self}, ",
+        "id: #{id}, class: #{self.class}, self: #{self}, ",
         "module: #{Encodings[@encoding]}, #{EOLChars[@eol]}",
       ].join
     end
@@ -157,7 +157,7 @@ class DocDiff
         else        # it seems that no EOL module was extended...
           Regexp.new("(?:.)", Regexp::MULTILINE)
         end
-      encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
+      encode("UTF-8").scan(re).map { |e| e.encode(encoding) }
     end
 
     def count_latin_graph_char
@@ -182,7 +182,7 @@ class DocDiff
 
     def split_to_word
       re = Regexp.new(Encodings["UTF-8"]::WORD_REGEXP_SRC, Regexp::MULTILINE)
-      encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
+      encode("UTF-8").scan(re).map { |e| e.encode(encoding) }
     end
 
     def count_latin_word
@@ -216,7 +216,7 @@ class DocDiff
         else
           Regexp.new(".+", Regexp::MULTILINE)
         end
-      encode("UTF-8").scan(re).map { |e| e.encode(self.encoding) }
+      encode("UTF-8").scan(re).map { |e| e.encode(encoding) }
     end
 
     def count_graph_line
