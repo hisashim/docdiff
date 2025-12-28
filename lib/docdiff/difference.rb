@@ -77,7 +77,7 @@ class DocDiff
           e
         end
       end
-      return elms
+      elms
     end
 
     def latter_only
@@ -89,7 +89,7 @@ class DocDiff
           e
         end
       end
-      return elms
+      elms
     end
   end # class Difference
 end # class DocDiff

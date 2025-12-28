@@ -85,11 +85,11 @@ class DocDiff
         eols = eol_counts.keys
         eol_variety = eols.size # numbers of flavors found
         if eol_variety == 1     # Only one type of EOL found
-          return eols[0]        #=> 'CR', 'LF', or 'CRLF'
+          eols[0]               #=> 'CR', 'LF', or 'CRLF'
         elsif eol_variety == 0  # No EOL found
-          return "NONE"         #=> 'NONE' (might be 1-line file)
+          "NONE"                #=> 'NONE' (might be 1-line file)
         else                    # Multiple types of EOL found
-          return "UNKNOWN"      #=> 'UNKNOWN' (might be binary data)
+          "UNKNOWN"             #=> 'UNKNOWN' (might be binary data)
         end
       end
     end
