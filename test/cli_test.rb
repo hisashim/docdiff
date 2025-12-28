@@ -67,7 +67,7 @@ class TC_CLI < Test::Unit::TestCase
 
   def test_read_config_from_file_raises_exception
     assert_raise(Errno::ENOENT) do
-      config, message = DocDiff::CLI.read_config_from_file("no/such/file")
+      _config, _message = DocDiff::CLI.read_config_from_file("no/such/file")
     end
   end
 

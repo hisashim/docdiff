@@ -124,8 +124,8 @@ class DocDiff
         end
       display = (tags and tags[:display]) || "inline"
       result = []
-      d1l = doc1_line_number = 1
-      d2l = doc2_line_number = 1
+      d1l = 1 # doc1 line number
+      d2l = 1 # doc2 line number
       @difference.each_with_index do |entry, i|
         if block_given?
           src = yield((entry[1] || []).join)
@@ -171,10 +171,10 @@ class DocDiff
         e_foot =
           tags[:end_entry] + (@eol_char || "")
 
-        span1 = source_lines_involved = src.scan_lines(@eol).size
-        span2 = target_lines_involved = tgt.scan_lines(@eol).size
+        span1 = src.scan_lines(@eol).size # source lines involved
+        span2 = tgt.scan_lines(@eol).size # target lines involved
         pos_str = ""
-        case operation = entry.first
+        case entry.first # operation
         when :common_elt_elt
           # skipping common part
         when :change_elt

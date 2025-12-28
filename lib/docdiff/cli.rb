@@ -252,9 +252,6 @@ class DocDiff
         File.open(ARGV[0], "r") { |f| file1_content = f.read }
         File.open(ARGV[1], "r") { |f| file2_content = f.read }
 
-        doc1 = nil
-        doc2 = nil
-
         encoding1 = docdiff.config[:encoding]
         encoding2 = docdiff.config[:encoding]
         eol1 = docdiff.config[:eol]
