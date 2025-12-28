@@ -73,7 +73,7 @@ class DocDiff
       def guess_eol(string)
         # returns 'CR', 'LF', 'CRLF', 'UNKNOWN'(binary),
         # 'NONE'(1-line), or nil
-        return nil if string.nil? #=> nil (argument missing)
+        return if string.nil? #=> nil (argument missing)
 
         bin_string = string.dup.force_encoding("ASCII-8BIT")
         eol_counts = {
