@@ -148,7 +148,7 @@ class DocDiff
           end
         # elements for an entry
         e_head =
-          Proc.new do |pos_str|
+          proc do |pos_str|
             tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]
           end
         e_cxt_pre =
