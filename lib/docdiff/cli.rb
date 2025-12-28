@@ -67,7 +67,10 @@ class DocDiff
             "--label LABEL",
             "-L LABEL",
             "use label instead of file name (not implemented; exists for compatibility with diff)",
-          ) { |s| o[:label] ||= []; o[:label] << s }
+          ) do |s|
+            o[:label] ||= []
+            o[:label] << s
+          end
 
           parser.on("--digest", "digest output, do not show all") { o[:digest] = true }
           parser.on("--summary", "same as --digest") { o[:digest] = true }
@@ -90,10 +93,22 @@ class DocDiff
           parser.on("--no-config-file", "do not read config files") { o[:no_config_file] = true }
           parser.on("--verbose", "run verbosely (not well-supported) (deprecated)") { o[:verbose] = true }
 
-          parser.on("--help", "show this message") { puts parser; exit(0) }
-          parser.on("--version", "show version") { puts Docdiff::VERSION; exit(0) }
-          parser.on("--license", "show license (deprecated)") { puts DocDiff::License; exit(0) }
-          parser.on("--author", "show author(s) (deprecated)") { puts DocDiff::Author; exit(0) }
+          parser.on("--help", "show this message") do
+            puts parser
+            exit(0)
+          end
+          parser.on("--version", "show version") do
+            puts Docdiff::VERSION
+            exit(0)
+          end
+          parser.on("--license", "show license (deprecated)") do
+            puts DocDiff::License
+            exit(0)
+          end
+          parser.on("--author", "show author(s) (deprecated)") do
+            puts DocDiff::Author
+            exit(0)
+          end
 
           parser.on_tail(
             "When invoked as worddiff or chardiff, resolution will be set accordingly.",
