@@ -3,10 +3,10 @@
 
 require "docdiff/charstring"
 
-class EncodingDetectionFailure < Exception
+class EncodingDetectionFailure < StandardError
 end
 
-class EOLDetectionFailure < Exception
+class EOLDetectionFailure < StandardError
 end
 
 class DocDiff
