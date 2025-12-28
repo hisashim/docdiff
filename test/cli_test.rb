@@ -79,8 +79,8 @@ class TC_CLI < Test::Unit::TestCase
       It's me who has created Ruby.  I am a Ruby hacker.
       +}
     EOS
-    cmd = "ruby -I lib bin/docdiff --resolution=line --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --resolution=line --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`
     assert_equal(expected, actual)
   end
@@ -90,8 +90,8 @@ class TC_CLI < Test::Unit::TestCase
       Hello, my name is [-Watanabe.-]{+matz.+}
       {+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}
     EOS
-    cmd = "ruby -I lib bin/docdiff --resolution=word --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --resolution=word --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`
     assert_equal(expected, actual)
   end
@@ -101,8 +101,8 @@ class TC_CLI < Test::Unit::TestCase
       Hello, my name is [-W-]{+m+}at[-anabe-]{+z+}.
       {+It's me who has created Ruby.  +}I am [-just -]a[-nother-] Ruby [-port-]{+hack+}er.
     EOS
-    cmd = "ruby -I lib bin/docdiff --resolution=char --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --resolution=char --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`
     assert_equal(expected, actual)
   end
@@ -112,8 +112,8 @@ class TC_CLI < Test::Unit::TestCase
       Hello, my name is [-Watanabe.-]{+matz.+}
       {+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}
     EOS
-    cmd = "ruby -I lib bin/docdiff --encoding=ASCII --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --encoding=ASCII --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`
     assert_equal(expected, actual)
   end
@@ -123,8 +123,8 @@ class TC_CLI < Test::Unit::TestCase
       [-こんにちは-]{+こんばんは+}、私の[-名前はわたなべです-]{+名前はまつもとです+}。
       {+Rubyを作ったのは私です。+}私は[-Just Another -]Ruby [-Porter-]{+Hacker+}です。
     EOS
-    cmd = "ruby --external-encoding EUC-JP -I lib bin/docdiff --encoding=EUC-JP --format=wdiff" \
-      " test/fixture/01_ja_eucjp_lf.txt test/fixture/02_ja_eucjp_lf.txt"
+    cmd = "ruby --external-encoding EUC-JP -I lib bin/docdiff --encoding=EUC-JP --format=wdiff " \
+      "test/fixture/01_ja_eucjp_lf.txt test/fixture/02_ja_eucjp_lf.txt"
     actual = `#{cmd}`.force_encoding("EUC-JP")
     assert_equal(expected, actual)
   end
@@ -134,8 +134,8 @@ class TC_CLI < Test::Unit::TestCase
       "[-こんにちは-]{+こんばんは+}、私の[-名前はわたなべです-]{+名前はまつもとです+}。\r" \
         "{+Rubyを作ったのは私です。+}私は[-Just Another -]Ruby [-Porter-]{+Hacker+}です。\r"
     expected = NKF.nkf("--ic=UTF-8 --oc=Shift_JIS", expected_utf8_cr)
-    cmd = "ruby --external-encoding Shift_JIS -I lib bin/docdiff --encoding=Shift_JIS --format=wdiff" \
-      " test/fixture/01_ja_sjis_cr.txt test/fixture/02_ja_sjis_cr.txt"
+    cmd = "ruby --external-encoding Shift_JIS -I lib bin/docdiff --encoding=Shift_JIS --format=wdiff " \
+      "test/fixture/01_ja_sjis_cr.txt test/fixture/02_ja_sjis_cr.txt"
     actual = `#{cmd}`.force_encoding("Shift_JIS")
     assert_equal(expected, actual)
   end
@@ -145,8 +145,8 @@ class TC_CLI < Test::Unit::TestCase
       [-こんにちは-]{+こんばんは+}、私の[-名前はわたなべです-]{+名前はまつもとです+}。
       {+Rubyを作ったのは私です。+}私は[-Just Another -]Ruby [-Porter-]{+Hacker+}です。
     EOS
-    cmd = "ruby -I lib bin/docdiff --encoding=UTF-8 --format=wdiff" \
-      " test/fixture/01_ja_utf8_lf.txt test/fixture/02_ja_utf8_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --encoding=UTF-8 --format=wdiff " \
+      "test/fixture/01_ja_utf8_lf.txt test/fixture/02_ja_utf8_lf.txt"
     actual = `#{cmd}`.force_encoding("UTF-8")
     assert_equal(expected, actual)
   end
@@ -155,8 +155,8 @@ class TC_CLI < Test::Unit::TestCase
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\r" \
         "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r"
-    cmd = "ruby -I lib bin/docdiff --eol=CR --format=wdiff" \
-      " test/fixture/01_en_ascii_cr.txt test/fixture/02_en_ascii_cr.txt"
+    cmd = "ruby -I lib bin/docdiff --eol=CR --format=wdiff " \
+      "test/fixture/01_en_ascii_cr.txt test/fixture/02_en_ascii_cr.txt"
     actual = `#{cmd}`
     assert_equal(expected, actual)
   end
@@ -165,8 +165,8 @@ class TC_CLI < Test::Unit::TestCase
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\n" \
         "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\n"
-    cmd = "ruby -I lib bin/docdiff --eol=LF --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --eol=LF --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`
     assert_equal(expected, actual)
   end
@@ -175,8 +175,8 @@ class TC_CLI < Test::Unit::TestCase
     expected =
       "Hello, my name is [-Watanabe.-]{+matz.+}\r\n" \
         "{+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}\r\n"
-    cmd = "ruby -I lib bin/docdiff --eol=CRLF --format=wdiff" \
-      " test/fixture/01_en_ascii_crlf.txt test/fixture/02_en_ascii_crlf.txt"
+    cmd = "ruby -I lib bin/docdiff --eol=CRLF --format=wdiff " \
+      "test/fixture/01_en_ascii_crlf.txt test/fixture/02_en_ascii_crlf.txt"
     actual = `#{cmd}`
     assert_equal(expected, actual)
   end
@@ -188,32 +188,32 @@ class TC_CLI < Test::Unit::TestCase
       <span class="after-change"><ins>matz.</ins></span>\
       <span class="common"><br />
     EOS
-    cmd = "ruby -I lib bin/docdiff --format=html" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --format=html " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`.scan(/^.*?$\n/m)[-4]
     assert_equal(expected, actual)
   end
 
   def test_cli_format_manued
     expected = "Hello, my name is [Watanabe./matz.]\n"
-    cmd = "ruby -I lib bin/docdiff --format=manued" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --format=manued " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`.scan(/^.*?$\n/m)[-2]
     assert_equal(expected, actual)
   end
 
   def test_cli_format_tty
     expected = "Hello, my name is \e[7;4;33mWatanabe.\e[0m\e[7;1;32mmatz.\e[0m\n"
-    cmd = "ruby -I lib bin/docdiff --format=tty" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --format=tty " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`.scan(/^.*?$\n/m).first
     assert_equal(expected, actual)
   end
 
   def test_cli_format_wdiff
     expected = "Hello, my name is [-Watanabe.-]{+matz.+}\n"
-    cmd = "ruby -I lib bin/docdiff --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`.scan(/^.*?$\n/m).first
     assert_equal(expected, actual)
   end
@@ -237,8 +237,8 @@ class TC_CLI < Test::Unit::TestCase
 
       ----
     EOS
-    cmd = "ruby -I lib bin/docdiff --digest --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --digest --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`.force_encoding("UTF-8")
     assert_equal(expected, actual)
   end
@@ -262,8 +262,8 @@ class TC_CLI < Test::Unit::TestCase
 
       ----
     EOS
-    cmd = "ruby -I lib bin/docdiff --digest --display=inline --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --digest --display=inline --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`.force_encoding("UTF-8")
     assert_equal(expected, actual)
   end
@@ -294,8 +294,8 @@ class TC_CLI < Test::Unit::TestCase
 
       ----
     EOS
-    cmd = "ruby -I lib bin/docdiff --digest --display=block --format=wdiff" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --digest --display=block --format=wdiff " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`.force_encoding("UTF-8")
     assert_equal(expected, actual)
   end
@@ -306,8 +306,8 @@ class TC_CLI < Test::Unit::TestCase
       Hello, my name is [-Watanabe.-]{+matz.+}
       {+It's me who has created Ruby.  +}I am [-just another -]{+a +}Ruby [-porter.-]{+hacker.+}
     EOS
-    cmd = "ruby -I lib bin/docdiff --config-file=#{config_file_name}" \
-      " test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
+    cmd = "ruby -I lib bin/docdiff --config-file=#{config_file_name} " \
+      "test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt"
     actual = `#{cmd}`
     assert_equal(expected, actual)
   end
