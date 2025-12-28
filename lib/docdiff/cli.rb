@@ -117,7 +117,7 @@ class DocDiff
           raise 'line does not include " = ".' unless /[\s]+=[\s]+/.match(line)
 
           name_src, value_src = line.split(/[\s]+=[\s]+/)
-          raise "Invalid name: #{name_src.inspect}" if (/\s/.match(name_src))
+          raise "Invalid name: #{name_src.inspect}" if /\s/.match(name_src)
           raise "Invalid value: #{value_src.inspect}" unless value_src.is_a?(String)
 
           name  = name_src.intern
@@ -260,7 +260,7 @@ class DocDiff
         if docdiff.config[:encoding] == "auto"
           encoding1 = DocDiff::CharString.guess_encoding(file1_content)
           encoding2 = DocDiff::CharString.guess_encoding(file2_content)
-          if (encoding1 == "UNKNOWN" or encoding2 == "UNKNOWN")
+          if encoding1 == "UNKNOWN" or encoding2 == "UNKNOWN"
             raise "Document encoding unknown (#{encoding1}, #{encoding2})."
           elsif encoding1 != encoding2
             raise "Document encoding mismatch (#{encoding1}, #{encoding2})."
@@ -270,11 +270,11 @@ class DocDiff
         if docdiff.config[:eol] == "auto"
           eol1 = DocDiff::CharString.guess_eol(file1_content)
           eol2 = DocDiff::CharString.guess_eol(file2_content)
-          if (eol1.nil? or eol2.nil?)
+          if eol1.nil? or eol2.nil?
             raise "Document eol is nil (#{eol1.inspect}, #{eol2.inspect}).  The document might be empty."
-          elsif (eol1 == "UNKNOWN" or eol2 == "UNKNOWN")
+          elsif eol1 == "UNKNOWN" or eol2 == "UNKNOWN"
             raise "Document eol unknown (#{eol1.inspect}, #{eol2.inspect})."
-          elsif (eol1 != eol2)
+          elsif eol1 != eol2
             raise "Document eol mismatch (#{eol1}, #{eol2})."
           end
         end
