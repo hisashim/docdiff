@@ -1,5 +1,14 @@
 # News
 
+### 0.6.5 (2025-12-29)
+
+* User-visible changes:
+  - Fixed label option not accumulating correctly.
+  - Fixed CRLF bug ([#57](https://github.com/hisashim/docdiff/issues/57)), where CRLFs in the input text are gobbled and not printed in the output when using `tty`, `wdiff`, and `user` formats. This problem seems to have existed since 0.3.
+* Developer-related changes:
+  - Moved CLI-related stuff from `bin/docdiff` to `lib/docdiff/cli.rb`.
+  - Miscellaneous fixes and refactoring.
+
 ### 0.6.4 (2025-12-13)
 
 * User-visible changes:
