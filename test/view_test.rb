@@ -35,7 +35,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_source_lines_cr
-    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
+    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r", "A"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "CR").source_lines
@@ -43,7 +43,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_source_lines_cr2
-    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
+    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "CR").source_lines
@@ -51,7 +51,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_source_lines_lf
-    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
+    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\rA"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "LF").source_lines
@@ -59,7 +59,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_source_lines_lf2
-    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
+    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\r"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "LF").source_lines
@@ -67,7 +67,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_source_lines_crlf
-    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
+    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\rA"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "CRLF").source_lines
@@ -75,7 +75,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
   end
 
   def test_source_lines_crlf2
-    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
+    array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\r"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "CRLF").source_lines
@@ -92,7 +92,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
 
   def test_target_lines_cr
     array1 = ["a", "b", "\n", "c"]
-    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
+    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r", "A"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "CR").target_lines
     assert_equal(expected, actual)
@@ -100,7 +100,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
 
   def test_target_lines_cr2
     array1 = ["a", "b", "\n", "c"]
-    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
+    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "CR").target_lines
     assert_equal(expected, actual)
@@ -108,7 +108,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
 
   def test_target_lines_lf
     array1 = ["a", "b", "\n", "c"]
-    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
+    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     expected = ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\rA"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "LF").target_lines
     assert_equal(expected, actual)
@@ -116,7 +116,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
 
   def test_target_lines_lf2
     array1 = ["a", "b", "\n", "c"]
-    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
+    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     expected = ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\r"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "LF").target_lines
     assert_equal(expected, actual)
@@ -124,7 +124,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
 
   def test_target_lines_crlf
     array1 = ["a", "b", "\n", "c"]
-    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split(//)
+    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\rA"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "CRLF").target_lines
     assert_equal(expected, actual)
@@ -132,7 +132,7 @@ class TC_DocDiff_View < Test::Unit::TestCase
 
   def test_target_lines_crlf2
     array1 = ["a", "b", "\n", "c"]
-    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split(//)
+    array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\r"]
     actual = Difference.new(array1, array2).to_view("US-ASCII", "CRLF").target_lines
     assert_equal(expected, actual)
