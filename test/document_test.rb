@@ -283,7 +283,7 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   def test_eucjp_split_to_word_hiraonbiki
     doc = Document.new(NKF.nkf("--euc", "わールビーだ"), "EUC-JP")
-    expected = (["わー", "ルビーだ"]).map { |c| NKF.nkf("--euc", c) }
+    expected = ["わー", "ルビーだ"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, doc.split_to_word)
   end
 
