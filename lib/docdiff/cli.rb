@@ -156,7 +156,7 @@ class DocDiff
       end
 
       def print_or_write_to_pager(content, pager)
-        if STDOUT.tty? && pager.is_a?(String) && !pager.empty?
+        if $stdout.tty? && pager.is_a?(String) && !pager.empty?
           IO.popen(pager, "w") { |f| f.print(content) }
         else
           print(content)
@@ -182,7 +182,7 @@ class DocDiff
 
             filename = existing_system_config_file_names.first
             config, message = read_config_from_file(filename)
-            STDERR.print(message) if command_line_config[:verbose]
+            $stderr.print(message) if command_line_config[:verbose]
             config
           end
 
@@ -205,14 +205,14 @@ class DocDiff
 
             filename = existing_user_config_file_names.first
             config, message = read_config_from_file(filename)
-            STDERR.print(message) if command_line_config[:verbose]
+            $stderr.print(message) if command_line_config[:verbose]
             config
           end
 
         config_from_specified_file =
           if (filename = command_line_config[:config_file])
             config, message = read_config_from_file(filename)
-            STDERR.print(message) if command_line_config[:verbose] == true
+            $stderr.print(message) if command_line_config[:verbose] == true
             config
           end
 
