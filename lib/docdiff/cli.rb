@@ -254,7 +254,7 @@ class DocDiff
 
         file1_content = nil
         file2_content = nil
-        raise "Try `#{File.basename($0)} --help' for more information." if ARGV[0].nil?
+        raise "Try `#{File.basename($PROGRAM_NAME)} --help' for more information." if ARGV[0].nil?
         raise "Specify at least 2 target files." unless ARGV[0] && ARGV[1]
 
         ARGV[0] = "/dev/stdin" if ARGV[0] == "-"
