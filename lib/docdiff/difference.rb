@@ -14,7 +14,7 @@ class DocDiff
     # attr_accessor :resolution, :codeset, :eol_char, :source, :target
 
     def initialize(array1 = nil, array2 = nil)
-      if (array1 == nil) && (array2 == nil)
+      if array1.nil? && array2.nil?
         return []
       end
 

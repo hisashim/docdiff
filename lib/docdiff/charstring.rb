@@ -41,15 +41,15 @@ class DocDiff
     end
 
     def debug
-      if @encoding == nil
+      if @encoding.nil?
         raise "@encoding is nil."
-      elsif Encodings[@encoding] == nil
+      elsif Encodings[@encoding].nil?
         raise "Encodings[@encoding(=#{@encoding})] is nil."
       elsif Encodings[@encoding].class != Module
         raise "Encodings[@encoding].class(=#{Encodings[@encoding].class}) is not a module."
-      elsif @eol == nil
+      elsif @eol.nil?
         raise "@eol is nil."
-      elsif EOLChars[@eol] == nil
+      elsif EOLChars[@eol].nil?
         raise "EOLChars[@eol(=#{@eol})] is nil."
       else
         # should I do some alert?
@@ -73,7 +73,7 @@ class DocDiff
       def guess_eol(string)
         # returns 'CR', 'LF', 'CRLF', 'UNKNOWN'(binary),
         # 'NONE'(1-line), or nil
-        return nil if string == nil #=> nil (argument missing)
+        return nil if string.nil? #=> nil (argument missing)
 
         bin_string = string.dup.force_encoding("ASCII-8BIT")
         eol_counts = {

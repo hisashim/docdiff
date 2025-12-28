@@ -248,14 +248,14 @@ class DocDiff
     end
 
     def source_lines
-      if @source_lines == nil
+      if @source_lines.nil?
         @source_lines = @difference.collect { |entry| entry[1] }.join.scan_lines(@eol)
       end
       @source_lines
     end
 
     def target_lines
-      if @target_lines == nil
+      if @target_lines.nil?
         @target_lines = @difference.collect { |entry| entry[2] }.join.scan_lines(@eol)
       end
       @target_lines
