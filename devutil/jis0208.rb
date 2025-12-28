@@ -304,7 +304,7 @@ if __FILE__ == $PROGRAM_NAME
   jis0208 = JIS0208.new
 
   if ARGV.size == 3
-    ku, = ARGV[0].to_i
+    ku = ARGV[0].to_i
     ten = ARGV[1].to_i
     codeset = ARGV[2]
     puts jis0208.char(ku, ten, codeset)

@@ -113,8 +113,8 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   # test eol split_to_line() method
   def test_cr_split_to_line
     str = "foo\rbar\r".extend(CharString)
-    encoding, eol = "US-ASCII", "CR"
-    str.encoding, str.eol = encoding, eol
+    str.encoding = "US-ASCII"
+    str.eol = "CR"
     expected = ["foo\r", "bar\r"]
     assert_equal(expected, str.split_to_line)
   end
