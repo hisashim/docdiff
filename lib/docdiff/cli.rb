@@ -210,7 +210,7 @@ class DocDiff
           end
 
         config_from_specified_file =
-          if filename = command_line_config[:config_file]
+          if (filename = command_line_config[:config_file])
             config, message = read_config_from_file(filename)
             STDERR.print(message) if command_line_config[:verbose] == true
             config

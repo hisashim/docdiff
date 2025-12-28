@@ -53,7 +53,7 @@ class DocDiff
 
     def escape_inside(str, tags)
       str.gsub(tags[:inside_escape_pat]) do |m|
-        if replacement = tags[:inside_escape_dic][m]
+        if (replacement = tags[:inside_escape_dic][m])
           replacement
         else
           m
@@ -63,7 +63,7 @@ class DocDiff
 
     def escape_outside(str, tags)
       str.gsub(tags[:outside_escape_pat]) do |m|
-        if replacement = tags[:outside_escape_dic][m]
+        if (replacement = tags[:outside_escape_dic][m])
           replacement
         else
           m
