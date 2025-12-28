@@ -6,7 +6,6 @@ class TC_DocDiff_Diff < Test::Unit::TestCase
   Diff = DocDiff::Diff
 
   def setup
-    #
   end
 
   def test_new_ses
@@ -33,6 +32,5 @@ class TC_DocDiff_Diff < Test::Unit::TestCase
   end
 
   def teardown
-    #
   end
 end

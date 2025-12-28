@@ -6,7 +6,6 @@ class TC_DocDiff_Difference < Test::Unit::TestCase
   Difference = DocDiff::Difference
 
   def setup
-    #
   end
 
   def test_new
@@ -71,6 +70,5 @@ class TC_DocDiff_Difference < Test::Unit::TestCase
   end
 
   def teardown
-    #
   end
 end

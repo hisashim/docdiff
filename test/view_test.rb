@@ -11,7 +11,6 @@ class TC_DocDiff_View < Test::Unit::TestCase
   Difference = DocDiff::Difference
 
   def setup
-    #
   end
 
   def test_scan_lines_cr
@@ -732,6 +731,5 @@ class TC_DocDiff_View < Test::Unit::TestCase
   # end
 
   def teardown
-    #
   end
 end

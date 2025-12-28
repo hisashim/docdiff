@@ -30,18 +30,18 @@ class DocDiff
   end
 
   class View
-#  EOL_CHARS_PAT = Regexp.new(/\r\n|\r(?!\n)|(?:\A|[^\r])\n/m)
+    # EOL_CHARS_PAT = Regexp.new(/\r\n|\r(?!\n)|(?:\A|[^\r])\n/m)
 
     def initialize(difference, encoding, eol)
       @difference = difference
       @encoding = encoding
       @eol = eol
       @eol_char = { "CR" => "\r", "LF" => "\n", "CRLF" => "\r\n" }[@eol]
-#     if CharString::EOLChars[@eol]
-#       @eol_char = CharString::EOLChars[@eol].eol_char
-#     else
-#       @eol_char = nil
-#     end
+      # if CharString::EOLChars[@eol]
+      #   @eol_char = CharString::EOLChars[@eol].eol_char
+      # else
+      #   @eol_char = nil
+      # end
     end
 
     def difference_whole
@@ -49,7 +49,6 @@ class DocDiff
     end
 
     def difference_digest
-      #
     end
 
     def escape_inside(str, tags)

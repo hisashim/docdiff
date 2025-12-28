@@ -582,7 +582,7 @@ class DocDiff
       KATA_EX =
         KATA +
         "\xe3\x83\xbc" \
-          "\xe3\x82\x9d\xe3\x82\x9e"# add onbiki and kanagaeshi(kata)
+          "\xe3\x82\x9d\xe3\x82\x9e" # add onbiki and kanagaeshi(kata)
       KANJI =
         "\xe4\xba\x9c" \
           "\xe5\x94\x96" \

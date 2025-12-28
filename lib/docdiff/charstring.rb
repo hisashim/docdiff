@@ -9,21 +9,20 @@ class DocDiff
     EOLChars = {} # End-of-line characters, such as CR, LF, CRLF.
 
     def initialize(string)
-=begin unnecessary
-#    @encoding = CharString.guess_encoding(string)
-#    @eol     = CharString.guess_eol(string)
-=end unnecessary
+      # unnecessary
+      # @encoding = CharString.guess_encoding(string)
+      # @eol      = CharString.guess_eol(string)
       super
     end
 
     def eol
       @eol
-#     if @eol
-#       @eol
-#     else
-#       @eol = CharString.guess_eol(self)
-#       # raise "eol is not set.\n"
-#     end
+      # if @eol
+      #   @eol
+      # else
+      #   @eol = CharString.guess_eol(self)
+      #   # raise "eol is not set.\n"
+      # end
     end
 
     def eol=(e)
@@ -36,8 +35,8 @@ class DocDiff
         @eol_char
       else
         nil
-#       extend EOLChars[eol]
-#       eol_char
+        # extend EOLChars[eol]
+        # eol_char
       end
     end
 

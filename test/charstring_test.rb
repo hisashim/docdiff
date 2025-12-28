@@ -11,7 +11,6 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   CharString = DocDiff::CharString
 
   def setup
-    #
   end
 
   # test encoding module registration
@@ -388,14 +387,14 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   def test_eucjp_split_to_word_kataonbiki
     str = NKF.nkf("--euc", "ルビー色の石").extend(CharString)
-    str.encoding = "EUC-JP" #<= needed to pass the test
+    str.encoding = "EUC-JP" # <= needed to pass the test
     expected = ["ルビー", "色の", "石"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_word)
   end
 
   def test_eucjp_split_to_word_hiraonbiki
     str = NKF.nkf("--euc", "わールビーだ").extend(CharString)
-    str.encoding = "EUC-JP" #<= needed to pass the test
+    str.encoding = "EUC-JP" # <= needed to pass the test
     expected = ["わー", "ルビーだ"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_word)
   end
@@ -410,7 +409,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   def test_eucjp_split_to_char
     str = NKF.nkf("--euc", "日本語a b").extend(CharString)
     str.encoding = "EUC-JP"
-    str.eol = "LF" #<= needed to pass the test
+    str.eol = "LF" # <= needed to pass the test
     expected = ["日", "本", "語", "a", " ", "b"].map { |c| NKF.nkf("--euc", c) }
     assert_equal(expected, str.split_to_char)
   end
@@ -613,7 +612,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   def test_sjis_split_to_char
     str = NKF.nkf("--sjis", "表計算a b").extend(CharString)
     str.encoding = "Shift_JIS"
-    str.eol = "LF" #<= needed to pass the test
+    str.eol = "LF" # <= needed to pass the test
     expected = ["表", "計", "算", "a", " ", "b"].map { |c| NKF.nkf("--sjis", c) }
     assert_equal(expected, str.split_to_char)
   end
@@ -815,15 +814,15 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   def test_utf8_split_to_char
     str = NKF.nkf("--utf8", "日本語a b").extend(CharString)
-    str.encoding = "UTF-8" #<= needed to pass the test
-    str.eol = "LF" #<= needed to pass the test
+    str.encoding = "UTF-8" # <= needed to pass the test
+    str.eol = "LF" # <= needed to pass the test
     expected = ["日", "本", "語", "a", " ", "b"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
   end
 
   def test_utf8_split_to_char_with_cr
     str = NKF.nkf("--utf8", "日本語a b\r").extend(CharString)
-    str.encoding = "UTF-8" #<= needed to pass the test
+    str.encoding = "UTF-8" # <= needed to pass the test
     str.eol = "CR"
     expected = ["日", "本", "語", "a", " ", "b", "\r"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
@@ -831,7 +830,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   def test_utf8_split_to_char_with_lf
     str = NKF.nkf("--utf8", "日本語a b\n").extend(CharString)
-    str.encoding = "UTF-8" #<= needed to pass the test
+    str.encoding = "UTF-8" # <= needed to pass the test
     str.eol = "LF"
     expected = ["日", "本", "語", "a", " ", "b", "\n"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
@@ -839,7 +838,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   def test_utf8_split_to_char_with_crlf
     str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
-    str.encoding = "UTF-8"#<= needed to pass the test
+    str.encoding = "UTF-8" # <= needed to pass the test
     str.eol = "CRLF"
     expected = ["日", "本", "語", "a", " ", "b", "\r\n"].map { |c| NKF.nkf("--utf8", c) }
     assert_equal(expected, str.split_to_char)
@@ -847,7 +846,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   def test_utf8_count_char
     str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
-    str.encoding = "UTF-8" #<= needed to pass the test
+    str.encoding = "UTF-8" # <= needed to pass the test
     str.eol = "CRLF"
     expected = 7
     assert_equal(expected, str.count_char)
@@ -855,7 +854,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   def test_utf8_count_latin_graph_char
     str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
-    str.encoding = "UTF-8" #<= needed to pass the test
+    str.encoding = "UTF-8" # <= needed to pass the test
     str.eol = "CRLF"
     expected = 2
     assert_equal(expected, str.count_latin_graph_char)
@@ -863,7 +862,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   def test_utf8_count_ja_graph_char
     str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
-    str.encoding = "UTF-8" #<= needed to pass the test
+    str.encoding = "UTF-8" # <= needed to pass the test
     str.eol = "CRLF"
     expected = 3
     assert_equal(expected, str.count_ja_graph_char)
@@ -871,7 +870,7 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
 
   def test_utf8_count_graph_char
     str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
-    str.encoding = "UTF-8" #<= needed to passs the test
+    str.encoding = "UTF-8" # <= needed to passs the test
     str.eol = "CRLF"
     expected = 5
     assert_equal(expected, str.count_graph_char)
@@ -985,11 +984,12 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     assert_guess_encoding(expected, str)
   end
 
-#   def test_guess_encoding_binary()
-#     str = "\xFF\xFF"
-#     expected = "BINARY"
-#     assert_equal(expected, CharString.guess_encoding(str))
-#   end
+  # def test_guess_encoding_binary
+  #   str = "\xFF\xFF"
+  #   expected = "BINARY"
+  #   assert_equal(expected, CharString.guess_encoding(str))
+  # end
+
   def test_guess_encoding_unknown
     str = "".encode("BINARY") # cannot put invalid string literal
     expected = "ASCII-8BIT"
@@ -1008,17 +1008,20 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
     assert_guess_encoding(expected, str)
   end
 
-# CharString.guess_encoding mistakes JIS for ASCII sometimes, due to Iconv.
-#   def test_guess_encoding_jis_1()
-#     str = NKF.nkf("--jis", "漢字とカタカナとひらがな\n")
-#     expected = "JIS"
-#     assert_guess_encoding(expected, str)
-#   end
-#   def test_guess_encoding_jis_2()
-#     str = NKF.nkf("--jis", "漢字とカタカナとひらがなとLatinの文字と空白( )と記号@\n" * 100)
-#     expected = "JIS"
-#     assert_guess_encoding(expected, str)
-#   end
+  # # CharString.guess_encoding mistakes JIS for ASCII sometimes, due to Iconv.
+
+  # def test_guess_encoding_jis_1
+  #   str = NKF.nkf("--jis", "漢字とカタカナとひらがな\n")
+  #   expected = "JIS"
+  #   assert_guess_encoding(expected, str)
+  # end
+
+  # def test_guess_encoding_jis_2
+  #   str = NKF.nkf("--jis", "漢字とカタカナとひらがなとLatinの文字と空白( )と記号@\n" * 100)
+  #   expected = "JIS"
+  #   assert_guess_encoding(expected, str)
+  # end
+
   def test_guess_encoding_eucjp_1
     str = NKF.nkf("--euc", "日本語とLatinの文字")
     expected = "EUC-JP"
@@ -1128,6 +1131,5 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   end
 
   def teardown
-    #
   end
 end

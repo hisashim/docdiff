@@ -12,7 +12,6 @@ class TC_DocDiff_Document < Test::Unit::TestCase
   CharString = DocDiff::CharString
 
   def setup
-    #
   end
 
   def test_encoding
@@ -51,8 +50,8 @@ class TC_DocDiff_Document < Test::Unit::TestCase
 
   def test_eol_char_lf
     doc = Document.new("Foo bar.\nBaz quux.")
-#    doc.encoding = "US-ASCII"
-#    doc.eol = "LF"
+    # doc.encoding = "US-ASCII"
+    # doc.eol = "LF"
     expected = "\n"
     assert_equal(expected, doc.eol_char)
   end
@@ -729,6 +728,5 @@ class TC_DocDiff_Document < Test::Unit::TestCase
   end
 
   def teardown
-    #
   end
 end

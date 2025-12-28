@@ -11,7 +11,6 @@ class TC_DocDiff < Test::Unit::TestCase
   Document = DocDiff::Document
 
   def setup
-    #
   end
 
   def test_compare_by_line
@@ -202,6 +201,5 @@ class TC_DocDiff < Test::Unit::TestCase
   end
 
   def teardown
-    #
   end
 end

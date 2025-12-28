@@ -97,7 +97,7 @@ class DocDiff
     raise "option[:format] is nil" if option[:format].nil?
 
     if doc1.class == Document && doc2.class == Document # OK
-    elsif doc1.encoding != nil && doc2.encoding != nil     # OK
+    elsif doc1.encoding != nil && doc2.encoding != nil # OK
     elsif doc1.encoding == doc2.encoding && doc1.eol == doc2.eol # OK
     else
       raise("Error!  Blame the author (doc1: #{doc1.encoding}, #{doc1.eol}, doc2: #{doc2.encoding}, #{doc2.eol}).")

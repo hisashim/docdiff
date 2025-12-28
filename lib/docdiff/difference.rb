@@ -6,12 +6,12 @@ require "docdiff/diff"
 
 class DocDiff
   class Difference < Array
-#  @resolution = nil # char, word, phrase, sentence, line, paragraph..
-#  @codeset = ''
-#  @eol_char = "\n"
-#  @source = 'source'
-#  @target = 'target'
-#  attr_accessor :resolution, :codeset, :eol_char, :source, :target
+    # @resolution = nil # char, word, phrase, sentence, line, paragraph..
+    # @codeset = ''
+    # @eol_char = "\n"
+    # @source = 'source'
+    # @target = 'target'
+    # attr_accessor :resolution, :codeset, :eol_char, :source, :target
 
     def initialize(array1 = nil, array2 = nil)
       if (array1 == nil) && (array2 == nil)
