@@ -118,7 +118,7 @@ class DocDiff
 
           name_src, value_src = line.split(/[\s]+=[\s]+/)
           raise "Invalid name: #{name_src.inspect}" if (/\s/.match(name_src))
-          raise "Invalid value: #{value_src.inspect}" unless value_src.kind_of?(String)
+          raise "Invalid value: #{value_src.inspect}" unless value_src.is_a?(String)
 
           name  = name_src.intern
           value = value_src
