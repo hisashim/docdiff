@@ -571,4 +571,4 @@ class DocDiff
     def to_debug
     end
   end
-end # class DocDiff
+end

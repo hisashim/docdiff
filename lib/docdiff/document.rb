@@ -145,5 +145,5 @@ class DocDiff
     def eol_char
       @body.eol_char
     end
-  end # class Document
-end # class DocDiff
+  end
+end

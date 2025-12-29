@@ -75,6 +75,6 @@ class DocDiff
       end
 
       CharString.register_encoding(self)
-    end # module ASCII
-  end # module CharString
-end # class DocDiff
+    end
+  end
+end

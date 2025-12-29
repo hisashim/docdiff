@@ -91,5 +91,5 @@ class DocDiff
       end
       elms
     end
-  end # class Difference
-end # class DocDiff
+  end
+end

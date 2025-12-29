@@ -280,8 +280,8 @@ class DocDiff
 
       CharString.register_eol(self)
     end
-  end # module CharString
-end # class DocDiff
+  end
+end
 
 # class String
 #   include CharString

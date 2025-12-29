@@ -149,4 +149,4 @@ class DocDiff
     end
     result.join
   end
-end # class DocDiff
+end

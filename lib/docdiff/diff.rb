@@ -216,4 +216,4 @@ class Diff
     end
   end
 end
-end  # class DocDiff
+end

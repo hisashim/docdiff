@@ -246,6 +246,6 @@ class DocDiff
       ].join
 
       CharString.register_encoding(self)
-    end # module SJIS
-  end # module CharString
-end # class DocDiff
+    end
+  end
+end

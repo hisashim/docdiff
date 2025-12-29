@@ -6961,6 +6961,6 @@ class DocDiff
       ].join
 
       CharString.register_encoding(self)
-    end # module UTF8
-  end # module CharString
-end # class DocDiff
+    end
+  end
+end

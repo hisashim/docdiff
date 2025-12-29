@@ -256,6 +256,6 @@ class DocDiff
       ].join
 
       CharString.register_encoding(self)
-    end # module EUCJP
-  end # module CharString
-end # class DocDiff
+    end
+  end
+end
