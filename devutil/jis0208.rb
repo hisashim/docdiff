@@ -9,7 +9,7 @@ class JIS0208
   def utf16_to_utf8(utf16)  # Convert UTF-16 to UTF-8N
     utf16value = (utf16.unpack("C*")[0] * 256 + utf16.unpack("C*")[1])
     if utf16value < 0x7f       # 1-byte utf-8
-      utf8 = utf16value.to_a.pack("C*")
+      utf8 = [utf16value].pack("C*")
     elsif utf16value < 0x800   # 2-byte utf-8
       utf8 = [(0xC0 | (utf16value / 64)), 
               (0x80 | (utf16value % 64))].pack("C*")
@@ -25,7 +25,7 @@ class JIS0208
     @lines = @lines.collect{|l| l.sub(/\s+\#[^\#]+$/,'')} # remove unicode names
     @char_db = @lines.collect {|line|
       sjis, jis, utf16 = line.split.collect{|string|
-        string.sub(/0x/, '').to_a.pack("H*")  # "0xXXXX" to 8-bit byte string
+        [string.sub(/0x/, '')].pack("H*")  # "0xXXXX" to 8-bit byte string
       }
       jis_byte_pair = jis.unpack("C*")
       # jis + 0x8080 => euc
@@ -77,15 +77,15 @@ if __FILE__ == $0
   def euc_ja_alnum()
     j = JIS0208.new
     r = []
-    (3).to_a.each{|ku|(16..25).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (3).to_a.each{|ku|(33..58).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (3).to_a.each{|ku|(65..90).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [3].each{|ku|(16..25).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [3].each{|ku|(33..58).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [3].each{|ku|(65..90).to_a.each{|ten|r << j.char(ku,ten,"e")}}
     r
   end
   def euc_ja_blank()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|(1).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [1].each{|ku|[1].each{|ten|r << j.char(ku,ten,"e")}}
     r
   end
   def euc_ja_print()
@@ -97,45 +97,45 @@ if __FILE__ == $0
   def euc_ja_punct()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|( 2..94).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (2).to_a.each{|ku|( 1..14).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (2).to_a.each{|ku|(26..33).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (2).to_a.each{|ku|(42..48).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (2).to_a.each{|ku|(60..74).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (2).to_a.each{|ku|(82..89).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (2).to_a.each{|ku|(94    ).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (6).to_a.each{|ku|( 1..24).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (6).to_a.each{|ku|(33..56).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (7).to_a.each{|ku|( 1..33).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (7).to_a.each{|ku|(49..81).to_a.each{|ten|r << j.char(ku,ten,"e")}}
-    (8).to_a.each{|ku|( 1..32).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [1].each{|ku|( 2..94).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [2].each{|ku|( 1..14).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [2].each{|ku|(26..33).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [2].each{|ku|(42..48).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [2].each{|ku|(60..74).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [2].each{|ku|(82..89).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [2].each{|ku|[94    ]     .each{|ten|r << j.char(ku,ten,"e")}}
+    [6].each{|ku|( 1..24).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [6].each{|ku|(33..56).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [7].each{|ku|( 1..33).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [7].each{|ku|(49..81).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [8].each{|ku|( 1..32).to_a.each{|ten|r << j.char(ku,ten,"e")}}
     r
   end
   def euc_ja_space()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|(1).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [1].each{|ku|[1].each{|ten|r << j.char(ku,ten,"e")}}
     r
   end
   def euc_hiragana()
     j = JIS0208.new
     r = []
-    (4).to_a.each{|ku|(1..83).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [4].each{|ku|(1..83).to_a.each{|ten|r << j.char(ku,ten,"e")}}
     r
   end
   def euc_katakana()
     j = JIS0208.new
     r = []
-    (5).to_a.each{|ku|(1..86).to_a.each{|ten|r << j.char(ku,ten,"e")}}
+    [5].each{|ku|(1..86).to_a.each{|ten|r << j.char(ku,ten,"e")}}
     r
   end
   def euc_kanji()
     j = JIS0208.new
     r = []
     (16..46).to_a.each{|ku| r << "#{j.char(ku,1,'e')}-#{j.char(ku,94,'e')}"}
-    (47).to_a.each{|ku|r << "#{j.char(ku,1,'e')}-#{j.char(ku,51,'e')}"}
+    [47].each{|ku|r << "#{j.char(ku,1,'e')}-#{j.char(ku,51,'e')}"}
     (48..83).to_a.each{|ku|r << "#{j.char(ku,1,'e')}-#{j.char(ku,94,'e')}"}
-    (84).to_a.each{|ku|r << "#{j.char(ku,1,'e')}-#{j.char(ku,6,'e')}"}
+    [84].each{|ku|r << "#{j.char(ku,1,'e')}-#{j.char(ku,6,'e')}"}
     r
   end
 
@@ -143,15 +143,15 @@ if __FILE__ == $0
   def sjis_ja_alnum()
     j = JIS0208.new
     r = []
-    (3).to_a.each{|ku|(16..25).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (3).to_a.each{|ku|(33..58).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (3).to_a.each{|ku|(65..90).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [3].each{|ku|(16..25).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [3].each{|ku|(33..58).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [3].each{|ku|(65..90).to_a.each{|ten|r << j.char(ku,ten,"s")}}
     r
   end
   def sjis_ja_blank()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|(1).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [1].each{|ku|(1).to_a.each{|ten|r << j.char(ku,ten,"s")}}
     r
   end
   def sjis_ja_print()
@@ -163,18 +163,18 @@ if __FILE__ == $0
   def sjis_ja_punct()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|(2..94).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (2).to_a.each{|ku|(1..14).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (2).to_a.each{|ku|(26..33).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (2).to_a.each{|ku|(42..48).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (2).to_a.each{|ku|(60..74).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (2).to_a.each{|ku|(82..89).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (2).to_a.each{|ku|(94).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (6).to_a.each{|ku|(1..24).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (6).to_a.each{|ku|(33..56).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (7).to_a.each{|ku|(1..33).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (7).to_a.each{|ku|(49..81).to_a.each{|ten|r << j.char(ku,ten,"s")}}
-    (8).to_a.each{|ku|(1..32).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [1].each{|ku|(2..94).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [2].each{|ku|(1..14).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [2].each{|ku|(26..33).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [2].each{|ku|(42..48).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [2].each{|ku|(60..74).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [2].each{|ku|(82..89).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [2].each{|ku|[94].each{|ten|r << j.char(ku,ten,"s")}}
+    [6].each{|ku|(1..24).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [6].each{|ku|(33..56).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [7].each{|ku|(1..33).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [7].each{|ku|(49..81).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [8].each{|ku|(1..32).to_a.each{|ten|r << j.char(ku,ten,"s")}}
     #(13).to_a.each{|ku|(1..30).to_a.each{|ten|r << j.char(ku,ten,"s")}}#cp932
     #(13).to_a.each{|ku|(32..54).to_a.each{|ten|r << j.char(ku,ten,"s")}}#cp932
     #(13).to_a.each{|ku|(63..92).to_a.each{|ten|r << j.char(ku,ten,"s")}}#cp932
@@ -184,30 +184,30 @@ if __FILE__ == $0
   def sjis_ja_space()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|(1).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [1].each{|ku|[1].each{|ten|r << j.char(ku,ten,"s")}}
     r
   end
   def sjis_hiragana()
     j = JIS0208.new
     r = []
-    (4).to_a.each{|ku|(1..83).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [4].each{|ku|(1..83).to_a.each{|ten|r << j.char(ku,ten,"s")}}
     r
   end
   def sjis_katakana()
     j = JIS0208.new
     r = []
-    (5).to_a.each{|ku|(1..86).to_a.each{|ten|r << j.char(ku,ten,"s")}}
+    [5].each{|ku|(1..86).to_a.each{|ten|r << j.char(ku,ten,"s")}}
     r
   end
   def sjis_kanji()
     j = JIS0208.new
     r = []
     (16..46).to_a.each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,94,'s')}"}
-    (47).to_a.each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,51,'s')}"}
+    [47].each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,51,'s')}"}
     (48..83).to_a.each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,94,'s')}"}
-    (84).to_a.each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,6,'s')}"}
+    [84].each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,6,'s')}"}
     (89..91).to_a.each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,94,'s')}"}#cp932
-    (92).to_a.each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,78,'s')}"}#cp932
+    [92].each{|ku|r << "#{j.char(ku,1,'s')}-#{j.char(ku,78,'s')}"}#cp932
     r
   end
 
@@ -215,15 +215,15 @@ if __FILE__ == $0
   def utf8_ja_alnum()
     j = JIS0208.new
     r = []
-    (3).to_a.each{|ku|(16..25).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (3).to_a.each{|ku|(33..58).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (3).to_a.each{|ku|(65..90).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [3].each{|ku|(16..25).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [3].each{|ku|(33..58).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [3].each{|ku|(65..90).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
     r
   end
   def utf8_ja_blank()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|(1).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [1].each{|ku|[1].each{|ten|r << j.char(ku,ten,"u8")}}
     r
   end
   def utf8_ja_print()
@@ -235,45 +235,45 @@ if __FILE__ == $0
   def utf8_ja_punct()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|( 2..94).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (2).to_a.each{|ku|( 1..14).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (2).to_a.each{|ku|(26..33).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (2).to_a.each{|ku|(42..48).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (2).to_a.each{|ku|(60..74).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (2).to_a.each{|ku|(82..89).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (2).to_a.each{|ku|(94    ).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (6).to_a.each{|ku|( 1..24).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (6).to_a.each{|ku|(33..56).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (7).to_a.each{|ku|( 1..33).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (7).to_a.each{|ku|(49..81).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
-    (8).to_a.each{|ku|( 1..32).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [1].each{|ku|( 2..94).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [2].each{|ku|( 1..14).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [2].each{|ku|(26..33).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [2].each{|ku|(42..48).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [2].each{|ku|(60..74).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [2].each{|ku|(82..89).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [2].each{|ku|(94    ).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [6].each{|ku|( 1..24).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [6].each{|ku|(33..56).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [7].each{|ku|( 1..33).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [7].each{|ku|(49..81).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [8].each{|ku|( 1..32).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
     r
   end
   def utf8_ja_space()
     j = JIS0208.new
     r = []
-    (1).to_a.each{|ku|(1).to_a.each{|ten|r << j.char(ku,ten,"u8")}}
+    [1].each{|ku|[1].each{|ten|r << j.char(ku,ten,"u8")}}
     r
   end
   def utf8_hiragana()
     j = JIS0208.new
     r = []
-    (4).to_a.each{|ku|(1..83).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
+    [4].each{|ku|(1..83).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
     r
   end
   def utf8_katakana()
     j = JIS0208.new
     r = []
-    (5).to_a.each{|ku|(1..86).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
+    [5].each{|ku|(1..86).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
     r
   end
   def utf8_kanji()
     j = JIS0208.new
     r = []
     (16..46).to_a.each{|ku|(1..94).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
-    (47).to_a.each{|ku|(1..51).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
+    [47].each{|ku|(1..51).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
     (48..83).to_a.each{|ku|(1..94).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
-    (84).to_a.each{|ku|(1..6).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
+    [84].each{|ku|(1..6).to_a.each{|ten|r << j.char(ku,ten,"utf-8")}}
     r
   end
 
