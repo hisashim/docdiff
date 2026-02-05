@@ -1,21 +1,42 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
 # test character classes on ASCII characters.
 # 2003-03-10 Hisashi MORITA
 
-charclasses = ["[:cntrl:]", 
-               "[:space:]", "[:blank:]", 
-               "[:digit:]", 
-               "[:alpha:]", "[:alnum:]", 
-               "[:punct:]",
-               "[:lower:]", "[:upper:]",  
-               "[:print:]", "[:graph:]", 
-               "[:xdigit:]"]
-(0x00 .. 0xff).to_a.each{|char|
-  attribute = []
-  charclasses.each{|charclass|
-    if Regexp.new("[#{charclass}]") =~ char.to_a.pack("C*")
-      attribute.push charclass
-    end
-  }
-  puts "#{sprintf("\\x%02x", char)} (#{char.to_a.pack('C*').inspect})\t#{attribute.join(', ')}"
-}
+charclasses = [
+  "[:cntrl:]",
+  "[:space:]",
+  "[:blank:]",
+  "[:digit:]",
+  "[:alpha:]",
+  "[:alnum:]",
+  "[:punct:]",
+  "[:lower:]",
+  "[:upper:]",
+  "[:print:]",
+  "[:graph:]",
+  "[:xdigit:]",
+]
+
+chars = (0x00..0xff).to_a
+
+result =
+  chars.map do |char|
+    char_packed = [char].pack("C*")
+    attribute =
+      charclasses.reduce([]) do |acc, charclass|
+        if /[#{charclass}]/.match(char_packed)
+          acc << charclass
+        else
+          acc
+        end
+      end
+    hex = format("\\x%02x", char)
+    packed_string = [char].pack("C*").inspect
+    attributes = attribute.join(", ")
+
+    "#{hex} (#{packed_string})\t#{attributes}"
+  end
+
+puts result
