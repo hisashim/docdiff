@@ -19,6 +19,13 @@ class DocDiff
         parser.on(
           '--encoding=ENCODING',
           encodings = ['ASCII', 'EUC-JP', 'Shift_JIS', 'CP932', 'UTF-8', 'auto'],
+          encoding_aliases = {
+            "ascii" => "ASCII",
+            "euc-jp" => "EUC-JP",
+            "shift_jis" => "Shift_JIS",
+            "cp932" => "CP932",
+            "utf-8" => "UTF-8",
+          },
           "specify character encoding",
           "#{encodings.join('|')} (default: auto)",
           "(try ASCII for single byte encodings such as ISO-8859)"
@@ -34,6 +41,7 @@ class DocDiff
         parser.on(
           '--eol=EOL',
           eols = ['CR','LF','CRLF','auto'],
+          eol_aliases = { "cr" => "CR", "lf" => "LF", "crlf" => "CRLF" },
           'specify end-of-line character',
           "#{eols.join('|')} (default: auto)",
         ){|s| o[:eol] = (s || "auto")}
