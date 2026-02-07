@@ -6,6 +6,11 @@ file "JIS0208.TXT" do
   sh "curl -O ftp://ftp.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT"
 end
 
-task default: "JIS0208.TXT"
+desc "Run unit test"
+task :check => "jis0208_test.rb" do |t|
+  sh "ruby #{t.source}"
+end
+
+task default: :check
 
 CLOBBER.include("JIS0208.TXT")

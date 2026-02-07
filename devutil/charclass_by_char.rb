@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-# test character classes on ASCII characters.
+# List ASCII characters with matching character classes
 # 2003-03-10 Hisashi MORITA
 
 charclasses = [
