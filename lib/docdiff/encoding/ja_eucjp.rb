@@ -1,7 +1,7 @@
 # Japanese EUC-JP encoding module for CharString
 # 2003- Hisashi MORITA
 
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 class DocDiff
   module CharString
@@ -33,10 +33,12 @@ class DocDiff
       ALPHA = UPPER + LOWER
       ALNUM = DIGIT + ALPHA
       PUNCT =
-        "\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a" \
-          "\x2b\x2c\x2d\x2e\x2f\x3a\x3b\x3c\x3d\x3e" \
-          "\x3f\x40\x5b\x5c\x5d\x5e\x5f\x60\x7b\x7c" \
-          "\x7d\x7e"
+        Regexp.quote(
+          "\x21\x22\x23\x24\x25\x26\x27\x28\x29\x2a" \
+            "\x2b\x2c\x2d\x2e\x2f\x3a\x3b\x3c\x3d\x3e" \
+            "\x3f\x40\x5b\x5c\x5d\x5e\x5f\x60\x7b\x7c" \
+            "\x7d\x7e",
+        )
       GRAPH = DIGIT + UPPER + LOWER + PUNCT
       PRINT = "\x20" + GRAPH
       XDIGIT =
@@ -239,10 +241,6 @@ class DocDiff
       KANJI_EX = KANJI + "\xa1\xb9" # + noma
       JA_GRAPH = JA_ALNUM + JA_PUNCT + HIRA + KATA + KANJI
       JA_PRINT = JA_GRAPH + JA_BLANK
-
-      PUNCT.replace(Regexp.quote(PUNCT)) # kludge to avoid warning "character class has `[' without escape"
-      PRINT.replace(Regexp.quote(PRINT)) # kludge to avoid warning "character class has `[' without escape"
-      GRAPH.replace(Regexp.quote(GRAPH)) # kludge to avoid warning "character class has `[' without escape"
 
       WORD_REGEXP_SRC = [
         "(?:[#{GRAPH}]+[#{BLANK}]?)",
