@@ -63,7 +63,7 @@ class DocDiff
 
     class << self
       def register_encoding(mod)
-        Encodings[mod::Encoding] = mod
+        Encodings[mod::ENCODING] = mod
       end
 
       def register_eol(mod)

@@ -7,7 +7,7 @@ require "test/unit"
 require "docdiff/document"
 require "nkf"
 
-class TC_DocDiff_Document < Test::Unit::TestCase
+class TestDocument < Test::Unit::TestCase
   Document = DocDiff::Document
   CharString = DocDiff::CharString
 

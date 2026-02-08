@@ -5,8 +5,8 @@
 
 class DocDiff
   module CharString
-    module Shift_JIS
-      Encoding = "Shift_JIS"
+    module ShiftJIS
+      ENCODING = "Shift_JIS"
 
       # character table based on:
       # ftp://ftp.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT

@@ -269,14 +269,14 @@ class DocDiff
     def tty_footer
       []
     end
-    TTYEscapeDic = { "ThisRandomString" => "ThisRandomString" }
-    TTYEscapePat = /(#{TTYEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
+    TTY_ESCAPE_DIC = { "ThisRandomString" => "ThisRandomString" }
+    TTY_ESCAPE_PAT = /(#{TTY_ESCAPE_DIC.keys.map { |k| Regexp.quote(k) }.join("|")})/m
     def tty_tags
       {
-        outside_escape_dic:  TTYEscapeDic,
-        outside_escape_pat:  TTYEscapePat,
-        inside_escape_dic:   TTYEscapeDic,
-        inside_escape_pat:   TTYEscapePat,
+        outside_escape_dic:  TTY_ESCAPE_DIC,
+        outside_escape_pat:  TTY_ESCAPE_PAT,
+        inside_escape_dic:   TTY_ESCAPE_DIC,
+        inside_escape_pat:   TTY_ESCAPE_PAT,
         start_digest_body:   "----#{@eol_char || ""}",
         end_digest_body:     "",
         start_entry:         "",
@@ -340,7 +340,7 @@ class DocDiff
     def html_footer
       [(@eol_char || "") + "</div></body></html>" + (@eol_char || "")]
     end
-    HTMLEscapeDic = {
+    HTML_ESCAPE_DIC = {
       "<"    => "&lt;",
       ">"    => "&gt;",
       "&"    => "&amp;",
@@ -349,13 +349,13 @@ class DocDiff
       "\r"   => "<br />\r",
       "\n"   => "<br />\n",
     }
-    HTMLEscapePat = /(#{HTMLEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
+    HTML_ESCAPE_PAT = /(#{HTML_ESCAPE_DIC.keys.map { |k| Regexp.quote(k) }.join("|")})/m
     def html_tags
       {
-        outside_escape_dic:  HTMLEscapeDic,
-        outside_escape_pat:  HTMLEscapePat,
-        inside_escape_dic:   HTMLEscapeDic,
-        inside_escape_pat:   HTMLEscapePat,
+        outside_escape_dic:  HTML_ESCAPE_DIC,
+        outside_escape_pat:  HTML_ESCAPE_PAT,
+        inside_escape_dic:   HTML_ESCAPE_DIC,
+        inside_escape_pat:   HTML_ESCAPE_PAT,
         start_digest_body:   "<ul>",
         end_digest_body:     "</ul>",
         start_entry:         '<li class="entry">',
@@ -409,16 +409,16 @@ class DocDiff
     def manued_footer
       []
     end
-    ManuedInsideEscapeDic = { "~" => "~~", "/" => "~/", "[" => "~[", "]" => "~]", ";" => "~;" }
-    ManuedInsideEscapePat = /(#{ManuedInsideEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
-    ManuedOutsideEscapeDic = { "~" => "~~", "[" => "~[" }
-    ManuedOutsideEscapePat = /(#{ManuedOutsideEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
+    MANUED_INSIDE_ESCAPE_DIC = { "~" => "~~", "/" => "~/", "[" => "~[", "]" => "~]", ";" => "~;" }
+    MANUED_INSIDE_ESCAPE_PAT = /(#{MANUED_INSIDE_ESCAPE_DIC.keys.map { |k| Regexp.quote(k) }.join("|")})/m
+    MANUED_OUTSIDE_ESCAPE_DIC = { "~" => "~~", "[" => "~[" }
+    MANUED_OUTSIDE_ESCAPE_PAT = /(#{MANUED_OUTSIDE_ESCAPE_DIC.keys.map { |k| Regexp.quote(k) }.join("|")})/m
     def manued_tags
       {
-        inside_escape_dic:   ManuedInsideEscapeDic,
-        inside_escape_pat:   ManuedInsideEscapePat,
-        outside_escape_dic:  ManuedOutsideEscapeDic,
-        outside_escape_pat:  ManuedOutsideEscapePat,
+        inside_escape_dic:   MANUED_INSIDE_ESCAPE_DIC,
+        inside_escape_pat:   MANUED_INSIDE_ESCAPE_PAT,
+        outside_escape_dic:  MANUED_OUTSIDE_ESCAPE_DIC,
+        outside_escape_pat:  MANUED_OUTSIDE_ESCAPE_PAT,
         start_digest_body:   "----#{@eol_char || ""}",
         end_digest_body:     "",
         start_entry:         "",
@@ -469,14 +469,14 @@ class DocDiff
     def wdiff_footer
       []
     end
-    WDIFFEscapeDic = { "ThisRandomString" => "ThisRandomString" }
-    WDIFFEscapePat = /(#{WDIFFEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
+    WDIFF_ESCAPE_DIC = { "ThisRandomString" => "ThisRandomString" }
+    WDIFF_ESCAPE_PAT = /(#{WDIFF_ESCAPE_DIC.keys.map { |k| Regexp.quote(k) }.join("|")})/m
     def wdiff_tags
       {
-        outside_escape_dic:  WDIFFEscapeDic,
-        outside_escape_pat:  WDIFFEscapePat,
-        inside_escape_dic:   WDIFFEscapeDic,
-        inside_escape_pat:   WDIFFEscapePat,
+        outside_escape_dic:  WDIFF_ESCAPE_DIC,
+        outside_escape_pat:  WDIFF_ESCAPE_PAT,
+        inside_escape_dic:   WDIFF_ESCAPE_DIC,
+        inside_escape_pat:   WDIFF_ESCAPE_PAT,
         start_digest_body:   "----#{@eol_char || ""}",
         end_digest_body:     "",
         start_entry:         "",
@@ -523,14 +523,14 @@ class DocDiff
       []
     end
 
-    UserEscapeDic = { "ThisRandomString" => "ThisRandomString" }
-    UserEscapePat = /(#{UserEscapeDic.keys.collect { |k| Regexp.quote(k) }.join("|")})/m
+    USER_ESCAPE_DIC = { "ThisRandomString" => "ThisRandomString" }
+    USER_ESCAPE_PAT = /(#{USER_ESCAPE_DIC.keys.map { |k| Regexp.quote(k) }.join("|")})/m
     def user_tags
       {
-        outside_escape_dic:  UserEscapeDic,
-        outside_escape_pat:  UserEscapePat,
-        inside_escape_dic:   UserEscapeDic,
-        inside_escape_pat:   UserEscapePat,
+        outside_escape_dic:  USER_ESCAPE_DIC,
+        outside_escape_pat:  USER_ESCAPE_PAT,
+        inside_escape_dic:   USER_ESCAPE_DIC,
+        inside_escape_pat:   USER_ESCAPE_PAT,
         start_digest_body:   "",
         end_digest_body:     "",
         start_entry:         "",

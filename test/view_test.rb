@@ -6,7 +6,7 @@ require "docdiff/view"
 require "docdiff/difference"
 require "nkf"
 
-class TC_DocDiff_View < Test::Unit::TestCase
+class TestView < Test::Unit::TestCase
   View = DocDiff::View
   Difference = DocDiff::Difference
 

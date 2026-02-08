@@ -7,7 +7,7 @@
 class DocDiff
   module CharString
     module UTF8
-      Encoding = "UTF-8"
+      ENCODING = "UTF-8"
 
       # character table based on:
       # ftp://ftp.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT

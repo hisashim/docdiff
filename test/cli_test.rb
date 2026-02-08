@@ -5,7 +5,7 @@ require "test/unit"
 require "nkf"
 require "docdiff/cli"
 
-class TC_CLI < Test::Unit::TestCase
+class TestCLI < Test::Unit::TestCase
   def test_parse_options!
     args = [
       "--resolution=line",

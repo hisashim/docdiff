@@ -2,7 +2,7 @@
 require "test/unit"
 require "docdiff/diff"
 
-class TC_DocDiff_Diff < Test::Unit::TestCase
+class TestDiff < Test::Unit::TestCase
   Diff = DocDiff::Diff
 
   def setup

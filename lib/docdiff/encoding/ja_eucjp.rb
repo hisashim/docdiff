@@ -5,8 +5,8 @@
 
 class DocDiff
   module CharString
-    module EUC_JP
-      Encoding = "EUC-JP"
+    module EUCJP
+      ENCODING = "EUC-JP"
 
       # character table based on:
       # ftp://ftp.unicode.org/Public/MAPPINGS/OBSOLETE/EASTASIA/JIS/JIS0208.TXT

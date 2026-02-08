@@ -7,7 +7,7 @@ require "test/unit"
 require "docdiff"
 require "nkf"
 
-class TC_DocDiff < Test::Unit::TestCase
+class TestDocDiff < Test::Unit::TestCase
   Document = DocDiff::Document
 
   def setup

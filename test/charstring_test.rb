@@ -7,7 +7,7 @@ require "test/unit"
 require "docdiff/charstring"
 require "nkf"
 
-class TC_DocDiff_CharString < Test::Unit::TestCase
+class TestCharString < Test::Unit::TestCase
   CharString = DocDiff::CharString
 
   def setup
@@ -24,14 +24,14 @@ class TC_DocDiff_CharString < Test::Unit::TestCase
   def test_encoding_eucjp
     str = "foo".extend(CharString)
     str.encoding = "EUC-JP"
-    expected = CharString::EUC_JP
+    expected = CharString::EUCJP
     assert_equal(expected, CharString::Encodings[str.encoding])
   end
 
   def test_encoding_sjis
     str = "foo".extend(CharString)
     str.encoding = "Shift_JIS"
-    expected = CharString::Shift_JIS
+    expected = CharString::ShiftJIS
     assert_equal(expected, CharString::Encodings[str.encoding])
   end
 
