@@ -14,7 +14,7 @@ DESTDIR =
 PREFIX  = /usr/local
 datadir = $(DESTDIR)$(PREFIX)/share
 
-all: test
+all: test docs dist gem
 
 test: $(TESTS)
 	$(RUBY) -I./lib -e 'ARGV.map{|a| require_relative "#{a}"}' $^
