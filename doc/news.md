@@ -1,5 +1,13 @@
 # News
 
+### 0.6.6 (2026-02-18)
+
+* User-visible changes:
+  - `--encoding` and `--eol` options now accept lowercase values, such as ascii or crlf, as well as ASCII or CRLF.
+* Developer-related changes:
+  - Applied some lint (except for lib/docdiff/diff/).
+  - `make all` now generates docs, tarball, and gem, in addition to running tests.
+
 ### 0.6.5 (2025-12-29)
 
 * User-visible changes:
