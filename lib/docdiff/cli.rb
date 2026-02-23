@@ -158,8 +158,10 @@ class DocDiff
               "config file not found: #{filename.inspect}"
             in Errno::EACCES
               "permission denied for reading: #{filename.inspect}"
+            in NilClass
+              nil
             else
-              "something unexpected happened: #{filename.inspect}"
+              "#{exception}: something unexpected happened: #{filename.inspect}"
             end
           if content
             config = parse_config_file_content(content)
