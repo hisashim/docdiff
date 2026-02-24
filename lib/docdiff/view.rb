@@ -23,7 +23,7 @@ class String
 end
 
 class DocDiff
-  class Difference
+  class Difference < Array
     def to_view(encoding, eol)
       View.new(self, encoding, eol)
     end
