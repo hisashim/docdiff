@@ -197,10 +197,12 @@ class DocDiff
               EOS
             end
 
-            filename = existing_system_config_file_names.first
-            config, message = read_config_from_file(filename)
-            $stderr.print(message) if command_line_config[:verbose]
-            config
+            unless existing_system_config_file_names.empty?
+              filename = existing_system_config_file_names.first
+              config, message = read_config_from_file(filename)
+              $stderr.print(message) if command_line_config[:verbose]
+              config
+            end
           end
 
         user_config =
@@ -220,10 +222,12 @@ class DocDiff
               EOS
             end
 
-            filename = existing_user_config_file_names.first
-            config, message = read_config_from_file(filename)
-            $stderr.print(message) if command_line_config[:verbose]
-            config
+            unless existing_user_config_file_names.empty?
+              filename = existing_user_config_file_names.first
+              config, message = read_config_from_file(filename)
+              $stderr.print(message) if command_line_config[:verbose]
+              config
+            end
           end
 
         config_from_specified_file =
