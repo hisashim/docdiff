@@ -721,7 +721,7 @@ class TestView < Test::Unit::TestCase
     assert_equal(expected, view.difference_whole)
   end
 
-  # def test_difference_digest()
+  # def test_difference_digest
   #   array1 = ["a", "\n", "b", "c", "d", "e", "\n", "f", "\n"] # a \n  b  c  d           e \n  f \n
   #   array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"] #          c  d  X \n  Y  e \n  F \n
   #   expected = [

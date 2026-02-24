@@ -54,92 +54,92 @@ class DocDiff
       @body.eol = eolstr
     end
 
-    def split_to_line
-      @body.split_to_line
+    def split_to_lines
+      @body.split_to_lines
     end
 
-    def split_to_word
-      @body.split_to_word
+    def split_to_words
+      @body.split_to_words
     end
 
-    def split_to_char
-      @body.split_to_char
+    def split_to_chars
+      @body.split_to_chars
     end
 
-    def split_to_byte
-      @body.split_to_byte
+    def split_to_bytes
+      @body.split_to_bytes
     end
 
-    def count_line
-      @body.count_line
+    def count_lines
+      @body.count_lines
     end
 
-    def count_blank_line
-      @body.count_blank_line
+    def count_blank_lines
+      @body.count_blank_lines
     end
 
-    def count_empty_line
-      @body.count_empty_line
+    def count_empty_lines
+      @body.count_empty_lines
     end
 
-    def count_graph_line
-      @body.count_graph_line
+    def count_graph_lines
+      @body.count_graph_lines
     end
 
-    def count_word
-      @body.count_word
+    def count_words
+      @body.count_words
     end
 
-    def count_latin_word
-      @body.count_latin_word
+    def count_latin_words
+      @body.count_latin_words
     end
 
-    def count_ja_word
-      @body.count_ja_word
+    def count_ja_words
+      @body.count_ja_words
     end
 
-    def count_valid_word
-      @body.count_valid_word
+    def count_valid_words
+      @body.count_valid_words
     end
 
-    def count_latin_valid_word
-      @body.count_latin_valid_word
+    def count_latin_valid_words
+      @body.count_latin_valid_words
     end
 
-    def count_ja_valid_word
-      @body.count_ja_valid_word
+    def count_ja_valid_words
+      @body.count_ja_valid_words
     end
 
-    def count_char
-      @body.count_char
+    def count_chars
+      @body.count_chars
     end
 
-    def count_blank_char
-      @body.count_blank_char
+    def count_blank_chars
+      @body.count_blank_chars
     end
 
-    def count_graph_char
-      @body.count_graph_char
+    def count_graph_chars
+      @body.count_graph_chars
     end
 
-    def count_latin_blank_char
-      @body.count_latin_blank_char
+    def count_latin_blank_chars
+      @body.count_latin_blank_chars
     end
 
-    def count_latin_graph_char
-      @body.count_latin_graph_char
+    def count_latin_graph_chars
+      @body.count_latin_graph_chars
     end
 
-    def count_ja_blank_char
-      @body.count_ja_blank_char
+    def count_ja_blank_chars
+      @body.count_ja_blank_chars
     end
 
-    def count_ja_graph_char
-      @body.count_ja_graph_char
+    def count_ja_graph_chars
+      @body.count_ja_graph_chars
     end
 
-    def count_byte
-      @body.count_byte
+    def count_bytes
+      @body.count_bytes
     end
 
     def eol_char
