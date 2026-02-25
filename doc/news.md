@@ -1,5 +1,12 @@
 # News
 
+### 0.6.7 (2026-02-25)
+
+* User-visible changes:
+  - none
+* Developer-related changes:
+  - Fixed CLI test failures in a pristine environment without a system-wide configuration file.
+
 ### 0.6.6 (2026-02-18)
 
 * User-visible changes:
