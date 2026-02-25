@@ -41,7 +41,7 @@ class DocDiff
   attr_accessor :config
 
   def compare_by_line(doc1, doc2)
-    Difference.new(doc1.split_to_lines, doc2.split_to_lines)
+    Difference.new(doc1.to_lines, doc2.to_lines)
   end
 
   def compare_by_line_word(doc1, doc2)
@@ -51,7 +51,7 @@ class DocDiff
       if line.first == :change_elt
         before_change = Document.new(line[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_words, after_change.split_to_words).each do |word|
+        Difference.new(before_change.to_words, after_change.to_words).each do |word|
           words << word
         end
       else # :common_elt_elt, :del_elt, or :add_elt
@@ -69,7 +69,7 @@ class DocDiff
       if line.first == :change_elt
         before_change = Document.new(line[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_words, after_change.split_to_words).each do |word|
+        Difference.new(before_change.to_words, after_change.to_words).each do |word|
           lines_and_words << word
         end
       else  # :common_elt_elt, :del_elt, or :add_elt
@@ -81,7 +81,7 @@ class DocDiff
       if line_or_word.first == :change_elt
         before_change = Document.new(line_or_word[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line_or_word[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.split_to_chars, after_change.split_to_chars).each do |char|
+        Difference.new(before_change.to_chars, after_change.to_chars).each do |char|
           lines_words_and_chars << char
         end
       else  # :common_elt_elt, :del_elt, or :add_elt

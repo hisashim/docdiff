@@ -110,153 +110,153 @@ class TestCharString < Test::Unit::TestCase
     assert_equal(expected, str.eol_char)
   end
 
-  # test eol split_to_lines method
-  def test_cr_split_to_lines
+  # test eol to_lines method
+  def test_cr_to_lines
     str = "foo\rbar\r".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["foo\r", "bar\r"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
-  def test_cr_split_to_lines_chomped_lastline
+  def test_cr_to_lines_chomped_lastline
     str = "foo\rbar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["foo\r", "bar"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
-  def test_cr_split_to_lines_empty_line
+  def test_cr_to_lines_empty_line
     str = "foo\r\rbar\r".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["foo\r", "\r", "bar\r"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
-  def test_lf_split_to_lines
+  def test_lf_to_lines
     str = "foo\nbar\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "bar\n"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
-  def test_lf_split_to_lines_chomped_lastline
+  def test_lf_to_lines_chomped_lastline
     str = "foo\nbar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "bar"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
-  def test_lf_split_to_lines_empty_line
+  def test_lf_to_lines_empty_line
     str = "foo\n\nbar\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["foo\n", "\n", "bar\n"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
-  def test_crlf_split_to_lines
+  def test_crlf_to_lines
     str = "foo\r\nbar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "bar\r\n"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
-  def test_crlf_split_to_lines_chomped_lastline
+  def test_crlf_to_lines_chomped_lastline
     str = "foo\r\nbar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "bar"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
-  def test_crlf_split_to_lines_empty_line
+  def test_crlf_to_lines_empty_line
     str = "foo\r\n\r\nbar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["foo\r\n", "\r\n", "bar\r\n"]
-    assert_equal(expected, str.split_to_lines)
+    assert_equal(expected, str.to_lines)
   end
 
   # test ASCII module
-  def test_ascii_split_to_words
+  def test_ascii_to_words
     str = "foo bar".extend(CharString)
     str.encoding = "US-ASCII"
     expected = ["foo ", "bar"]
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_ascii_split_to_words_withsymbol
+  def test_ascii_to_words_withsymbol
     str = "foo (bar) baz-baz".extend(CharString)
     str.encoding = "US-ASCII"
     expected = ["foo ", "(bar) ", "baz-baz"]
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_ascii_split_to_words_withquote
+  def test_ascii_to_words_withquote
     str = "foo's 'foo' \"bar\" 'baz.'".extend(CharString)
     str.encoding = "US-ASCII"
     expected = ["foo's ", "'foo' ", "\"bar\" ", "'baz.'"]
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_ascii_split_to_words_withlongspace
+  def test_ascii_to_words_withlongspace
     str = " foo  bar".extend(CharString)
     str.encoding = "US-ASCII"
     expected = [" ", "foo ", " ", "bar"]
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_ascii_split_to_words_withdash
+  def test_ascii_to_words_withdash
     str = "foo -- bar, baz - quux".extend(CharString)
     str.encoding = "US-ASCII"
     expected = ["foo ", "-- ", "bar, ", "baz ", "- ", "quux"]
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_ascii_split_to_chars
+  def test_ascii_to_chars
     str = "foo bar".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["f", "o", "o", " ", "b", "a", "r"]
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_ascii_split_to_chars_with_eol_cr
+  def test_ascii_to_chars_with_eol_cr
     str = "foo bar\r".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CR"
     expected = ["f", "o", "o", " ", "b", "a", "r", "\r"]
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_ascii_split_to_chars_with_eol_lf
+  def test_ascii_to_chars_with_eol_lf
     str = "foo bar\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "LF"
     expected = ["f", "o", "o", " ", "b", "a", "r", "\n"]
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_ascii_split_to_chars_with_eol_crlf
+  def test_ascii_to_chars_with_eol_crlf
     str = "foo bar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["f", "o", "o", " ", "b", "a", "r", "\r\n"]
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_ascii_split_to_bytes
+  def test_ascii_to_bytes
     str = "foo bar\r\n".extend(CharString)
     str.encoding = "US-ASCII"
     str.eol = "CRLF"
     expected = ["f", "o", "o", " ", "b", "a", "r", "\r", "\n"]
-    assert_equal(expected, str.split_to_bytes)
+    assert_equal(expected, str.to_bytes)
   end
 
   def test_ascii_count_bytes
@@ -364,75 +364,75 @@ class TestCharString < Test::Unit::TestCase
   end
 
   # test EUCJP module
-  def test_eucjp_split_to_words
+  def test_eucjp_to_words
     str = NKF.nkf("--euc", "日本語の文字foo bar").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["日本語の", "文字", "foo ", "bar"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_eucjp_split_to_words_kanhira
+  def test_eucjp_to_words_kanhira
     str = NKF.nkf("--euc", "日本語の文字").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["日本語の", "文字"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_eucjp_split_to_words_katahira
+  def test_eucjp_to_words_katahira
     str = NKF.nkf("--euc", "カタカナの文字").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["カタカナの", "文字"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_eucjp_split_to_words_kataonbiki
+  def test_eucjp_to_words_kataonbiki
     str = NKF.nkf("--euc", "ルビー色の石").extend(CharString)
     expected = ["ルビー", "色の", "石"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_eucjp_split_to_words_hiraonbiki
+  def test_eucjp_to_words_hiraonbiki
     str = NKF.nkf("--euc", "わールビーだ").extend(CharString)
     expected = ["わー", "ルビーだ"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_eucjp_split_to_words_latinmix
+  def test_eucjp_to_words_latinmix
     str = NKF.nkf("--euc", "日本語とLatinの文字").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["日本語と", "Latin", "の", "文字"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_eucjp_split_to_chars
+  def test_eucjp_to_chars
     str = NKF.nkf("--euc", "日本語a b").extend(CharString)
     str.encoding = "EUC-JP"
     expected = ["日", "本", "語", "a", " ", "b"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_eucjp_split_to_chars_with_cr
+  def test_eucjp_to_chars_with_cr
     str = NKF.nkf("--euc", "日本語a b\r").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CR"
     expected = ["日", "本", "語", "a", " ", "b", "\r"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_eucjp_split_to_chars_with_lf
+  def test_eucjp_to_chars_with_lf
     str = NKF.nkf("--euc", "日本語a b\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "LF"
     expected = ["日", "本", "語", "a", " ", "b", "\n"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_eucjp_split_to_chars_with_crlf
+  def test_eucjp_to_chars_with_crlf
     str = NKF.nkf("--euc", "日本語a b\r\n").extend(CharString)
     str.encoding = "EUC-JP"
     str.eol = "CRLF"
     expected = ["日", "本", "語", "a", " ", "b", "\r\n"].map { |c| NKF.nkf("--euc", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
   def test_eucjp_count_chars
@@ -564,77 +564,77 @@ class TestCharString < Test::Unit::TestCase
   end
 
   # test SJIS module
-  def test_sjis_split_to_words
+  def test_sjis_to_words
     str = NKF.nkf("--sjis", "日本語の文字foo bar").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["日本語の", "文字", "foo ", "bar"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_sjis_split_to_words_kanhira
+  def test_sjis_to_words_kanhira
     str = NKF.nkf("--sjis", "日本語の文字").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["日本語の", "文字"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_sjis_split_to_words_katahira
+  def test_sjis_to_words_katahira
     str = NKF.nkf("--sjis", "カタカナの文字").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["カタカナの", "文字"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_sjis_split_to_words_kataonbiki
+  def test_sjis_to_words_kataonbiki
     str = NKF.nkf("--sjis", "ルビーの指輪").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["ルビーの", "指輪"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_sjis_split_to_words_hiraonbiki
+  def test_sjis_to_words_hiraonbiki
     str = NKF.nkf("--sjis", "わールビーだ").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["わー", "ルビーだ"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_sjis_split_to_words_latinmix
+  def test_sjis_to_words_latinmix
     str = NKF.nkf("--sjis", "日本語とLatinの文字").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["日本語と", "Latin", "の", "文字"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_sjis_split_to_chars
+  def test_sjis_to_chars
     str = NKF.nkf("--sjis", "表計算a b").extend(CharString)
     str.encoding = "Shift_JIS"
     expected = ["表", "計", "算", "a", " ", "b"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_sjis_split_to_chars_with_cr
+  def test_sjis_to_chars_with_cr
     str = NKF.nkf("--sjis", "表計算a b\r").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CR"
     expected = ["表", "計", "算", "a", " ", "b", "\r"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_sjis_split_to_chars_with_lf
+  def test_sjis_to_chars_with_lf
     str = NKF.nkf("--sjis", "表計算a b\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "LF"
     expected = ["表", "計", "算", "a", " ", "b", "\n"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_sjis_split_to_chars_with_crlf
+  def test_sjis_to_chars_with_crlf
     str = NKF.nkf("--sjis", "表計算a b\r\n").extend(CharString)
     str.encoding = "Shift_JIS"
     str.eol = "CRLF"
     expected = ["表", "計", "算", "a", " ", "b", "\r\n"].map { |c| NKF.nkf("--sjis", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
   def test_sjis_count_chars
@@ -766,73 +766,73 @@ class TestCharString < Test::Unit::TestCase
   end
 
   # test UTF8 module
-  def test_utf8_split_to_words
+  def test_utf8_to_words
     str = NKF.nkf("--utf8", "日本語の文字foo bar").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["日本語の", "文字", "foo ", "bar"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_utf8_split_to_words_kanhira
+  def test_utf8_to_words_kanhira
     str = NKF.nkf("--utf8", "日本語の文字").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["日本語の", "文字"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_utf8_split_to_words_katahira
+  def test_utf8_to_words_katahira
     str = NKF.nkf("--utf8", "カタカナの文字").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["カタカナの", "文字"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_utf8_split_to_words_kataonbiki
+  def test_utf8_to_words_kataonbiki
     str = NKF.nkf("--utf8", "ルビーの指輪").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["ルビーの", "指輪"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_utf8_split_to_words_hiraonbiki
+  def test_utf8_to_words_hiraonbiki
     str = NKF.nkf("--utf8", "わールビーだ").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["わー", "ルビーだ"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_utf8_split_to_words_latinmix
+  def test_utf8_to_words_latinmix
     str = NKF.nkf("--utf8", "日本語とLatinの文字").extend(CharString)
     str.encoding = "UTF-8"
     expected = ["日本語と", "Latin", "の", "文字"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_words)
+    assert_equal(expected, str.to_words)
   end
 
-  def test_utf8_split_to_chars
+  def test_utf8_to_chars
     str = NKF.nkf("--utf8", "日本語a b").extend(CharString)
     expected = ["日", "本", "語", "a", " ", "b"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_utf8_split_to_chars_with_cr
+  def test_utf8_to_chars_with_cr
     str = NKF.nkf("--utf8", "日本語a b\r").extend(CharString)
     str.eol = "CR"
     expected = ["日", "本", "語", "a", " ", "b", "\r"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_utf8_split_to_chars_with_lf
+  def test_utf8_to_chars_with_lf
     str = NKF.nkf("--utf8", "日本語a b\n").extend(CharString)
     str.eol = "LF"
     expected = ["日", "本", "語", "a", " ", "b", "\n"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
-  def test_utf8_split_to_chars_with_crlf
+  def test_utf8_to_chars_with_crlf
     str = NKF.nkf("--utf8", "日本語a b\r\n").extend(CharString)
     str.eol = "CRLF"
     expected = ["日", "本", "語", "a", " ", "b", "\r\n"].map { |c| NKF.nkf("--utf8", c) }
-    assert_equal(expected, str.split_to_chars)
+    assert_equal(expected, str.to_chars)
   end
 
   def test_utf8_count_chars

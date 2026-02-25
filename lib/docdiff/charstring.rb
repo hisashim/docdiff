@@ -98,11 +98,11 @@ class DocDiff
     # thus some of the following methods are not 'linguistically correct'.
 
     def count_bytes
-      split_to_bytes.size
+      to_bytes.size
     end
 
     def count_chars  # eol = 1 char
-      split_to_chars.size
+      to_chars.size
     end
 
     def count_graph_chars
@@ -114,7 +114,7 @@ class DocDiff
     end
 
     def count_words
-      split_to_words.size
+      to_words.size
     end
 
     def count_valid_words
@@ -122,11 +122,11 @@ class DocDiff
     end
 
     def count_lines  # this is common to all encodings.
-      split_to_lines.size
+      to_lines.size
     end
 
     def count_empty_lines
-      split_to_lines.count { |line| /^(?:#{eol_char})|^$/m.match(line) }
+      to_lines.count { |line| /^(?:#{eol_char})|^$/m.match(line) }
     end
 
     # for Ruby-1.9
@@ -146,11 +146,11 @@ class DocDiff
       end
     end
 
-    def split_to_bytes
+    def to_bytes
       encode("ASCII-8BIT").scan(/./nm)
     end
 
-    def split_to_chars
+    def to_chars
       re =
         if eol_char # sometimes string has no end-of-line char
           Regexp.new("(?:#{eol_char})|(?:.)", Regexp::MULTILINE)
@@ -180,32 +180,32 @@ class DocDiff
       encode("UTF-8").scan(re).size
     end
 
-    def split_to_words
+    def to_words
       re = Regexp.new(Encodings["UTF-8"]::WORD_REGEXP_SRC, Regexp::MULTILINE)
       encode("UTF-8").scan(re).map { |e| e.encode(encoding) }
     end
 
     def count_latin_words
       re = Regexp.new("[#{Encodings["UTF-8"]::PRINT}]", Regexp::MULTILINE)
-      split_to_words.count { |word| re.match(word.encode("UTF-8")) }
+      to_words.count { |word| re.match(word.encode("UTF-8")) }
     end
 
     def count_ja_words
       re = Regexp.new("[#{Encodings["UTF-8"]::JA_PRINT}]", Regexp::MULTILINE)
-      split_to_words.count { |word| re.match(word.encode("UTF-8")) }
+      to_words.count { |word| re.match(word.encode("UTF-8")) }
     end
 
     def count_latin_valid_words
       re = Regexp.new("[#{Encodings["UTF-8"]::ALNUM}]", Regexp::MULTILINE)
-      split_to_words.count { |word| re.match(word.encode("UTF-8")) }
+      to_words.count { |word| re.match(word.encode("UTF-8")) }
     end
 
     def count_ja_valid_words
       re = Regexp.new("[#{Encodings["UTF-8"]::JA_GRAPH}]", Regexp::MULTILINE)
-      split_to_words.count { |word| re.match(word.encode("UTF-8")) }
+      to_words.count { |word| re.match(word.encode("UTF-8")) }
     end
 
-    def split_to_lines
+    def to_lines
       raise <<~EOS.chomp unless EOLChars[eol]
         EOLChars[eol] is #{EOLChars[eol].inspect}: eol not specified or auto-detection failed.
       EOS
@@ -222,13 +222,13 @@ class DocDiff
     def count_graph_lines
       graph = (Encodings["UTF-8"]::GRAPH + Encodings["UTF-8"]::JA_GRAPH).chars.uniq.join
       re = Regexp.new("[#{Regexp.quote(graph)}]", Regexp::MULTILINE)
-      split_to_lines.count { |line| re.match(line.encode("UTF-8")) }
+      to_lines.count { |line| re.match(line.encode("UTF-8")) }
     end
 
     def count_blank_lines
       blank = (Encodings["UTF-8"]::BLANK + Encodings["UTF-8"]::JA_BLANK).chars.uniq.join
       re = Regexp.new("^[#{blank}]+(?:#{eol_char})?", Regexp::MULTILINE)
-      split_to_lines.count { |line| re.match(line.encode("UTF-8")) }
+      to_lines.count { |line| re.match(line.encode("UTF-8")) }
     end
 
     # load encoding modules
@@ -236,10 +236,6 @@ class DocDiff
     require "docdiff/encoding/ja_eucjp"
     require "docdiff/encoding/ja_sjis"
     require "docdiff/encoding/ja_utf8"
-    alias_method :to_bytes, :split_to_bytes
-    alias_method :to_chars, :split_to_chars
-    alias_method :to_words, :split_to_words
-    alias_method :to_lines, :split_to_lines
 
     module CR
       EOL = "CR"

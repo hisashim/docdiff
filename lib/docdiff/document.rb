@@ -54,20 +54,20 @@ class DocDiff
       @body.eol = eolstr
     end
 
-    def split_to_lines
-      @body.split_to_lines
+    def to_lines
+      @body.to_lines
     end
 
-    def split_to_words
-      @body.split_to_words
+    def to_words
+      @body.to_words
     end
 
-    def split_to_chars
-      @body.split_to_chars
+    def to_chars
+      @body.to_chars
     end
 
-    def split_to_bytes
-      @body.split_to_bytes
+    def to_bytes
+      @body.to_bytes
     end
 
     def count_lines
