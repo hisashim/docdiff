@@ -7,6 +7,9 @@ class DocDiff
         o = base_options.dup
 
         option_parser = OptionParser.new do |parser|
+          parser.banner =
+            "#{File.basename($PROGRAM_NAME)} [options] file1 file2"
+
           parser.on(
             "--resolution=RESOLUTION",
             resolutions = ["line", "word", "char"],
