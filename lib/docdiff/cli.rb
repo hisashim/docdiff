@@ -7,6 +7,9 @@ class DocDiff
         o = base_options.dup
 
         option_parser = OptionParser.new do |parser|
+          parser.summary_width = 20
+          parser.summary_indent = "  "
+
           parser.banner =
             "#{File.basename($PROGRAM_NAME)} [options] file1 file2"
 
@@ -57,8 +60,9 @@ class DocDiff
             "--format=FORMAT",
             formats = ["tty", "manued", "html", "wdiff", "stat", "user"],
             "specify output format",
-            "#{formats.join("|")} (default: tty) (stat is deprecated)",
-            "(user tags can be defined in config file)",
+            "#{formats.join("|")} (default: tty)",
+            "(stat is deprecated)",
+            "(user tags can be defined in configuration file)",
           ) { |s| o[:format] = (s || "manued") }
           parser.on("--tty", "same as --format=tty") { o[:format] = "tty" }
           parser.on("--manued", "same as --format=manued") { o[:format] = "manued" }
@@ -69,7 +73,8 @@ class DocDiff
           parser.on(
             "--label LABEL",
             "-L LABEL",
-            "use label instead of file name (not implemented; exists for compatibility with diff)",
+            "use label instead of file name",
+            "(not implemented; exists for compatibility with diff)",
           ) do |s|
             o[:label] ||= []
             o[:label] << s
@@ -81,22 +86,24 @@ class DocDiff
           parser.on(
             "--display=DISPLAY",
             display_types = ["inline", "block", "multi"],
-            "specify presentation type (effective only with digest; experimental feature)",
-            "#{display_types.join("|")} (default: inline) (multi is deprecated)",
+            "specify presentation type (effective only with digest)",
+            "#{display_types.join("|")} (default: inline)",
+            "(experimental feature) (multi is deprecated)",
           ) { |s| o[:display] ||= s.downcase }
 
           parser.on("--cache", "use file cache (not implemented) (deprecated)") { o[:cache] = true }
           parser.on(
             "--pager=PAGER",
             String,
-            "specify pager (if available, $DOCDIFF_PAGER or $PAGER is used by default)",
+            "specify pager",
+            "(falls back to $DOCDIFF_PAGER, $PAGER, or none)",
           ) { |s| o[:pager] = s }
           parser.on("--no-pager", "do not use pager") { o[:pager] = false }
-          parser.on("--config-file=FILE", String, "specify config file to read") { |s| o[:config_file] = s }
-          parser.on("--no-config-file", "do not read config files") { o[:no_config_file] = true }
+          parser.on("--config-file=FILE", String, "specify configuration file to read") { |s| o[:config_file] = s }
+          parser.on("--no-config-file", "do not read configuration files") { o[:no_config_file] = true }
           parser.on("--verbose", "run verbosely (not well-supported) (deprecated)") { o[:verbose] = true }
 
-          parser.on("--help", "show this message") do
+          parser.on("--help", "show help message") do
             puts parser
             exit(0)
           end
@@ -115,7 +122,8 @@ class DocDiff
 
           parser.on_tail(
             "When invoked as worddiff or chardiff, resolution will be set accordingly.",
-            "Config files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf (or ~/etc/docdiff/docdiff.conf (deprecated))",
+            "Configuration files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf, ",
+            "or ~/etc/docdiff/docdiff.conf (deprecated)",
           )
         end
 
