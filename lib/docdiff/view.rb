@@ -107,6 +107,20 @@ class DocDiff
       nil
     end
 
+    def format_line_number(n1, n2 = nil, paren: false)
+      content =
+        if n2
+          "LL#{n1}-#{n2}"
+        else
+          "L#{n1}"
+        end
+      if paren
+        "(#{content})"
+      else
+        content
+      end
+    end
+
     CONTEXT_PRE_LENGTH  = 32
     CONTEXT_POST_LENGTH = 32
     def apply_style_digest(tags, headfoot = true)
@@ -180,17 +194,17 @@ class DocDiff
         when :change_elt
           range1 =
             if span1 > 1
-              "#{d1l}-#{d1l + span1 - 1}"
+              format_line_number(d1l, (d2l + span1 - 1))
             else
-              d1l.to_s
+              format_line_number(d1l)
             end
           range2 =
             if span2 > 1
-              "#{d2l}-#{d2l + span2 - 1}"
+              format_line_number(d2l, (d2l + span2 - 1))
             else
-              d2l.to_s
+              format_line_number(d2l)
             end
-          pos_str = "#{range1},#{range2}"
+          pos_str = "#{range1}, #{range2}"
           case display
           when "inline"
             result << (e_head.call(pos_str) + e_cxt_pre + e_chg + e_cxt_post + e_foot)
@@ -202,13 +216,13 @@ class DocDiff
         when :del_elt
           range1 =
             if span1 > 1
-              "#{d1l}-#{d1l + span1 - 1}"
+              format_line_number(d1l, (d1l + span1 - 1))
             else
-              d1l.to_s
+              format_line_number(d1l)
             end
           range2 =
-            "(#{d2l})"
-          pos_str = "#{range1},#{range2}"
+            format_line_number(d2l, paren: true)
+          pos_str = "#{range1}, #{range2}"
           case display
           when "inline"
             result << (e_head.call(pos_str) + e_cxt_pre + e_del + e_cxt_post + e_foot)
@@ -219,14 +233,14 @@ class DocDiff
           end
         when :add_elt
           range1 =
-            "(#{d1l})"
+            format_line_number(d1l, paren: true)
           range2 =
             if span2 > 1
-              "#{d2l}-#{d2l + span2 - 1}"
+              format_line_number(d2l, (d2l + span2 - 1))
             else
-              d2l.to_s
+              format_line_number(d2l)
             end
-          pos_str = "#{range1},#{range2}"
+          pos_str = "#{range1}, #{range2}"
           case display
           when "inline"
             result << (e_head.call(pos_str) + e_cxt_pre + e_add + e_cxt_post + e_foot)

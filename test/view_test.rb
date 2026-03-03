@@ -13,6 +13,13 @@ class TestView < Test::Unit::TestCase
   def setup
   end
 
+  def test_format_line_number
+    view = Difference.new([], []).to_view("US-ASCII", nil)
+    assert_equal("L1", view.format_line_number(1, nil))
+    assert_equal("(L1)", view.format_line_number(1, nil, paren: true))
+    assert_equal("LL1-2", view.format_line_number(1, 2))
+  end
+
   def test_scan_lines_cr
     str = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA"
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r", "A"]
@@ -239,9 +246,9 @@ class TestView < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = [
       "----\n",
-      "1-2,(1)\n\033[7;4;31ma\nb\033[0mcd\n----\n",
-      "(2),1-2\ncd\033[7;1;34mX\nY\033[0me\n\n----\n",
-      "3,3\ne\n\033[7;4;33mf\033[0m\033[7;1;32mF\033[0m\n\n----\n",
+      "LL1-2, (L1)\n\033[7;4;31ma\nb\033[0mcd\n----\n",
+      "(L2), LL1-2\ncd\033[7;1;34mX\nY\033[0me\n\n----\n",
+      "L3, L3\ne\n\033[7;4;33mf\033[0m\033[7;1;32mF\033[0m\n\n----\n",
     ]
     view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_tty_digest(nil, false))
@@ -252,9 +259,9 @@ class TestView < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = [
       "----\n",
-      "1-2,(1)\na\nbcd\n\033[7;4;31ma\nb\033[0mcd\n----\n",
-      "(2),1-2\ncde\n\ncd\033[7;1;34mX\nY\033[0me\n\n----\n",
-      "3,3\ne\n\033[7;4;33mf\033[0m\n\ne\n\033[7;1;32mF\033[0m\n\n----\n",
+      "LL1-2, (L1)\na\nbcd\n\033[7;4;31ma\nb\033[0mcd\n----\n",
+      "(L2), LL1-2\ncde\n\ncd\033[7;1;34mX\nY\033[0me\n\n----\n",
+      "L3, L3\ne\n\033[7;4;33mf\033[0m\n\ne\n\033[7;1;32mF\033[0m\n\n----\n",
     ]
     view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_tty_digest({ display: "block" }, false))
@@ -297,9 +304,9 @@ class TestView < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = [
       "<ul>",
-      "<li class=\"entry\"><p class=\"position\">1-2,(1)</p><blockquote class=\"body\"><p class=\"body\"><span class=\"del\"><del>a<br />\nb</del></span>cd</p></blockquote></li>\n",
-      "<li class=\"entry\"><p class=\"position\">(2),1-2</p><blockquote class=\"body\"><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e<br />\n</p></blockquote></li>\n",
-      "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before-change\"><del>f</del></span><span class=\"after-change\"><ins>F</ins></span><br />\n</p></blockquote></li>\n",
+      "<li class=\"entry\"><p class=\"position\">LL1-2, (L1)</p><blockquote class=\"body\"><p class=\"body\"><span class=\"del\"><del>a<br />\nb</del></span>cd</p></blockquote></li>\n",
+      "<li class=\"entry\"><p class=\"position\">(L2), LL1-2</p><blockquote class=\"body\"><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e<br />\n</p></blockquote></li>\n",
+      "<li class=\"entry\"><p class=\"position\">L3, L3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before-change\"><del>f</del></span><span class=\"after-change\"><ins>F</ins></span><br />\n</p></blockquote></li>\n",
       "</ul>",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
@@ -311,9 +318,9 @@ class TestView < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = [
       "<ul>",
-      "<li class=\"entry\"><p class=\"position\">1-2,(1)</p><blockquote class=\"body\"><p class=\"body\">a<br />\nbcd</p><p class=\"body\"><span class=\"del\"><del>a<br />\nb</del></span>cd</p></blockquote></li>\n",
-      "<li class=\"entry\"><p class=\"position\">(2),1-2</p><blockquote class=\"body\"><p class=\"body\">cde<br />\n</p><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e<br />\n</p></blockquote></li>\n",
-      "<li class=\"entry\"><p class=\"position\">3,3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before-change\"><del>f</del></span><br />\n</p><p class=\"body\">e<br />\n<span class=\"after-change\"><ins>F</ins></span><br />\n</p></blockquote></li>\n",
+      "<li class=\"entry\"><p class=\"position\">LL1-2, (L1)</p><blockquote class=\"body\"><p class=\"body\">a<br />\nbcd</p><p class=\"body\"><span class=\"del\"><del>a<br />\nb</del></span>cd</p></blockquote></li>\n",
+      "<li class=\"entry\"><p class=\"position\">(L2), LL1-2</p><blockquote class=\"body\"><p class=\"body\">cde<br />\n</p><p class=\"body\">cd<span class=\"add\"><ins>X<br />\nY</ins></span>e<br />\n</p></blockquote></li>\n",
+      "<li class=\"entry\"><p class=\"position\">L3, L3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before-change\"><del>f</del></span><br />\n</p><p class=\"body\">e<br />\n<span class=\"after-change\"><ins>F</ins></span><br />\n</p></blockquote></li>\n",
       "</ul>",
     ]
     view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
@@ -491,9 +498,9 @@ class TestView < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = [
       "----\n",
-      "1-2,(1)\n[a\nb/]cd\n----\n",
-      "(2),1-2\ncd[/X\nY]e\n\n----\n",
-      "3,3\ne\n[f/F]\n\n----\n",
+      "LL1-2, (L1)\n[a\nb/]cd\n----\n",
+      "(L2), LL1-2\ncd[/X\nY]e\n\n----\n",
+      "L3, L3\ne\n[f/F]\n\n----\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
     assert_equal(expected, view.to_manued_digest(nil, false))
@@ -504,9 +511,9 @@ class TestView < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = [
       "----\n",
-      "1-2,(1)\na\nbcd\n[a\nb/]cd\n----\n",
-      "(2),1-2\ncde\n\ncd[/X\nY]e\n\n----\n",
-      "3,3\ne\n[f/]\n\ne\n[/F]\n\n----\n",
+      "LL1-2, (L1)\na\nbcd\n[a\nb/]cd\n----\n",
+      "(L2), LL1-2\ncde\n\ncd[/X\nY]e\n\n----\n",
+      "L3, L3\ne\n[f/]\n\ne\n[/F]\n\n----\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
     assert_equal(expected, view.to_manued_digest({ display: "block" }, false))
@@ -587,9 +594,9 @@ class TestView < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = [
       "----\n",
-      "1-2,(1)\n[-a\nb-]cd\n----\n",
-      "(2),1-2\ncd{+X\nY+}e\n\n----\n",
-      "3,3\ne\n[-f-]{+F+}\n\n----\n",
+      "LL1-2, (L1)\n[-a\nb-]cd\n----\n",
+      "(L2), LL1-2\ncd{+X\nY+}e\n\n----\n",
+      "L3, L3\ne\n[-f-]{+F+}\n\n----\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
     assert_equal(expected, view.to_wdiff_digest(nil, false))
@@ -600,9 +607,9 @@ class TestView < Test::Unit::TestCase
     array2 = ["c", "d", "X", "\n", "Y", "e", "\n", "F", "\n"]
     expected = [
       "----\n",
-      "1-2,(1)\na\nbcd\n[-a\nb-]cd\n----\n",
-      "(2),1-2\ncde\n\ncd{+X\nY+}e\n\n----\n",
-      "3,3\ne\n[-f-]\n\ne\n{+F+}\n\n----\n",
+      "LL1-2, (L1)\na\nbcd\n[-a\nb-]cd\n----\n",
+      "(L2), LL1-2\ncde\n\ncd{+X\nY+}e\n\n----\n",
+      "L3, L3\ne\n[-f-]\n\ne\n{+F+}\n\n----\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
     assert_equal(expected, view.to_wdiff_digest({ display: "block" }, false))
@@ -673,9 +680,9 @@ class TestView < Test::Unit::TestCase
       end_after_change:    "</!+>",
     }
     expected = [
-      "1-2,(1) <->a\nb</->cd\n",
-      "(2),1-2 cd<+>X\nY</+>e\n\n",
-      "3,3 e\n<!->f</!-><!+>F</!+>\n\n",
+      "LL1-2, (L1) <->a\nb</->cd\n",
+      "(L2), LL1-2 cd<+>X\nY</+>e\n\n",
+      "L3, L3 e\n<!->f</!-><!+>F</!+>\n\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
     assert_equal(expected, view.to_user_digest(user_tags, false))
@@ -698,9 +705,9 @@ class TestView < Test::Unit::TestCase
       display:             "block",
     }
     expected = [
-      "1-2,(1) a\nbcd<->a\nb</->cd\n",
-      "(2),1-2 cde\ncd<+>X\nY</+>e\n\n",
-      "3,3 e\n<!->f</!->\ne\n<!+>F</!+>\n\n",
+      "LL1-2, (L1) a\nbcd<->a\nb</->cd\n",
+      "(L2), LL1-2 cde\ncd<+>X\nY</+>e\n\n",
+      "L3, L3 e\n<!->f</!->\ne\n<!+>F</!+>\n\n",
     ]
     view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
     assert_equal(expected, view.to_user_digest(user_tags, false))

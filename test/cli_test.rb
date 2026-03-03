@@ -221,18 +221,18 @@ class TestCLI < Test::Unit::TestCase
   def test_cli_digest
     expected = <<~EOS
       ----
-      1,1
+      L1, L1
       Hello, my name is [-Watanabe.-]{+matz.+}
 
       ----
-      (2),2
+      (L2), L2
 
       {+It's me who has created Ruby.  +}I am#{" "}
       ----
-      2,2
+      L2, L2
       I am [-just another -]{+a +}Ruby#{" "}
       ----
-      2,2
+      L2, L2
       Ruby [-porter.-]{+hacker.+}
 
       ----
@@ -246,18 +246,18 @@ class TestCLI < Test::Unit::TestCase
   def test_cli_display_inline
     expected = <<~EOS
       ----
-      1,1
+      L1, L1
       Hello, my name is [-Watanabe.-]{+matz.+}
 
       ----
-      (2),2
+      (L2), L2
 
       {+It's me who has created Ruby.  +}I am#{" "}
       ----
-      2,2
+      L2, L2
       I am [-just another -]{+a +}Ruby#{" "}
       ----
-      2,2
+      L2, L2
       Ruby [-porter.-]{+hacker.+}
 
       ----
@@ -271,23 +271,23 @@ class TestCLI < Test::Unit::TestCase
   def test_cli_display_block
     expected = <<~EOS
       ----
-      1,1
+      L1, L1
       Hello, my name is [-Watanabe.-]
 
       Hello, my name is {+matz.+}
 
       ----
-      (2),2
+      (L2), L2
 
       I am#{" "}
 
       {+It's me who has created Ruby.  +}I am#{" "}
       ----
-      2,2
+      L2, L2
       I am [-just another -]Ruby#{" "}
       I am {+a +}Ruby#{" "}
       ----
-      2,2
+      L2, L2
       Ruby [-porter.-]
 
       Ruby {+hacker.+}
