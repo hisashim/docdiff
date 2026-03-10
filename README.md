@@ -10,38 +10,20 @@ Compares two text files by word, by character, or by line
 
 ## Screenshots
 
-<div style="display: grid; grid-template-columns: 1fr 1fr;">
+<p>TTY output<br />
+<img src="doc/img/screenshot-tty-en-ja.png" alt="TTY output"/></p>
 
 <p>HTML output<br />
-<img src="doc/img/screenshot-format-html-firefox.png" alt="HTML output"/></p>
+<img src="doc/img/screenshot-html.png" alt="HTML output"/></p>
 
-<p>HTML output (digest)<br />
-<img src="doc/img/screenshot-format-html-digest-firefox.png" alt="HTML output (digest)" /></p>
+<p>Comparison by word and by character<br />
+<img src="doc/img/screenshot-tty-word-char.png" alt="Comparison by word and by character"/></p>
 
-<p>tty output<br />
-<img src="doc/img/screenshot-format-tty-rxvtunicode-en.png" alt="tty output" /></p>
+<p>Digest mode (inline)<br />
+<img src="doc/img/screenshot-tty-digest.png" alt="Digest mode (inline)"/></p>
 
-<p>tty output (comparing Japanese text)<br />
-<img src="doc/img/screenshot-format-tty-rxvtunicode-ja.png" alt="tty output (comparing Japanese text)" /></p>
-
-<p>tty output<br />
-<img src="doc/img/screenshot-format-tty-xterm-en.png" alt="tty output" /></p>
-
-<p>tty output (comparing Japanese text)<br />
-<img src="doc/img/screenshot-format-tty-xterm-ja.png" alt="tty output (comparing Japanese text)" /></p>
-
-</div>
-
-<p>Comparing English text (codepage 437) on Windows (Cygwin)<br />
-<img src="doc/img/screenshot-format-tty-cmdexe-en.png" alt="Comparing English text (codepage 437) on Windows (Cygwin)" /></p>
-
-<p>Comparing Japanese text (codepage 932) on Windows (Cygwin)<br />
-<img src="doc/img/screenshot-format-tty-cmdexe-ja.png" alt="Comparing Japanese text (codepage 932) on Windows (Cygwin)" /></p>
-
-<p>You can compare text files by line, word, or character (format: tty)<br/>
-<img src="doc/img/screenshot-resolution-linewordchar-xterm.png" alt="You can compare text files by line, word, or character (format: tty)" /></p>
-
-(Screenshots as of version 0.3.2.)
+<p>Digest mode (block)<br />
+<img src="doc/img/screenshot-tty-digest-block.png" alt="Digest mode (block)"/></p>
 
 ## Summary
 

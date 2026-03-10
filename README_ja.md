@@ -10,38 +10,20 @@
 
 ## スクリーンショット
 
-<div style="display: grid; grid-template-columns: 1fr 1fr;">
+<p>TTY出力<br />
+<img src="doc/img/screenshot-tty-en-ja.png" alt="TTY output"/></p>
 
 <p>HTML出力<br />
-<img src="doc/img/screenshot-format-html-firefox.png" alt="HTML output"/></p>
+<img src="doc/img/screenshot-html.png" alt="HTML output"/></p>
 
-<p>HTML出力（ダイジェスト）<br />
-<img src="doc/img/screenshot-format-html-digest-firefox.png" alt="HTML output (digest)" /></p>
+<p>単語ごとの比較と文字ごとの比較<br />
+<img src="doc/img/screenshot-tty-word-char.png" alt="Comparison by word and by character"/></p>
 
-<p>tty出力<br />
-<img src="doc/img/screenshot-format-tty-rxvtunicode-en.png" alt="tty output" /></p>
+<p>ダイジェストモード（インライン表示）<br />
+<img src="doc/img/screenshot-tty-digest.png" alt="Digest mode (inline display)"/></p>
 
-<p>tty出力（日本語のテキストを比較）<br />
-<img src="doc/img/screenshot-format-tty-rxvtunicode-ja.png" alt="tty output (comparing Japanese text)" /></p>
-
-<p>tty出力<br />
-<img src="doc/img/screenshot-format-tty-xterm-en.png" alt="tty output" /></p>
-
-<p>tty出力（日本語のテキストを比較）<br />
-<img src="doc/img/screenshot-format-tty-xterm-ja.png" alt="tty output (comparing Japanese text)" /></p>
-
-</div>
-
-<p>英語のテキスト（コードページ437）を比較（Windows上のCygwin環境）<br />
-<img src="doc/img/screenshot-format-tty-cmdexe-en.png" alt="Comparing English text (codepage 437) on Windows (Cygwin)" /></p>
-
-<p>日本語のテキスト（コードページ937）を比較（Windows上のCygwin環境）<br />
-<img src="doc/img/screenshot-format-tty-cmdexe-ja.png" alt="Comparing Japanese text (codepage 932) on Windows (Cygwin)" /></p>
-
-<p>行ごと、単語ごと、文字ごとの比較が可能（フォーマットはtty）<br/>
-<img src="doc/img/screenshot-resolution-linewordchar-xterm.png" alt="You can compare text files by line, word, or character (format: tty)" /></p>
-
-（バージョン0.3.2時点のスクリーンショットです。）
+<p>ダイジェストモード（ブロック表示）<br />
+<img src="doc/img/screenshot-tty-digest-block.png" alt="Digest mode (block display)"/></p>
 
 ## 概要
 
