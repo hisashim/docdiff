@@ -16,14 +16,11 @@
 <p>HTML出力<br />
 <img src="doc/img/screenshot-html.png" alt="HTML output"/></p>
 
-<p>単語ごとの比較と文字ごとの比較<br />
-<img src="doc/img/screenshot-tty-word-char.png" alt="Comparison by word and by character"/></p>
+<p>文字ごとの比較<br />
+<img src="doc/img/screenshot-tty-char.png" alt="Comparison by character"/></p>
 
-<p>ダイジェストモード（インライン表示）<br />
-<img src="doc/img/screenshot-tty-digest.png" alt="Digest mode (inline display)"/></p>
-
-<p>ダイジェストモード（ブロック表示）<br />
-<img src="doc/img/screenshot-tty-digest-block.png" alt="Digest mode (block display)"/></p>
+<p>ダイジェストモード（長いテキスト中に散らばった変更点を確認するのに便利）<br />
+<img src="doc/img/screenshot-tty-digest-license.png" alt="Digest mode"/></p>
 
 ## 概要
 

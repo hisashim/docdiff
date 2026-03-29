@@ -16,14 +16,11 @@ Compares two text files by word, by character, or by line
 <p>HTML output<br />
 <img src="doc/img/screenshot-html.png" alt="HTML output"/></p>
 
-<p>Comparison by word and by character<br />
-<img src="doc/img/screenshot-tty-word-char.png" alt="Comparison by word and by character"/></p>
+<p>Comparison by character<br />
+<img src="doc/img/screenshot-tty-char.png" alt="Comparison by character"/></p>
 
-<p>Digest mode (inline)<br />
-<img src="doc/img/screenshot-tty-digest.png" alt="Digest mode (inline)"/></p>
-
-<p>Digest mode (block)<br />
-<img src="doc/img/screenshot-tty-digest-block.png" alt="Digest mode (block)"/></p>
+<p>Digest mode (useful for viewing scattered changes within a long text)<br />
+<img src="doc/img/screenshot-tty-digest-license.png" alt="Digest mode"/></p>
 
 ## Summary
 
