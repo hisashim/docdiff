@@ -33,16 +33,70 @@ It supports several encodings and end-of-line characters, including ASCII (and o
 ### Synopsis
 
 ```
-$ docdiff [options] oldfile newfile
+$ docdiff [options] file1 file2
 ```
 
-e.g.
+Type `docdiff --help` to show command line options.
+
+### Options
 
 ```
-$ docdiff old.txt new.txt > diff.html
+docdiff [options] file1 file2
+      --resolution=RESOLUTION
+                       specify resolution (granularity)
+                       line|word|char (default: word)
+      --line           same as --resolution=line
+      --word           same as --resolution=word
+      --char           same as --resolution=char
+      --encoding=ENCODING
+                       specify character encoding
+                       ASCII|EUC-JP|Shift_JIS|CP932|UTF-8|auto (default: auto)
+                       (try ASCII for single byte encodings such as ISO-8859)
+      --ascii          same as --encoding=ASCII
+      --iso8859        same as --encoding=ASCII
+      --iso8859x       same as --encoding=ASCII (deprecated)
+      --eucjp          same as --encoding=EUC-JP
+      --sjis           same as --encoding=Shift_JIS
+      --cp932          same as --encoding=CP932
+      --utf8           same as --encoding=UTF-8
+      --eol=EOL        specify end-of-line character
+                       CR|LF|CRLF|auto (default: auto)
+      --cr             same as --eol=CR
+      --lf             same as --eol=LF
+      --crlf           same as --eol=CRLF
+      --format=FORMAT  specify output format
+                       tty|manued|html|wdiff|stat|user (default: tty)
+                       (stat is deprecated)
+                       (user tags can be defined in configuration file)
+      --tty            same as --format=tty
+      --manued         same as --format=manued
+      --html           same as --format=html
+      --wdiff          same as --format=wdiff
+      --stat           same as --format=stat (not implemented) (deprecated)
+  -L, --label LABEL    use label instead of file name
+                       (not implemented; exists for compatibility with diff)
+      --digest         digest output, do not show all
+      --summary        same as --digest
+      --display=DISPLAY
+                       specify presentation type (effective only with digest)
+                       inline|block|multi (default: inline)
+                       (experimental feature) (multi is deprecated)
+      --cache          use file cache (not implemented) (deprecated)
+      --pager=PAGER    specify pager
+                       (falls back to $DOCDIFF_PAGER, $PAGER, or none)
+      --no-pager       do not use pager
+      --config-file=FILE
+                       specify configuration file to read
+      --no-config-file do not read configuration files
+      --verbose        run verbosely (not well-supported) (deprecated)
+      --help           show help message
+      --version        show version
+      --license        show license (deprecated)
+      --author         show author(s) (deprecated)
+When invoked as worddiff or chardiff, resolution will be set accordingly.
+Configuration files: /etc/docdiff/docdiff.conf, ~/.config/docdiff/docdiff.conf,
+or ~/etc/docdiff/docdiff.conf (deprecated)
 ```
-
-See the help message for detail (`docdiff --help`).
 
 ### Example
 
