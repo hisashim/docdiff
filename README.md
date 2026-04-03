@@ -1,6 +1,6 @@
 # DocDiff
 
-* English | [Japanese](README_ja.md)
+* English / [Japanese](README_ja.md)
 
 (C) 2000 Hisashi MORITA
 
@@ -24,7 +24,7 @@ Compares two text files by word, by character, or by line
 
 ## Summary
 
-DocDiff compares two text files and shows the difference. It can compare files word by word, character by character, or line by line. It has several output formats such as tty, HTML, Manued, or user-defined markup.
+DocDiff compares two text files and shows the difference. It can compare files word by word, character by character, or line by line. It has several output formats such as TTY, HTML, Manued, or user-defined markup.
 
 It supports several encodings and end-of-line characters, including ASCII (and other single byte encodings such as ISO-8859-*), UTF-8, EUC-JP, Shift_JIS (Windows-31J), CR, LF, and CRLF.
 
@@ -366,7 +366,7 @@ Excuse us this list is far from complete and fails to acknowledge many more who 
 ### Formats
 
 * [HTML/XHTML](https://www.w3.org/)
-* tty (Graphic rendition using VT100 / ANSI escape sequences)
+* TTY (Graphic rendition using VT100 / ANSI escape sequences)
   - [VT100](https://vt100.net/docs/tp83/appendixb.html)
   - [ANSI](https://tldp.org/HOWTO/Bash-Prompt-HOWTO/x329.html)
 * [Manued](https://sundayresearch.eu/hitoshi/otherprojects/manued/) ([in Japanese](https://sundayresearch.eu/hitoshi/otherprojects/manued/index-j.html)) (Manuscript Editing Language: a proofreading method for text)

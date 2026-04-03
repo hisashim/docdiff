@@ -4,7 +4,7 @@
 
 * User-visible changes:
   - Default output format changed from html to tty. (breaking change)
-    If you prefer the old behaviour, add `format = html` to your configuration file (e.g. `~/.config/docdiff/docdiff.conf`).
+    - If you prefer the old behaviour, add `format = html` to your configuration file (e.g. `~/.config/docdiff/docdiff.conf`).
   - Enabled automatic pager activation via `$PAGER`. (breaking change)
   - Changed line number format in digest mode to `L1, L1` and `(L1), LL1-2` (previously `1,1` and `(1),1-2`). (somewhat breaking change)
   - Updated screenshots in README.
