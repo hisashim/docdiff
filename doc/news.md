@@ -1,6 +1,6 @@
 # News
 
-### 0.7.0 (CCYY-MM-DD)
+### 0.7.0 (2026-04-05)
 
 * User-visible changes:
   - Default output format changed from html to tty. (breaking change)
