@@ -91,10 +91,10 @@ class DocDiff
     lines_words_and_chars
   end
 
-  def run(doc1, doc2, option)
-    raise "option is nil" if option.nil?
-    raise "option[:resolution] is nil" if option[:resolution].nil?
-    raise "option[:format] is nil" if option[:format].nil?
+  def run(doc1, doc2, options)
+    raise "options is nil" if options.nil?
+    raise "options[:resolution] is nil" if options[:resolution].nil?
+    raise "options[:format] is nil" if options[:format].nil?
 
     if doc1.class == Document && doc2.class == Document # OK
     elsif !doc1.encoding.nil? && !doc2.encoding.nil? # OK
@@ -103,12 +103,12 @@ class DocDiff
       raise("Error!  Blame the author (doc1: #{doc1.encoding}, #{doc1.eol}, doc2: #{doc2.encoding}, #{doc2.eol}).")
     end
 
-    case option[:resolution]
+    case options[:resolution]
     when "line"; then difference = compare_by_line(doc1, doc2)
     when "word"; then difference = compare_by_line_word(doc1, doc2)
     when "char"; then difference = compare_by_line_word_char(doc1, doc2)
     else
-      raise "Unsupported resolution: #{option[:resolution].inspect}"
+      raise "Unsupported resolution: #{options[:resolution].inspect}"
     end
     view = View.new(difference, doc1.encoding, doc1.eol)
     user_tags = {
@@ -123,28 +123,28 @@ class DocDiff
       start_after_change:  (@config[:tag_change_after_start] ||= ""),
       end_after_change:    (@config[:tag_change_after_end] ||= ""),
     }
-    case option[:digest]
+    case options[:digest]
     when true
-      case option[:format]
-      when "tty";      then result = view.to_tty_digest(option)
-      when "html";     then result = view.to_html_digest(option)
-      when "manued";   then result = view.to_manued_digest(option)
-      when "wdiff";    then result = view.to_wdiff_digest(option)
-      when "stat";     then result = view.to_stat(option)
+      case options[:format]
+      when "tty";      then result = view.to_tty_digest(options)
+      when "html";     then result = view.to_html_digest(options)
+      when "manued";   then result = view.to_manued_digest(options)
+      when "wdiff";    then result = view.to_wdiff_digest(options)
+      when "stat";     then result = view.to_stat(options)
       when "user";     then result = view.to_user_digest(user_tags)
       else
-        raise "Unsupported output format: #{option[:format].inspect}."
+        raise "Unsupported output format: #{options[:format].inspect}."
       end
     when false
-      case option[:format]
-      when "tty";      then result = view.to_tty(option)
-      when "html";     then result = view.to_html(option)
-      when "manued";   then result = view.to_manued(option)
-      when "wdiff";    then result = view.to_wdiff(option)
-      when "stat";     then result = view.to_stat(option)
+      case options[:format]
+      when "tty";      then result = view.to_tty(options)
+      when "html";     then result = view.to_html(options)
+      when "manued";   then result = view.to_manued(options)
+      when "wdiff";    then result = view.to_wdiff(options)
+      when "stat";     then result = view.to_stat(options)
       when "user";     then result = view.to_user(user_tags)
       else
-        raise "Unsupported output format: #{option[:format].inspect}."
+        raise "Unsupported output format: #{options[:format].inspect}."
       end
     end
     result.join

@@ -320,14 +320,14 @@ class DocDiff
 
         docdiff = DocDiff.new(config: config)
 
-        option = {
+        options = {
           resolution: docdiff.config[:resolution],
           format:     docdiff.config[:format],
           digest:     docdiff.config[:digest],
           display:    docdiff.config[:display],
         }
 
-        output = docdiff.run(doc1, doc2, option)
+        output = docdiff.run(doc1, doc2, options)
 
         print_or_write_to_pager(output, docdiff.config[:pager])
       end
