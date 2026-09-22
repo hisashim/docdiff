@@ -3,14 +3,11 @@
 
 require "docdiff/charstring"
 
-class EncodingDetectionFailure < StandardError
-end
-
-class EOLDetectionFailure < StandardError
-end
-
 class DocDiff
   class Document
+    class EncodingDetectionFailure < StandardError; end
+    class EOLDetectionFailure < StandardError; end
+
     def initialize(str, enc = nil, e = nil)
       @body = str
       @body.extend(CharString)
