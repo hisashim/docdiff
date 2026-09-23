@@ -41,17 +41,17 @@ class DocDiff
   attr_accessor :config
 
   def compare_by_line(doc1, doc2)
-    Difference.new(doc1.to_lines, doc2.to_lines)
+    Difference.new(doc1.to_lines, doc2.to_lines, [doc1.file_name, doc2.file_name])
   end
 
   def compare_by_line_word(doc1, doc2)
     lines = compare_by_line(doc1, doc2)
-    words = Difference.new
+    words = Difference.new(nil, nil, [doc1.file_name, doc2.file_name])
     lines.each do |line|
       if line.first == :change_elt
         before_change = Document.new(line[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.to_words, after_change.to_words).each do |word|
+        Difference.new(before_change.to_words, after_change.to_words, nil).each do |word|
           words << word
         end
       else # :common_elt_elt, :del_elt, or :add_elt
@@ -69,19 +69,19 @@ class DocDiff
       if line.first == :change_elt
         before_change = Document.new(line[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.to_words, after_change.to_words).each do |word|
+        Difference.new(before_change.to_words, after_change.to_words, nil).each do |word|
           lines_and_words << word
         end
       else  # :common_elt_elt, :del_elt, or :add_elt
         lines_and_words << line
       end
     end
-    lines_words_and_chars = Difference.new
+    lines_words_and_chars = Difference.new(nil, nil, [doc1.file_name, doc2.file_name])
     lines_and_words.each do |line_or_word|
       if line_or_word.first == :change_elt
         before_change = Document.new(line_or_word[1].join, doc1.encoding, doc1.eol)
         after_change  = Document.new(line_or_word[2].join, doc2.encoding, doc2.eol)
-        Difference.new(before_change.to_chars, after_change.to_chars).each do |char|
+        Difference.new(before_change.to_chars, after_change.to_chars, nil).each do |char|
           lines_words_and_chars << char
         end
       else  # :common_elt_elt, :del_elt, or :add_elt
@@ -110,7 +110,7 @@ class DocDiff
     else
       raise "Unsupported resolution: #{options[:resolution].inspect}"
     end
-    view = View.new(difference, doc1.encoding, doc1.eol)
+    view = View.new(difference, doc1.encoding, doc1.eol, [doc1.file_name, doc2.file_name])
     user_tags = {
       start_common:        (@config[:tag_common_start] ||= ""),
       end_common:          (@config[:tag_common_end] ||= ""),

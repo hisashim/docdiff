@@ -56,6 +56,12 @@ class TestDocument < Test::Unit::TestCase
     assert_equal(expected, doc.eol_char)
   end
 
+  def test_file_name
+    doc = Document.new("Foo bar.\nBaz quux.", nil, nil, "foo.txt")
+    expected = "foo.txt"
+    assert_equal(expected, doc.file_name)
+  end
+
   def test_to_lines
     doc = Document.new("Hello, my name is Watanabe.\nI am just another Ruby porter.\n")
     expected = ["Hello, my name is Watanabe.\n", "I am just another Ruby porter.\n"]

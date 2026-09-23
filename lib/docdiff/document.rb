@@ -8,32 +8,42 @@ class DocDiff
     class EncodingDetectionFailure < StandardError; end
     class EOLDetectionFailure < StandardError; end
 
-    def initialize(str, enc = nil, e = nil)
-      @body = str
+    def initialize(string, encoding = nil, eol = nil, file_name = nil)
+      @body = string
       @body.extend(CharString)
-      if enc
-        @body.encoding = enc
+
+      if encoding
+        @body.encoding = encoding
       elsif !@body.encoding
-        guessed_encoding = CharString.guess_encoding(str)
+        guessed_encoding = CharString.guess_encoding(string)
         if guessed_encoding == "UNKNOWN"
-          raise EncodingDetectionFailure, "encoding not specified, and auto detection failed."
-        # @body.encoding = 'ASCII' # default to ASCII <= BAD!
+          raise EncodingDetectionFailure, <<-EOS
+            Encoding not specified, and auto detection failed
+          EOS
+          # @body.encoding = 'ASCII' # default to ASCII <= BAD!
         else
           @body.encoding = guessed_encoding
         end
       end
-      if e
-        @body.eol = e
+
+      if eol
+        @body.eol = eol
       else
-        guessed_eol = CharString.guess_eol(str)
+        guessed_eol = CharString.guess_eol(string)
         if guessed_eol == "UNKNOWN"
-          raise EOLDetectionFailure, "eol not specified, and auto detection failed."
-        # @body.eol = 'LF' # default to LF
+          raise EOLDetectionFailure, <<-EOS
+            Eol not specified, and auto detection failed
+          EOS
+          # @body.eol = 'LF' # default to LF
         else
           @body.eol = guessed_eol
         end
       end
+
+      @file_name = file_name
     end
+
+    attr_reader :file_name
 
     def encoding
       @body.encoding

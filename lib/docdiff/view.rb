@@ -25,14 +25,14 @@ end
 class DocDiff
   class Difference < Array
     def to_view(encoding, eol)
-      View.new(self, encoding, eol)
+      View.new(self, encoding, eol, file_names)
     end
   end
 
   class View
     # EOL_CHARS_PAT = Regexp.new(/\r\n|\r(?!\n)|(?:\A|[^\r])\n/m)
 
-    def initialize(difference, encoding, eol)
+    def initialize(difference, encoding, eol, file_names = [:dummy, :dummy])
       @difference = difference
       @encoding = encoding
       @eol = eol
@@ -42,7 +42,10 @@ class DocDiff
       # else
       #   @eol_char = nil
       # end
+      @file_names = file_names
     end
+
+    attr_reader :file_names
 
     def difference_whole
       @difference
@@ -188,6 +191,7 @@ class DocDiff
         span1 = src.scan_lines(@eol).size # source lines involved
         span2 = tgt.scan_lines(@eol).size # target lines involved
         pos_str = ""
+
         case entry.first # operation
         when :common_elt_elt
           # skipping common part

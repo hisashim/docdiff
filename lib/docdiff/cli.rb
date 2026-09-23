@@ -313,8 +313,8 @@ class DocDiff
             [config[:eol], config[:eol]]
           end
 
-        doc1 = Document.new(content1, encoding1, eol1)
-        doc2 = Document.new(content2, encoding2, eol2)
+        doc1 = Document.new(content1, encoding1, eol1, fnames.first)
+        doc2 = Document.new(content2, encoding2, eol2, fnames.last)
 
         # compare documents
 

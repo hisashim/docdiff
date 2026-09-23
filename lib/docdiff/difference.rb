@@ -13,7 +13,9 @@ class DocDiff
     # @target = 'target'
     # attr_accessor :resolution, :codeset, :eol_char, :source, :target
 
-    def initialize(array1 = nil, array2 = nil)
+    def initialize(array1 = nil, array2 = nil, file_names = [:dummy, :dummy])
+      @file_names = file_names
+
       if array1.nil? && array2.nil?
         return []
       end
@@ -25,6 +27,8 @@ class DocDiff
       end
       combine_del_add_to_change!
     end
+
+    attr_reader :file_names
 
     def combine_del_add_to_change!
       @raw_list.each_with_index do |block, i|
