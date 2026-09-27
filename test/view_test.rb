@@ -14,7 +14,7 @@ class TestView < Test::Unit::TestCase
   end
 
   def test_format_line_number
-    view = Difference.new([], []).to_view("US-ASCII", nil)
+    view = View.new(Difference.new([], []), "US-ASCII", nil)
     assert_equal("L1", view.format_line_number(1, nil))
     assert_equal("(L1)", view.format_line_number(1, nil, paren: true))
     assert_equal("LL1-2", view.format_line_number(1, 2))
@@ -45,7 +45,7 @@ class TestView < Test::Unit::TestCase
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r", "A"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "CR").source_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "CR").source_lines
     assert_equal(expected, actual)
   end
 
@@ -53,7 +53,7 @@ class TestView < Test::Unit::TestCase
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "CR").source_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "CR").source_lines
     assert_equal(expected, actual)
   end
 
@@ -61,7 +61,7 @@ class TestView < Test::Unit::TestCase
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\rA"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "LF").source_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "LF").source_lines
     assert_equal(expected, actual)
   end
 
@@ -69,7 +69,7 @@ class TestView < Test::Unit::TestCase
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\r"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "LF").source_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "LF").source_lines
     assert_equal(expected, actual)
   end
 
@@ -77,7 +77,7 @@ class TestView < Test::Unit::TestCase
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\rA"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "CRLF").source_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "CRLF").source_lines
     assert_equal(expected, actual)
   end
 
@@ -85,7 +85,7 @@ class TestView < Test::Unit::TestCase
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     array2 = ["b", "c", "c"]
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\r"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "CRLF").source_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "CRLF").source_lines
     assert_equal(expected, actual)
   end
 
@@ -93,7 +93,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]
     expected = ["abc"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", nil).source_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", nil).source_lines
     assert_equal(expected, actual)
   end
 
@@ -101,7 +101,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r", "A"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "CR").target_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "CR").target_lines
     assert_equal(expected, actual)
   end
 
@@ -109,7 +109,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     expected = ["A\r", "\r", "A\n\nA\r", "\n\r", "\nA\n\r", "\n\r"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "CR").target_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "CR").target_lines
     assert_equal(expected, actual)
   end
 
@@ -117,7 +117,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     expected = ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\rA"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "LF").target_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "LF").target_lines
     assert_equal(expected, actual)
   end
 
@@ -125,7 +125,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     expected = ["A\r\rA\n", "\n", "A\r\n", "\r\n", "A\n", "\r\n", "\r"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "LF").target_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "LF").target_lines
     assert_equal(expected, actual)
   end
 
@@ -133,7 +133,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\rA"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "CRLF").target_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "CRLF").target_lines
     assert_equal(expected, actual)
   end
 
@@ -141,7 +141,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\r".split("")
     expected = ["A\r\rA\n\nA\r\n", "\r\n", "A\n\r\n", "\r"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", "CRLF").target_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "CRLF").target_lines
     assert_equal(expected, actual)
   end
 
@@ -149,7 +149,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]
     expected = ["bcc"]
-    actual = Difference.new(array1, array2).to_view("US-ASCII", nil).target_lines
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", nil).target_lines
     assert_equal(expected, actual)
   end
 
@@ -162,7 +162,7 @@ class TestView < Test::Unit::TestCase
       "\033[7;1;34mc\033[0m",
       "c",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_tty(nil, false))
   end
 
@@ -174,7 +174,7 @@ class TestView < Test::Unit::TestCase
       "\033[7;4;33mb\033[0m\033[7;1;32mx\033[0m",
       "c",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_tty(nil, false))
   end
 
@@ -189,24 +189,24 @@ class TestView < Test::Unit::TestCase
     ]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--euc", i) },
         array2.map { |i| NKF.nkf("--euc", i) },
-      ).to_view("EUC-JP", nil).to_tty(nil, false),
+      ), "EUC-JP", nil).to_tty(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--sjis", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--sjis", i) },
         array2.map { |i| NKF.nkf("--sjis", i) },
-      ).to_view("Shift_JIS", nil).to_tty(nil, false),
+      ), "Shift_JIS", nil).to_tty(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--utf8", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--utf8", i) },
         array2.map { |i| NKF.nkf("--utf8", i) },
-      ).to_view("UTF-8", nil).to_tty(nil, false),
+      ), "UTF-8", nil).to_tty(nil, false),
     )
   end
 
@@ -220,24 +220,24 @@ class TestView < Test::Unit::TestCase
     ]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--euc", i) },
         array2.map { |i| NKF.nkf("--euc", i) },
-      ).to_view("EUC-JP", nil).to_tty(nil, false),
+      ), "EUC-JP", nil).to_tty(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--sjis", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--sjis", i) },
         array2.map { |i| NKF.nkf("--sjis", i) },
-      ).to_view("Shift_JIS", nil).to_tty(nil, false),
+      ), "Shift_JIS", nil).to_tty(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--utf8", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--utf8", i) },
         array2.map { |i| NKF.nkf("--utf8", i) },
-      ).to_view("UTF-8", nil).to_tty(nil, false),
+      ), "UTF-8", nil).to_tty(nil, false),
     )
   end
 
@@ -271,7 +271,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "\r"]
     array2 = ["a", "\r"]
     expected = ["<span class=\"common\">a<br />\r</span>"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "CR")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "CR")
     assert_equal(expected, view.to_html(nil, false))
   end
 
@@ -279,7 +279,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "\n"]
     array2 = ["a", "\n"]
     expected = ["<span class=\"common\">a<br />\n</span>"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_html(nil, false))
   end
 
@@ -287,7 +287,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "\r\n"]
     array2 = ["a", "\r\n"]
     expected = ["<span class=\"common\">a<br />\r\n</span>"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "CRLF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "CRLF")
     assert_equal(expected, view.to_html(nil, false))
   end
 
@@ -295,7 +295,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["<>&   "]
     array2 = ["<>&   "]
     expected = ["<span class=\"common\">&lt;&gt;&amp;&nbsp;&nbsp; </span>"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_html(nil, false))
   end
 
@@ -309,7 +309,7 @@ class TestView < Test::Unit::TestCase
       "<li class=\"entry\"><p class=\"position\">L3, L3</p><blockquote class=\"body\"><p class=\"body\">e<br />\n<span class=\"before-change\"><del>f</del></span><span class=\"after-change\"><ins>F</ins></span><br />\n</p></blockquote></li>\n",
       "</ul>",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_html_digest(nil, false))
   end
 
@@ -336,7 +336,7 @@ class TestView < Test::Unit::TestCase
       '<span class="add"><ins>c</ins></span>',
       '<span class="common">c</span>',
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_html(nil, false))
   end
 
@@ -348,7 +348,7 @@ class TestView < Test::Unit::TestCase
       '<span class="before-change"><del>b</del></span><span class="after-change"><ins>x</ins></span>',
       '<span class="common">c</span>',
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_html(nil, false))
   end
 
@@ -363,24 +363,24 @@ class TestView < Test::Unit::TestCase
     ]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--euc", i) },
         array2.map { |i| NKF.nkf("--euc", i) },
-      ).to_view("EUC-JP", nil).to_html(nil, false),
+      ), "EUC-JP", nil).to_html(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--sjis", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--sjis", i) },
         array2.map { |i| NKF.nkf("--sjis", i) },
-      ).to_view("Shift_JIS", nil).to_html(nil, false),
+      ), "Shift_JIS", nil).to_html(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--utf8", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--utf8", i) },
         array2.map { |i| NKF.nkf("--utf8", i) },
-      ).to_view("UTF-8", nil).to_html(nil, false),
+      ), "UTF-8", nil).to_html(nil, false),
     )
   end
 
@@ -394,24 +394,24 @@ class TestView < Test::Unit::TestCase
     ]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--euc", i) },
         array2.map { |i| NKF.nkf("--euc", i) },
-      ).to_view("EUC-JP", nil).to_html(nil, false),
+      ), "EUC-JP", nil).to_html(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--sjis", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--sjis", i) },
         array2.map { |i| NKF.nkf("--sjis", i) },
-      ).to_view("Shift_JIS", nil).to_html(nil, false),
+      ), "Shift_JIS", nil).to_html(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--utf8", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--utf8", i) },
         array2.map { |i| NKF.nkf("--utf8", i) },
-      ).to_view("UTF-8", nil).to_html(nil, false),
+      ), "UTF-8", nil).to_html(nil, false),
     )
   end
 
@@ -419,7 +419,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]
     expected = ["[a/]", "b", "[/c]", "c"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_manued(nil, false))
   end
 
@@ -427,7 +427,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "c"]
     array2 = ["a", "x", "c"]
     expected = ["a", "[b/x]", "c"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_manued(nil, false))
   end
 
@@ -437,24 +437,24 @@ class TestView < Test::Unit::TestCase
     expected = ["[\u3042/]", "\u3044", "[/\u3046]", "\u3046"]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--euc", i) },
         array2.map { |i| NKF.nkf("--euc", i) },
-      ).to_view("EUC-JP", nil).to_manued(nil, false),
+      ), "EUC-JP", nil).to_manued(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--sjis", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--sjis", i) },
         array2.map { |i| NKF.nkf("--sjis", i) },
-      ).to_view("Shift_JIS", nil).to_manued(nil, false),
+      ), "Shift_JIS", nil).to_manued(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--utf8", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--utf8", i) },
         array2.map { |i| NKF.nkf("--utf8", i) },
-      ).to_view("UTF-8", nil).to_manued(nil, false),
+      ), "UTF-8", nil).to_manued(nil, false),
     )
   end
 
@@ -464,24 +464,24 @@ class TestView < Test::Unit::TestCase
     expected = ["\u3042", "[\u3044/\u6F22]", "\u3046"]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--euc", i) },
         array2.map { |i| NKF.nkf("--euc", i) },
-      ).to_view("EUC-JP", nil).to_manued(nil, false),
+      ), "EUC-JP", nil).to_manued(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--sjis", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--sjis", i) },
         array2.map { |i| NKF.nkf("--sjis", i) },
-      ).to_view("Shift_JIS", nil).to_manued(nil, false),
+      ), "Shift_JIS", nil).to_manued(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--utf8", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--utf8", i) },
         array2.map { |i| NKF.nkf("--utf8", i) },
-      ).to_view("UTF-8", nil).to_manued(nil, false),
+      ), "UTF-8", nil).to_manued(nil, false),
     )
   end
 
@@ -489,7 +489,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "[/;]~", "b", "[/;]~"]
     array2 = ["a", "[/;]~", "b"]
     expected = ["a~[/;]~~b", "[~[~/~;~]~~/]"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_manued(nil, false))
   end
 
@@ -502,7 +502,7 @@ class TestView < Test::Unit::TestCase
       "(L2), LL1-2\ncd[/X\nY]e\n\n----\n",
       "L3, L3\ne\n[f/F]\n\n----\n",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_manued_digest(nil, false))
   end
 
@@ -515,7 +515,7 @@ class TestView < Test::Unit::TestCase
       "(L2), LL1-2\ncde\n\ncd[/X\nY]e\n\n----\n",
       "L3, L3\ne\n[f/]\n\ne\n[/F]\n\n----\n",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_manued_digest({ display: "block" }, false))
   end
 
@@ -523,7 +523,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]
     expected = ["[-a-]", "b", "{+c+}", "c"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_wdiff(nil, false))
   end
 
@@ -531,7 +531,7 @@ class TestView < Test::Unit::TestCase
     array1 = ["a", "b", "c"]
     array2 = ["a", "x", "c"]
     expected = ["a", "[-b-]{+x+}", "c"]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_wdiff(nil, false))
   end
 
@@ -541,24 +541,24 @@ class TestView < Test::Unit::TestCase
     expected = ["[-\u3042-]", "\u3044", "{+\u3046+}", "\u3046"]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--euc", i) },
         array2.map { |i| NKF.nkf("--euc", i) },
-      ).to_view("EUC-JP", nil).to_wdiff(nil, false),
+      ), "EUC-JP", nil).to_wdiff(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--sjis", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--sjis", i) },
         array2.map { |i| NKF.nkf("--sjis", i) },
-      ).to_view("Shift_JIS", nil).to_wdiff(nil, false),
+      ), "Shift_JIS", nil).to_wdiff(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--utf8", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--utf8", i) },
         array2.map { |i| NKF.nkf("--utf8", i) },
-      ).to_view("UTF-8", nil).to_wdiff(nil, false),
+      ), "UTF-8", nil).to_wdiff(nil, false),
     )
   end
 
@@ -568,24 +568,24 @@ class TestView < Test::Unit::TestCase
     expected = ["\u3042", "[-\u3044-]{+\u6F22+}", "\u3046"]
     assert_equal(
       expected.map { |i| NKF.nkf("--euc", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--euc", i) },
         array2.map { |i| NKF.nkf("--euc", i) },
-      ).to_view("EUC-JP", nil).to_wdiff(nil, false),
+      ), "EUC-JP", nil).to_wdiff(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--sjis", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--sjis", i) },
         array2.map { |i| NKF.nkf("--sjis", i) },
-      ).to_view("Shift_JIS", nil).to_wdiff(nil, false),
+      ), "Shift_JIS", nil).to_wdiff(nil, false),
     )
     assert_equal(
       expected.map { |i| NKF.nkf("--utf8", i) },
-      Difference.new(
+      View.new(Difference.new(
         array1.map { |i| NKF.nkf("--utf8", i) },
         array2.map { |i| NKF.nkf("--utf8", i) },
-      ).to_view("UTF-8", nil).to_wdiff(nil, false),
+      ), "UTF-8", nil).to_wdiff(nil, false),
     )
   end
 
@@ -598,7 +598,7 @@ class TestView < Test::Unit::TestCase
       "(L2), LL1-2\ncd{+X\nY+}e\n\n----\n",
       "L3, L3\ne\n[-f-]{+F+}\n\n----\n",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_wdiff_digest(nil, false))
   end
 
@@ -611,7 +611,7 @@ class TestView < Test::Unit::TestCase
       "(L2), LL1-2\ncde\n\ncd{+X\nY+}e\n\n----\n",
       "L3, L3\ne\n[-f-]\n\ne\n{+F+}\n\n----\n",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_wdiff_digest({ display: "block" }, false))
   end
 
@@ -636,7 +636,7 @@ class TestView < Test::Unit::TestCase
       "<+>c</+>",
       "<=>c</=>",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_user(user_tags, false))
   end
 
@@ -660,7 +660,7 @@ class TestView < Test::Unit::TestCase
       "<!->b</!-><!+>x</!+>",
       "<=>c</=>",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", nil)
+    view = View.new(Difference.new(array1, array2), "US-ASCII", nil)
     assert_equal(expected, view.to_user(user_tags, false))
   end
 
@@ -684,7 +684,7 @@ class TestView < Test::Unit::TestCase
       "(L2), LL1-2 cd<+>X\nY</+>e\n\n",
       "L3, L3 e\n<!->f</!-><!+>F</!+>\n\n",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_user_digest(user_tags, false))
   end
 
@@ -709,7 +709,7 @@ class TestView < Test::Unit::TestCase
       "(L2), LL1-2 cde\ncd<+>X\nY</+>e\n\n",
       "L3, L3 e\n<!->f</!->\ne\n<!+>F</!+>\n\n",
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.to_user_digest(user_tags, false))
   end
 
@@ -724,7 +724,7 @@ class TestView < Test::Unit::TestCase
       [:change_elt, ["f"], ["F"]],
       [:common_elt_elt, ["\n"], ["\n"]],
     ]
-    view = Difference.new(array1, array2).to_view("US-ASCII", "LF")
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
     assert_equal(expected, view.difference_whole)
   end
 
