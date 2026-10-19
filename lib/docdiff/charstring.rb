@@ -211,7 +211,7 @@ class DocDiff
       EOS
 
       re =
-        if defined? eol_char
+        if eol_char
           Regexp.new(".*?#{eol_char}|.+", Regexp::MULTILINE)
         else
           Regexp.new(".+", Regexp::MULTILINE)

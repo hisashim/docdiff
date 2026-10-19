@@ -183,6 +183,22 @@ class TestCharString < Test::Unit::TestCase
     assert_equal(expected, str.to_lines)
   end
 
+  def test_noeol_to_lines
+    str = "foo bar".extend(CharString)
+    str.encoding = "US-ASCII"
+    str.eol = "NONE"
+    expected = ["foo bar"]
+    assert_equal(expected, str.to_lines)
+  end
+
+  def test_noeol_to_lines_empty_string
+    str = "".extend(CharString)
+    str.encoding = "US-ASCII"
+    str.eol = "NONE"
+    expected = []
+    assert_equal(expected, str.to_lines)
+  end
+
   # test ASCII module
   def test_ascii_to_words
     str = "foo bar".extend(CharString)

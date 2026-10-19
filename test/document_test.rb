@@ -123,6 +123,18 @@ class TestDocument < Test::Unit::TestCase
     assert_equal(expected, doc.to_lines)
   end
 
+  def test_noeol_to_lines
+    doc = Document.new("foo bar")
+    expected = ["foo bar"]
+    assert_equal(expected, doc.to_lines)
+  end
+
+  def test_noeol_to_lines_empty_string
+    doc = Document.new("")
+    expected = []
+    assert_equal(expected, doc.to_lines)
+  end
+
   # test ASCII module
   def test_ascii_to_words
     doc = Document.new("foo bar")
