@@ -371,6 +371,14 @@ class TestCharString < Test::Unit::TestCase
     assert_equal(expected, str.count_empty_lines)
   end
 
+  def test_ascii_count_empty_lines_noeol
+    str = "foo".extend(CharString)
+    str.encoding = "US-ASCII"
+    str.eol = "NONE"
+    expected = 0
+    assert_equal(expected, str.count_empty_lines)
+  end
+
   def test_ascii_count_blank_lines
     str = "\r\n \r\n\t\r\n ".extend(CharString)
     str.encoding = "US-ASCII"

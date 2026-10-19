@@ -126,7 +126,11 @@ class DocDiff
     end
 
     def count_empty_lines
-      to_lines.count { |line| /^(?:#{eol_char})|^$/m.match(line) }
+      if eol_char
+        to_lines.count { |line| /^(?:#{eol_char})|^$/m.match(line) }
+      else
+        0 # line without eol (or empty string), which has no empty line
+      end
     end
 
     # for Ruby-1.9
