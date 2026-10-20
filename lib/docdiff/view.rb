@@ -3,20 +3,20 @@
 class String
   def scan_lines(eol)
     case eol
-    when nil then    scan(/\A.*\Z/m)
-    when "CR" then   scan(/.*?\r|[^\r]+\Z/m)
-    when "LF" then   scan(/.*?\n|[^\n]+\Z/m)
-    when "CRLF" then scan(/.*?\r\n|.+\Z/m)
+    when nil, "NONE" then scan(/\A.*\Z/m)
+    when "CR" then        scan(/.*?\r|[^\r]+\Z/m)
+    when "LF" then        scan(/.*?\n|[^\n]+\Z/m)
+    when "CRLF" then      scan(/.*?\r\n|.+\Z/m)
     else raise "#{eol} is not supported.\n"
     end
   end
 
   def scan_eols(eol)
     case eol
-    when nil then    []
-    when "CR" then   scan(/\r/m)
-    when "LF" then   scan(/\n/m)
-    when "CRLF" then scan(/\r\n/m)
+    when nil, "NONE" then []
+    when "CR" then        scan(/\r/m)
+    when "LF" then        scan(/\n/m)
+    when "CRLF" then      scan(/\r\n/m)
     else raise "#{eol} is not supported.\n"
     end
   end

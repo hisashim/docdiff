@@ -41,6 +41,20 @@ class TestView < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_scan_lines_none
+    str = "A A"
+    expected = ["A A"]
+    actual = str.scan_lines("NONE")
+    assert_equal(expected, actual)
+  end
+
+  def test_scan_eols_none
+    str = "A A"
+    expected = []
+    actual = str.scan_eols("NONE")
+    assert_equal(expected, actual)
+  end
+
   def test_source_lines_cr
     array1 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
     array2 = ["b", "c", "c"]
@@ -97,6 +111,14 @@ class TestView < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_source_lines_none
+    array1 = ["a", "b", "c"]
+    array2 = ["b", "c", "c"]
+    expected = ["abc"]
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "NONE").source_lines
+    assert_equal(expected, actual)
+  end
+
   def test_target_lines_cr
     array1 = ["a", "b", "\n", "c"]
     array2 = "A\r\rA\n\nA\r\n\r\nA\n\r\n\rA".split("")
@@ -150,6 +172,22 @@ class TestView < Test::Unit::TestCase
     array2 = ["b", "c", "c"]
     expected = ["bcc"]
     actual = View.new(Difference.new(array1, array2), "US-ASCII", nil).target_lines
+    assert_equal(expected, actual)
+  end
+
+  def test_target_lines_none
+    array1 = ["a", "b", "c"]
+    array2 = ["b", "c", "c"]
+    expected = ["bcc"]
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "NONE").target_lines
+    assert_equal(expected, actual)
+  end
+
+  def test_digest_none_same_as_noeol
+    array1 = ["a", " ", "b", " ", "c"]
+    array2 = ["a", " ", "X", " ", "c"]
+    expected = View.new(Difference.new(array1, array2), "US-ASCII", nil).to_wdiff_digest(nil, false)
+    actual = View.new(Difference.new(array1, array2), "US-ASCII", "NONE").to_wdiff_digest(nil, false)
     assert_equal(expected, actual)
   end
 
