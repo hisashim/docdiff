@@ -181,6 +181,21 @@ class TestCLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_cli_eol_none
+    expected = "Hello, my name is [-Watanabe.-]{+matz.+}"
+    cmd = "ruby -I lib bin/docdiff --format=wdiff " \
+      "test/fixture/01_en_ascii_noeol.txt test/fixture/02_en_ascii_noeol.txt"
+    actual = `#{cmd}`
+    assert_equal(expected, actual)
+  end
+
+  def test_cli_eol_none_digest
+    cmd = "ruby -I lib bin/docdiff --format=wdiff --digest " \
+      "test/fixture/01_en_ascii_noeol.txt test/fixture/02_en_ascii_noeol.txt"
+    `#{cmd}`
+    assert_true($?.success?)
+  end
+
   def test_cli_format_html
     expected = <<~EOS
       <span class="common">Hello, my name is </span>\
