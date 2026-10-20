@@ -52,6 +52,16 @@ class TestDocDiff < Test::Unit::TestCase
     assert_equal(expected, docdiff.compare_by_line_word_char(doc1, doc2))
   end
 
+  def test_compare_by_line_noeol
+    doc1 = Document.new("foo bar", "US-ASCII", "NONE")
+    doc2 = Document.new("foo beer", "US-ASCII", "NONE")
+    docdiff = DocDiff.new
+    expected = [
+      [:change_elt, ["foo bar"], ["foo beer"]],
+    ]
+    assert_equal(expected, docdiff.compare_by_line(doc1, doc2))
+  end
+
   def test_run_line_html
     doc1 = Document.new("foo bar\nbaz", "US-ASCII", "LF")
     doc2 = Document.new("foo beer\nbaz", "US-ASCII", "LF")
@@ -198,6 +208,53 @@ class TestDocDiff < Test::Unit::TestCase
     docdiff.config.update(config)
     expected = "<=>foo </=><=>b</=><!->a</!-><!+>ee</!+><=>r</=><=>\n</=><=>baz</=>"
     assert_equal(expected, docdiff.run(doc1, doc2, { resolution: "char", format: "user", digest: false }))
+  end
+
+  def test_run_line_noeol
+    doc1 = Document.new("foo bar", "US-ASCII", "NONE")
+    doc2 = Document.new("foo beer", "US-ASCII", "NONE")
+    docdiff = DocDiff.new
+    # use wdiff as a convenient compact format for testing
+    expected = "[-foo bar-]{+foo beer+}"
+    options = { resolution: "line", format: "wdiff", digest: false }
+    assert_equal(expected, docdiff.run(doc1, doc2, options))
+  end
+
+  def test_run_word_noeol
+    doc1 = Document.new("foo bar", "US-ASCII", "NONE")
+    doc2 = Document.new("foo beer", "US-ASCII", "NONE")
+    docdiff = DocDiff.new
+    expected = "foo [-bar-]{+beer+}"
+    options = { resolution: "word", format: "wdiff", digest: false }
+    assert_equal(expected, docdiff.run(doc1, doc2, options))
+  end
+
+  def test_run_char_noeol
+    doc1 = Document.new("foo bar", "US-ASCII", "NONE")
+    doc2 = Document.new("foo beer", "US-ASCII", "NONE")
+    docdiff = DocDiff.new
+    expected = "foo b[-a-]{+ee+}r"
+    options = { resolution: "char", format: "wdiff", digest: false }
+    assert_equal(expected, docdiff.run(doc1, doc2, options))
+  end
+
+  def test_run_word_empty_noeol
+    doc1 = Document.new("", "US-ASCII", "NONE")
+    doc2 = Document.new("foo", "US-ASCII", "NONE")
+    docdiff = DocDiff.new
+    expected = "{+foo+}"
+    options = { resolution: "word", format: "wdiff", digest: false }
+    assert_equal(expected, docdiff.run(doc1, doc2, options))
+  end
+
+  def test_run_word_digest_noeol
+    doc1 = Document.new("foo bar", "US-ASCII", "NONE")
+    doc2 = Document.new("foo beer", "US-ASCII", "NONE")
+    docdiff = DocDiff.new
+    options = { resolution: "word", format: "wdiff", digest: true }
+    assert_nothing_raised do
+      docdiff.run(doc1, doc2, options)
+    end
   end
 
   def teardown
