@@ -1,5 +1,10 @@
 # News
 
+### Unreleased
+
+* User-visible changes:
+* Developer-related changes:
+
 ### 0.7.0 (2026-04-05)
 
 * User-visible changes:
