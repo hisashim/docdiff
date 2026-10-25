@@ -3,7 +3,7 @@
 class String
   def scan_lines(eol)
     case eol
-    when nil, "NONE" then scan(/\A.*\Z/m)
+    when nil, "NONE" then scan(/\A.+\Z/m)
     when "CR" then        scan(/.*?\r|[^\r]+\Z/m)
     when "LF" then        scan(/.*?\n|[^\n]+\Z/m)
     when "CRLF" then      scan(/.*?\r\n|.+\Z/m)

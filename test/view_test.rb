@@ -48,6 +48,13 @@ class TestView < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_scan_lines_empty_string
+    eols = ["CR", "LF", "CRLF", "NONE", nil]
+    expected = eols.to_h { |eol| [eol, []] }
+    actual = eols.map { |eol| [eol, "".scan_lines(eol)] }.to_h
+    assert_equal(expected, actual)
+  end
+
   def test_scan_eols_cr
     str = "A\rA\r"
     expected = ["\r", "\r"]
