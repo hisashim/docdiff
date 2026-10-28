@@ -48,6 +48,27 @@ class TestView < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_scan_eols_cr
+    str = "A\rA\r"
+    expected = ["\r", "\r"]
+    actual = str.scan_eols("CR")
+    assert_equal(expected, actual)
+  end
+
+  def test_scan_eols_lf
+    str = "A\nA\n"
+    expected = ["\n", "\n"]
+    actual = str.scan_eols("LF")
+    assert_equal(expected, actual)
+  end
+
+  def test_scan_eols_crlf
+    str = "A\r\nA\r\n"
+    expected = ["\r\n", "\r\n"]
+    actual = str.scan_eols("CRLF")
+    assert_equal(expected, actual)
+  end
+
   def test_scan_eols_none
     str = "A A"
     expected = []
