@@ -105,11 +105,6 @@ class DocDiff
       result.delete_if { |elem| elem == "" }
     end
 
-    def encname_for_regexp(encname)
-      # in 1.9.x, encoding names are deprecated except for N (ASCII-8BIT (binary))
-      nil
-    end
-
     def format_line_number(n1, n2 = nil, paren: false)
       content =
         if n2
@@ -126,19 +121,11 @@ class DocDiff
 
     CONTEXT_PRE_LENGTH  = 32
     CONTEXT_POST_LENGTH = 32
+    CONTEXT_PRE_PATTERN =
+      Regexp.new(".{0,#{CONTEXT_PRE_LENGTH}}\\Z", Regexp::MULTILINE)
+    CONTEXT_POST_PATTERN =
+      Regexp.new("\\A.{0,#{CONTEXT_POST_LENGTH}}", Regexp::MULTILINE)
     def apply_style_digest(tags, headfoot = true)
-      cxt_pre_pat =
-        if RUBY_VERSION >= "2.3.1"
-          Regexp.new(".{0,#{CONTEXT_PRE_LENGTH}}\\Z", Regexp::MULTILINE)
-        else
-          Regexp.new(".{0,#{CONTEXT_PRE_LENGTH}}\\Z", Regexp::MULTILINE, encname_for_regexp(@encoding))
-        end
-      cxt_post_pat =
-        if RUBY_VERSION >= "2.3.1"
-          Regexp.new("\\A.{0,#{CONTEXT_POST_LENGTH}}", Regexp::MULTILINE)
-        else
-          Regexp.new("\\A.{0,#{CONTEXT_POST_LENGTH}}", Regexp::MULTILINE, encname_for_regexp(@encoding))
-        end
       display = (tags and tags[:display]) || "inline"
       result = []
       d1l = 1 # doc1 line number
@@ -155,13 +142,13 @@ class DocDiff
           if i == 0
             "" # no pre context for the first entry
           else
-            (@difference[i - 1][1] || []).join.scan(cxt_pre_pat).join
+            (@difference[i - 1][1] || []).join.scan(CONTEXT_PRE_PATTERN).join
           end
         cxt_post =
           if (i + 1) == @difference.size
             "" # no post context for the last entry
           else
-            (@difference[i + 1][1] || []).join.scan(cxt_post_pat).join
+            (@difference[i + 1][1] || []).join.scan(CONTEXT_POST_PATTERN).join
           end
         # elements for an entry
         e_head =
