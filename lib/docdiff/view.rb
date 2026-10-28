@@ -198,7 +198,7 @@ class DocDiff
         when :change_elt
           range1 =
             if span1 > 1
-              format_line_number(d1l, (d2l + span1 - 1))
+              format_line_number(d1l, (d1l + span1 - 1))
             else
               format_line_number(d1l)
             end

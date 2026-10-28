@@ -681,6 +681,18 @@ class TestView < Test::Unit::TestCase
     assert_equal(expected, view.to_wdiff_digest({ display: "block" }, false))
   end
 
+  def test_to_wdiff_digest_change_after_line_offset
+    array1 = ["a\n", "b\n", "c\n", "d\n", "e\n"]
+    array2 = ["c\n", "d2\n", "e2\n"]
+    expected = [
+      "----\n",
+      "LL1-2, (L1)\n[-a\nb\n-]c\n\n----\n",
+      "LL4-5, LL2-3\nc\n[-d\ne\n-]{+d2\ne2\n+}\n----\n",
+    ]
+    view = View.new(Difference.new(array1, array2), "US-ASCII", "LF")
+    assert_equal(expected, view.to_wdiff_digest(nil, false))
+  end
+
   def test_to_user_del_add_en
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]
