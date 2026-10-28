@@ -3,7 +3,10 @@
 ### Unreleased
 
 * User-visible changes:
+  - Fixed empty output when comparing files without any EOL character (e.g. a single line without trailing newline).
+  - Fixed digest mode raising an error on such files.
 * Developer-related changes:
+  - Fixed `CharString#count_empty_lines` for text without EOL character.
 
 ### 0.7.0 (2026-04-05)
 
