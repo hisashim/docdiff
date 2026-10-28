@@ -5,6 +5,7 @@
 * User-visible changes:
   - Fixed empty output when comparing files without any EOL character (e.g. a single line without trailing newline).
   - Fixed digest mode raising an error on such files.
+  - Fixed the source line range of multi-line changes in digest mode (e.g. `LL4-3` was shown instead of `LL4-5`).
 * Developer-related changes:
   - Fixed `CharString#count_empty_lines` for text without EOL character.
 
