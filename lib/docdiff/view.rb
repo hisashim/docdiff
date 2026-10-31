@@ -78,18 +78,18 @@ class DocDiff
       result = []
       @difference.each do |block|
         operation = block.first
-        src = (block[1] || []).join
-        tgt = (block[2] || []).join
+        source = (block[1] || []).join
+        target = (block[2] || []).join
         case operation
         when :common_elt_elt
-          result << (tags[:start_common] + escape_outside(src, tags) + tags[:end_common])
+          result << (tags[:start_common] + escape_outside(source, tags) + tags[:end_common])
         when :change_elt
-          result << (tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change] +
-                     tags[:start_after_change]  + escape_inside(tgt, tags) + tags[:end_after_change])
+          result << (tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change] +
+                     tags[:start_after_change]  + escape_inside(target, tags) + tags[:end_after_change])
         when :del_elt
-          result << (tags[:start_del] + escape_inside(src, tags) + tags[:end_del])
+          result << (tags[:start_del] + escape_inside(source, tags) + tags[:end_del])
         when :add_elt
-          result << (tags[:start_add] + escape_inside(tgt, tags) + tags[:end_add])
+          result << (tags[:start_add] + escape_inside(target, tags) + tags[:end_add])
         else
           raise "invalid attribute: #{block.first}\n"
         end
@@ -121,34 +121,34 @@ class DocDiff
     CONTEXT_POST_PATTERN =
       Regexp.new("\\A.{0,#{CONTEXT_POST_LENGTH}}", Regexp::MULTILINE)
 
-    def digest_context(i)
-      cxt_pre =
-        if i == 0
-          "" # no pre context for the first entry
+    def digest_context(index)
+      context_pre =
+        if index == 0
+          "" # no preceding context for the first entry
         else
-          (@difference[i - 1][1] || []).join.scan(CONTEXT_PRE_PATTERN).join
+          (@difference[index - 1][1] || []).join.scan(CONTEXT_PRE_PATTERN).join
         end
-      cxt_post =
-        if (i + 1) == @difference.size
-          "" # no post context for the last entry
+      context_post =
+        if (index + 1) == @difference.size
+          "" # no following context for the last entry
         else
-          (@difference[i + 1][1] || []).join.scan(CONTEXT_POST_PATTERN).join
+          (@difference[index + 1][1] || []).join.scan(CONTEXT_POST_PATTERN).join
         end
-      [cxt_pre, cxt_post]
+      [context_pre, context_post]
     end
 
     def format_digest_entry(
-      operation, src, tgt,
-      line1:, line2:, cxt_pre:, cxt_post:, display:, tags:
+      operation, source, target,
+      line1:, line2:, context_pre:, context_post:, display:, tags:
     )
-      span1 = src.scan_lines(@eol).size # source lines involved
-      span2 = tgt.scan_lines(@eol).size # target lines involved
+      span1 = source.scan_lines(@eol).size # source lines involved
+      span2 = target.scan_lines(@eol).size # target lines involved
 
       elements =
         case operation
         when :change_elt
-          before = tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change]
-          after = tags[:start_after_change] + escape_inside(tgt, tags) + tags[:end_after_change]
+          before = tags[:start_before_change] + escape_inside(source, tags) + tags[:end_before_change]
+          after = tags[:start_after_change] + escape_inside(target, tags) + tags[:end_after_change]
           {
             source_range: format_line_range(line1, span: span1),
             target_range: format_line_range(line2, span: span2),
@@ -157,29 +157,29 @@ class DocDiff
             target_block: after,
           }
         when :del_elt
-          del = tags[:start_del] + escape_outside(src, tags) + tags[:end_del]
+          del = tags[:start_del] + escape_outside(source, tags) + tags[:end_del]
           {
             source_range: format_line_range(line1, span: span1),
             target_range: format_line_range(line2, paren: true),
             inline: del,
-            source_block: escape_inside(src, tags),
+            source_block: escape_inside(source, tags),
             target_block: del,
           }
         when :add_elt
-          add = tags[:start_add] + escape_outside(tgt, tags) + tags[:end_add]
+          add = tags[:start_add] + escape_outside(target, tags) + tags[:end_add]
           {
             source_range: format_line_range(line1, paren: true),
             target_range: format_line_range(line2, span: span2),
             inline: add,
-            source_block: escape_inside(src, tags),
+            source_block: escape_inside(source, tags),
             target_block: add,
           }
         else
           raise "invalid attribute: #{block.first}\n"
         end
 
-      pre = tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
-      post = tags[:start_postfix] + escape_outside(cxt_post, tags) + tags[:end_postfix]
+      pre = tags[:start_prefix] + escape_outside(context_pre, tags) + tags[:end_prefix]
+      post = tags[:start_postfix] + escape_outside(context_post, tags) + tags[:end_postfix]
 
       head =
         tags[:start_entry] + tags[:start_position] +
@@ -203,28 +203,28 @@ class DocDiff
     def apply_style_digest(tags, headfoot = true)
       display = (tags and tags[:display]) || "inline"
       result = []
-      d1l = 1 # doc1 line number
-      d2l = 1 # doc2 line number
+      line1 = 1 # doc1 line number
+      line2 = 1 # doc2 line number
       @difference.each_with_index do |entry, i|
-        src = (entry[1] || []).join
-        tgt = (entry[2] || []).join
+        source = (entry[1] || []).join
+        target = (entry[2] || []).join
 
         unless entry.first == :common_elt_elt # skip common part
-          cxt_pre, cxt_post = digest_context(i)
+          context_pre, context_post = digest_context(i)
           result << format_digest_entry(
             entry.first,
-            src,
-            tgt,
-            line1: d1l,
-            line2: d2l,
-            cxt_pre: cxt_pre,
-            cxt_post: cxt_post,
+            source,
+            target,
+            line1: line1,
+            line2: line2,
+            context_pre: context_pre,
+            context_post: context_post,
             display: display,
             tags: tags,
           )
         end
-        d1l += src.scan_eols(@eol).size
-        d2l += tgt.scan_eols(@eol).size
+        line1 += source.scan_eols(@eol).size
+        line2 += target.scan_eols(@eol).size
       end
       result.unshift(tags[:start_digest_body])
       result.push(tags[:end_digest_body])
