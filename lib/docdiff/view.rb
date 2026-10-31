@@ -140,76 +140,65 @@ class DocDiff
           else
             (@difference[i + 1][1] || []).join.scan(CONTEXT_POST_PATTERN).join
           end
-        # elements for an entry
-        e_head =
-          proc do |pos_str|
-            tags[:start_entry] + tags[:start_position] + pos_str + tags[:end_position]
-          end
-        e_cxt_pre =
-          tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
-        e_src =
-          escape_inside(src, tags)
-        e_chg =
-          tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change] +
-          tags[:start_after_change] + escape_inside(tgt, tags) + tags[:end_after_change]
-        e_chgdel =
-          tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change]
-        e_chgadd =
-          tags[:start_after_change] + escape_inside(tgt, tags) + tags[:end_after_change]
-        e_del =
-          tags[:start_del] + escape_outside(src, tags) + tags[:end_del]
-        e_add =
-          tags[:start_add] + escape_outside(tgt, tags) + tags[:end_add]
-        e_cxt_post =
-          tags[:start_postfix] + escape_outside(cxt_post, tags) + tags[:end_postfix]
-        e_foot =
-          tags[:end_entry] + (@eol_char || "")
 
-        span1 = src.scan_lines(@eol).size # source lines involved
-        span2 = tgt.scan_lines(@eol).size # target lines involved
-        pos_str = ""
+        unless entry.first == :common_elt_elt # skip common part
+          span1 = src.scan_lines(@eol).size # source lines involved
+          span2 = tgt.scan_lines(@eol).size # target lines involved
 
-        case entry.first # operation
-        when :common_elt_elt
-          # skipping common part
-        when :change_elt
-          range1 = format_line_range(d1l, span: span1)
-          range2 = format_line_range(d2l, span: span2)
-          pos_str = "#{range1}, #{range2}"
-          case display
-          when "inline"
-            result << (e_head.call(pos_str) + e_cxt_pre + e_chg + e_cxt_post + e_foot)
-          when /block|multi/
-            result << (e_head.call(pos_str) + e_cxt_pre + e_chgdel + e_cxt_post +
-                       e_cxt_pre + e_chgadd + e_cxt_post + e_foot)
-          else raise "Unsupported display type: #{display}"
-          end
-        when :del_elt
-          range1 = format_line_range(d1l, span: span1)
-          range2 = format_line_range(d2l, paren: true)
-          pos_str = "#{range1}, #{range2}"
-          case display
-          when "inline"
-            result << (e_head.call(pos_str) + e_cxt_pre + e_del + e_cxt_post + e_foot)
-          when /block|multi/
-            result << (e_head.call(pos_str) + e_cxt_pre + e_src + e_cxt_post +
-                       e_cxt_pre + e_del + e_cxt_post + e_foot)
-          else raise "Unsupported display type: #{display}"
-          end
-        when :add_elt
-          range1 = format_line_range(d1l, paren: true)
-          range2 = format_line_range(d2l, span: span2)
-          pos_str = "#{range1}, #{range2}"
-          case display
-          when "inline"
-            result << (e_head.call(pos_str) + e_cxt_pre + e_add + e_cxt_post + e_foot)
-          when /block|multi/
-            result << (e_head.call(pos_str) + e_cxt_pre + e_src + e_cxt_post +
-                       e_cxt_pre + e_add + e_cxt_post + e_foot)
-          else raise "Unsupported display type: #{display}"
-          end
-        else
-          raise "invalid attribute: #{block.first}\n"
+          elements =
+            case entry.first # operation
+            when :change_elt
+              before = tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change]
+              after = tags[:start_after_change] + escape_inside(tgt, tags) + tags[:end_after_change]
+              {
+                source_range: format_line_range(d1l, span: span1),
+                target_range: format_line_range(d2l, span: span2),
+                inline: before + after,
+                source_block: before,
+                target_block: after,
+              }
+            when :del_elt
+              del = tags[:start_del] + escape_outside(src, tags) + tags[:end_del]
+              {
+                source_range: format_line_range(d1l, span: span1),
+                target_range: format_line_range(d2l, paren: true),
+                inline: del,
+                source_block: escape_inside(src, tags),
+                target_block: del,
+              }
+            when :add_elt
+              add = tags[:start_add] + escape_outside(tgt, tags) + tags[:end_add]
+              {
+                source_range: format_line_range(d1l, paren: true),
+                target_range: format_line_range(d2l, span: span2),
+                inline: add,
+                source_block: escape_inside(src, tags),
+                target_block: add,
+              }
+            else
+              raise "invalid attribute: #{block.first}\n"
+            end
+
+          pre = tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
+          post = tags[:start_postfix] + escape_outside(cxt_post, tags) + tags[:end_postfix]
+
+          head =
+            tags[:start_entry] + tags[:start_position] +
+            "#{elements[:source_range]}, #{elements[:target_range]}" +
+            tags[:end_position]
+          body =
+            case display
+            when "inline"
+              pre + elements[:inline] + post
+            when /block|multi/
+              pre + elements[:source_block] + post + pre + elements[:target_block] + post
+            else
+              raise "Unsupported display type: #{display}"
+            end
+          foot =
+            tags[:end_entry] + (@eol_char || "")
+
+          result << (head + body + foot)
         end
         d1l += src.scan_eols(@eol).size
         d2l += tgt.scan_eols(@eol).size
