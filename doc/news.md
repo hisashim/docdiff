@@ -8,6 +8,8 @@
   - Fixed the source line range of multi-line changes in digest mode (e.g. `LL4-3` was shown instead of `LL4-5`).
 * Developer-related changes:
   - Fixed `CharString#count_empty_lines` for text without EOL character.
+  - Fixed `View#apply_style_digest` raising NameError instead of the intended error on an invalid operation.
+  - Did some refactoring on digest mode rendering (`View#apply_style_digest`).
 
 ### 0.7.0 (2026-04-05)
 
