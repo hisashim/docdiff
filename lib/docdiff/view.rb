@@ -100,17 +100,17 @@ class DocDiff
       result.delete_if { |elem| elem == "" }
     end
 
-    def format_line_number(n1, n2 = nil, paren: false)
-      content =
-        if n2
-          "LL#{n1}-#{n2}"
+    def format_line_range(start, span: 1, paren: false)
+      range =
+        if span > 1
+          "LL#{start}-#{start + span - 1}"
         else
-          "L#{n1}"
+          "L#{start}"
         end
       if paren
-        "(#{content})"
+        "(#{range})"
       else
-        content
+        range
       end
     end
 
@@ -173,18 +173,8 @@ class DocDiff
         when :common_elt_elt
           # skipping common part
         when :change_elt
-          range1 =
-            if span1 > 1
-              format_line_number(d1l, (d1l + span1 - 1))
-            else
-              format_line_number(d1l)
-            end
-          range2 =
-            if span2 > 1
-              format_line_number(d2l, (d2l + span2 - 1))
-            else
-              format_line_number(d2l)
-            end
+          range1 = format_line_range(d1l, span: span1)
+          range2 = format_line_range(d2l, span: span2)
           pos_str = "#{range1}, #{range2}"
           case display
           when "inline"
@@ -195,14 +185,8 @@ class DocDiff
           else raise "Unsupported display type: #{display}"
           end
         when :del_elt
-          range1 =
-            if span1 > 1
-              format_line_number(d1l, (d1l + span1 - 1))
-            else
-              format_line_number(d1l)
-            end
-          range2 =
-            format_line_number(d2l, paren: true)
+          range1 = format_line_range(d1l, span: span1)
+          range2 = format_line_range(d2l, paren: true)
           pos_str = "#{range1}, #{range2}"
           case display
           when "inline"
@@ -213,14 +197,8 @@ class DocDiff
           else raise "Unsupported display type: #{display}"
           end
         when :add_elt
-          range1 =
-            format_line_number(d1l, paren: true)
-          range2 =
-            if span2 > 1
-              format_line_number(d2l, (d2l + span2 - 1))
-            else
-              format_line_number(d2l)
-            end
+          range1 = format_line_range(d1l, paren: true)
+          range2 = format_line_range(d2l, span: span2)
           pos_str = "#{range1}, #{range2}"
           case display
           when "inline"

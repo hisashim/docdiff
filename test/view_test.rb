@@ -13,11 +13,15 @@ class TestView < Test::Unit::TestCase
   def setup
   end
 
-  def test_format_line_number
+  def test_format_line_range
     view = View.new(Difference.new([], []), "US-ASCII", nil)
-    assert_equal("L1", view.format_line_number(1, nil))
-    assert_equal("(L1)", view.format_line_number(1, nil, paren: true))
-    assert_equal("LL1-2", view.format_line_number(1, 2))
+    assert_equal("L1", view.format_line_range(1))
+    assert_equal("(L1)", view.format_line_range(1, paren: true))
+    assert_equal("L1", view.format_line_range(1, span: 0))
+    assert_equal("L1", view.format_line_range(1, span: 1))
+    assert_equal("LL1-2", view.format_line_range(1, span: 2))
+    assert_equal("LL3-4", view.format_line_range(3, span: 2))
+    assert_equal("LL3-5", view.format_line_range(3, span: 3))
   end
 
   def test_scan_lines_cr
