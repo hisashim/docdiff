@@ -120,6 +120,86 @@ class DocDiff
       Regexp.new(".{0,#{CONTEXT_PRE_LENGTH}}\\Z", Regexp::MULTILINE)
     CONTEXT_POST_PATTERN =
       Regexp.new("\\A.{0,#{CONTEXT_POST_LENGTH}}", Regexp::MULTILINE)
+
+    def digest_context(i)
+      cxt_pre =
+        if i == 0
+          "" # no pre context for the first entry
+        else
+          (@difference[i - 1][1] || []).join.scan(CONTEXT_PRE_PATTERN).join
+        end
+      cxt_post =
+        if (i + 1) == @difference.size
+          "" # no post context for the last entry
+        else
+          (@difference[i + 1][1] || []).join.scan(CONTEXT_POST_PATTERN).join
+        end
+      [cxt_pre, cxt_post]
+    end
+
+    def format_digest_entry(
+      operation, src, tgt,
+      line1:, line2:, cxt_pre:, cxt_post:, display:, tags:
+    )
+      span1 = src.scan_lines(@eol).size # source lines involved
+      span2 = tgt.scan_lines(@eol).size # target lines involved
+
+      elements =
+        case operation
+        when :change_elt
+          before = tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change]
+          after = tags[:start_after_change] + escape_inside(tgt, tags) + tags[:end_after_change]
+          {
+            source_range: format_line_range(line1, span: span1),
+            target_range: format_line_range(line2, span: span2),
+            inline: before + after,
+            source_block: before,
+            target_block: after,
+          }
+        when :del_elt
+          del = tags[:start_del] + escape_outside(src, tags) + tags[:end_del]
+          {
+            source_range: format_line_range(line1, span: span1),
+            target_range: format_line_range(line2, paren: true),
+            inline: del,
+            source_block: escape_inside(src, tags),
+            target_block: del,
+          }
+        when :add_elt
+          add = tags[:start_add] + escape_outside(tgt, tags) + tags[:end_add]
+          {
+            source_range: format_line_range(line1, paren: true),
+            target_range: format_line_range(line2, span: span2),
+            inline: add,
+            source_block: escape_inside(src, tags),
+            target_block: add,
+          }
+        else
+          raise "invalid attribute: #{block.first}\n"
+        end
+
+      pre = tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
+      post = tags[:start_postfix] + escape_outside(cxt_post, tags) + tags[:end_postfix]
+
+      head =
+        tags[:start_entry] + tags[:start_position] +
+        "#{elements[:source_range]}, #{elements[:target_range]}" +
+        tags[:end_position]
+      body =
+        case display
+        when "inline"
+          pre + elements[:inline] + post
+        when /block|multi/
+          pre + elements[:source_block] + post + pre + elements[:target_block] + post
+        else
+          raise "Unsupported display type: #{display}"
+        end
+      foot =
+        tags[:end_entry] + (@eol_char || "")
+
+      head + body + foot
+    end
+
     def apply_style_digest(tags, headfoot = true)
       display = (tags and tags[:display]) || "inline"
       result = []
@@ -128,77 +208,20 @@ class DocDiff
       @difference.each_with_index do |entry, i|
         src = (entry[1] || []).join
         tgt = (entry[2] || []).join
-        cxt_pre =
-          if i == 0
-            "" # no pre context for the first entry
-          else
-            (@difference[i - 1][1] || []).join.scan(CONTEXT_PRE_PATTERN).join
-          end
-        cxt_post =
-          if (i + 1) == @difference.size
-            "" # no post context for the last entry
-          else
-            (@difference[i + 1][1] || []).join.scan(CONTEXT_POST_PATTERN).join
-          end
 
         unless entry.first == :common_elt_elt # skip common part
-          span1 = src.scan_lines(@eol).size # source lines involved
-          span2 = tgt.scan_lines(@eol).size # target lines involved
-
-          elements =
-            case entry.first # operation
-            when :change_elt
-              before = tags[:start_before_change] + escape_inside(src, tags) + tags[:end_before_change]
-              after = tags[:start_after_change] + escape_inside(tgt, tags) + tags[:end_after_change]
-              {
-                source_range: format_line_range(d1l, span: span1),
-                target_range: format_line_range(d2l, span: span2),
-                inline: before + after,
-                source_block: before,
-                target_block: after,
-              }
-            when :del_elt
-              del = tags[:start_del] + escape_outside(src, tags) + tags[:end_del]
-              {
-                source_range: format_line_range(d1l, span: span1),
-                target_range: format_line_range(d2l, paren: true),
-                inline: del,
-                source_block: escape_inside(src, tags),
-                target_block: del,
-              }
-            when :add_elt
-              add = tags[:start_add] + escape_outside(tgt, tags) + tags[:end_add]
-              {
-                source_range: format_line_range(d1l, paren: true),
-                target_range: format_line_range(d2l, span: span2),
-                inline: add,
-                source_block: escape_inside(src, tags),
-                target_block: add,
-              }
-            else
-              raise "invalid attribute: #{block.first}\n"
-            end
-
-          pre = tags[:start_prefix] + escape_outside(cxt_pre, tags) + tags[:end_prefix]
-          post = tags[:start_postfix] + escape_outside(cxt_post, tags) + tags[:end_postfix]
-
-          head =
-            tags[:start_entry] + tags[:start_position] +
-            "#{elements[:source_range]}, #{elements[:target_range]}" +
-            tags[:end_position]
-          body =
-            case display
-            when "inline"
-              pre + elements[:inline] + post
-            when /block|multi/
-              pre + elements[:source_block] + post + pre + elements[:target_block] + post
-            else
-              raise "Unsupported display type: #{display}"
-            end
-          foot =
-            tags[:end_entry] + (@eol_char || "")
-
-          result << (head + body + foot)
+          cxt_pre, cxt_post = digest_context(i)
+          result << format_digest_entry(
+            entry.first,
+            src,
+            tgt,
+            line1: d1l,
+            line2: d2l,
+            cxt_pre: cxt_pre,
+            cxt_post: cxt_post,
+            display: display,
+            tags: tags,
+          )
         end
         d1l += src.scan_eols(@eol).size
         d2l += tgt.scan_eols(@eol).size
