@@ -223,6 +223,24 @@ class TestView < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_apply_style_invalid_operation
+    difference = Difference.new(["dummy"], ["dummy"])
+    difference << [:invalid_elt, ["dummy"], ["dummy"]]
+    view = View.new(difference, "US-ASCII", "LF")
+    assert_raise_message("invalid attribute: invalid_elt\n") do
+      view.to_wdiff(nil, false)
+    end
+  end
+
+  def test_apply_style_digest_invalid_operation
+    difference = Difference.new(["dummy"], ["dummy"])
+    difference << [:invalid_elt, ["dummy"], ["dummy"]]
+    view = View.new(difference, "US-ASCII", "LF")
+    assert_raise_message("invalid attribute: invalid_elt\n") do
+      view.to_wdiff_digest(nil, false)
+    end
+  end
+
   def test_to_tty_del_add_ascii
     array1 = ["a", "b", "c"]
     array2 = ["b", "c", "c"]

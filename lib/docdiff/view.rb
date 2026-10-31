@@ -91,7 +91,7 @@ class DocDiff
         when :add_elt
           result << (tags[:start_add] + escape_inside(target, tags) + tags[:end_add])
         else
-          raise "invalid attribute: #{block.first}\n"
+          raise "invalid attribute: #{operation}\n"
         end
       end
       if headfoot == true
@@ -175,7 +175,7 @@ class DocDiff
             target_block: add,
           }
         else
-          raise "invalid attribute: #{block.first}\n"
+          raise "invalid attribute: #{operation}\n"
         end
 
       pre = tags[:start_prefix] + escape_outside(context_pre, tags) + tags[:end_prefix]
