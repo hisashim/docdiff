@@ -78,13 +78,8 @@ class DocDiff
       result = []
       @difference.each do |block|
         operation = block.first
-        if block_given?
-          src = yield((block[1] || []).join)
-          tgt = yield((block[1] || []).join)
-        else
-          src = (block[1] || []).join
-          tgt = (block[2] || []).join
-        end
+        src = (block[1] || []).join
+        tgt = (block[2] || []).join
         case operation
         when :common_elt_elt
           result << (tags[:start_common] + escape_outside(src, tags) + tags[:end_common])
@@ -131,13 +126,8 @@ class DocDiff
       d1l = 1 # doc1 line number
       d2l = 1 # doc2 line number
       @difference.each_with_index do |entry, i|
-        if block_given?
-          src = yield((entry[1] || []).join)
-          tgt = yield((entry[1] || []).join)
-        else
-          src = (entry[1] || []).join
-          tgt = (entry[2] || []).join
-        end
+        src = (entry[1] || []).join
+        tgt = (entry[2] || []).join
         cxt_pre =
           if i == 0
             "" # no pre context for the first entry
