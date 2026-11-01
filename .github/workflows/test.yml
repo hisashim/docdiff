@@ -1,0 +1,26 @@
+name: test
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Quote versions so that YAML does not read 3.0 as 3.
+        ruby: ["3.0", "3.1", "3.2", "3.3", "3.4", "4.0", "head"]
+    # Failures on ruby-head are informational and do not fail the workflow.
+    continue-on-error: ${{ matrix.ruby == 'head' }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      # test-unit is a bundled gem, so the tests run without `bundle install`.
+      - run: make test
