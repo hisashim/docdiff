@@ -17,7 +17,7 @@ datadir = $(DESTDIR)$(PREFIX)/share
 all: test docs dist gem
 
 test: $(TESTS)
-	$(RUBY) -I./lib -e 'ARGV.map{|a| require_relative "#{a}"}' $^
+	$(RUBY) -I./lib -e 'ARGV.each { |a| require File.expand_path(a) }' $^
 
 docs: $(DOCS)
 

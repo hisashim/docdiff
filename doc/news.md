@@ -12,6 +12,7 @@
   - Fixed `View#apply_style_digest` raising NameError instead of the intended error on an invalid operation.
   - Did some refactoring on digest mode rendering (`View#apply_style_digest`).
   - Migrated CI from Travis to GitHub Actions.
+  - Fixed `make test` failing on Ruby 3.0.
 
 ### 0.7.0 (2026-04-05)
 
