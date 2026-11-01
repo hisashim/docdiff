@@ -278,6 +278,13 @@ class DocDiff
             cfg
           end
 
+        # reject deprecated options
+
+        raise <<~EOS if config[:format] == "stat"
+          Output format "stat" (--format=stat, --stat) is deprecated and \
+          will be removed in the near future.
+        EOS
+
         # set up documents from input
 
         fnames = ARGV[0..1].map do |fn|

@@ -6,6 +6,7 @@
   - Fixed empty output when comparing files without any EOL character (e.g. a single line without trailing newline).
   - Fixed digest mode raising an error on such files.
   - Fixed the source line range of multi-line changes in digest mode (e.g. `LL4-3` was shown instead of `LL4-5`).
+  - `--format=stat` and `--stat` now exit with a deprecation message, instead of aborting with NoMethodError. They will be removed in the near future.
 * Developer-related changes:
   - Fixed `CharString#count_empty_lines` for text without EOL character.
   - Fixed `View#apply_style_digest` raising NameError instead of the intended error on an invalid operation.

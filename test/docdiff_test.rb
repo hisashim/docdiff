@@ -257,6 +257,16 @@ class TestDocDiff < Test::Unit::TestCase
     end
   end
 
+  def test_run_format_stat_unsupported
+    doc = Document.new("dummy", "US-ASCII", "NONE")
+    [false, true].each do |digest|
+      options = { resolution: "word", format: "stat", digest: digest }
+      assert_raise_message("Unsupported output format: \"stat\".") do
+        DocDiff.new.run(doc, doc, options)
+      end
+    end
+  end
+
   def teardown
   end
 end

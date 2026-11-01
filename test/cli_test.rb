@@ -315,6 +315,19 @@ class TestCLI < Test::Unit::TestCase
     assert_equal(expected, actual)
   end
 
+  def test_cli_format_stat_deprecated
+    expected = /Output format "stat" .* is deprecated/
+    ["--format=stat", "--stat"].each do |option|
+      cmd = <<~EOS
+        ruby -I lib bin/docdiff #{option} \
+        test/fixture/01_en_ascii_lf.txt test/fixture/02_en_ascii_lf.txt 2>&1
+      EOS
+      actual = `#{cmd}`
+      assert_false($?.success?)
+      assert_match(expected, actual)
+    end
+  end
+
   def test_cli_config_file_format_wdiff
     config_file_name = File.join(File.dirname(__FILE__), "fixture/format_wdiff.conf")
     expected = <<~EOS

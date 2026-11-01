@@ -130,7 +130,6 @@ class DocDiff
       when "html";     then result = view.to_html_digest(options)
       when "manued";   then result = view.to_manued_digest(options)
       when "wdiff";    then result = view.to_wdiff_digest(options)
-      when "stat";     then result = view.to_stat(options)
       when "user";     then result = view.to_user_digest(user_tags)
       else
         raise "Unsupported output format: #{options[:format].inspect}."
@@ -141,7 +140,6 @@ class DocDiff
       when "html";     then result = view.to_html(options)
       when "manued";   then result = view.to_manued(options)
       when "wdiff";    then result = view.to_wdiff(options)
-      when "stat";     then result = view.to_stat(options)
       when "user";     then result = view.to_user(user_tags)
       else
         raise "Unsupported output format: #{options[:format].inspect}."
