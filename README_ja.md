@@ -122,6 +122,7 @@ $
   - Make ([GNU Make](https://www.gnu.org/software/make/))
   - [Git](https://git-scm.com/)
   - [md2html](https://github.com/mity/md4c)（ドキュメント生成用）
+  - [Asciidoctor](https://asciidoctor.org/)（マニュアルページ生成用）
   - [Rake](https://ruby.github.io/rake/)（オプショナル）
   - sed, gzip, tar, etc.
 

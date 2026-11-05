@@ -122,6 +122,7 @@ $
   - Make ([GNU Make](https://www.gnu.org/software/make/))
   - [Git](https://git-scm.com/)
   - [md2html](https://github.com/mity/md4c) (for generating documents)
+  - [Asciidoctor](https://asciidoctor.org/) (for generating the man page)
   - [Rake](https://ruby.github.io/rake/) (optional)
   - sed, gzip, tar, etc.
 
