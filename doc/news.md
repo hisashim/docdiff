@@ -13,6 +13,7 @@
   - Did some refactoring on digest mode rendering (`View#apply_style_digest`).
   - Migrated CI from Travis to GitHub Actions.
   - Fixed `make test` failing on Ruby 3.0.
+  - Documented Asciidoctor as a development requirement.
 
 ### 0.7.0 (2026-04-05)
 
